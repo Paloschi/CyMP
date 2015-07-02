@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>777</width>
+    <height>474</height>
+   </rect>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::ActionsContextMenu</enum>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string>Gafanhoto</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QTreeWidget" name="treeWidget_2">
+        <property name="acceptDrops">
+         <bool>true</bool>
+        </property>
+        <column>
+         <property name="text">
+          <string>Funções</string>
+         </property>
+        </column>
+        <item>
+         <property name="text">
+          <string>Item</string>
+         </property>
+         <property name="flags">
+          <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>New Item</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>New Subitem</string>
+          </property>
+         </item>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTreeWidget" name="treeWidget">
+        <property name="acceptDrops">
+         <bool>true</bool>
+        </property>
+        <column>
+         <property name="text">
+          <string>Modelo XYZ</string>
+         </property>
+        </column>
+        <item>
+         <property name="text">
+          <string>Item</string>
+         </property>
+         <property name="flags">
+          <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>New Item</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>New Subitem</string>
+          </property>
+         </item>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTreeWidget" name="treeWidget_3">
+        <property name="acceptDrops">
+         <bool>true</bool>
+        </property>
+        <column>
+         <property name="text">
+          <string>Dados</string>
+         </property>
+        </column>
+        <item>
+         <property name="text">
+          <string>Item</string>
+         </property>
+         <property name="flags">
+          <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>New Item</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>New Subitem</string>
+          </property>
+         </item>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>777</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionCarregar_Modelo"/>
+    <addaction name="actionSalvar_Modelo_Ctrl_S"/>
+    <addaction name="actionSalvar_Como"/>
+   </widget>
+   <widget class="QMenu" name="menuDados">
+    <property name="title">
+     <string>Dados</string>
+    </property>
+    <widget class="QMenu" name="menuCarregar_Dado">
+     <property name="title">
+      <string>Carregar dado</string>
+     </property>
+     <addaction name="actionCarregar_dado_Simples"/>
+     <addaction name="actionCarregar_lista_de_dados"/>
+     <addaction name="actionCriar_dado_tabelado"/>
+    </widget>
+    <addaction name="menuCarregar_Dado"/>
+    <addaction name="actionListar_dados"/>
+   </widget>
+   <widget class="QMenu" name="menuFun_o_es">
+    <property name="title">
+     <string>Funções</string>
+    </property>
+    <addaction name="actionListar_Fun_oes"/>
+   </widget>
+   <widget class="QMenu" name="menuModelo">
+    <property name="title">
+     <string>Modelo</string>
+    </property>
+    <addaction name="actionRodar"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuDados"/>
+   <addaction name="menuFun_o_es"/>
+   <addaction name="menuModelo"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionCarregar_Modelo">
+   <property name="text">
+    <string>Carregar Modelo</string>
+   </property>
+  </action>
+  <action name="actionSalvar_Modelo_Ctrl_S">
+   <property name="text">
+    <string>Salvar Modelo (Ctrl + S)</string>
+   </property>
+  </action>
+  <action name="actionSalvar_Como">
+   <property name="text">
+    <string>Salvar Como</string>
+   </property>
+  </action>
+  <action name="actionCarregar_dado_Simples">
+   <property name="text">
+    <string>Carregar dado Simples</string>
+   </property>
+  </action>
+  <action name="actionCarregar_lista_de_dados">
+   <property name="text">
+    <string>Carregar lista de dados</string>
+   </property>
+  </action>
+  <action name="actionCriar_dado_tabelado">
+   <property name="text">
+    <string>Criar dado tabelado</string>
+   </property>
+  </action>
+  <action name="actionListar_dados">
+   <property name="text">
+    <string>Mostrar dados do modelo</string>
+   </property>
+  </action>
+  <action name="actionListar_Fun_oes">
+   <property name="text">
+    <string>Listar Funções</string>
+   </property>
+  </action>
+  <action name="actionRodar">
+   <property name="text">
+    <string>Executar</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
