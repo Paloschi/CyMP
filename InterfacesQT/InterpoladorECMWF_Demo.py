@@ -8,9 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-import InterpoladorECMWF_Demo_Controller
-from PyQt4.QtGui import *
-
+from Controllers import InterpoladorECMWF_Demo_Controller
  
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -26,14 +24,12 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_Form(QtGui.QWidget):
-    def __init__(self, controller):
-        self.controller = controller
-        QtGui.QWidget.__init__(self)
-        self.setupUi(self)
-        
+class UI_DlgInterpoladorShapeEcmwf(QtGui.QDialog):
         
     def setupUi(self, Form):
+        
+        self.controller = InterpoladorECMWF_Demo_Controller.Controller(self)
+        
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(436, 361)
         self.leShapePath = QtGui.QLineEdit(Form)
@@ -84,6 +80,7 @@ class Ui_Form(QtGui.QWidget):
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
+        
         Form.setWindowTitle(_translate("Form", "Gafanhoto Beta 0.01 - Interpolador ECMWF", None))
         self.btnFindShp.setText(_translate("Form", "Procurar", None))
         self.label_2.setText(_translate("Form", "Agrupar dados pelor atributos:", None))
@@ -100,24 +97,11 @@ class Ui_Form(QtGui.QWidget):
         self.leImgRefPath.textChanged.connect(self.controller.le_imgRefPath_ChangeAction)
         self.cbAtribute.currentIndexChanged.connect(self.controller.cb_Atribute_ChangeAction)
         
-    def contextMenuEvent(self, event):
+    #def contextMenuEvent(self, event):
          
-        menu = QMenu(self)
-        
-        quitAction = menu.addAction("Quit")
-        
-        action = menu.exec_(self.mapToGlobal(event.pos()))
-        
-        if action == quitAction:
-            qApp.quit()
-
-if __name__ == '__main__':
-    import sys
-    app = QtGui.QApplication(sys.argv)
-    controller = InterpoladorECMWF_Demo_Controller.InterpoladorECMWF_Demo_Controller()
-
-    ex = Ui_Form(controller)
-    controller.form = ex
-    
-    ex.show()
-    sys.exit(app.exec_())
+        #menu = QMenu(self)
+        #quitAction = menu.addAction("Quit")
+        #action = menu.exec_(self.mapToGlobal(event.pos()))
+        #if action == quitAction:
+            #pass
+            #qApp.quit()

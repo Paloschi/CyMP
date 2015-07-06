@@ -1,6 +1,6 @@
 '''
 Created on Jun 12, 2015
-
+precisa colocar o argumento py2exe
 @author: Paloschi
 '''
 import matplotlib
@@ -19,11 +19,11 @@ setup(
             "dll_excludes": ["MSVCP90.dll", "HID.DLL", ],
             'packages':['fiona',"rasterio","PyQt4.QtCore","PyQt4.QtGui" ],
             'excludes': ['_gtkagg', '_tkagg'],
-            "includes" : ["sip", "matplotlib.backends.backend_tkagg", "FileDialog"],
+            "includes" : ["sip", "matplotlib.backends.backend_tkagg", "FileDialog", "lxml._elementpath"],
 
         }
     },
-    console = [{'script': 'MainWindow_2.py'}]
+    console = [{'script': 'Gafanhoto.py'}]
 )
 
 #setup(console=['MainWindow_2.py'])

@@ -91,15 +91,18 @@ class SpectreStatisticalStractor(OperationInterface.Operation):
                     for img in images:
                         line.append(img[i_linha][i_coluna])
                     
+                    mean = None
                     if doMedia : 
                         mean = np.mean(line) # calcula a média
                         imagem_media[i_linha][i_coluna] = mean
-                        
+                    
+                    sd = None
                     if doSD : 
                         sd = np.nanstd(line) # calcula o desvio padrão
                         imagem_sd[i_linha][i_coluna] = sd
                         
                     if doCV : 
+                        if mean == None : mean = np.mean(line)
                         if sd != None : cv = sd / mean * 100 # calcula o coeficiente de variação
                         else : cv = np.nanstd(line) / mean * 100
                         imagem_cv[i_linha][i_coluna] = cv

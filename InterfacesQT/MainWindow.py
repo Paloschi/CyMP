@@ -369,4 +369,4 @@ if __name__ == '__main__':
     #controller.form = ex
     
     ex.show()
-    sys.exit(app.exec_())
+    sys.exit()

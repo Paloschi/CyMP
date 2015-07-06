@@ -14,6 +14,7 @@ from PyQt4 import QtCore, QtGui
 import time
 import sys
 from py2exe.build_exe import Target
+from types import NoneType
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -119,10 +120,10 @@ class Controller(object):
             self.thread.start()
             
     def action_cancel(self):
-            if self.thread != None :
-                if self.thread.stopped() == False :
-                    self.thread.stop()
-            self.thread.stop()
+            if self.thread != NoneType :
+                if self.thread != None :
+                    if self.thread.stopped() == False :
+                        self.message(u"Atividade ainda em execução \n feche o aplicativo para parar")
             self.ui.close()
     
     @abstractmethod
@@ -159,4 +160,5 @@ class Controller(object):
         textToWrite.setText (fname)
         
     def message(self, text):
-        QtGui.QMessageBox.about(self.ui, "Ops...", u"Selecione ao menos uma opção na aba configuração")
+        QtGui.QMessageBox.about(self.ui, "Ops...", text)
+        

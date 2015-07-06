@@ -59,6 +59,6 @@ class Controller(AbstractController.Controller):
         if self.ui.cbCV.isChecked() : self.statistical_list.append("cv")
         
         if len(self.statistical_list) == 0 :
-            self.message("Selecione pelo menos uma opção na aba Configuração")
+            self.message(u"Selecione pelo menos uma opção na aba Configuração")
             return False
         return True

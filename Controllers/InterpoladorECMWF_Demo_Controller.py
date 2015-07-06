@@ -11,72 +11,68 @@ from Operations import Interpola
 from Operations import SplitTable
 import sys
 from PyQt4 import QtCore, QtGui
+from Controllers import AbstractController
 
 
-class InterpoladorECMWF_Demo_Controller(object):
+class Controller(AbstractController.Controller):
     '''
     classdocs
     '''
     ShapeSelected = None
     ImgRefSelected = None
-    form = None
-
-    def __init__(self):
-        '''
-        Constructor
-        '''
+        
     def btn_OK_ClickAction(self):
         print("OK")
         self.executar()
         
     def btn_Cancel_ClickAction(self):
         print("Cancel")
-        sys.exit()
+        self.ui.close()
         
     def btn_FindShp_ClickAction(self):
         fname = QFileDialog.getOpenFileName()
-        self.form.leShapePath.setText(fname)
+        self.ui.leShapePath.setText(fname)
 
     def btn_FindImgRef_ClickAction(self):
         fname = QFileDialog.getOpenFileName()
-        self.form.leImgRefPath.setText(fname)
+        self.ui.leImgRefPath.setText(fname)
 
     def le_shapePath_ChangeAction(self):
         if (self.ShapeSelected == None):
-            self.ShapeSelected = Dados.SimpleData(data = str(self.form.leShapePath.text()))
+            self.ShapeSelected = Dados.SimpleData(data = str(self.ui.leShapePath.text()))
         else:
-            self.ShapeSelected.data = self.form.leShapePath.text()
+            self.ShapeSelected.data = self.ui.leShapePath.text()
         
         getShapeProperties = GetShapeData.GetShapeData()
         getShapeProperties.data = self.ShapeSelected
         itens = getShapeProperties.getDataProperties().keys()
-        self.form.cbAtribute.addItems(itens)
-        self.form.cbAtribute.setEnabled(True)
-        self.form.cbAtribute.setCurrentIndex(0)
+        self.ui.cbAtribute.addItems(itens)
+        self.ui.cbAtribute.setEnabled(True)
+        self.ui.cbAtribute.setCurrentIndex(0)
         
     def le_imgRefPath_ChangeAction(self):
         if (self.ImgRefSelected == None):
-            self.ImgRefSelected = Dados.SimpleData(data = self.form.leImgRefPath.text())
+            self.ImgRefSelected = Dados.SimpleData(data = self.ui.leImgRefPath.text())
         else:
-            self.ImgRefSelected.data = self.form.leImgRefPath.text()
+            self.ImgRefSelected.data = self.ui.leImgRefPath.text()
         
     def cb_Atribute_ChangeAction(self):
         getShapeProperties = GetShapeData.GetShapeData()
         getShapeProperties.data = self.ShapeSelected
         itens = getShapeProperties.getDataProperties().keys()   
-        itens.remove(self.form.cbAtribute.currentText())
+        itens.remove(self.ui.cbAtribute.currentText())
         
-        self.form.lwGroupAtributes.clear()
+        self.ui.lwGroupAtributes.clear()
         
         for item in itens:
         
             item = QtGui.QListWidgetItem(item)
             item.setCheckState(QtCore.Qt.Unchecked)
-            self.form.lwGroupAtributes.addItem(item)
+            self.ui.lwGroupAtributes.addItem(item)
             
-        self.form.lwGroupAtributes.setEnabled(True)
-        __sortingEnabled = self.form.lwGroupAtributes.isSortingEnabled()
-        self.form.lwGroupAtributes.setSortingEnabled(__sortingEnabled)
+        self.ui.lwGroupAtributes.setEnabled(True)
+        __sortingEnabled = self.ui.lwGroupAtributes.isSortingEnabled()
+        self.ui.lwGroupAtributes.setSortingEnabled(__sortingEnabled)
       
     
     def executar(self):
@@ -91,9 +87,9 @@ class InterpoladorECMWF_Demo_Controller(object):
         
         atributos = list()
         
-        for index in xrange(self.form.lwGroupAtributes.count()):
-            if self.form.lwGroupAtributes.item(index).checkState() == 2:
-                atributos.append(str(self.form.lwGroupAtributes.item(index).text()))
+        for index in xrange(self.ui.lwGroupAtributes.count()):
+            if self.ui.lwGroupAtributes.item(index).checkState() == 2:
+                atributos.append(str(self.ui.lwGroupAtributes.item(index).text()))
         
         dados_separador.data = {'table' : getData, 'atributos' : atributos}
         
@@ -105,12 +101,16 @@ class InterpoladorECMWF_Demo_Controller(object):
         getImageInformatio.data = self.ImgRefSelected
         image_information = getImageInformatio.data
         
-        dados_interpolador.data = {'table_data' : separador, 'atributo' : str(self.form.cbAtribute.currentText()), "format_image_data" : image_information}
+        dados_interpolador.data = {'table_data' : separador, 'atributo' : str(self.ui.cbAtribute.currentText()), "format_image_data" : image_information}
         
         interpolador = Interpola.InterpolaTabela("teste ECMWF")
         interpolador.data = dados_interpolador
 
         mensagem  = interpolador.data
         
-        #QtGui.QMessageBox("Informacao", mensagem, QMessageBox.Icon(), )
         
+
+    def valida_form(self):
+        pass
+    def executa(self):
+        pass

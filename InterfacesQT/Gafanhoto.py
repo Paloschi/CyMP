@@ -12,6 +12,7 @@ from PyQt4 import QtCore, QtGui
 from DlgEstimativaDatasCultura import Ui_DlgEstimativaDatasAgricolas
 from DlgFiltroSavitzGolay import Ui_DlgSavitzGolay
 from DlgEstatisticasEspectrais import Ui_DlgEstatisticasEspectrais
+from InterpoladorECMWF_Demo import UI_DlgInterpoladorShapeEcmwf
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -53,6 +54,13 @@ class Ui_MainWindow(QtGui.QMainWindow):
         popup.setupUi(popup)
         
         popup.show()
+        
+    def popupInterpolador_ECMWF(self):
+
+        popup = UI_DlgInterpoladorShapeEcmwf()
+        popup.setupUi(popup)
+        popup.show()
+                  
                   
                   
     def setupUi(self, MainWindow):
@@ -160,7 +168,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Gafanhoto", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Gafanhoto 0.1.0", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuDados.setTitle(_translate("MainWindow", "Dados", None))
         self.menuCarregar_Dado.setTitle(_translate("MainWindow", "Carregar dado", None))
@@ -184,6 +192,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionEstimativa_de_datas_de_colheita.triggered.connect(self.popupEstimativa_de_datas_de_colheita)
         self.actionFiltro_Savitz_Golay.triggered.connect(self.popupFiltro_Savitz_Golay)
         self.actionEstatisticasEspectrais.triggered.connect(self.popupEstatistiscas_Espectrais)
+        self.actionInterpolador.triggered.connect(self.popupInterpolador_ECMWF)
         #self.action
         
         
