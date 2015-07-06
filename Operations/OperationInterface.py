@@ -5,7 +5,7 @@ Created on May 11, 2015
 @author: Paloschi
 '''
 import beans
-from abc import ABCMeta, abstractmethod, abstractproperty
+from abc import ABCMeta, abstractmethod
 from numpy.distutils.environment import __metaclass__
 from beans import Dados
 

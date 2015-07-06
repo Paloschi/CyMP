@@ -159,34 +159,26 @@ class SerialData(AbtractData, list):
         '''
             Salva lista de dados presentes em uma determinada pasta
         '''
+        print(self.data_metadata)
         
-        #kwargs = src.meta
-        #kwargs.update(dtype=rasterio.uint8, count=1, compress='lzw')
         i = 0
         if (len(imagens) > 0):
-            
-            
-   
+        
             for img in imagens: 
+                print("====================== Extportando Imagem =======================")
                 print("data name: " + str(self[i].data_name))
                 image_name = self[i].data_name.split("/")[-1]    
                 print("image name: " + image_name)    
                 saida = rootdir + image_name + "." + ext
+                print("caminho de saida: " + str(saida))
+                print("imagem : \n" + str(img.data))
                 
-                try: 
-                    metadata = self.data_metadata
-                    metadata.update(driver="GTiff", count=1, dtype=rasterio.int16) 
-                    with rasterio.open(path = saida, mode = 'w', **metadata) as dst:
-                        dst.write_band(1, img)
-                    i+=1
-                
-                except:
-                    metadata = self.data_metadata
-                    metadata.update(driver="GTiff", count=1, dtype=rasterio.int32) 
-                    with rasterio.open(path = saida, mode = 'w', **metadata) as dst:
-                        dst.write_band(1, img)
-                    i+=1
-        
+                metadata = self.data_metadata
+                metadata.update(driver="GTiff", count=1, dtype=img.data.dtype) 
+                with rasterio.open(path = saida, mode = 'w', **metadata) as dst:
+                    dst.write_band(1, img.data)
+                i+=1
+
             
     def saveListLike1Image(self, imagens, rootdir, ext=None):
         
@@ -196,49 +188,16 @@ class SerialData(AbtractData, list):
             metadata = self.data_metadata
             saida = rootdir + "cubo.tif"
             
-            try:   
-                metadata.update(driver="GTiff", count=n_img, dtype=rasterio.int32)          
-                with rasterio.open(path = saida, mode = 'w', **metadata) as dst:
-                    i = 0
-                    print("numero de bandas a escrever: " + str(len(imagens)))
-                    for img in imagens: 
-    
-                            print (img.data)
-                            print (img.data_name)
-                            dst.write_band(1, img.data)
-                    
-                            
-                            print("banda escrita: " + str(i))
-                
-                            i+=1  
-            except:
-                try:
-                    metadata.update(driver="GTiff", count=n_img, dtype=rasterio.uint16) 
-                    with rasterio.open(path = saida, mode = 'w', **metadata) as dst:
-                        i = 0
-                        print("numero de bandas a escrever: " + str(len(imagens)))
-                        for img in imagens: 
-        
-        
-                                dst.write_band(img.data_name, img.data)
-                                
-                                print("banda escrita: " + str(i))
-                    
-                                i+=1  
-                except:
-                    metadata.update(driver="GTiff", count=n_img, dtype=rasterio.int16) 
-                    with rasterio.open(path = saida, mode = 'w', **metadata) as dst:
-                        i = 0
-                        print("numero de bandas a escrever: " + str(len(imagens)))
-                        for img in imagens: 
-                                
-        
-                                dst.write_band(img.data_name, img.data)
-                                
-                                print("banda escrita: " + str(i))
-                    
-                                i+=1  
-                        
+            metadata.update(driver="GTiff", count=n_img, dtype=imagens[0].data.dtype)          
+            with rasterio.open(path = saida, mode = 'w', **metadata) as dst:
+                i = 0
+                print("numero de bandas a escrever: " + str(len(imagens)))
+                for img in imagens: 
+                        print (img.data)
+                        print (img.data_name)
+                        dst.write_band(1, img.data)
+                        print("banda escrita: " + str(i))
+                        i+=1  
                 
 class TableData(dict, AbtractData):
 

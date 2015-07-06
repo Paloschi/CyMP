@@ -245,6 +245,7 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.dsbAColheita.value()
 
     def retranslateUi(self, DlgEstimativaDatasAgricolas):
+        
         DlgEstimativaDatasAgricolas.setWindowTitle(_translate("DlgEstimativaDatasAgricolas", "Estimativa de dadas da cultura", None))
         self.toolbFindInFolder.setText(_translate("DlgEstimativaDatasAgricolas", "...", None))
         self.label.setText(_translate("DlgEstimativaDatasAgricolas", "Pasta de entrada das imagens:", None))
@@ -279,8 +280,6 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.leInFolder.setText("C:\\Users\\Paloschi\\Desktop\\data\\AjusteModeloDSDC\\3.EVI_Flat_Propriedades_SavitsGolay")
         self.leOutFolder.setText("C:\\Users\\Paloschi\\Desktop\\data\\AjusteModeloDSDC\\5.Saida_testeUI")
         
-        
         self.toolbFindInFolder.clicked.connect(self.controller.findInFolder)
         self.toolbFindOutFolder.clicked.connect(self.controller.findOutFolder)
         
-

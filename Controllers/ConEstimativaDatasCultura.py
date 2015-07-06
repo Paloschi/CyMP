@@ -18,6 +18,22 @@ except AttributeError:
     def _fromUtf8(s):
         return s
     
+import threading
+
+class StoppableThread(threading.Thread):
+    """Thread class with a stop() method. The thread itself has to check
+    regularly for the stopped() condition."""
+
+    def __init__(self):
+        super(StoppableThread, self).__init__()
+        self._stop = threading.Event()
+
+    def stop(self):
+        self._stop.set()
+
+    def stopped(self):
+        return self._stop.isSet()
+    
 class Controller(object):
     '''
     classdocs
@@ -27,41 +43,28 @@ class Controller(object):
         self.ui = ui
     
     def findInFolder(self):
-        self.findFolder(self.ui.leInFolder)
+        self.findPath(self.ui.leInFolder)
         
     def findOutFolder(self):
-        self.findFolder(self.ui.leOutFolder)
+        self.findPath(self.ui.leOutFolder)
   
-    def findFolder(self, textToWrite):
+    def findPath(self, textToWrite):
         fname = QFileDialog.getExistingDirectory()
         textToWrite.setText (fname)
         
     def action_ok(self):
         
         self.extractor = PerfilExtractor.ComparadorSemeaduraColheita()
+        self.tread = StoppableThread( self.executa, (self.extractor))
         
-        thread.start_new_thread( self.executa, (self.extractor,) )
+    def action_cancel(self):
         
-        thread.start_new_thread( self.updatePBar, (self.extractor,) )
-
-    #def checa_progresso(self, extractor):
-        
-        #while(extractor.progresso<=100):
-            #self.ui.progressBar.setProperty("value", extractor.progresso)
-    
-    def updatePBar(self, extractor):
-        while(self.extractor.progresso<=100):
-            self.ui.progressBar.setValue(self.extractor.progresso) 
-            time.sleep(0.13)
-            #print(self.extractor.progresso)
-        
-            
+        self.tread.stop()
         
     def executa(self, extractor):
         
         root_out = self.ui.leOutFolder.text()
         
-
         extractor.data = self.carregarParamIN()
         imagens = extractor.data
         
@@ -81,13 +84,11 @@ class Controller(object):
 
         images = Dados.SerialData()
         parametrosIN = Dados.TableData()
+        
         root_in = self.ui.leInFolder.text()
-        root_in = _fromUtf8(str(root_in) + "\\")
-        root_in = str(root_in).replace("\\", "/")
-        print(root_in)
-        
+        root_in = self.ajeitarPath(root_in)
+
         images.loadListByRoot(root_in, "tif")
-        
         
         print("numero de imagens: " + str(len(images)))
         
@@ -101,3 +102,4 @@ class Controller(object):
         parametrosIN["progress_bar"] = Dados.SimpleData(self.ui.progressBar)
         
         return parametrosIN
+    

@@ -1,97 +1,64 @@
+# -*- coding: utf-8 -*-
 '''
 Created on Jun 10, 2015
 
 @author: Paloschi
 '''
-from PyQt4.QtGui import QFileDialog
-from Operations import PerfilExtractor
-from beans import Dados
-from ctypes.wintypes import DOUBLE
-from numpy import double
-from PyQt4 import QtCore
-import time
-import thread
 
-try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-    def _fromUtf8(s):
-        return s
-    
-class Controller(object):
+from Operations import StatisticalStractor
+from beans import Dados
+from Controllers import AbstractController
+
+class Controller(AbstractController.Controller):
     '''
     classdocs
     '''
-    def __init__(self, ui):
-        
-        self.ui = ui
     
     def findInFolder(self):
-        self.findFolder(self.ui.leInFolder)
-
-    def findImg(self):
-        fname = QFileDialog.getOpenFileNameAndFilter()
-        self.ui.leImgRefer (fname)
+        self.findPath(self.ui.leInFolder, "folder")
         
     def findOutFolder(self):
-        self.findFolder(self.ui.leOutFolder)
+        self.findPath(self.ui.leOutFolder, "folder")
   
-    def findFolder(self, textToWrite):
-        fname = QFileDialog.getExistingDirectory()
-        textToWrite.setText (fname)
-
+    def executa(self):
         
-    def action_ok(self):
-        self.extractor = PerfilExtractor.ComparadorSemeaduraColheita()
-        thread.start_new_thread( self.executa, (self.extractor,) )
-
-    def updatePBar(self, extractor):
-        while(self.extractor.progresso<=100):
-            self.ui.progressBar.setValue(self.extractor.progresso) 
-            time.sleep(0.13)
-            #print(self.extractor.progresso)
+        root_in = self.ui.leInFolder.text()
+        root_in = self.ajeitarPath(root_in)
         
-    def executa(self, extractor):
+        imagens_entrada = Dados.SerialData()
+        imagens_entrada = imagens_entrada.loadListByRoot(root_in, "tif")
         
         root_out = self.ui.leOutFolder.text()
+        root_out = self.ajeitarPath(root_out)
         
-
-        extractor.data = self.carregarParamIN()
-        imagens = extractor.data
+        statistical_list = Dados.SerialData(data=self.statistical_list)
+        null_value = Dados.SimpleData(data=None)
         
-        semeadura = imagens["imagem_semeadura"]
-        semeadura.data_name = self.ui.leImgSemeadura.text()
-        colheita = imagens["imagem_colheita"]
-        colheita.data_name = self.ui.leImgColheita.text()
-        pico = imagens["imagem_pico"]
-        pico.data_name = self.ui.leImgPico.text()
+        paramsIN = Dados.TableData()
+        paramsIN["images"] = imagens_entrada
+        paramsIN["null_value"] = null_value
+        paramsIN["statistics"] = statistical_list
         
-        semeadura.saveImage(root_out, ext=".tif")
-        colheita.saveImage(root_out, ext=".tif")
-        pico.saveImage(root_out, ext=".tif")
-        
-        
-    def carregarParamIN(self):
-
-        images = Dados.SerialData()
-        parametrosIN = Dados.TableData()
-        root_in = self.ui.leInFolder.text()
-        root_in = _fromUtf8(str(root_in) + "\\")
-        root_in = str(root_in).replace("\\", "/")
-        print(root_in)
-        
-        images.loadListByRoot(root_in, "tif")
+        self.function = StatisticalStractor.SpectreStatisticalStractor()
+        self.function.data = paramsIN
+        images_saida = self.function.data
+        images_saida.saveListByRoot(images_saida, root_out, "tif")      
         
         
-        print("numero de imagens: " + str(len(images)))
+    def valida_form(self):
         
-        parametrosIN["images"] = images
-        parametrosIN["avanco_semeadura"] = Dados.SimpleData(data= self.ui.dspASemeadura.value())
-        parametrosIN["avanco_colheita"] = Dados.SimpleData(data= self.ui.dsbAColheita.value())
-        parametrosIN["intervalo_pico"] = Dados.SimpleData(data= self.ui.lePPico.text())
-        parametrosIN["intervalo_semeadura"] = Dados.SimpleData(data= self.ui.lePSemeadura.text())
-        parametrosIN["intervalo_colheita"] = Dados.SimpleData(data= self.ui.lePColheita.text())
-        parametrosIN["null_value"] = Dados.SimpleData(data= self.ui.leNullValue.text())
-        parametrosIN["progress_bar"] = Dados.SimpleData(self.ui.progressBar)
+        self.statistical_list = list()
         
-        return parametrosIN
+        if self.ui.cbMax.isChecked() : self.statistical_list.append("max")
+        if self.ui.cbMedia.isChecked() : self.statistical_list.append("media")
+        if self.ui.cbMediana.isChecked() : self.statistical_list.append("mediana")
+        if self.ui.cbMin.isChecked() : self.statistical_list.append("min")
+        if self.ui.cbModa.isChecked() : self.statistical_list.append("moda")
+        if self.ui.cbSD.isChecked() : self.statistical_list.append("sd")
+        if self.ui.cbSoma.isChecked() : self.statistical_list.append("soma")
+        if self.ui.cbCV.isChecked() : self.statistical_list.append("cv")
+        
+        if len(self.statistical_list) == 0 :
+            self.message("Selecione pelo menos uma opção na aba Configuração")
+            return False
+        return True

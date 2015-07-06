@@ -27,12 +27,12 @@ class Controller(object):
         self.ui = ui
     
     def findInFolder(self):
-        self.findFolder(self.ui.leInFolder)
+        self.findPath(self.ui.leInFolder)
         
     def findOutFolder(self):
-        self.findFolder(self.ui.leOutFolder)
+        self.findPath(self.ui.leOutFolder)
   
-    def findFolder(self, textToWrite):
+    def findPath(self, textToWrite):
         fname = QFileDialog.getExistingDirectory()
         textToWrite.setText (fname)
         
