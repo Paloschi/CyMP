@@ -22,7 +22,7 @@ class Operation(beans.Dados.AbtractData):
     descriptionIN = dict() # Descrição dos parametros de entrada das funções   
     descriptionOUT = dict() # descrição dos parametros de saída das funções
     paramentrosIN_carregados = dict() # parametros de entrada carrecados
-    progresso = float(0)
+    progresso = float(1)
     
     @abstractmethod # esse parametro deve ser implementado na classe filha
     def __setParamIN__(self):

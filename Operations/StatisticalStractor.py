@@ -56,7 +56,10 @@ class SpectreStatisticalStractor(OperationInterface.Operation):
         
         print("numero de colunas e linhas: " + str(n_linhas) + " : " + str(n_colunas))
         
-        imagem_referencia = [[0 for x in range(n_colunas)] for x in range(n_linhas)]  
+        #imagem_referencia = [[0 for x in range(n_colunas)] for x in range(n_linhas)]  
+        imagem_referencia = np.zeros((n_linhas, n_colunas))
+        
+        print(imagem_referencia)
         
         if doMedia : imagem_media = array(imagem_referencia)#.astype(dtype="int16")
         if doCV : imagem_cv = array(imagem_referencia)#.astype(dtype="int16")
@@ -67,13 +70,16 @@ class SpectreStatisticalStractor(OperationInterface.Operation):
         if doMediana : imagem_mediana = array(imagem_referencia)#.astype(dtype="int16")
         if doModa : imagem_moda = array(imagem_referencia)#.astype(dtype="int16")
 
+        print("processando:")
+        
+        
         progress( 0.0)
         
         for i_linha in range(0, n_linhas):
             
-            status = i_linha+1/float(n_linhas)
-            progress(status)
-            self.progresso = status*100
+            #status = i_linha+1/float(n_linhas)
+            progress(float(i_linha/float(n_linhas)))
+            #self.progresso = status*100
 
             for i_coluna in range(0, n_colunas):
                 line = list()
@@ -116,7 +122,9 @@ class SpectreStatisticalStractor(OperationInterface.Operation):
                     
                     #if doModa :
                         #moda = line.mode()[0] # não habilitado
-                                  
+        
+        print("Arrumando imagens de saida")
+        
         saida = Dados.SerialData()
         saida.data_metadata = self.brutedata["images"][0].data_metadata
         
@@ -148,7 +156,9 @@ class SpectreStatisticalStractor(OperationInterface.Operation):
             imagem_mediana = Dados.SimpleData( data = imagem_mediana)
             imagem_mediana.data_name = "imagem_mediana"
             saida.append(imagem_mediana)
-            
+        
+        print("imagens prontas para gravar, statistical stractor completo")
+        
         return saida
     
 if __name__ == '__main__':   

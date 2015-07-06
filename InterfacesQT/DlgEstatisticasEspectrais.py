@@ -119,7 +119,7 @@ class Ui_DlgEstatisticasEspectrais(QtGui.QDialog):
         self.retranslateUi(DlgEstatisticasEspectrais)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QObject.connect(self.bbOkCancel, QtCore.SIGNAL(_fromUtf8("accepted()")), self.controller.action_ok)
-        QtCore.QObject.connect(self.bbOkCancel, QtCore.SIGNAL(_fromUtf8("rejected()")), DlgEstatisticasEspectrais.reject)
+        QtCore.QObject.connect(self.bbOkCancel, QtCore.SIGNAL(_fromUtf8("rejected()")), self.controller.action_cancel)
         QtCore.QMetaObject.connectSlotsByName(DlgEstatisticasEspectrais)
 
     def retranslateUi(self, DlgEstatisticasEspectrais):
