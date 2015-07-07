@@ -3,7 +3,7 @@ Created on Mar 1, 2015
 
 @author: Paloschi
 '''
-from beans import Dados
+from Modelo.beans import Dados
 from lxml import etree
 
 class InterpolaTabela(Dados.AbtractData):
@@ -46,8 +46,6 @@ class InterpolaTabela(Dados.AbtractData):
                 interpolador.data = interpolation_table
             
                 print (interpolador.data)
-                
-                
             
         print ("Interpolacao completa")
         return ("Interpolacao completa")

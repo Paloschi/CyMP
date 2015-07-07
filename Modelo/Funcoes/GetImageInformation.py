@@ -5,8 +5,7 @@ Created on Mar 1, 2015
 '''
 
 import subprocess
-from beans import Dados
-from Operations import OperationInterface
+from Modelo.Funcoes import OperationInterface
 
 class GetImgInfo(OperationInterface.Operation):
     '''
