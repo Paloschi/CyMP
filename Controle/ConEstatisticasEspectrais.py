@@ -25,13 +25,13 @@ class Controller(AbstractController.Controller):
         root_in = self.ui.leInFolder.text()
         root_in = self.ajeitarPath(root_in)
         
-        imagens_entrada = Dados.SerialData()
+        imagens_entrada = Dados.ListData()
         imagens_entrada = imagens_entrada.loadListByRoot(root_in, "tif")
         
         root_out = self.ui.leOutFolder.text()
         root_out = self.ajeitarPath(root_out)
         
-        statistical_list = Dados.SerialData(data=self.statistical_list)
+        statistical_list = Dados.ListData(data=self.statistical_list)
         null_value = Dados.SimpleData(data=None)
         
         paramsIN = Dados.TableData()

@@ -6,7 +6,7 @@ Created on May 5, 2015
 '''
 from Modelo.beans import Dados
 import gdal
-from Modelo.Funcoes import OperationInterface
+from Modelo.Funcoes import AbstractFunction
 from numpy.core.numeric import array
 progress = gdal.TermProgress_nocb    
 
@@ -15,7 +15,7 @@ from multiprocessing import freeze_support
 
 
 
-class Filtro(OperationInterface.Operation):
+class Filtro(AbstractFunction.Function):
     '''
     classdocs
     '''
@@ -329,9 +329,7 @@ if __name__ == '__main__':
     root_ = "C:\\Users\\Paloschi\\Desktop\\data\\Rasters\\Modis\\2014\\EVI"
     root_saida = "C:\\Users\\Paloschi\\Desktop\\data\\AjusteModeloDSDC\\3.EVI_Flat_Propriedades_SavitsGolay\\"
     
-    images = Dados.SerialData()
-    
-    parametros = Dados.TableData()
+    images = Dados.SerialDataListData    parametros = Dados.TableData()
     
     images.loadListByRoot(root_, "tif")
     

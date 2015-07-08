@@ -5,9 +5,9 @@ Created on Mar 1, 2015
 '''
 
 import subprocess
-from Modelo.Funcoes import OperationInterface
+from Modelo.Funcoes import AbstractFunction
 
-class GetImgInfo(OperationInterface.Operation):
+class GetImgInfo(AbstractFunction.Function):
     '''
     recupera informacoes de imagens como numero de linhas e tamanho da imagem para usar na interpolacao por exemplo
     '''

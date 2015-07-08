@@ -89,7 +89,7 @@ class Controller(object):
         
     def carregarParamIN(self):
 
-        images = Dados.SerialData()
+        images = Dados.ListData()
         parametrosIN = Dados.TableData()
         root_in = self.ui.leInFolder.text()
         root_in = _fromUtf8(str(root_in) + "\\")

@@ -10,7 +10,7 @@ from numpy.distutils.environment import __metaclass__
 
 
 
-class Operation(Dados.AbtractData):
+class Function(Dados.AbtractData):
     
     '''
     Essa classe representa o padrão das operações e todas as operações devem herda-la
@@ -65,8 +65,11 @@ class Operation(Dados.AbtractData):
         print "---------------"
          
         for key in self.descriptionIN.keys():
-            if (params[key].data_type != Dados.AbtractData.ListData) : self.paramentrosIN_carregados[key] = params[key].data
-            else : self.paramentrosIN_carregados[key] = params[key].loadData()
+            
+            if self.descriptionIN[key].data_type == Dados.AbtractData.OperationData :
+                self.paramentrosIN_carregados[key] = self.descriptionIN[key].data # executa as funções
+            else:
+                self.paramentrosIN_carregados[key] = self.descriptionIN[key]
             
         self.brutedata = params # caso a função precise do dado bruto
             

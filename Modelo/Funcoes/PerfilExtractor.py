@@ -8,7 +8,7 @@ Created on Apr 8, 2015
 from Modelo.beans import Dados                                  
 from numpy.core.numeric import array
 import gdal
-from Modelo.Funcoes import OperationInterface
+from Modelo.Funcoes import AbstractFunction
 progress = gdal.TermProgress_nocb   
 import matplotlib.pyplot as plt   
 import datetime
@@ -16,7 +16,7 @@ from datetime import datetime as dt
 from datetime import date
 
 
-class ComparadorSemeaduraColheita(OperationInterface.Operation):
+class ComparadorSemeaduraColheita(AbstractFunction.Function):
     '''
     Essa função foi criada para extrair as datas de semeadura (primeiro low peak), colheita (segundo low peak) e pico
     

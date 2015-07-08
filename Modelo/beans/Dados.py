@@ -19,7 +19,7 @@ class AbtractData(object):
     
     SimpleData = 1
     ListData = 2
-    DictData = 3
+    TableData = 3
     OperationData = 4
 
     data_name = None
@@ -115,11 +115,11 @@ class SimpleData(AbtractData):
                 dst.write_band(1, image)
     
        
-class SerialData(AbtractData, list):
+class ListData(AbtractData, list):
       
     def __init__(self, data_name=None, data=None):
-        super(SerialData, self).__init__()
-        self.data_type = "SerialData"
+        super(ListData, self).__init__()
+        self.data_type = AbtractData.ListData
         self.data = data
     
     def loadData(self):
@@ -205,4 +205,4 @@ class TableData(dict, AbtractData):
     def __init__(self, data_name=None):
         self.data = dict()
         self.data_name = data_name
-        self.data_type = "TableData"
+        self.data_type = AbtractData.TableData

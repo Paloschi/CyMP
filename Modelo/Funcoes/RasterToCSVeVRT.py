@@ -7,11 +7,11 @@ Created on Jan 21, 2015
 
 from Modelo.beans import Dados
 from gdal import TermProgress_nocb
-from Modelo.Funcoes import OperationInterface
+from Modelo.Funcoes import AbstractFunction
 from Modelo.Funcoes import GetImageInformation
 from lxml import etree
 
-class RasterToCSVeVRT(OperationInterface.Operation):
+class RasterToCSVeVRT(AbstractFunction.Function):
     '''
     Operacao que transforma imagens em arquivos CSV
     '''
@@ -26,12 +26,16 @@ class RasterToCSVeVRT(OperationInterface.Operation):
         
         imagensIN = self.brutedata["images"]
         outFolder = self.paramentrosIN_carregados["out_folder"]
+        nullValue = float(-128)
         
-        listaCSV = Dados.SerialData()
-        listaVRT = Dados.SerialData()
+        listaCSV = Dados.ListData()
+        listaVRT = Dados.ListData()
+        
+        print "numero de imagens" + str(imagensIN)
         
         for img in imagensIN :
             matriz = img.loadData()
+            nullValue = matriz[0][0]
             endereco_completo = img.data
             nome_img = img.data_name
             
@@ -74,12 +78,15 @@ class RasterToCSVeVRT(OperationInterface.Operation):
                     cy = ymax - (y_pixelSize * i_linha)
                     cy = str(cy)
                     for i_coluna in range(0, n_colunas):
-                        #print(cy)
-                        cx = xmin + (x_pixelSize * i_coluna)
                         value = matriz[i_linha][i_coluna]
-                        line = str(cx) + ',' + cy + ',' + str(value) + '\n'
-                        csv.write(line)
                         
+                        if value != nullValue:                 
+                            #print(cy)
+                            cx = xmin + (x_pixelSize * i_coluna)
+                            
+                            line = str(cx) + ',' + cy + ',' + str(value) + '\n'
+                            csv.write(line)
+                            
             csv = Dados.SimpleData(data=file_csv_path)
             
             listaCSV.append(csv)

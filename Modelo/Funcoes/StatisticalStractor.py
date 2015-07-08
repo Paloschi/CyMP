@@ -9,12 +9,12 @@ from Modelo.beans import Dados
 from numpy.core.numeric import array
 import numpy as np
 import gdal
-from Modelo.Funcoes import OperationInterface
+from Modelo.Funcoes import AbstractFunction
 from matplotlib.axis import Axis
 progress = gdal.TermProgress_nocb   
 import scipy 
 
-class SpectreStatisticalStractor(OperationInterface.Operation):
+class SpectreStatisticalStractor(AbstractFunction.Function):
     '''
     Essa função extrai estatisticas do perfil temporal de cada pixel gerando uma imagem separada pra cada pixel
     
@@ -129,7 +129,7 @@ class SpectreStatisticalStractor(OperationInterface.Operation):
         print("Arrumando imagens de saida")
         
         saida = Dados.SerialData()
-        saida.data_metadata = self.brutedata["images"][0].data_metadata
+ ListDatada.data_metadata = self.brutedata["images"][0].data_metadata
         
         if doMedia: 
             imagem_media = Dados.SimpleData( data = imagem_media)
@@ -169,8 +169,7 @@ if __name__ == '__main__':
     
     root_ = "C:\\Users\\Paloschi\\Desktop\\data\\Rasters\\TesteFiltro\\entrada\\"
     images = Dados.SerialData()
-    
-    images.loadListByRoot(root_, "tif")
+ ListDatamages.loadListByRoot(root_, "tif")
     
     parametrosIN = Dados.TableData()
     
@@ -179,7 +178,7 @@ if __name__ == '__main__':
     
     statistics = list()
     statistics.append("media")
-    parametrosIN["statistics"] = Dados.SerialData(data = statistics)
+    parametrosIN["statistics"] = Dados.SerialData(dataListDataics)
 
     ss.data = parametrosIN
     resultados = ss.data
@@ -189,7 +188,7 @@ if __name__ == '__main__':
     #sd = resultados["imagem_sd"]
     
     #imagens_lista = Dados.SerialData()
-    #imagens_lista.append(media)
+ ListDatas_lista.append(media)
     #imagens_lista.append(cv)
     
     #print (media)

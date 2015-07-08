@@ -5,10 +5,10 @@ Created on Jan 21, 2015
 @author: Paloschi
 '''
 
-from beans import Dados
-from Operations import OperationInterface
+from Modelo.beans import Dados
+from Modelo.Funcoes import AbstractFunction
 
-class RasterToCSVeVRT(OperationInterface.Operation):
+class RasterToCSVeVRT(AbstractFunction.Function):
     '''
     Operacao de soma de mapas
     '''

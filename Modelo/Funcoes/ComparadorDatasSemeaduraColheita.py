@@ -12,7 +12,7 @@ from Operations import OperationInterface
 progress = gdal.TermProgress_nocb   
 import matplotlib.pyplot as plt   
 
-class ComparadorSemeaduraColheita(OperationInterface.Operation):
+class ComparadorSemeaduraColheita(OperationInterface.Function):
     '''
     
     '''
@@ -166,7 +166,7 @@ class ComparadorSemeaduraColheita(OperationInterface.Operation):
 line = ComparadorSemeaduraColheita()
 
 root_ = "C:\\Users\\Paloschi\\Desktop\\data\\AjusteModeloDSDC\\3.EVI_Flat_Propriedades_SavitsGolay\\"
-images = Dados.SerialData()
+images = Dados.ListData()
 
 images.loadListByRoot(root_, "tif")
 

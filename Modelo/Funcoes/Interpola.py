@@ -144,6 +144,7 @@ class InterpoladorIvD(Dados.AbtractData):
         fileOut = tabela['fileOut']
         name_file = tabela['name_file']
         
+        
         try:
             self.call_interpolador(xmin, xmax, ymin, ymax, nx, ny, name_file, fileIn, fileOut)
             
@@ -159,10 +160,9 @@ class InterpoladorIvD(Dados.AbtractData):
            
     def call_interpolador(self, xmin, xmax, ymin, ymax, nx, ny, name_file, fileIn, fileOut):
 
-
         import subprocess
         
-        subprocess.call (['gdal_grid', '-a', 'invdist:power=2:smoothing=1.0', '-txe', 
+        subprocess.call (['gdal_grid', '-a', 'invdist:radius1=0.36:radius2=0.36:smoothing=0.1', '-txe', 
                               str(xmin), str(xmax), '-tye', str(ymin), str(ymax), '-outsize', 
                               str(nx), str(ny), '-of', 'GTiff', '-ot', 'Float64', '-l', name_file, fileIn, fileOut]) 
 

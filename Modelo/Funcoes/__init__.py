@@ -37,17 +37,20 @@ if __name__ == '__main__':
     from Modelo.beans import Dados
     import Interpola
        
-    rootImgPathTeste = "C://Users//Paloschi//Desktop//data//Testes//ImagemExemploEcmwf//"
-    rootImgReference = "C://Users//Paloschi//Desktop//data//Rasters//Modis//2010-2011//20101016.250m_16_dias_EVI_MOD13Q1_PR.tif"
+    rootImgPathTeste = "C://Users//Paloschi//Desktop//data//Testes//ImagemExemploEcmwf//cortada//"
+    rootImgReference = "C://Users//Paloschi//Desktop//data//Testes//saida//idw_arcgis.tif"
     rootImgOut = "C://Users//Paloschi//Desktop//data//Testes//saida//"
-    sufixo = "_250m_Sm1"
+    sufixo = "_250m_radius1_036radius2_036_S01"
     
     '''
         ------------------- Criando arquivos CSV e VRT para interpolacao --------------------
     '''
     
-    imgPathTeste = Dados.SerialData()
-    imgPathTeste.loadListByRoot(rootImgPathTeste, "img")
+    imgPathTeste = Dados.ListData()
+    imgPathTeste.loadListByRoot(rootImgPathTeste, "tif")
+    
+    
+    print "numero de imagens" + str(imgPathTeste)
     
     pathOut = Dados.SimpleData(data=rootImgOut)
     
@@ -77,10 +80,14 @@ if __name__ == '__main__':
     
     paramInterpolador = imgReferInfo
     
+    print("chegou")
+    
     for i_img in range(0, len(VRTs)):
         vrt = VRTs[i_img].data
         img = trocarExt(vrt, "tif")
         img = adicionarSufixo(img, sufixo)
+        
+        print (img)
         
         paramInterpolador = CreateInterpolationTable(img, vrt, paramInterpolador)
         
