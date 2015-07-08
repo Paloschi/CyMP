@@ -63,7 +63,7 @@ class GetImgInfo(OperationInterface.Operation):
             if atr == '':
                 info_s.remove(atr)
         
-        data['xmax'] = info_s[0].replace(' ', '').replace(',', '')
+        data['xmin'] = info_s[0].replace(' ', '').replace(',', '')
         data['ymax'] = info_s[1].replace(' ', '').replace(',', '')
         
         # recupera numero inicio do mapa xmin e ymin
@@ -78,7 +78,7 @@ class GetImgInfo(OperationInterface.Operation):
             if atr == '':
                 info_s.remove(atr)
         
-        data['xmin'] = info_s[0].replace(' ', '').replace(',', '')
+        data['xmax'] = info_s[0].replace(' ', '').replace(',', '')
         data['ymin'] = info_s[1].replace(' ', '').replace(',', '')
        
         print("Informacoes da imagem lidas")

@@ -82,7 +82,7 @@ class SimpleData(AbtractData):
     def data(self, data):
         self.__data = data 
         
-    def saveImage(self, rootdir, image=None, ext=None):
+    def saveImage(self, rootdir=None, image=None, ext=None):
         '''
             Salva imagem em uma determinada pasta
         '''
@@ -137,20 +137,21 @@ class SerialData(AbtractData, list):
         return maps
     
 
-    def loadListByRoot(self, rootdir, filter=None):
+    def loadListByRoot(self, rootDir=None, filter=None):
         '''
             Abre uma lista de mapas localizados em uma determinada pasta
         ''' 
-        print(rootdir)
-        for root, dirs, files in os.walk(rootdir):
+        if rootDir == None : rootDir = self.data
+        
+        for root, dirs, files in os.walk(rootDir):
             for f in files:
                 if(filter==None):
-                    self.append(SimpleData(data=rootdir+f))
-                    #print(rootdir+f)
+                    self.append(SimpleData(data=rootDir+f))
+                    #print(rootDir+f)
                 else:
                     if(str(f).split('.')[-1]==filter):
-                        self.append(SimpleData(path=rootdir+f, data=rootdir+f))
-                        #print(rootdir+f)
+                        self.append(SimpleData(path=rootDir+f, data=rootDir+f))
+                        #print(rootDir+f)
         
         return self
     

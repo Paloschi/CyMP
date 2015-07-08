@@ -19,8 +19,8 @@ class Operation(Dados.AbtractData):
     
     __metaclass__ = ABCMeta # Essa classe é abstrata, não pode ser instanciada
     
-    descriptionIN = dict() # Descrição dos parametros de entrada das funções   
-    descriptionOUT = dict() # descrição dos parametros de saída das funções
+    descriptionIN = None # Descrição dos parametros de entrada das funções   
+    descriptionOUT = None # descrição dos parametros de saída das funções
     paramentrosIN_carregados = dict() # parametros de entrada carrecados
     progresso = float(1)
     
@@ -45,6 +45,9 @@ class Operation(Dados.AbtractData):
         '''
         Constructor padrão cuida da inicialização do objeto
         '''
+        self.descriptionIN = dict()
+        self.descriptionOUT = dict()
+        
         self.__setParamIN__() # inicializa descrição de entrada
         self.__setParamOUT__() # inicializa descrição de saída
         
@@ -56,6 +59,10 @@ class Operation(Dados.AbtractData):
         '''
         O for a serguir carrega os elementos necessários para funcionamento da função
         '''
+        print "---------------"
+        print self.descriptionIN
+        print params
+        print "---------------"
          
         for key in self.descriptionIN.keys():
             if (params[key].data_type != Dados.AbtractData.ListData) : self.paramentrosIN_carregados[key] = params[key].data
@@ -77,5 +84,7 @@ class Operation(Dados.AbtractData):
     @abstractmethod # esse parametro deve ser implementado na classe filha   
     def __execOperation__(self):
         pass
+    
+    
         
         

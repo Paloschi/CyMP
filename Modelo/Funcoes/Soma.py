@@ -8,7 +8,7 @@ Created on Jan 21, 2015
 from beans import Dados
 from Operations import OperationInterface
 
-class OpSoma(OperationInterface.Operation):
+class RasterToCSVeVRT(OperationInterface.Operation):
     '''
     Operacao de soma de mapas
     '''
@@ -30,6 +30,6 @@ class OpSoma(OperationInterface.Operation):
 #params["numero1"] = Dados.SimpleData(data=1)
 #params["numero2"] = Dados.SimpleData(data=2)
 
-#fsoma = OpSoma(params)
+#fsoma = RasterToCSVeVRT(params)
 
 #print (fsoma.data) 

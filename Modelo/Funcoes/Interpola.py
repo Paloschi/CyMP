@@ -6,6 +6,7 @@ Created on Mar 1, 2015
 from Modelo.beans import Dados
 from lxml import etree
 
+
 class InterpolaTabela(Dados.AbtractData):
     
     '''
@@ -120,7 +121,7 @@ class InterpoladorIvD(Dados.AbtractData):
     classdocs
     '''
 
-    def __init__(self, nome):
+    def __init__(self, nome=None):
         self.__data = None
         self.data_name = [nome, 'interpolacao'] 
         self.data_type = "operation"
