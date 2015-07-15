@@ -82,8 +82,8 @@ class Controller(object):
         
     def carregarParamIN(self):
 
-        images = Dados.ListData()
-        parametrosIN = Dados.TableData()
+        images = Dados.SERIAL_DATA()
+        parametrosIN = Dados.TABLE_DATA()
         
         root_in = self.ui.leInFolder.text()
         root_in = self.ajeitarPath(root_in)
@@ -93,13 +93,13 @@ class Controller(object):
         print("numero de imagens: " + str(len(images)))
         
         parametrosIN["images"] = images
-        parametrosIN["avanco_semeadura"] = Dados.SimpleData(data= self.ui.dspASemeadura.value())
-        parametrosIN["avanco_colheita"] = Dados.SimpleData(data= self.ui.dsbAColheita.value())
-        parametrosIN["intervalo_pico"] = Dados.SimpleData(data= self.ui.lePPico.text())
-        parametrosIN["intervalo_semeadura"] = Dados.SimpleData(data= self.ui.lePSemeadura.text())
-        parametrosIN["intervalo_colheita"] = Dados.SimpleData(data= self.ui.lePColheita.text())
-        parametrosIN["null_value"] = Dados.SimpleData(data= self.ui.leNullValue.text())
-        parametrosIN["progress_bar"] = Dados.SimpleData(self.ui.progressBar)
+        parametrosIN["avanco_semeadura"] = Dados.FILE_DATA(data= self.ui.dspASemeadura.value())
+        parametrosIN["avanco_colheita"] = Dados.FILE_DATA(data= self.ui.dsbAColheita.value())
+        parametrosIN["intervalo_pico"] = Dados.FILE_DATA(data= self.ui.lePPico.text())
+        parametrosIN["intervalo_semeadura"] = Dados.FILE_DATA(data= self.ui.lePSemeadura.text())
+        parametrosIN["intervalo_colheita"] = Dados.FILE_DATA(data= self.ui.lePColheita.text())
+        parametrosIN["null_value"] = Dados.FILE_DATA(data= self.ui.leNullValue.text())
+        parametrosIN["progress_bar"] = Dados.FILE_DATA(self.ui.progressBar)
         
         return parametrosIN
     

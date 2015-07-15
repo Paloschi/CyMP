@@ -10,67 +10,43 @@ import os
 import gdal
 progress = gdal.TermProgress_nocb
 
-#from numpy.core.numeric import dtype
-#from bz2 import compress
 
 class AbtractData(object):
     
-    __metaclass__ = ABCMeta # Essa classe � abstrata, n�o pode ser instanciada
+    __metaclass__ = ABCMeta
     
-    SimpleData = 1
-    ListData = 2
-    TableData = 3
-    OperationData = 4
+    FILE_DATA = 1
+    SERIAL_DATA = 2
+    TABLE_DATA = 3
+    FUNCTION_DATA = 4
 
-    data_name = None
-    data_type = None 
-    data_path = None
-    data_ext = None
-    data_metadata = None
-    __data = None   
+    __data = None
+    name = None
+    _data_type = None 
     
     @property    
-    def data(self):
-        return self.__data
-        
-    @data.setter
-    def data(self, data):
-        self.__data = data
-
+    def data_type(self):
+        return self._data_type
 
     
-class SimpleData(AbtractData):
-    'Classe com um mapa concreto'
+class FileData(AbtractData):
     
-    def __init__(self, path=None, data=None):
+    __data_ext = None
+    __file_path = None
+    
+    def __init__(self, fullPath=None, data=None):
         
-        if(path!=None):
-            path_ext = str(path).split('.') # separa o path da extencao
-            
-            ext = path_ext[-1] # pega soh a extencao
-            
-            path_without_ext = str(path).replace("." + ext, "") # tira a extencao do path
-            
-            if(path_without_ext.find("/") != -1):
-                data_name = path_without_ext.split("/")[-1]
-                data_path = path_without_ext.replace(data_name, "")
-            elif(path_without_ext.find("\\") != -1):
-                data_name = path_without_ext.split("\\")[-1]
-                data_path = path_without_ext.replace(data_name, "")
-            else:
-                data_name = path_without_ext
-                data_path = ""                
-            
-            self.data_name = data_name
-            self.data_ext = ext
-            self.data_path = data_path
-            
-        self.data = data
-        self.data_type = AbtractData.SimpleData
+        self.__data_type = AbtractData.FILE_DATA
+        
+        print self.__data_type
+        
+        if fullPath != None : 
+            pass
         
     def loadData(self):
         
         with rasterio.open(self.data) as map:
+        
             self.data_metadata = map.meta
             return map.read_band(1)  # pixel values
         
@@ -118,8 +94,7 @@ class SimpleData(AbtractData):
 class ListData(AbtractData, list):
       
     def __init__(self, data_name=None, data=None):
-        super(ListData, self).__init__()
-        self.data_type = AbtractData.ListData
+        self.data_type = AbtractData.SERIAL_DATA
         self.data = data
     
     def loadData(self):
@@ -146,11 +121,11 @@ class ListData(AbtractData, list):
         for root, dirs, files in os.walk(rootDir):
             for f in files:
                 if(filter==None):
-                    self.append(SimpleData(data=rootDir+f))
+                    self.append(FileData(data=rootDir+f))
                     #print(rootDir+f)
                 else:
                     if(str(f).split('.')[-1]==filter):
-                        self.append(SimpleData(path=rootDir+f, data=rootDir+f))
+                        self.append(FileData(fullPath=rootDir+f, data=rootDir+f))
                         #print(rootDir+f)
         
         return self
@@ -205,4 +180,4 @@ class TableData(dict, AbtractData):
     def __init__(self, data_name=None):
         self.data = dict()
         self.data_name = data_name
-        self.data_type = AbtractData.TableData
+        self.data_type = AbtractData.TABLE_DATA

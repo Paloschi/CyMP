@@ -126,16 +126,15 @@ class ComparadorSemeaduraColheita(AbstractFunction.Function):
         #plt.show()
         
         saida = Dados.TableData()
-        
-        imagem_semeadura = Dados.SimpleData(data=imagem_semeadura)
+     TABLE_DATA    imagem_semeadura = Dados.SimpleData(data=imFileDatadura)
         imagem_semeadura.data_metadata = images_super[0].data_metadata
         imagem_semeadura.data_name = "semeadura"
         
-        imagem_colheita = Dados.SimpleData(data=imagem_colheita)
+        imagem_colheita = Dados.SimpleData(data=imFileDataita)
         imagem_colheita.data_metadata = images_super[0].data_metadata
         imagem_colheita.data_name = "colheita"
         
-        imagem_pico = Dados.SimpleData(data=imagem_pico)
+        imagem_pico = Dados.SimpleData(data=imFileData
         imagem_pico.data_metadata = images_super[0].data_metadata
         imagem_pico.data_name = "pico"
         

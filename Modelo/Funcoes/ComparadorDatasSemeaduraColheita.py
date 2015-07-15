@@ -5,14 +5,14 @@ Created on Apr 8, 2015
 @author: Paloschi
 '''
 
-from beans import Dados                                  
+from Modelo.beans import Dados                                  
 from numpy.core.numeric import array
 import gdal
-from Operations import OperationInterface
+from Modelo.Funcoes import AbstractFunction
 progress = gdal.TermProgress_nocb   
 import matplotlib.pyplot as plt   
 
-class ComparadorSemeaduraColheita(OperationInterface.Function):
+class ComparadorSemeaduraColheita(AbstractFunction.Function):
     '''
     
     '''
@@ -100,15 +100,15 @@ class ComparadorSemeaduraColheita(OperationInterface.Function):
         
         saida = Dados.TableData()
         
-        imagem_semeadura = Dados.SimpleData(data=imagem_semeadura)
+        imagem_semeadura = Dados.SimFileDatata=imagem_semeadura)
         imagem_semeadura.data_metadata = images_super[0].data_metadata
         imagem_semeadura.data_name = "semeadura"
         
-        imagem_colheita = Dados.SimpleData(data=imagem_colheita)
+        imagem_colheita = Dados.SimFileDatata=imagem_colheita)
         imagem_colheita.data_metadata = images_super[0].data_metadata
         imagem_colheita.data_name = "colheita"
         
-        imagem_pico = Dados.SimpleData(data=imagem_pico)
+        imagem_pico = Dados.SimFileDatata=imagem_pico)
         imagem_pico.data_metadata = images_super[0].data_metadata
         imagem_pico.data_name = "pico"
         
@@ -173,11 +173,11 @@ images.loadListByRoot(root_, "tif")
 parametrosIN = Dados.TableData()
 
 parametrosIN["images"] = images
-parametrosIN["avanco_semeadura"] = Dados.SimpleData(data=0)
-parametrosIN["avanco_colheita"] = Dados.SimpleData(data=0)
-parametrosIN["intervalo_pico"] = Dados.SimpleData(data="8-22")
-parametrosIN["intervalo_semeadura"] = Dados.SimpleData(data="0-14")
-parametrosIN["intervalo_colheita"] = Dados.SimpleData(data="14-27")
+parametrosIN["avanco_semeadura"] = Dados.SimFileDatata=0)
+parametrosIN["avanco_colheita"] = Dados.SimFileDatata=0)
+parametrosIN["intervalo_pico"] = Dados.SimFileDatata="8-22")
+parametrosIN["intervalo_semeadura"] = Dados.SimFileDatata="0-14")
+parametrosIN["intervalo_colheita"] = Dados.SimFileDatata="14-27")
 
 line.data = parametrosIN
 imagens = line.data

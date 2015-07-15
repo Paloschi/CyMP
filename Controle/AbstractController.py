@@ -147,7 +147,7 @@ class Controller(object):
         """
             Essa função da uma arrumada no path por causa das barras invertidas que as vezes bugam
         """
-        root = _fromUtf8(str(pathIn) + "\\")
+        root = _fromUtf8(str(pathIn) + "/")
         root = str(root).replace("\\", "/")    
         
         return root   

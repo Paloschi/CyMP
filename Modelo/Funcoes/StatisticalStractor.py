@@ -48,7 +48,6 @@ class SpectreStatisticalStractor(AbstractFunction.Function):
         
         images = images_super.loadData()
         
-        
         print("Numero de imagens lidas: " + str(len(images)))
 
         n_linhas = len(images[0])

@@ -51,9 +51,8 @@ class Function(Dados.AbtractData):
         self.__setParamIN__() # inicializa descrição de entrada
         self.__setParamOUT__() # inicializa descrição de saída
         
-        self.data_type = Dados.AbtractData.OperationData #Seta o tipo de dado
-        
-        if(params!=None) : self.__LoadParams__(params) # caso os parametros sejam indicados no inicio, já são carregados
+        self.data_type = Dados.AbtractData.FUNCTION_DATA #Seta o tipo de dado
+        if (params!=None) : self.__LoadParams__(params) # caso os parametros sejam indicados no inicio, já são carregados
 
     def __LoadParams__(self, params):
         '''
@@ -66,18 +65,19 @@ class Function(Dados.AbtractData):
          
         for key in self.descriptionIN.keys():
             
-            if self.descriptionIN[key].data_type == Dados.AbtractData.OperationData :
-                self.paramentrosIN_carregados[key] = self.descriptionIN[key].data # executa as funções
-            else:
+            
+            #if self.descriptionIN[key].data_type == Dados.AbtractData.OperationData :
+                #self.paramentrosIN_carregados[key] = self.descriptionIN[key].data # executa as funções
+            #else:
                 self.paramentrosIN_carregados[key] = self.descriptionIN[key]
             
         self.brutedata = params # caso a função precise do dado bruto
             
     @property    
     def data(self):
-        if (self.data_name!=None) : print ("Iniciando Operação: " + self.data_name)
+        #if (self.data_name!=None) : print ("Iniciando Operação: " + self.data_name)
         resultado = self.__execOperation__()
-        if (self.data_name!=None) : print ("Operação " + self.data_name + " concluída!")
+        #if (self.data_name!=None) : print ("Operação " + self.data_name + " concluída!")
         return resultado
         
     @data.setter

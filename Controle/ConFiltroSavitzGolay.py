@@ -89,8 +89,8 @@ class Controller(object):
         
     def carregarParamIN(self):
 
-        images = Dados.ListData()
-        parametrosIN = Dados.TableData()
+        images = Dados.SERIAL_DATA()
+        parametrosIN = Dados.TABLE_DATA()
         root_in = self.ui.leInFolder.text()
         root_in = _fromUtf8(str(root_in) + "\\")
         root_in = str(root_in).replace("\\", "/")
@@ -101,9 +101,9 @@ class Controller(object):
         print("numero de imagens: " + str(len(images)))
         
         parametrosIN["images"] = images
-        parametrosIN["window_size"] = Dados.SimpleData(data= self.ui.leWindowSize.text())
-        parametrosIN["order"] = Dados.SimpleData(data= self.ui.leOrdem.text())
-        if self.ui.checkBox.isChecked() : parametrosIN["null_value"] = Dados.SimpleData(data= self.ui.leNullValue.text())
-        else : parametrosIN["null_value"] = Dados.SimpleData(data= None)
+        parametrosIN["window_size"] = Dados.FILE_DATA(data= self.ui.leWindowSize.text())
+        parametrosIN["order"] = Dados.FILE_DATA(data= self.ui.leOrdem.text())
+        if self.ui.checkBox.isChecked() : parametrosIN["null_value"] = Dados.FILE_DATA(data= self.ui.leNullValue.text())
+        else : parametrosIN["null_value"] = Dados.FILE_DATA(data= None)
         
         return parametrosIN

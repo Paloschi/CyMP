@@ -36,7 +36,7 @@ class Controller(AbstractController.Controller):
 
     def le_shapePath_ChangeAction(self):
         if (self.ShapeSelected == None):
-            self.ShapeSelected = Dados.SimpleData(data = str(self.ui.leShapePath.text()))
+            self.ShapeSelected = Dados.FILE_DATA(data = str(self.ui.leShapePath.text()))
         else:
             self.ShapeSelected.data = self.ui.leShapePath.text()
         
@@ -49,7 +49,7 @@ class Controller(AbstractController.Controller):
         
     def le_imgRefPath_ChangeAction(self):
         if (self.ImgRefSelected == None):
-            self.ImgRefSelected = Dados.SimpleData(data = self.ui.leImgRefPath.text())
+            self.ImgRefSelected = Dados.FILE_DATA(data = self.ui.leImgRefPath.text())
         else:
             self.ImgRefSelected.data = self.ui.leImgRefPath.text()
         
@@ -80,7 +80,7 @@ class Controller(AbstractController.Controller):
         
         separador = SplitTable.SplitTable()   
         
-        dados_separador = Dados.TableData()
+        dados_separador = Dados.TABLE_DATA()
         
         atributos = list()
         
@@ -92,7 +92,7 @@ class Controller(AbstractController.Controller):
         
         separador.data = dados_separador
           
-        dados_interpolador = Dados.TableData('tabela pro interpolador')
+        dados_interpolador = Dados.TABLE_DATA('tabela pro interpolador')
         
         getImageInformatio = GetImageInformation.GetImgInfo("Pegar informacoes da imagem modis")
         getImageInformatio.data = self.ImgRefSelected

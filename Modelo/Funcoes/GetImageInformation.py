@@ -84,18 +84,3 @@ class GetImgInfo(AbstractFunction.Function):
         print("Informacoes da imagem lidas")
        
         return data 
-    
-    
-    
-    
-#functionParam = Dados.TableData()
-    
-#functionParam["imagem"] = Dados.SimpleData(data="C:/imagemteste.tif", path="C:/imagemteste.tif")
-
-#getImgInfo = GetImgInfo(functionParam)
-
-#informacoes = getImgInfo.data
-
-#for key in getImgInfo.descriptionOUT:
-    #print (informacoes[key])
-

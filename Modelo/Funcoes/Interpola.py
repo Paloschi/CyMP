@@ -40,7 +40,7 @@ class InterpolaTabela(Dados.AbtractData):
             if (key!="data_path"):           
                 informacao = self.CreateInterpolationTable(path, key, atributo_interpolacao, format_image_data)
                 
-                interpolation_table = Dados.TableData("iformacao de interpolacao")
+                interpolation_table = Dados.TABLE_DATA("iformacao de interpolacao")
                 interpolation_table.data = informacao
                 
                 interpolador = InterpoladorIvD("interpolando ECMWF")
@@ -162,7 +162,7 @@ class InterpoladorIvD(Dados.AbtractData):
 
         import subprocess
         
-        subprocess.call (['gdal_grid', '-a', 'invdist:radius1=0.36:radius2=0.36:smoothing=0.1', '-txe', 
+        subprocess.call (['gdal_grid', '-a', 'invdist:max_points=12', '-txe', 
                               str(xmin), str(xmax), '-tye', str(ymin), str(ymax), '-outsize', 
                               str(nx), str(ny), '-of', 'GTiff', '-ot', 'Float64', '-l', name_file, fileIn, fileOut]) 
 

@@ -28,8 +28,8 @@ class RasterToCSVeVRT(AbstractFunction.Function):
         outFolder = self.paramentrosIN_carregados["out_folder"]
         nullValue = float(-128)
         
-        listaCSV = Dados.ListData()
-        listaVRT = Dados.ListData()
+        listaCSV = Dados.SERIAL_DATA()
+        listaVRT = Dados.SERIAL_DATA()
         
         print "numero de imagens" + str(imagensIN)
         
@@ -39,7 +39,7 @@ class RasterToCSVeVRT(AbstractFunction.Function):
             endereco_completo = img.data
             nome_img = img.data_name
             
-            paramIN = Dados.TableData()
+            paramIN = Dados.TABLE_DATA()
             paramIN["imagem"] = img
             
             getImgInfo = GetImageInformation.GetImgInfo()
@@ -62,7 +62,7 @@ class RasterToCSVeVRT(AbstractFunction.Function):
             print("-Criando arquivos CSV para alimentar intorpolador")
         
             progress = TermProgress_nocb   
-            progress( 0.0)
+            progress(0.0)
         
             n_linhas = len(matriz)
             n_colunas = len(matriz[0])
@@ -70,24 +70,27 @@ class RasterToCSVeVRT(AbstractFunction.Function):
             file_csv_path = outFolder + nome_img + '.csv'
             
             print(file_csv_path)
+            
+            init_y_position = ymax - (y_pixelSize/2)
+            init_x_position = xmin + (x_pixelSize/2)
         
             with open(file_csv_path,'w') as csv:
                 csv.write("Easting,Northing,Value\n")
                 for i_linha in range(0, n_linhas):
                     progress(i_linha/float(n_linhas))
-                    cy = ymax - (y_pixelSize * i_linha)
+                    cy = init_y_position - (y_pixelSize * i_linha)
                     cy = str(cy)
                     for i_coluna in range(0, n_colunas):
                         value = matriz[i_linha][i_coluna]
                         
                         if value != nullValue:                 
                             #print(cy)
-                            cx = xmin + (x_pixelSize * i_coluna)
+                            cx = init_x_position + (x_pixelSize * i_coluna)
                             
                             line = str(cx) + ',' + cy + ',' + str(value) + '\n'
                             csv.write(line)
                             
-            csv = Dados.SimpleData(data=file_csv_path)
+            csv = Dados.FILE_DATA(data=file_csv_path)
             
             listaCSV.append(csv)
             
@@ -105,12 +108,12 @@ class RasterToCSVeVRT(AbstractFunction.Function):
             tree = etree.ElementTree(root)
             tree.write(file_vtr_path, pretty_print=True)
             
-            vrt = Dados.SimpleData(data=file_vtr_path)
+            vrt = Dados.FILE_DATA(data=file_vtr_path)
             listaVRT.append(vrt)
                      
         print('-Arquivos CSV criados')
 
-        saida = Dados.TableData()
+        saida = Dados.TABLE_DATA()
         saida["CSVs"] = listaCSV
         saida["VRTs"] = listaVRT
         

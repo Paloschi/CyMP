@@ -19,9 +19,9 @@ class IDW(AbstractFunction.Function):
         u'''
             Parametros de arquivos de dados (csv, vrt e imagem de saida)
         '''
-        self.descriptionIN["csv"] = {"Required":True, "Type":Dados.AbtractData.SimpleData, "Description":"nome do arquivo CSV"}
-        self.descriptionIN["vrt"] = {"Required":True, "Type":Dados.AbtractData.SimpleData, "Description":"caminho completo do arquivo VRT"}
-        self.descriptionIN["img_out"] = {"Required":True, "Type":Dados.AbtractData.SimpleData, "Description":"caminho completo da imagem de saida"}
+        self.descriptionIN["csv"] = {"Required":True, "Type":Dados.AbtractData.SimpFileDataescription":"nome do arquivo CSV"}
+        self.descriptionIN["vrt"] = {"Required":True, "Type":Dados.AbtractData.SimpFileDataescription":"caminho completo do arquivo VRT"}
+        self.descriptionIN["img_out"] = {"Required":True, "Type":Dados.AbtractData.SimpFileDataescription":"caminho completo da imagem de saida"}
         
         '''
             Parametros de configuração do algorítimo
@@ -64,7 +64,6 @@ class IDW(AbstractFunction.Function):
         '''
             Monta string de de parametros para configurar o algoritimo IDW
         '''
-        
         str_algoritimo_conf = ""
         
         if self.paramentrosIN_carregados.has_key("conf_algoritimo") :
@@ -72,6 +71,9 @@ class IDW(AbstractFunction.Function):
             for key in conf_algoritimo.keys() :
                 str_algoritimo_conf.join(key + "=" + str(conf_algoritimo[key]))
         
+        '''
+            Chama interpolador GDAl IDW
+        '''
         try:
             subprocess.call (['gdal_grid', 
                               '-a', str_algoritimo_conf, 

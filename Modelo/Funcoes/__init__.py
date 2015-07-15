@@ -40,21 +40,21 @@ if __name__ == '__main__':
     rootImgPathTeste = "C://Users//Paloschi//Desktop//data//Testes//ImagemExemploEcmwf//cortada//"
     rootImgReference = "C://Users//Paloschi//Desktop//data//Testes//saida//idw_arcgis.tif"
     rootImgOut = "C://Users//Paloschi//Desktop//data//Testes//saida//"
-    sufixo = "_250m_radius1_036radius2_036_S01"
+    sufixo = "_250m_pointsMax12"
     
     '''
         ------------------- Criando arquivos CSV e VRT para interpolacao --------------------
     '''
     
-    imgPathTeste = Dados.ListData()
+    imgPathTeste = Dados.AbtractData.SERIAL_DATA()
     imgPathTeste.loadListByRoot(rootImgPathTeste, "tif")
     
     
     print "numero de imagens" + str(imgPathTeste)
     
-    pathOut = Dados.SimpleData(data=rootImgOut)
+    pathOut = Dados.AbtractData.FILE_DATA(data=rootImgOut)
     
-    paramIN = Dados.TableData()
+    paramIN = Dados.AbtractData.TABLE_DATA()
     paramIN["images"] = imgPathTeste
     paramIN["out_folder"] = pathOut
     
@@ -69,10 +69,10 @@ if __name__ == '__main__':
         ------------------- Pegando informacoes da imagem de referencia --------------------
     '''
     
-    imgRefer = Dados.SimpleData(data=rootImgReference)
+    imgRefer = Dados.AbtractData.FILE_DATA(data=rootImgReference)
     getImgInfo = GetImageInformation.GetImgInfo()
     
-    paramIN = Dados.TableData()
+    paramIN = Dados.AbtractData.TABLE_DATA()
     paramIN["imagem"] = imgRefer
     
     getImgInfo.data = paramIN
@@ -92,7 +92,7 @@ if __name__ == '__main__':
         paramInterpolador = CreateInterpolationTable(img, vrt, paramInterpolador)
         
         interpolador = Interpola.InterpoladorIvD()
-        data = Dados.SimpleData(data= paramInterpolador)
+        data = Dados.AbtractData.FILE_DATA(data= paramInterpolador)
         
         interpolador.data = data
         
