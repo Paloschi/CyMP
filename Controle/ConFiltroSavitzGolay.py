@@ -4,7 +4,7 @@ Created on Jun 10, 2015
 @author: Paloschi
 '''
 from PyQt4.QtGui import QFileDialog
-from Modelo.Funcoes import Filtro
+from Modelo.Funcoes import FiltroSavitzGolay
 from Modelo.beans import Dados
 from ctypes.wintypes import DOUBLE
 from numpy import double
@@ -38,7 +38,7 @@ class Controller(object):
         
     def action_ok(self):
         
-        self.filtro = Filtro.Filtro()
+        self.filtro = FiltroSavitzGolay.FiltroSavitzGolay()
         
         #self.executa(self.filtro)
 

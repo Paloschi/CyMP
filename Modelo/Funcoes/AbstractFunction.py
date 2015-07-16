@@ -5,7 +5,7 @@ Created on May 11, 2015
 @author: Paloschi
 '''
 
-from Modelo.beans.AbstractData import ABData
+from Modelo.beans.AbstractData import ABData, FUNCTION_DATA
 from abc import ABCMeta, abstractmethod
 from numpy.distutils.environment import __metaclass__
 
@@ -31,8 +31,7 @@ class Function(ABData):
             Esse método e o próximo (__setParamOut__) devem ser implementados conforme a operação
             estes meta-dados são importantes para o funcionamento mais automático possivel do software
         '''
-        #self.descriptionIN["parametro1"] = "Descrição do primeiro parametro de entrada"
-        #self.descriptionIN["parametro2"] = "Descrição do segundo parametro de entrada"
+        #self.descriptionIN["nome_atributo"] = {"Required":True, "Type":FILE_DATA, "Description":"um arquivo qualquer requerido"}
         pass
     
     @abstractmethod  # esse parametro deve ser implementado na classe filha 
@@ -46,18 +45,21 @@ class Function(ABData):
         '''
         Constructor padrão cuida da inicialização do objeto
         '''
+        super(self.__class__, self).__init__(FUNCTION_DATA) # seta o tipo do objeto
+        
         self.descriptionIN = dict()
         self.descriptionOUT = dict()
         
         self.__setParamIN__() # inicializa descrição de entrada
         self.__setParamOUT__() # inicializa descrição de saída
         
-        self.data_type = Dados.AbtractData.FUNCTION_DATA #Seta o tipo de dado
         if (params!=None) : self.__LoadParams__(params) # caso os parametros sejam indicados no inicio, já são carregados
 
     def __LoadParams__(self, params):
         '''
         O for a serguir carrega os elementos necessários para funcionamento da função
+        
+        Por enquanto não é recusivo com tabelas
         '''
         print "---------------"
         print self.descriptionIN
@@ -66,13 +68,18 @@ class Function(ABData):
          
         for key in self.descriptionIN.keys():
             
+            if key not in params[key] or params[key] is None:
+                if self.descriptionIN[key]["Required"] :
+                    raise Exception("Parametro " + key + " é requerido na função " + self.__class__.__name__)   
+                else :
+                    self.paramentrosIN_carregados[key] = None
+            elif self.descriptionIN[key]["Type"] == FUNCTION_DATA:            
+                self.paramentrosIN_carregados[key] = params[key].data    
+            else:
+                self.paramentrosIN_carregados[key] = params[key]        
             
-            #if self.descriptionIN[key].data_type == Dados.AbtractData.OperationData :
-                #self.paramentrosIN_carregados[key] = self.descriptionIN[key].data # executa as funções
-            #else:
-                self.paramentrosIN_carregados[key] = self.descriptionIN[key]
-            
-        self.brutedata = params # caso a função precise do dado bruto
+            if self.paramentrosIN_carregados[key]["Type"] != self.descriptionIN[key]["Type"] :
+                raise Exception("Parametro incompativel: " + "")   
             
     @property    
     def data(self):

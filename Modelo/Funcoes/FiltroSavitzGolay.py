@@ -4,13 +4,13 @@ Created on May 5, 2015
 
 @author: Paloschi
 '''
-from Modelo.beans import Dados
+
 import gdal
 from Modelo.Funcoes import AbstractFunction
 from numpy.core.numeric import array
 progress = gdal.TermProgress_nocb    
 import numpy as np
-
+from Modelo.beans.AbstractData import SERIAL_FILE_DATA, TABLE_DATA
 
 from multiprocessing import freeze_support
 
@@ -21,10 +21,18 @@ class Filtro(AbstractFunction.Function):
     '''
     
     def __setParamIN__(self):
-        self.descriptionIN["images"] = "Série de imagens para aplicar o filtro"
-        self.descriptionIN["window_size"] = "Série de imagens para aplicar o filtro"
-        self.descriptionIN["order"] = "parametros de configuração filtro" # não implementado
-        self.descriptionIN["null_value"] = "parametros de configuração filtro" # não implementado
+        
+        #self.descriptionIN["nome_atributo"] = {"Required":True, "Type":FILE_DATA, "Description":"um arquivo qualquer requerido"}
+        
+        self.descriptionIN["images"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens para aplicar o filtro"}
+        
+        conf_algoritimo = dict()
+        conf_algoritimo["window_size"] = {"Required":True, "Type":None, "Description":"Série de imagens para aplicar o filtro"}
+        conf_algoritimo["order"] = {"Required":True, "Type":None, "Description":"parametros de configuração filtro"} # não implementado
+        conf_algoritimo["null_value"] = {"Required":True, "Type":None, "Description":"parametros de configuração filtro"} # não implementado
+        
+        self.descriptionIN["conf_algoritimo "] = {"Required":False, "Type":TABLE_DATA, "Table_Description":conf_algoritimo,"Description":"tabela de parametros para configuração do filtro"}
+   
      
     def __setParamOUT__(self):
         self.descriptionOUT["imagensFiltradas"] = "Série de imagens filtradas" 

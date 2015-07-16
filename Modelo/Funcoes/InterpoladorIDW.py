@@ -5,7 +5,7 @@ Created on Jul 8, 2015
 @author: Paloschi
 '''
 from Modelo.Funcoes import AbstractFunction
-from Modelo.beans import Dados
+from Modelo.beans.AbstractData import FILE_DATA, TABLE_DATA
 import subprocess
 
 class IDW(AbstractFunction.Function):
@@ -19,9 +19,9 @@ class IDW(AbstractFunction.Function):
         u'''
             Parametros de arquivos de dados (csv, vrt e imagem de saida)
         '''
-        self.descriptionIN["csv"] = {"Required":True, "Type":Dados.AbtractData.SimpFileDataescription":"nome do arquivo CSV"}
-        self.descriptionIN["vrt"] = {"Required":True, "Type":Dados.AbtractData.SimpFileDataescription":"caminho completo do arquivo VRT"}
-        self.descriptionIN["img_out"] = {"Required":True, "Type":Dados.AbtractData.SimpFileDataescription":"caminho completo da imagem de saida"}
+        self.descriptionIN["csv"] = {"Required":True, "Type":FILE_DATA, "Description":"nome do arquivo CSV"}
+        self.descriptionIN["vrt"] = {"Required":True, "Type":FILE_DATA, "Description":"caminho completo do arquivo VRT"}
+        self.descriptionIN["img_out"] = {"Required":True, "Type":FILE_DATA, "Description":"caminho completo da imagem de saida"}
         
         '''
             Parametros de configuração do algorítimo
@@ -36,7 +36,7 @@ class IDW(AbstractFunction.Function):
         conf_algoritimo["min_points"] = {"Required":False, "Type":None, "Description":"Minimum number of data points to use. If less amount of points found the grid node considered empty and will be filled with NODATA marker. This is only used if search ellipse is set (both radii are non-zero). Default is 0"}
         conf_algoritimo["nodata"] = {"Required":False, "Type":None, "Description":"NODATA marker to fill empty points (default 0.0)"}
         
-        self.descriptionIN["conf_algoritimo "] = {"Required":False, "Type":Dados.AbtractData.TableData, "Table_Description":conf_algoritimo,"Description":"tabela de parametros para configuração do algoritimo"}
+        self.descriptionIN["conf_algoritimo "] = {"Required":False, "Type":TABLE_DATA, "Table_Description":conf_algoritimo,"Description":"tabela de parametros para configuração do algoritimo"}
         
         u'''
             Parametros de configuração da imagem de saida
@@ -49,7 +49,7 @@ class IDW(AbstractFunction.Function):
         conf_img_out["ny"] = {"Required":True, "Type":None, "Description":"Numero de linhas da imagem"}
         conf_img_out["nx"] = {"Required":True, "Type":None, "Description":"Numero de colunas da imagem"}
         
-        self.descriptionIN["img_out_config"] =  {"Required":True, "Type":Dados.AbtractData.TableData, "Table_Description":conf_img_out, "Description":"configuração da imgagem de saida"}
+        self.descriptionIN["img_out_config"] =  {"Required":True, "Type":TABLE_DATA, "Table_Description":conf_img_out, "Description":"configuração da imgagem de saida"}
         
     def __setParamOUT__(self):
         self.descriptionOUT["imagem_interpolada"] = "imagem de saida interpolada"  

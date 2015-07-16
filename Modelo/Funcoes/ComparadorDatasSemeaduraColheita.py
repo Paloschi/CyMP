@@ -4,8 +4,7 @@ Created on Apr 8, 2015
 
 @author: Paloschi
 '''
-
-from Modelo.beans import Dados                                  
+from Modelo.beans.AbstractData import SERIAL_FILE_DATA, FILE_DATA
 from numpy.core.numeric import array
 import gdal
 from Modelo.Funcoes import AbstractFunction
@@ -14,11 +13,13 @@ import matplotlib.pyplot as plt
 
 class ComparadorSemeaduraColheita(AbstractFunction.Function):
     '''
-    
+        ESSA FUNCAO NAO TA PRONTA
     '''
 
     def __setParamIN__(self): # Arrumar descrições
-        self.descriptionIN["images_colheita_estimada"] = "Série de imagens para procurar as datas"
+        #self.descriptionIN["nome_atributo"] = {"Required":True, "Type":FILE_DATA, "Description":"um arquivo qualquer requerido"}
+        
+        self.descriptionIN["images_colheita_estimada"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens para procurar as datas"}
         self.descriptionIN["imagem_semeadura_estimada"] = "parametro para avanco de semeadura (Default: 0)"
         self.descriptionIN["imagem_colheita_produtor"] = "parametro para avanco de colheita (Default: 0)"
         self.descriptionIN["imagem_semeadura_produtor"] = "intervalo para procura da data nas imagens ex.: 3-24"
