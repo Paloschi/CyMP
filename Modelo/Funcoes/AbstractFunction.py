@@ -4,13 +4,14 @@
 Created on May 11, 2015
 @author: Paloschi
 '''
-from Modelo.beans import Dados
+
+from Modelo.beans.AbstractData import ABData
 from abc import ABCMeta, abstractmethod
 from numpy.distutils.environment import __metaclass__
 
 
 
-class Function(Dados.AbtractData):
+class Function(ABData):
     
     '''
     Essa classe representa o padrão das operações e todas as operações devem herda-la

@@ -34,8 +34,7 @@ class Filtro(AbstractFunction.Function):
         images_super = self.brutedata["images"]
         images = images_super.loadData()
         
-        metadata = images_super[0].data_metadata
-        
+        metadata = images_super[0].data_metametadata 
         images = array(images).astype(dtype="int16")
 
         n_bandas = len(images)

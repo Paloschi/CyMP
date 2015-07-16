@@ -82,7 +82,7 @@ class Controller(object):
         
         metadata = resultados["metaData"]
         
-        imagens.data_metadata = metadata
+        imagens.metadata = metadata
     
         imagens.saveListByRoot(imagens_filtradas, root_out, "tif")
         

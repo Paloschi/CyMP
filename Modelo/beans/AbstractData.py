@@ -3,7 +3,7 @@ Created on Jul 14, 2015
 
 @author: Paloschi
 '''
-from abc import ABCMeta, abstractproperty
+from abc import ABCMeta
 
 FILE_DATA = 1
 SERIAL_FILE_DATA = 2
@@ -18,7 +18,6 @@ class ABData(object):
     name = None
     file_name = None
     __data_type = None
-    
     __metaclass__ = ABCMeta
     
     def __init__(self, data_type):
@@ -30,8 +29,4 @@ class ABData(object):
     
     @data_type.setter
     def data_type(self, param):
-        pass
-    
-    @abstractproperty
-    def data(self):
         pass
