@@ -5,11 +5,11 @@ Created on Mar 2, 2015
 '''
 
 import fiona
-from beans import Dados
+from Modelo.beans import ABData
 import gdal
 progress = gdal.TermProgress_nocb
 
-class GetShapeData(Dados.AbtractData):
+class GetShapeData(ABData):
     '''
     classdocs
     '''

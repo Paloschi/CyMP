@@ -3,9 +3,9 @@ Created on Mar 3, 2015
 
 @author: Paloschi
 '''
-from beans import Dados
+from Modelo.beans import ABData
 
-class SplitTable(Dados.AbtractData):
+class SplitTable(ABData):
     '''
     separa uma tabela baseado em uma lista de atributos
     '''

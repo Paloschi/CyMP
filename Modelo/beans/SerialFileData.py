@@ -12,7 +12,7 @@ import gdal
 progress = gdal.TermProgress_nocb
 import rasterio
 import sys
-
+import logging as log
 
 class SerialFiles(ABData, list):
     '''
@@ -109,16 +109,20 @@ class SerialFiles(ABData, list):
 
     def saveListLike1Image(self, name=None, images_bands_matrix=None, root_path=None, ext=None):
  
-        if images_bands_matrix == None : images_bands_matrix = self.loadListRasterData()
+        if images_bands_matrix != None : 
+            self.metadata.update(dtype=images_bands_matrix.dtype) 
+            n_images =  len(images_bands_matrix)
+
+        else:
+            images_bands_matrix = self.loadListRasterData()
+            n_images =  len(self)
+            
         if root_path != None : self.root_path = root_path
         if ext == None : ext = self[0].file_ext
         if name != None : self.name = name
         
         if ext == "tif" : self.metadata.update(driver="GTiff") 
         elif ext == "img" : self.metadata.update(driver="HFA")  
-        
-        n_images =  len(self)
-        self.metadata.update(count=n_images, dtype=images_bands_matrix[0].dtype) 
         
         path = self.root_path + "\\" + name + "." + ext
         

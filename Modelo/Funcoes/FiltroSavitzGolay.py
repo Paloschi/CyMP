@@ -10,14 +10,14 @@ from Modelo.Funcoes import AbstractFunction
 from numpy.core.numeric import array
 progress = gdal.TermProgress_nocb    
 import numpy as np
-from Modelo.beans.AbstractData import SERIAL_FILE_DATA, TABLE_DATA
+from Modelo.beans import TableData, SERIAL_FILE_DATA, TABLE_DATA, SerialFiles
+import sys
+import logging as log
 
-from multiprocessing import freeze_support
 
-
-class Filtro(AbstractFunction.Function):
+class Filtro(AbstractFunction):
     '''
-    classdocs
+    Essa classe representa um filtro que filtra uma serie de imagens com o SavitzGolay
     '''
     
     def __setParamIN__(self):
@@ -35,43 +35,34 @@ class Filtro(AbstractFunction.Function):
    
      
     def __setParamOUT__(self):
-        self.descriptionOUT["imagensFiltradas"] = "Série de imagens filtradas" 
+        self.descriptionOUT["images"] = "Série de imagens filtradas" 
     
     def __execOperation__(self):
         
-        images_super = self.brutedata["images"]
-        images = images_super.loadData()
-        
-        metadata = images_super[0].data_metametadata 
-        images = array(images).astype(dtype="int16")
+        images = self.paramentrosIN_carregados["images"]
+        if self.paramentrosIN_carregados.has_key("conf_algoritimo") : conf_algoritimo = self.paramentrosIN_carregados["conf_algoritimo"]
+        else : conf_algoritimo = dict()
+        img_matrix = images.loadListRasterData()
 
-        n_bandas = len(images)
-        n_linhas = len(images[0])
-        n_colunas = len(images[0][0])
-
-        quartil = int(n_linhas)
-        
-        parametro1 = dict()
-        parametro1["images"] =  images[:, 0 : quartil]
-        parametro1["window_size"] = self.paramentrosIN_carregados["window_size"]
-        parametro1["order"] = self.paramentrosIN_carregados["order"]
-        parametro1["null_value"] = self.paramentrosIN_carregados["null_value"]
+        n_bandas = len(img_matrix)
+        n_linhas = len(img_matrix[0])
+        n_colunas = len(img_matrix[0][0])
     
-        results = self.filtrar(parametro1)
-
-        images = results
+        results = self.filtrar(img_matrix, conf_algoritimo)
+        img_matrix = results
         
-        results = np.zeros((n_linhas, n_colunas, n_bandas))
-        
-        #results = [[[0 for x in range(n_colunas)] for x in range(n_linhas)] for x in range(n_bandas)] 
+        results = np.zeros((n_bandas, n_linhas, n_colunas,))
         results = array(results).astype(dtype="int16")
 
-        progress( 0.0 )
-    
-        i_imagem =0
+        i_imagem = 0
         i_linha = 0
         i_coluna = 0
-        for linha in images:
+        
+        sys.stdout.write( "Criando nova série de imagens com valores filtrados: ")
+        progress( 0.0 )
+    
+
+        for linha in img_matrix:
             
             i_imagem=0      
             progress( (i_linha+1) / float(n_linhas))  
@@ -85,19 +76,29 @@ class Filtro(AbstractFunction.Function):
                 i_coluna=0
                 i_linha+=1
         
-        saida = dict()
-        saida["imagensFiltradas"]  = results
-        saida["metaData"] = metadata
+        img_saida = SerialFiles()
+        img_saida.data = results
+        img_saida.metadata = images.metadata
+        
+        saida = TableData()
+        saida["images"] = img_saida
         
         return saida
     
-    def filtrar(self, images, window_size, order, noData):
+    def filtrar(self, images, lol, **config):
+        
+        if config.get("window_size") == None : window_size=5
+        else : window_size = config.get("window_size")
+        if config.get("order") == None : order=3
+        else : order = config.get("order")
+        if config.get("noData") == None : noData=0
+        else : noData = config.get("noData")
         
         n_linhas = len(images[0])
         n_colunas = len(images[0][0])
         n_images = len(images)
     
-        progress( 0.0)
+        
         i_linhas = float(0) 
         
             
@@ -109,8 +110,11 @@ class Filtro(AbstractFunction.Function):
         if noData!=None: nullValue = float(noData) #-32768
         else : nullValue = None
         
-        print("primeiro valor:" + str(images[0][0][0]))
-        if nullValue == images[0][0][0] : print "são iguais"
+        log.debug("primeiro valor: " + str(images[0][0][0]))
+        if nullValue == images[0][0][0] : log.DEBUG("são iguais")
+        
+        sys.stdout.write( "Filtrando imagens: ")
+        progress( 0.0)
     
         for i_linhas in range(0, n_linhas):   
 
@@ -123,7 +127,8 @@ class Filtro(AbstractFunction.Function):
                 line = list()
                 
                 if images[0][i_linhas][i_colunas] == nullValue : 
-                    line_filtred = array([0 for x in range(n_images)])       
+                    
+                    line_filtred = np.zeros(n_images)     
                 
                 else :  
                     for img in images:
@@ -211,7 +216,7 @@ def savitzky_golay(y, window_size, order, deriv=0, rate=1):
            W.H. Press, S.A. Teukolsky, W.T. Vetterling, B.P. Flannery
            Cambridge University Press ISBN-13: 9780521880688
         """
-        import numpy as np
+
         from math import factorial
         
         try:

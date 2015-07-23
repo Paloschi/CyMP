@@ -5,7 +5,7 @@ Created on Apr 8, 2015
 @author: Paloschi
 '''
 
-from Modelo.beans import Dados                                  
+from Modelo.beans import TableData, FileData                               
 from numpy.core.numeric import array
 import gdal
 from Modelo.Funcoes import AbstractFunction
@@ -125,16 +125,16 @@ class ComparadorSemeaduraColheita(AbstractFunction.Function):
                       
         #plt.show()
         
-        saida = Dados.TableData()
-     TABLE_DATA    imagem_semeadura = Dados.SimpleData(data=imFileDatadura)
+        saida = TableData()
+        imagem_semeadura = FileData(data=imagem_semeadura)
         imagem_semeadura.data_metadata = images_super[0].data_metadata
         imagem_semeadura.data_name = "semeadura"
         
-        imagem_colheita = Dados.SimpleData(data=imFileDataita)
+        imagem_colheita = FileData(data=imagem_colheita)
         imagem_colheita.data_metadata = images_super[0].data_metadata
         imagem_colheita.data_name = "colheita"
         
-        imagem_pico = Dados.SimpleData(data=imFileData
+        imagem_pico = FileData(data=imagem_pico)
         imagem_pico.data_metadata = images_super[0].data_metadata
         imagem_pico.data_name = "pico"
         

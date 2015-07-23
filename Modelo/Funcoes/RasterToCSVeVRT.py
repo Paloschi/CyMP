@@ -5,7 +5,7 @@ Created on Jan 21, 2015
 @author: Paloschi
 '''
 
-from Modelo.beans import Dados
+from Modelo.beans import SerialFiles, TableData, FileData
 from gdal import TermProgress_nocb
 from Modelo.Funcoes import AbstractFunction
 from Modelo.Funcoes import GetImageInformation
@@ -28,8 +28,8 @@ class RasterToCSVeVRT(AbstractFunction.Function):
         outFolder = self.paramentrosIN_carregados["out_folder"]
         nullValue = float(-128)
         
-        listaCSV = Dados.SERIAL_DATA()
-        listaVRT = Dados.SERIAL_DATA()
+        listaCSV = SerialFiles()
+        listaVRT = SerialFiles()
         
         print "numero de imagens" + str(imagensIN)
         
@@ -39,7 +39,7 @@ class RasterToCSVeVRT(AbstractFunction.Function):
             endereco_completo = img.data
             nome_img = img.data_name
             
-            paramIN = Dados.TABLE_DATA()
+            paramIN = TableData()
             paramIN["imagem"] = img
             
             getImgInfo = GetImageInformation.GetImgInfo()
@@ -90,7 +90,7 @@ class RasterToCSVeVRT(AbstractFunction.Function):
                             line = str(cx) + ',' + cy + ',' + str(value) + '\n'
                             csv.write(line)
                             
-            csv = Dados.FILE_DATA(data=file_csv_path)
+            csv = FileData(data=file_csv_path)
             
             listaCSV.append(csv)
             
@@ -108,12 +108,12 @@ class RasterToCSVeVRT(AbstractFunction.Function):
             tree = etree.ElementTree(root)
             tree.write(file_vtr_path, pretty_print=True)
             
-            vrt = Dados.FILE_DATA(data=file_vtr_path)
+            vrt = FileData(data=file_vtr_path)
             listaVRT.append(vrt)
                      
         print('-Arquivos CSV criados')
 
-        saida = Dados.TABLE_DATA()
+        saida = TableData()
         saida["CSVs"] = listaCSV
         saida["VRTs"] = listaVRT
         

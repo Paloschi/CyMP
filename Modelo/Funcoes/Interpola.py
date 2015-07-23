@@ -3,11 +3,13 @@ Created on Mar 1, 2015
 
 @author: Paloschi
 '''
-from Modelo.beans import Dados
+
+
+from Modelo.beans import ABData, TableData
 from lxml import etree
 
 
-class InterpolaTabela(Dados.AbtractData):
+class InterpolaTabela(ABData):
     
     '''
     faz todos os tramites necessarios pra interpolar uma tabela
@@ -40,7 +42,7 @@ class InterpolaTabela(Dados.AbtractData):
             if (key!="data_path"):           
                 informacao = self.CreateInterpolationTable(path, key, atributo_interpolacao, format_image_data)
                 
-                interpolation_table = Dados.TABLE_DATA("iformacao de interpolacao")
+                interpolation_table = TableData("iformacao de interpolacao")
                 interpolation_table.data = informacao
                 
                 interpolador = InterpoladorIvD("interpolando ECMWF")
@@ -116,7 +118,7 @@ class InterpolaTabela(Dados.AbtractData):
         
         return format_image_data
     
-class InterpoladorIvD(Dados.AbtractData):
+class InterpoladorIvD(ABData):
     '''
     classdocs
     '''

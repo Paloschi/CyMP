@@ -61,14 +61,18 @@ class FileData(ABData):
     
     def loadRasterData(self):
         
+        if self.data != None : return self.data
+        
         with rasterio.open(self.file_full_path) as map:
             self.metadata = map.meta
             return map.read_band(1)
         
-    def saveRasterData(self, band_matrix):
+    def saveRasterData(self, band_matrix=None):
         '''
             #Salva imagem em uma determinada pasta
         '''
+        
+        if band_matrix == None : band_matrix = self.data
         
         try: 
             metadata = self.metadata

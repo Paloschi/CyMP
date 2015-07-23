@@ -9,6 +9,7 @@ from Modelo.beans.AbstractData import ABData, FUNCTION_DATA
 from abc import ABCMeta, abstractmethod
 from numpy.distutils.environment import __metaclass__
 
+import logging as log
 
 
 class Function(ABData):
@@ -41,19 +42,18 @@ class Function(ABData):
         pass
     
 
-    def __init__(self, params = None):
+    def __init__(self, param=None):
         '''
         Constructor padrão cuida da inicialização do objeto
         '''
-        super(self.__class__, self).__init__(FUNCTION_DATA) # seta o tipo do objeto
+        super(Function, self).__init__(FUNCTION_DATA) # seta o tipo do objeto
         
         self.descriptionIN = dict()
         self.descriptionOUT = dict()
         
         self.__setParamIN__() # inicializa descrição de entrada
         self.__setParamOUT__() # inicializa descrição de saída
-        
-        if (params!=None) : self.__LoadParams__(params) # caso os parametros sejam indicados no inicio, já são carregados
+
 
     def __LoadParams__(self, params):
         '''
@@ -61,25 +61,26 @@ class Function(ABData):
         
         Por enquanto não é recusivo com tabelas
         '''
-        print "---------------"
-        print self.descriptionIN
-        print params
-        print "---------------"
+        log.debug("---------------") 
+        log.debug(self.descriptionIN)
+        log.debug(params)
+        log.debug("---------------")
          
         for key in self.descriptionIN.keys():
             
-            if key not in params[key] or params[key] is None:
+            if key not in params.keys() or params[key] is None:
                 if self.descriptionIN[key]["Required"] :
                     raise Exception("Parametro " + key + " é requerido na função " + self.__class__.__name__)   
                 else :
                     self.paramentrosIN_carregados[key] = None
-            elif self.descriptionIN[key]["Type"] == FUNCTION_DATA:            
+            elif self.descriptionIN[key]["Type"] == FUNCTION_DATA:         
                 self.paramentrosIN_carregados[key] = params[key].data    
             else:
-                self.paramentrosIN_carregados[key] = params[key]        
+                self.paramentrosIN_carregados[key] = params[key]      
             
-            if self.paramentrosIN_carregados[key]["Type"] != self.descriptionIN[key]["Type"] :
-                raise Exception("Parametro incompativel: " + "")   
+            if self.paramentrosIN_carregados[key]!=None:
+                if self.paramentrosIN_carregados[key].data_type != self.descriptionIN[key]["Type"] :
+                    raise Exception("Parametro incompativel: " + "")   
             
     @property    
     def data(self):

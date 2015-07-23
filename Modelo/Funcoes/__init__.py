@@ -1,12 +1,43 @@
 # -*- coding: utf-8 -*-
-#from Filtro import *
-#from GetImageInformation import *
-#from GetShapeData import *
-#from Interpola import *
-#from PerfilExtractor import *
-#from Soma import *
-#from SplitTable import *
-#from teste_str import *
+
+from AbstractFunction import Function as AbstractFunction
+from FiltroSavitzGolay import Filtro
+from GetImageInformation import GetImgInfo
+from GetShapeData import GetShapeData
+from Interpola import InterpoladorIvD
+from InterpoladorIDW import IDW
+import PerfilExtractor  
+from RasterToCSVeVRT import RasterToCSVeVRT
+from SplitTable import SplitTable
+
+if __name__ == "__main__":
+    
+    from Modelo import beans
+    
+    import warnings
+    warnings.filterwarnings('ignore')
+
+    
+    root_path="C:\\Users\\Paloschi\\Desktop\\data\\Rasters\\TesteFiltro\\entrada_pesada"
+    root_out="C:\\Users\\Paloschi\\Desktop\\data\\Rasters\\TesteFiltro\\saida"
+    
+    images_in = beans.SerialFiles(root_path=root_path)
+    
+    filtro = Filtro()
+    paramIn = dict()
+    
+    paramIn["images"] = images_in
+    
+    filtro.data = paramIn
+    
+    images_filtred = filtro.data["images"]
+    
+    images_filtred.root_path = root_out
+    
+    images_filtred.saveListLike1Image(name="teste_pesado", images_bands_matrix=images_filtred.data, ext="tif")
+    
+
+
 
 
 
