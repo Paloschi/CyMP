@@ -11,7 +11,7 @@ from Modelo.Funcoes import AbstractFunction
 from Modelo.Funcoes import GetImageInformation
 from lxml import etree
 
-class RasterToCSVeVRT(AbstractFunction.Function):
+class RasterToCSVeVRT(AbstractFunction):
     '''
     Operacao que transforma imagens em arquivos CSV
     '''

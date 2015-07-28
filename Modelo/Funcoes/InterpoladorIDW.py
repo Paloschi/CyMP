@@ -8,7 +8,7 @@ from Modelo.Funcoes import AbstractFunction
 from Modelo.beans.AbstractData import FILE_DATA, TABLE_DATA
 import subprocess
 
-class IDW(AbstractFunction.Function):
+class IDW(AbstractFunction):
     '''
         Essa função realiza a interpolação IDW (inverso da distancia) de arquivos CSV configurados por arquivos VRT
         ela necessita do GDAL Core instalado pra funcionar, e o path do GDAL Core tem que estar

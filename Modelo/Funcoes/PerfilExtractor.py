@@ -16,7 +16,7 @@ from datetime import datetime as dt
 from datetime import date
 
 
-class ComparadorSemeaduraColheita(AbstractFunction.Function):
+class ComparadorSemeaduraColheita(AbstractFunction):
     '''
     Essa função foi criada para extrair as datas de semeadura (primeiro low peak), colheita (segundo low peak) e pico
     
