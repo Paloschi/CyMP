@@ -6,7 +6,6 @@ Created on Jul 12, 2015
 '''
 
 from AbstractData import ABData, FILE_DATA
-import rasterio
 import os
 
 class FileData(ABData):
@@ -17,7 +16,6 @@ class FileData(ABData):
     __file_ext = None
     __file_path = None
     file_name = None
-    metadata = None
     
     def __init__(self, **params):
         super(self.__class__, self).__init__(FILE_DATA) # seta o tipo do objeto
@@ -58,39 +56,6 @@ class FileData(ABData):
     def file_ext(self, ext):
         ext = ext.replace(".", "")
         self.__file_ext = ext
-    
-    def loadRasterData(self):
-        
-        if self.data != None : return self.data
-        
-        with rasterio.open(self.file_full_path) as map:
-            self.metadata = map.meta
-            return map.read_band(1)
-        
-    def saveRasterData(self, band_matrix=None):
-        '''
-            #Salva imagem em uma determinada pasta
-        '''
-        
-        if band_matrix == None : band_matrix = self.data
-        
-        try: 
-            metadata = self.metadata
             
-            #metadata.update(driver="GTiff", count=1, dtype=band_matrix.dtype) 
-            '''
-                Listas de Drivers GDAL: http://www.gdal.org/formats_list.html
-            '''
-            
-            if self.file_ext == "tif" : metadata.update(driver="GTiff") 
-            elif self.file_ext == "img" : metadata.update(driver="HFA") 
-
-            with rasterio.open(path = self.file_full_path, mode = 'w', **metadata) as dst:
-                try:
-                    dst.write_band(1, band_matrix)
-                except ValueError: 
-                    print "ERRO - Erro ao tentar salvar a imagem: ", self.file_full_path
-                    print "MOTIVO - Índices inconsistentes, erro ao escrever banda"
-        except ValueError: 
-            print "ERRO - Erro ao tentar criar arquivo, verificar a existencia do diretório informado"
+        
 

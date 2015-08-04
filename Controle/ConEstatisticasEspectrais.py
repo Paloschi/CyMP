@@ -5,8 +5,8 @@ Created on Jun 10, 2015
 @author: Paloschi
 '''
 
-from Modelo.Funcoes import StatisticalStractor
-from Modelo.beans import Dados
+from Modelo.Funcoes.Estatisticos import SpectreStatisticalStractor
+from Modelo.beans import SerialFile, TableData
 from Controle import AbstractController
 
 class Controller(AbstractController.Controller):
@@ -25,21 +25,21 @@ class Controller(AbstractController.Controller):
         root_in = self.ui.leInFolder.text()
         root_in = self.ajeitarPath(root_in)
         
-        imagens_entrada = Dados.SERIAL_DATA()
+        imagens_entrada = SerialFile()
         imagens_entrada = imagens_entrada.loadListByRoot(root_in, "tif")
         
         root_out = self.ui.leOutFolder.text()
         root_out = self.ajeitarPath(root_out)
         
-        statistical_list = Dados.SERIAL_DATA(data=self.statistical_list)
-        null_value = Dados.FILE_DATA(data=None)
+        statistical_list = SerialFile(data=self.statistical_list)
+        null_value = SerialFile(data=None)
         
-        paramsIN = Dados.TABLE_DATA()
+        paramsIN = TableData()
         paramsIN["images"] = imagens_entrada
         paramsIN["null_value"] = null_value
         paramsIN["statistics"] = statistical_list
         
-        self.function = StatisticalStractor.SpectreStatisticalStractor()
+        self.function = SpectreStatisticalStractor()
         self.function.data = paramsIN
         images_saida = self.function.data
         images_saida.saveListByRoot(images_saida, root_out, "tif")      

@@ -4,13 +4,10 @@ Created on Jun 10, 2015
 @author: Paloschi
 '''
 from PyQt4.QtGui import QFileDialog
-from Modelo.Funcoes import PerfilExtractor
-from Modelo.beans import Dados
-from ctypes.wintypes import DOUBLE
-from numpy import double
+from Modelo.Funcoes import ExtratorSemeaduraColheita
+from Modelo.beans import FileData, SerialFile, TableData
 from PyQt4 import QtCore
-import time
-import thread
+
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -54,7 +51,7 @@ class Controller(object):
         
     def action_ok(self):
         
-        self.extractor = PerfilExtractor.ComparadorSemeaduraColheita()
+        self.extractor = ExtratorSemeaduraColheita.ComparadorSemeaduraColheita()
         self.tread = StoppableThread( self.executa, (self.extractor))
         
     def action_cancel(self):
@@ -82,8 +79,8 @@ class Controller(object):
         
     def carregarParamIN(self):
 
-        images = Dados.SERIAL_DATA()
-        parametrosIN = Dados.TABLE_DATA()
+        images = SerialFile()
+        parametrosIN = TableData()
         
         root_in = self.ui.leInFolder.text()
         root_in = self.ajeitarPath(root_in)
@@ -93,13 +90,13 @@ class Controller(object):
         print("numero de imagens: " + str(len(images)))
         
         parametrosIN["images"] = images
-        parametrosIN["avanco_semeadura"] = Dados.FILE_DATA(data= self.ui.dspASemeadura.value())
-        parametrosIN["avanco_colheita"] = Dados.FILE_DATA(data= self.ui.dsbAColheita.value())
-        parametrosIN["intervalo_pico"] = Dados.FILE_DATA(data= self.ui.lePPico.text())
-        parametrosIN["intervalo_semeadura"] = Dados.FILE_DATA(data= self.ui.lePSemeadura.text())
-        parametrosIN["intervalo_colheita"] = Dados.FILE_DATA(data= self.ui.lePColheita.text())
-        parametrosIN["null_value"] = Dados.FILE_DATA(data= self.ui.leNullValue.text())
-        parametrosIN["progress_bar"] = Dados.FILE_DATA(self.ui.progressBar)
+        parametrosIN["avanco_semeadura"] = FileData(file_full_path= self.ui.dspASemeadura.value())
+        parametrosIN["avanco_colheita"] = FileData(file_full_path= self.ui.dsbAColheita.value())
+        parametrosIN["intervalo_pico"] = FileData(file_full_path= self.ui.lePPico.text())
+        parametrosIN["intervalo_semeadura"] = FileData(file_full_path= self.ui.lePSemeadura.text())
+        parametrosIN["intervalo_colheita"] = FileData(file_full_path= self.ui.lePColheita.text())
+        parametrosIN["null_value"] = FileData(file_full_path= self.ui.leNullValue.text())
+
         
         return parametrosIN
     

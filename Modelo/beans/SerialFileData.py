@@ -14,7 +14,7 @@ import rasterio
 import sys
 import logging as log
 
-class SerialFiles(ABData, list):
+class SerialFile(ABData, list):
     '''
         Por default le somente tif e img
         A menos que uma classe especifica precise de outros arquivos
