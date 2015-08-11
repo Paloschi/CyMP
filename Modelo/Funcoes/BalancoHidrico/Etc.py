@@ -81,7 +81,7 @@ class Etc(AbstractFunction):
                         
                 serie_etc_[i_etc][i_linha][i_coluna]
         
-        serie_etc = SerialFiles(data=serieSerialFile     
+        serie_etc = SerialFile(data=serie_etc_)     
         return serie_etc
     
     def Ds_DC_to_date(self, data):

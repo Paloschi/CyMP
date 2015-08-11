@@ -18,7 +18,8 @@ class FileData(ABData):
     file_name = None
     
     def __init__(self, **params):
-        super(self.__class__, self).__init__(FILE_DATA) # seta o tipo do objeto
+        
+        super(FileData, self).__init__(FILE_DATA) # seta o tipo do objeto
         
         if params.get("data") != None : self.data = params.get("data")
         if params.get("ext") != None : self.file_ext = params.get("ext")

@@ -4,7 +4,7 @@ Created on Jun 10, 2015
 @author: Paloschi
 '''
 from PyQt4.QtGui import QFileDialog
-from Modelo.Funcoes import ExtratorSemeaduraColheita
+from Modelo.Funcoes.BalancoHidrico import ExtratorSemeaduraColheita
 from Modelo.beans import FileData, SerialFile, TableData
 from PyQt4 import QtCore
 

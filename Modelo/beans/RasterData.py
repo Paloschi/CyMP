@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on Aug 4, 2015
 
@@ -36,31 +37,31 @@ class RasterFile(FileData):
                         break
                 print ("imagem lida, numero de bandas:", i_band)
         
-    def saveRasterData(self, band_matrix=None):
+    def saveRasterData(self, band_matrix=None, metadata=None):
         '''
             #Salva imagem em uma determinada pasta
         '''
         
         if band_matrix == None : band_matrix = self.data
+        if metadata != None : self.metadata = metadata
         
         try: 
-            metadata = self.metadata
-            
+
             '''
                 Listas de Drivers GDAL: http://www.gdal.org/formats_list.html
             '''
             
-            if self.file_ext == "tif" : metadata.update(driver="GTiff") 
-            elif self.file_ext == "img" : metadata.update(driver="HFA") 
+            if self.file_ext == "tif" : self.metadata.update(driver="GTiff") 
+            elif self.file_ext == "img" : self.metadata.update(driver="HFA") 
 
-            with rasterio.open(path = self.file_full_path, mode = 'w', **metadata) as dst:
+            with rasterio.open(path = self.file_full_path, mode = 'w', **self.metadata) as dst:
                 try:
                     dst.write_band(1, band_matrix)
                 except ValueError: 
                     print "ERRO - Erro ao tentar salvar a imagem: ", self.file_full_path
-                    print "MOTIVO - Índices inconsistentes, erro ao escrever banda"
+                    print "MOTIVO - ï¿½ndices inconsistentes, erro ao escrever banda"
         except ValueError: 
-            print "ERRO - Erro ao tentar criar arquivo, verificar a existencia do diretório informado"
+            print "ERRO - Erro ao tentar criar arquivo, verificar a existencia do diretï¿½rio informado"
             
     def getRasterInformation(self):
            

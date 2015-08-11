@@ -7,19 +7,22 @@ Created on Apr 8, 2015
                                   
 from numpy.core.numeric import array
 import numpy as np
-from Modelo.beans import ABData, SerialFile, TableData
-import gdal.TermProgress_nocb as progress
+from Modelo.beans import SerialFile, TableData, SERIAL_FILE_DATA, RasterFile
+from Modelo.Funcoes import AbstractFunction
+import gdal
+progress = gdal.TermProgress_nocb
 
-class SpectreStatisticalStractor(ABData):
+
+class SpectreStatisticalStractor(AbstractFunction):
     '''
     Essa função extrai estatisticas do perfil temporal de cada pixel gerando uma imagem separada pra cada pixel
     
     '''
 
     def __setParamIN__(self):
-        self.descriptionIN["images"] = "Série de imagens para procurar as datas"
-        self.descriptionIN["null_value"] = "valor nulo a ser ignorado"
-        self.descriptionIN["statistics"] = "lista de estatisticas a serem feitas, nesta versão são suportados: Media (media), Coeficiente de variação (cv) e desvio padrão (sd)"
+        self.descriptionIN["images"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens para procurar as datas"}
+        self.descriptionIN["null_value"] = {"Required":False, "Type":None, "Description":"valor nulo a ser ignorado"}
+        self.descriptionIN["statistics"] = {"Required":True, "Type":None, "Description":"lista de estatisticas a serem feitas, nesta versão são suportados: Media (media), Coeficiente de variação (cv) e desvio padrão (sd)"}
      
     def __setParamOUT__(self):
         self.descriptionOUT["imagens de saida"] = "imagens com as estatisticas" 
@@ -28,7 +31,7 @@ class SpectreStatisticalStractor(ABData):
         
         print("executando operação")
         
-        images_super = self.brutedata["images"]
+        images_super = self.paramentrosIN_carregados["images"]
         print("Numero de imagens para ler: " + str(len(images_super)))
         nullValue = self.paramentrosIN_carregados["null_value"]
         statistics = self.paramentrosIN_carregados["statistics"]
@@ -42,7 +45,7 @@ class SpectreStatisticalStractor(ABData):
         doMediana = "mediana" in statistics
         doAmplitude = "amplitude" in statistics
         
-        images = images_super.loadData()
+        images = images_super.loadListRasterData()
         
         print("Numero de imagens lidas: " + str(len(images)))
 
@@ -128,39 +131,48 @@ class SpectreStatisticalStractor(ABData):
         
         print("Arrumando imagens de saida")
         
-        saida = SerialFiles(SerialFilesaida.data_metadata = self.brutedata["images"][0].data_metadata
+        saida = SerialFile ()
+        saida.metadata = self.paramentrosIN_carregados["images"][0].metadata
         
         if doMedia: 
-            imagem_media = SerialFiles(SerialFilegem_media)
-            imagem_media.data_name = "imagem_media"
+            imagem_media = RasterFile(data = imagem_media)
+            imagem_media.metadata = saida.metadata
+            imagem_media.file_name = "imagem_media"
             saida.append(imagem_media) 
         if doCV:
-            imagem_cv = SerialFiles(SerialFilegem_cv)
-            imagem_cv.data_name = "imagem_coeficiente_variacao"
+            imagem_cv = RasterFile(data = imagem_cv)
+            imagem_cv.metadata = saida.metadata
+            imagem_cv.file_name = "imagem_coeficiente_variacao"
             saida.append(imagem_cv)
         if doSD : 
-            imagem_sd = SerialFiles(SerialFilegem_sd)
-            imagem_sd.data_name = "imagem_desvio_padrao"
+            imagem_sd = RasterFile(data = imagem_sd)
+            imagem_sd.metadata = saida.metadata
+            imagem_sd.file_name = "imagem_desvio_padrao"
             saida.append(imagem_sd)
         if doSoma : 
-            imagem_soma = SerialFiles(SerialFilegem_soma)
-            imagem_soma.data_name = "imagem_soma"
+            imagem_soma = RasterFile(data = imagem_soma)
+            imagem_soma.metadata = saida.metadata
+            imagem_soma.file_name = "imagem_soma"
             saida.append(imagem_soma)
         if doMin : 
-            imagem_min = SerialFiles(SerialFilegem_min)
-            imagem_min.data_name = "imagem_minimo"
+            imagem_min = RasterFile(data = imagem_min)
+            imagem_min.metadata = saida.metadata
+            imagem_min.file_name = "imagem_minimo"
             saida.append(imagem_min)
         if doMax : 
-            imagem_max = SerialFiles(SerialFilegem_max)
-            imagem_max.data_name = "imagem_maximo"
+            imagem_max = RasterFile(data = imagem_max)
+            imagem_max.metadata = saida.metadata
+            imagem_max.file_name = "imagem_maximo"
             saida.append(imagem_max)
         if doMediana : 
-            imagem_mediana = SerialFiles(SerialFilegem_mediana)
-            imagem_mediana.data_name = "imagem_mediana"
+            imagem_mediana = RasterFile(data = imagem_mediana)
+            imagem_mediana.metadata = saida.metadata
+            imagem_mediana.file_name = "imagem_mediana"
             saida.append(imagem_mediana)
         if doAmplitude : 
-            imagem_amplitude = SerialFiles(SerialFilegem_amplitude)
-            imagem_amplitude.data_name = "imagem_amplitude"
+            imagem_amplitude = RasterFile(imagem_amplitude)
+            imagem_amplitude.metadata = saida.metadata
+            imagem_amplitude.file_name = "imagem_amplitude"
             saida.append(imagem_amplitude)
             
         print("imagens prontas para gravar, statistical stractor completo")
@@ -168,29 +180,32 @@ class SpectreStatisticalStractor(ABData):
         return saida
     
 if __name__ == '__main__':   
+    
     ss = SpectreStatisticalStractor()
     
     root_ = "C:\\Users\\Paloschi\\Desktop\\data\\Rasters\\TesteFiltro\\entrada\\"
-    images = SerialFiles(SerialFilees.loadListByRoot(root_, "tif")
+    images = SerialFile(root_path  =  root_)
+    images.loadListByRoot(filtro = "tif")
     
     parametrosIN = TableData()
     
     parametrosIN["images"] = images
-    parametrosIN["null_value"] = TableData(data=0) 
+    parametrosIN["null_value"] = 0
     
     statistics = list()
     statistics.append("media")
-    parametrosIN["statistics"] = TableData(images)
+    
+    parametrosIN["statistics"] = statistics
 
     ss.data = parametrosIN
     resultados = ss.data
     
-    media = resultados["imagem_media"]
+    imagens = resultados
     #cv = resultados["imagem_cv"]
     #sd = resultados["imagem_sd"]
     
     #imagens_lista = Dados.SerialData()
-    images.append(media)
+
     #imagens_lista.append(cv)
     
     #print (media)
@@ -201,7 +216,7 @@ if __name__ == '__main__':
     
     #imagens_lista.saveListLike1Image(imagens_lista, "C:\\Users\\Paloschi\\Desktop\\data\\Ajuste extrator de estatisticas\\saida\\", ext=".tif")
     
-    media.saveImage("C:\\Users\\Paloschi\\Desktop\\data\\Ajuste extrator de estatisticas\\saida\\", ext="vermelho.tif")
+    imagens.saveListByRoot (root_path="C:\\Users\\Paloschi\\Desktop\\data\\Testes\\saida", ext="tif")
     #cv.saveImage("C:\\Users\\Paloschi\\Desktop\\data\\Ajuste extrator de estatisticas\\saida\\", ext=".tif")
     #sd.saveImage("C:\\Users\\Paloschi\\Desktop\\data\\Ajuste extrator de estatisticas\\saida\\", ext=".tif")
 

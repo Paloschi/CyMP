@@ -76,7 +76,8 @@ class FiltroSavitz(AbstractFunction):
                 i_coluna=0
                 i_linha+=1
         
-        img_saida = SerialFiles(SerialFileimg_saida.data = results
+        img_saida = SerialFile(data = results)
+        
         img_saida.metadata = images.metadata
         
         saida = TableData()
