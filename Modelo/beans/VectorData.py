@@ -6,7 +6,9 @@ Created on Aug 4, 2015
 
 from Modelo.beans import FileData
 import fiona
-import gdal.TermProgress_nocb as progress
+import gdal
+progress = gdal.TermProgress_nocb
+
 
 class VectorFile(FileData):
     '''

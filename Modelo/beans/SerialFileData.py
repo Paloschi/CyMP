@@ -12,7 +12,6 @@ import gdal
 progress = gdal.TermProgress_nocb
 import rasterio
 import sys
-import logging as log
 
 class SerialFile(ABData, list):
     '''

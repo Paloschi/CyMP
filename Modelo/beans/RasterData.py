@@ -42,8 +42,11 @@ class RasterFile(FileData):
             #Salva imagem em uma determinada pasta
         '''
         
-        if band_matrix == None : band_matrix = self.data
+        if band_matrix != None : self.data = self.data
         if metadata != None : self.metadata = metadata
+        
+        self.metadata.update(dtype=self.data.dtype) 
+
         
         try: 
 
@@ -53,13 +56,17 @@ class RasterFile(FileData):
             
             if self.file_ext == "tif" : self.metadata.update(driver="GTiff") 
             elif self.file_ext == "img" : self.metadata.update(driver="HFA") 
+            
+            print(metadata)
+            print(len(self.data), len(self.data[0]))
 
             with rasterio.open(path = self.file_full_path, mode = 'w', **self.metadata) as dst:
                 try:
-                    dst.write_band(1, band_matrix)
-                except ValueError: 
+                    dst.write_band(1, self.data)
+                except ValueError, e: 
+                    print str(e)
                     print "ERRO - Erro ao tentar salvar a imagem: ", self.file_full_path
-                    print "MOTIVO - �ndices inconsistentes, erro ao escrever banda"
+                    print "MOTIVO - índices inconsistentes, erro ao escrever banda"
         except ValueError: 
             print "ERRO - Erro ao tentar criar arquivo, verificar a existencia do diret�rio informado"
             

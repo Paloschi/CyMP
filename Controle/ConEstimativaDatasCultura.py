@@ -51,7 +51,7 @@ class Controller(object):
         
     def action_ok(self):
         
-        self.extractor = ExtratorSemeaduraColheita.ComparadorSemeaduraColheita()
+        self.extractor = ExtratorSemeaduraColheita()
         self.tread = StoppableThread( self.executa, (self.extractor))
         
     def action_cancel(self):

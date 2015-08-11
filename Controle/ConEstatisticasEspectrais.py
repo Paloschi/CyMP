@@ -31,13 +31,9 @@ class Controller(AbstractController.Controller):
         root_out = self.ui.leOutFolder.text()
         root_out = self.ajeitarPath(root_out)
         
-        statistical_list = SerialFile(data=self.statistical_list)
-        null_value = SerialFile(data=None)
-        
         paramsIN = TableData()
         paramsIN["images"] = imagens_entrada
-        paramsIN["null_value"] = null_value
-        paramsIN["statistics"] = statistical_list
+        paramsIN["statistics"] = self.statistical_list
         
         self.function = SpectreStatisticalStractor()
         self.function.data = paramsIN
@@ -53,10 +49,11 @@ class Controller(AbstractController.Controller):
         if self.ui.cbMedia.isChecked() : self.statistical_list.append("media")
         if self.ui.cbMediana.isChecked() : self.statistical_list.append("mediana")
         if self.ui.cbMin.isChecked() : self.statistical_list.append("min")
-        if self.ui.cbModa.isChecked() : self.statistical_list.append("moda")
+        if self.ui.cbAmplitude.isChecked() : self.statistical_list.append("amplitude")
         if self.ui.cbSD.isChecked() : self.statistical_list.append("sd")
         if self.ui.cbSoma.isChecked() : self.statistical_list.append("soma")
         if self.ui.cbCV.isChecked() : self.statistical_list.append("cv")
+
         
         if len(self.statistical_list) == 0 :
             self.message(u"Selecione pelo menos uma opção na aba Configuração")

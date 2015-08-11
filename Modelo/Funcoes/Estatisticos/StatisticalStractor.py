@@ -36,6 +36,8 @@ class SpectreStatisticalStractor(AbstractFunction):
         nullValue = self.paramentrosIN_carregados["null_value"]
         statistics = self.paramentrosIN_carregados["statistics"]
         
+        print("Estatisticas a fazer: ", statistics)
+        
         doMedia = "media" in statistics 
         doCV = "cv" in statistics
         doSD = "sd" in statistics
@@ -56,8 +58,6 @@ class SpectreStatisticalStractor(AbstractFunction):
         
         #imagem_referencia = [[0 for x in range(n_colunas)] for x in range(n_linhas)]  
         imagem_referencia = np.zeros((n_linhas, n_colunas))
-        
-        print(imagem_referencia)
         
         if doMedia : imagem_media = array(imagem_referencia)#.astype(dtype="int16")
         if doCV : imagem_cv = array(imagem_referencia)#.astype(dtype="int16")
@@ -102,7 +102,9 @@ class SpectreStatisticalStractor(AbstractFunction):
                     if doCV : 
                         if mean == None : mean = np.mean(line)
                         if sd == None : sd = np.nanstd(line) 
-                        cv = sd / mean * 100 
+                        divisor = mean * 100
+                        if divisor != 0 : cv = sd / mean * 100 
+                        else : cv = 0
                         imagem_cv[i_linha][i_coluna] = cv
                         
                     if doSoma : 
@@ -170,13 +172,13 @@ class SpectreStatisticalStractor(AbstractFunction):
             imagem_mediana.file_name = "imagem_mediana"
             saida.append(imagem_mediana)
         if doAmplitude : 
-            imagem_amplitude = RasterFile(imagem_amplitude)
+            imagem_amplitude = RasterFile(data = imagem_amplitude)
             imagem_amplitude.metadata = saida.metadata
             imagem_amplitude.file_name = "imagem_amplitude"
             saida.append(imagem_amplitude)
             
         print("imagens prontas para gravar, statistical stractor completo")
-        
+
         return saida
     
 if __name__ == '__main__':   
@@ -194,6 +196,7 @@ if __name__ == '__main__':
     
     statistics = list()
     statistics.append("media")
+    statistics.append("cv")
     
     parametrosIN["statistics"] = statistics
 
@@ -201,20 +204,8 @@ if __name__ == '__main__':
     resultados = ss.data
     
     imagens = resultados
-    #cv = resultados["imagem_cv"]
-    #sd = resultados["imagem_sd"]
-    
-    #imagens_lista = Dados.SerialData()
 
-    #imagens_lista.append(cv)
-    
-    #print (media)
-    #print (media.data)
-    
-    
-    #imagens_lista.data_metadata = media.data_metadata
-    
-    #imagens_lista.saveListLike1Image(imagens_lista, "C:\\Users\\Paloschi\\Desktop\\data\\Ajuste extrator de estatisticas\\saida\\", ext=".tif")
+
     
     imagens.saveListByRoot (root_path="C:\\Users\\Paloschi\\Desktop\\data\\Testes\\saida", ext="tif")
     #cv.saveImage("C:\\Users\\Paloschi\\Desktop\\data\\Ajuste extrator de estatisticas\\saida\\", ext=".tif")

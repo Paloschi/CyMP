@@ -8,6 +8,8 @@ from Modelo.Funcoes import AbstractFunction
 from Modelo.beans import SERIAL_FILE_DATA, TABLE_DATA, FILE_DATA, SerialFile
 from datetime import datetime
 import numpy as np
+import gdal
+progress = gdal.TermProgress_nocb
 
 class Etc(AbstractFunction):
     '''
