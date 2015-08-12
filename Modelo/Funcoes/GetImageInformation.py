@@ -6,6 +6,7 @@ Created on Mar 1, 2015
 
 import subprocess
 from Modelo.Funcoes import AbstractFunction
+from Modelo.beans import FILE_DATA
 
 class GetImgInfo(AbstractFunction):
     '''
@@ -16,7 +17,7 @@ class GetImgInfo(AbstractFunction):
     caption_xmax_xmin = 'Lower Right'
         
     def __setParamIN__(self):
-        self.descriptionIN["imagem"] = "uma imagem tif para coletar suas informacoes"
+        self.descriptionIN["imagem"] = {"Required":True, "Type":FILE_DATA, "Description":"uma imagem tif para coletar suas informacoes"}
         
     def __setParamOUT__(self):
         self.descriptionOUT["nx"] = "numero de colunas da imagem"  
