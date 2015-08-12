@@ -93,6 +93,4 @@ class FileData(ABData):
                     print "MOTIVO - Índices inconsistentes, erro ao escrever banda"
         except ValueError: 
             print "ERRO - Erro ao tentar criar arquivo, verificar a existencia do diretório informado"
-            
-        
 

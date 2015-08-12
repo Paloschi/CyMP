@@ -13,8 +13,23 @@ class GetShapeData(ABData):
     '''
     classdocs
     '''
+    def __init__(self, nome=None):
+        self.__data = None
+        self.data_name = nome
+        self.data_type = "operation"
+        
+    def getDataProperties(self):
+        dados = self.__data.data
+        
+        with fiona.open(dados, 'r') as shape:
+            
+            data_properties = shape.schema.copy()['properties']
+        
     
-    def __execOperation__(self):
+        return data_properties
+    
+    @property    
+    def data(self):
         dados = self.__data.data
         
         print("Lendo Shape...")
@@ -31,10 +46,13 @@ class GetShapeData(ABData):
                 i +=1
                 progress( i / total)
                 
-            data['properties'] = shape.schema.copy()['properties']
         data['table_data'] = data_values
         data['data_path'] = self.__data.data
         data['data_name'] = self.__data.data_name
         
         print('Leitura completada')   
         return data        
+
+    @data.setter
+    def data(self, data):
+        self.__data = data
