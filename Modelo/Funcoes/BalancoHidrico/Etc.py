@@ -5,10 +5,11 @@ Created on Jul 22, 2015
 @author: Paloschi
 '''
 from Modelo.Funcoes import AbstractFunction
-from Modelo.beans import SERIAL_FILE_DATA, TABLE_DATA, FILE_DATA, SerialFiles
+from Modelo.beans import SERIAL_FILE_DATA, TABLE_DATA, FILE_DATA, SerialFile
 from datetime import datetime
-import datetime
 import numpy as np
+import gdal
+progress = gdal.TermProgress_nocb
 
 class Etc(AbstractFunction):
     '''
@@ -82,8 +83,7 @@ class Etc(AbstractFunction):
                         
                 serie_etc_[i_etc][i_linha][i_coluna]
         
-        serie_etc = SerialFiles(data=serie_etc_)
-        
+        serie_etc = SerialFile(data=serie_etc_)     
         return serie_etc
     
     def Ds_DC_to_date(self, data):
@@ -100,7 +100,7 @@ class Etc(AbstractFunction):
         for key in kc_t.keys():
             fim = int(key.split("-")[-1])
             inicio = int(key.split("-")[0])
-            for dia in range(inicio, fim+1):
+            for _ in range(inicio, fim+1):
                 kc_v.append(kc_t[key])
         return kc_v
     

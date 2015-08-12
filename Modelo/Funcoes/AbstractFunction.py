@@ -78,9 +78,10 @@ class Function(ABData):
             else:
                 self.paramentrosIN_carregados[key] = params[key]      
             
-            if self.paramentrosIN_carregados[key]!=None:
-                if self.paramentrosIN_carregados[key].data_type != self.descriptionIN[key]["Type"] :
-                    raise Exception("Parametro incompativel: " + "")   
+            if self.paramentrosIN_carregados[key]!=None and self.descriptionIN[key]["Type"]!=None:
+                if self.paramentrosIN_carregados[key].data_type != None:
+                    if self.paramentrosIN_carregados[key].data_type != self.descriptionIN[key]["Type"]:
+                        raise Exception("Parametro incompativel: " + "")   
             
     @property    
     def data(self):

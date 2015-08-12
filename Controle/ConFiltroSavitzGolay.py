@@ -4,8 +4,8 @@ Created on Jun 10, 2015
 @author: Paloschi
 '''
 from PyQt4.QtGui import QFileDialog
-from Modelo.Funcoes import FiltroSavitzGolay
-from Modelo.beans import Dados
+from Modelo.Funcoes.Filtros import FiltroSavitzGolay
+from Modelo.beans import FileData, TableData
 from ctypes.wintypes import DOUBLE
 from numpy import double
 from PyQt4 import QtCore
@@ -38,7 +38,7 @@ class Controller(object):
         
     def action_ok(self):
         
-        self.filtro = FiltroSavitzGolay.FiltroSavitzGolay()
+        self.filtro = FiltroSavitzGolay()
         
         #self.executa(self.filtro)
 
@@ -89,8 +89,8 @@ class Controller(object):
         
     def carregarParamIN(self):
 
-        images = Dados.SERIAL_DATA()
-        parametrosIN = Dados.TABLE_DATA()
+        images = FileData()
+        parametrosIN = TableData()
         root_in = self.ui.leInFolder.text()
         root_in = _fromUtf8(str(root_in) + "\\")
         root_in = str(root_in).replace("\\", "/")
@@ -101,9 +101,13 @@ class Controller(object):
         print("numero de imagens: " + str(len(images)))
         
         parametrosIN["images"] = images
-        parametrosIN["window_size"] = Dados.FILE_DATA(data= self.ui.leWindowSize.text())
-        parametrosIN["order"] = Dados.FILE_DATA(data= self.ui.leOrdem.text())
-        if self.ui.checkBox.isChecked() : parametrosIN["null_value"] = Dados.FILE_DATA(data= self.ui.leNullValue.text())
-        else : parametrosIN["null_value"] = Dados.FILE_DATA(data= None)
+        
+        conf_algoritimo = dict()
+        conf_algoritimo["window_size"] = self.ui.leWindowSize.text()
+        conf_algoritimo["order"] = self.ui.leOrdem.text()
+        if self.ui.checkBox.isChecked() : conf_algoritimo["null_value"] = FileData(file_full_path = self.ui.leNullValue.text())
+        else : conf_algoritimo["null_value"] = FileData(data= None)
+        
+        self.descriptionIN["conf_algoritimo "] = conf_algoritimo
         
         return parametrosIN

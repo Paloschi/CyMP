@@ -5,10 +5,10 @@ Created on Jan 21, 2015
 @author: Paloschi
 '''
 
-from Modelo.beans import SerialFiles, TableData, FileData
-from gdal import TermProgress_nocb
+from Modelo.beans import SerialFile, TableData, FileData
+import gdal
+progress = gdal.TermProgress_nocb
 from Modelo.Funcoes import AbstractFunction
-from Modelo.Funcoes import GetImageInformation
 from lxml import etree
 
 class RasterToCSVeVRT(AbstractFunction):
@@ -28,24 +28,17 @@ class RasterToCSVeVRT(AbstractFunction):
         outFolder = self.paramentrosIN_carregados["out_folder"]
         nullValue = float(-128)
         
-        listaCSV = SerialFiles()
-        listaVRT = SerialFiles()
+        listaCSV = SerialFile()
+        listaVRT = SerialFile()
         
         print "numero de imagens" + str(imagensIN)
         
         for img in imagensIN :
+            
             matriz = img.loadData()
             nullValue = matriz[0][0]
-            endereco_completo = img.data
             nome_img = img.data_name
-            
-            paramIN = TableData()
-            paramIN["imagem"] = img
-            
-            getImgInfo = GetImageInformation.GetImgInfo()
-            abd = GetImageInformation.GetImgInfo()
-            abd.data = paramIN
-            info = getImgInfo.data
+            info = img.getRasterInformation()
             
             print (info)
     
@@ -61,7 +54,7 @@ class RasterToCSVeVRT(AbstractFunction):
             
             print("-Criando arquivos CSV para alimentar intorpolador")
         
-            progress = TermProgress_nocb   
+            progress = progress   
             progress(0.0)
         
             n_linhas = len(matriz)

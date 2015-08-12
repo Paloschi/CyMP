@@ -5,18 +5,16 @@ Created on Apr 8, 2015
 @author: Paloschi
 '''
 
-from Modelo.beans import TableData, FileData                               
+from Modelo.beans import TableData, FileData, SERIAL_FILE_DATA                         
 from numpy.core.numeric import array
 import gdal
 from Modelo.Funcoes import AbstractFunction
 progress = gdal.TermProgress_nocb   
-import matplotlib.pyplot as plt   
-import datetime
 from datetime import datetime as dt
-from datetime import date
+import numpy as np
 
 
-class ComparadorSemeaduraColheita(AbstractFunction):
+class ExtratorSemeaduraColheita(AbstractFunction):
     '''
     Essa função foi criada para extrair as datas de semeadura (primeiro low peak), colheita (segundo low peak) e pico
     
@@ -30,13 +28,14 @@ class ComparadorSemeaduraColheita(AbstractFunction):
     '''
 
     def __setParamIN__(self):
-        self.descriptionIN["images"] = "Série de imagens para procurar as datas"
-        self.descriptionIN["avanco_semeadura"] = "parametro para avanco de semeadura (Default: 0)"
-        self.descriptionIN["avanco_colheita"] = "parametro para avanco de colheita (Default: 0)"
-        self.descriptionIN["intervalo_semeadura"] = "intervalo para procura da data nas imagens ex.: 3-24"
-        self.descriptionIN["intervalo_pico"] = "intervalo para procura da data nas imagens ex.: 3-24"
-        self.descriptionIN["intervalo_colheita"] = "intervalo para procura da data nas imagens ex.: 3-24"
-        self.descriptionIN["null_value"] = "valor nulo a ser ignorado"
+        self.descriptionIN["images"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens para procurar as datas"}
+        
+        self.descriptionIN["avanco_semeadura"] = {"Required":False, "Type":None, "Description":"parametro para avanco de semeadura (Default: 0)"}
+        self.descriptionIN["avanco_colheita"] = {"Required":False, "Type":None, "Description":"parametro para avanco de colheita (Default: 0)"}
+        self.descriptionIN["intervalo_semeadura"] = {"Required":True, "Type":None, "Description":"intervalo para procura da data nas imagens ex.: 3-24"}
+        self.descriptionIN["intervalo_pico"] = {"Required":True, "Type":None, "Description":"intervalo para procura da data nas imagens ex.: 3-24"}
+        self.descriptionIN["intervalo_colheita"] = {"Required":True, "Type":None, "Description":"intervalo para procura da data nas imagens ex.: 3-24"}
+        self.descriptionIN["null_value"] = {"Required":False, "Type":None, "Description":"valor nulo a ser ignorado"}
         #self.descriptionIN["progress_bar"] = "barra de progresso"
      
     def __setParamOUT__(self):
@@ -67,6 +66,7 @@ class ComparadorSemeaduraColheita(AbstractFunction):
         
         images = images_super.loadData()
         
+        n_images = len(images)
         n_linhas = len(images[0])
         n_colunas = len(images[0][0])
         
@@ -76,7 +76,7 @@ class ComparadorSemeaduraColheita(AbstractFunction):
         if(images[0][0][0] == nullValue) : print("null value igual") 
         else : print("diferente")
         
-        imagem_referencia = [[0 for x in range(n_colunas)] for x in range(n_linhas)]  
+        imagem_referencia = np.zeros((n_images, n_linhas, n_colunas,))
         
         imagem_semeadura = array(imagem_referencia)#.astype(dtype="int16")
         imagem_colheita = array(imagem_referencia)#.astype(dtype="int16")
@@ -91,16 +91,14 @@ class ComparadorSemeaduraColheita(AbstractFunction):
             #if i_linhas/float(n_linhas) > 0.05 : break
             for i_coluna in range(0, n_colunas):
                 line = list()
-
-                if nullValue == images[1][i_linhas][i_coluna] :
-                    imagem_semeadura[i_linhas][i_coluna] = 0
                     
-                else:              
+                if nullValue != images[1][i_linhas][i_coluna] :
+                            
                     for img in images:
                         line.append(img[i_linhas][i_coluna])
                     
-                    pico = self.findPeakHelper(line, int(intervalo_pico[0]), int(intervalo_pico[1])) # 3 - 23
-                    data_txt = images_super[pico].data_name.replace(prefix, "").replace(sufix, "") 
+                    cenaPico = self.findPeakHelper(line, int(intervalo_pico[0]), int(intervalo_pico[1])) # 3 - 23
+                    data_txt = images_super[cenaPico].data_name.replace(prefix, "").replace(sufix, "") 
                     ano = dt.strptime(data_txt, mask).year
                     dia_juliano = dt.strptime(data_txt, mask).timetuple().tm_yday       
                     imagem_pico[i_linhas][i_coluna] = ((ano * 1000) + dia_juliano)
@@ -108,7 +106,11 @@ class ComparadorSemeaduraColheita(AbstractFunction):
                     cenaSemeadura = self.findLowPeakHelper(line, int(intervalo_semeadura[0]), int(intervalo_semeadura[1])) # 6 - 23
                     cenaColheita = self.findLowPeakHelper(line, int(intervalo_colheita[0]), int(intervalo_colheita[1])) # 11 - 34
                     
-                    #plt.plot([pico], [line[pico]], "yo")
+                    picoMenosSemeadura = cenaPico - cenaSemeadura
+                    ColheitaMenosPico = cenaColheita - cenaPico
+                    
+                    cenaSemeadura += picoMenosSemeadura * avanco_semeadura
+                    cenaColheita += ColheitaMenosPico * avanco_semeadura
                     
                     data_txt = images_super[cenaSemeadura].data_name.replace(prefix, "").replace(sufix, "") 
                     ano = dt.strptime(data_txt, mask).year
@@ -136,7 +138,7 @@ class ComparadorSemeaduraColheita(AbstractFunction):
         
         imagem_pico = FileData(data=imagem_pico)
         imagem_pico.data_metadata = images_super[0].data_metadata
-        imagem_pico.data_name = "pico"
+        imagem_pico.data_name = "cenaPico"
         
         saida["imagem_semeadura"] = imagem_semeadura
         saida["imagem_colheita"] = imagem_colheita
@@ -187,34 +189,6 @@ class ComparadorSemeaduraColheita(AbstractFunction):
         else:
             valor = vetor[int(cena)]
         return valor
-
-    
-#line = ComparadorSemeaduraColheita()
-
-#root_ = "C:\\Users\\Paloschi\\Desktop\\data\\AjusteModeloDSDC\\3.EVI_Flat_Propriedades_SavitsGolay\\"
-#images = Dados.SerialData()
-
-#images.loadListByRoot(root_, "tif")
-
-#parametrosIN = Dados.TableData()
-
-#parametrosIN["images"] = images
-#parametrosIN["avanco_semeadura"] = Dados.SimpleData(data=0)
-#parametrosIN["avanco_colheita"] = Dados.SimpleData(data=0)
-#parametrosIN["intervalo_pico"] = Dados.SimpleData(data="8-22")
-#parametrosIN["intervalo_semeadura"] = Dados.SimpleData(data="0-14")
-#parametrosIN["intervalo_colheita"] = Dados.SimpleData(data="14-27")
-
-#line.data = parametrosIN
-#imagens = line.data
-
-#semeadura = imagens["imagem_semeadura"]
-#colheita = imagens["imagem_colheita"]
-#pico = imagens["imagem_pico"]
-
-#semeadura.saveImage("C:\\Users\\Paloschi\\Desktop\\data\\AjusteModeloDSDC\\4.ImagensLowEpico\\", ext=".tif")
-#colheita.saveImage("C:\\Users\\Paloschi\\Desktop\\data\\AjusteModeloDSDC\\4.ImagensLowEpico\\", ext=".tif")
-#pico.saveImage("C:\\Users\\Paloschi\\Desktop\\data\\AjusteModeloDSDC\\4.ImagensLowEpico\\", ext=".tif")
 
 
 

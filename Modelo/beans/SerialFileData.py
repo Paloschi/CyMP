@@ -6,15 +6,14 @@ Created on Jul 16, 2015
 '''
 
 from AbstractData import ABData, SERIAL_FILE_DATA
-from FileData import FileData
+from Modelo.beans import RasterFile
 import os
 import gdal
 progress = gdal.TermProgress_nocb
 import rasterio
 import sys
-import logging as log
 
-class SerialFiles(ABData, list):
+class SerialFile(ABData, list):
     '''
         Por default le somente tif e img
         A menos que uma classe especifica precise de outros arquivos
@@ -44,14 +43,15 @@ class SerialFiles(ABData, list):
             Abre uma lista de mapas localizados em uma determinada pasta
         ''' 
         
-        print "Identifidando arquivos"
         
         if rootDir != None : self.root_path = rootDir
         if filtro != None : self.root_filter = filtro
         
+        print("endereco das imagens: ", self.root_path)
+        
         for a, b, files in os.walk(self.root_path):
             for f in files:
-                f = FileData(file_full_path = self.root_path + "\\" + f)  
+                f = RasterFile(file_full_path = self.root_path + "\\" + f)  
                 if(self.root_filter==None):
                     self.append(f)
                 else:
@@ -104,7 +104,9 @@ class SerialFiles(ABData, list):
         for i in range(0, n_images): 
             if sufixo != None : self[i].file_name = self[i].file_name + sufixo
             if ext != None : self[i].file_ext = ext
-            self[i].saveRasterData(images_bands_matrix[i])
+            if root_path != None : self[i].file_path = root_path
+            
+            self[i].saveRasterData(images_bands_matrix[i], metadata= self.metadata)
             progress( i+1 / float(n_images)) 
 
     def saveListLike1Image(self, name=None, images_bands_matrix=None, root_path=None, ext=None):

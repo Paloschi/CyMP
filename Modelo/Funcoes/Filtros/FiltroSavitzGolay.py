@@ -10,12 +10,12 @@ from Modelo.Funcoes import AbstractFunction
 from numpy.core.numeric import array
 progress = gdal.TermProgress_nocb    
 import numpy as np
-from Modelo.beans import TableData, SERIAL_FILE_DATA, TABLE_DATA, SerialFiles
+from Modelo.beans import TableData, SERIAL_FILE_DATA, TABLE_DATA, SerialFile
 import sys
 import logging as log
 
 
-class Filtro(AbstractFunction):
+class FiltroSavitz(AbstractFunction):
     '''
     Essa classe representa um filtro que filtra uma serie de imagens com o SavitzGolay
     '''
@@ -76,8 +76,8 @@ class Filtro(AbstractFunction):
                 i_coluna=0
                 i_linha+=1
         
-        img_saida = SerialFiles()
-        img_saida.data = results
+        img_saida = SerialFile(data = results)
+        
         img_saida.metadata = images.metadata
         
         saida = TableData()
