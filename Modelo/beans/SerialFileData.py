@@ -55,7 +55,7 @@ class SerialFile(ABData, list):
                 if(self.root_filter==None):
                     self.append(f)
                 else:
-                    if(f.file_ext in self.root_filter):
+                    if( f.file_ext in self.root_filter):
                         self.append(f)
                         
         return self 

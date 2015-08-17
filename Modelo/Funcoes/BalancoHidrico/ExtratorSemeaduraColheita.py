@@ -21,9 +21,10 @@ class ExtratorSemeaduraColheita(AbstractFunction):
     ela pode ser configurada pra procurar os picos e os picos inferiores em intervalos especificos que são equivalentes ao �ndice da imagem 
     na série de imagens
     
-    também pode ser passado como parametro determinados avan�o que s�o relativos em porcentagem com a resolução temporal das imagems
+    também pode ser passado como parametro determinados avanço que são relativos em porcentagem com a distancia ente o pico
     
-    ex.: se o pico se dá na imagem 8 e colocar um avanço na data de colheita de -0,50 será feito 8 - 0,50 = 7,5, a data de colheita para esse pixel será 7,5 imagens
+    ex.: se o pico se dá na imagem 8, a colheita na imagem 4 e colocar um avanço na data de colheita de 10% será feito (8 - 4) * 1,10 = 4.4,
+         a data de colheita para esse pixel será a data equivalente a 4,4 imagens
     
     '''
 
@@ -36,7 +37,6 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         self.descriptionIN["intervalo_pico"] = {"Required":True, "Type":None, "Description":"intervalo para procura da data nas imagens ex.: 3-24"}
         self.descriptionIN["intervalo_colheita"] = {"Required":True, "Type":None, "Description":"intervalo para procura da data nas imagens ex.: 3-24"}
         self.descriptionIN["null_value"] = {"Required":False, "Type":None, "Description":"valor nulo a ser ignorado"}
-        #self.descriptionIN["progress_bar"] = "barra de progresso"
      
     def __setParamOUT__(self):
         self.descriptionOUT["imagem_semeadura"] = "imagem com as datas de semeadura" 
@@ -52,7 +52,9 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         
         images_super = self.brutedata["images"]
         avanco_semeadura = self.paramentrosIN_carregados["avanco_semeadura"]
+        avanco_semeadura = avanco_semeadura / 100 + 1
         avanco_colheita = self.paramentrosIN_carregados["avanco_colheita"]
+        avanco_colheita = avanco_colheita / 100 + 1
         
         intervalo_semeadura = self.paramentrosIN_carregados["intervalo_semeadura"]
         intervalo_pico = self.paramentrosIN_carregados["intervalo_pico"]
@@ -99,9 +101,10 @@ class ExtratorSemeaduraColheita(AbstractFunction):
                     
                     cenaPico = self.findPeakHelper(line, int(intervalo_pico[0]), int(intervalo_pico[1])) # 3 - 23
                     data_txt = images_super[cenaPico].data_name.replace(prefix, "").replace(sufix, "") 
-                    ano = dt.strptime(data_txt, mask).year
-                    dia_juliano = dt.strptime(data_txt, mask).timetuple().tm_yday       
-                    imagem_pico[i_linhas][i_coluna] = ((ano * 1000) + dia_juliano)
+                    data_pico = dt.strptime(data_txt, mask).year
+                    dia_juliano = dt.strptime(data_txt, mask).timetuple().tm_yday  
+                    
+                    imagem_pico[i_linhas][i_coluna] = ((data_pico * 1000) + dia_juliano)
                       
                     cenaSemeadura = self.findLowPeakHelper(line, int(intervalo_semeadura[0]), int(intervalo_semeadura[1])) # 6 - 23
                     cenaColheita = self.findLowPeakHelper(line, int(intervalo_colheita[0]), int(intervalo_colheita[1])) # 11 - 34
@@ -113,15 +116,15 @@ class ExtratorSemeaduraColheita(AbstractFunction):
                     cenaColheita += ColheitaMenosPico * avanco_semeadura
                     
                     data_txt = images_super[cenaSemeadura].data_name.replace(prefix, "").replace(sufix, "") 
-                    ano = dt.strptime(data_txt, mask).year
+                    data_semeadura = dt.strptime(data_txt, mask).year
                     dia_juliano = dt.strptime(data_txt, mask).timetuple().tm_yday 
-                    imagem_semeadura[i_linhas][i_coluna] = ((ano * 1000) + dia_juliano)
-            
+                    imagem_semeadura[i_linhas][i_coluna] = ((data_semeadura * 1000) + dia_juliano)
             
                     data_txt = images_super[cenaColheita].data_name.replace(prefix, "").replace(sufix, "") 
-                    ano = dt.strptime(data_txt, mask).year
+                    data_colheita = dt.strptime(data_txt, mask).year
+                    
                     dia_juliano = dt.strptime(data_txt, mask).timetuple().tm_yday 
-                    imagem_colheita[i_linhas][i_coluna] = ((ano * 1000) + dia_juliano)
+                    imagem_colheita[i_linhas][i_coluna] = ((data_colheita * 1000) + dia_juliano)
                     
                     #plt.plot(line)
                       

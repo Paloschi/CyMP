@@ -45,7 +45,8 @@ class RasterFile(FileData):
         if band_matrix != None : self.data = self.data
         if metadata != None : self.metadata = metadata
         
-        self.metadata.update(dtype=self.data.dtype) 
+        #self.metadata.update(dtype=self.data.dtype) 
+        self.metadata.update(count=1) 
 
         
         try: 
@@ -62,7 +63,7 @@ class RasterFile(FileData):
 
             with rasterio.open(path = self.file_full_path, mode = 'w', **self.metadata) as dst:
                 try:
-                    dst.write_band(1, self.data)
+                    dst.write(self.data, 1)
                 except ValueError, e: 
                     print str(e)
                     print "ERRO - Erro ao tentar salvar a imagem: ", self.file_full_path

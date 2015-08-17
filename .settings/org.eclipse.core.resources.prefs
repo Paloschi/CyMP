@@ -8,6 +8,7 @@ encoding//Modelo/Funcoes/BalancoHidrico/ExtratorSemeaduraColheita.py=utf-8
 encoding//Modelo/Funcoes/Estatisticos/ComparadorDatasSemeaduraColheita.py=utf-8
 encoding//Modelo/Funcoes/Estatisticos/StatisticalStractor.py=utf-8
 encoding//Modelo/Funcoes/Filtros/FiltroSavitzGolay.py=utf-8
+encoding//Modelo/Funcoes/IndicesVegetativos/EVI2.py=utf-8
 encoding//Modelo/Funcoes/Interpoladores/InterpoladorIDW.py=utf-8
 encoding//Modelo/Funcoes/RasterTools/RasterToCSVeVRT.py=utf-8
 encoding//Modelo/Funcoes/__init__.py=utf-8

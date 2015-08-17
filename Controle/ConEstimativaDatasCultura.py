@@ -97,6 +97,5 @@ class Controller(object):
         parametrosIN["intervalo_colheita"] = FileData(file_full_path= self.ui.lePColheita.text())
         parametrosIN["null_value"] = FileData(file_full_path= self.ui.leNullValue.text())
 
-        
         return parametrosIN
     

@@ -50,10 +50,15 @@ class SpectreStatisticalStractor(AbstractFunction):
         images = images_super.loadListRasterData()
         
         print("Numero de imagens lidas: " + str(len(images)))
-
+        
         n_linhas = len(images[0])
         n_colunas = len(images[0][0])
         
+        for img in images:
+            if len(img) != n_linhas or len(img[0]) != n_colunas:
+                raise IndexError("Erro - As imagens precisam ter o mesmo número de linhas e colunas")
+                
+                
         print("numero de colunas e linhas: " + str(n_linhas) + " : " + str(n_colunas))
         
         #imagem_referencia = [[0 for x in range(n_colunas)] for x in range(n_linhas)]  
