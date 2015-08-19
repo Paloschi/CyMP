@@ -148,8 +148,8 @@ class Ui_DlgSavitzGolay(QtGui.QDialog):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("DlgEstimativaDatasAgricolas", "Dados de saída", None))
         
         
-        self.leInFolder.setText("C:\\Users\\Paloschi\\Desktop\\data\\Rasters\\TesteFiltro\\entrada_pesada")
-        self.leOutFolder.setText("C:\\Users\\Paloschi\\Desktop\\data\\Rasters\\TesteFiltro\\saida")
+        self.leInFolder.setText("C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster")
+        self.leOutFolder.setText("C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\saidasTestesGerais")
         
         self.checkBox.clicked.connect(self.controller.actionCheckBox)
         self.toolbFindInFolder.clicked.connect(self.controller.findInFolder)

@@ -4,8 +4,8 @@ Created on Jun 10, 2015
 @author: Paloschi
 '''
 from PyQt4.QtGui import QFileDialog
-from Modelo.Funcoes.Filtros import FiltroSavitzGolay
-from Modelo.beans import FileData, TableData
+from Modelo.Funcoes.Filtros import FiltroSavitz
+from Modelo.beans import FileData, TableData, SerialFile
 from ctypes.wintypes import DOUBLE
 from numpy import double
 from PyQt4 import QtCore
@@ -38,7 +38,7 @@ class Controller(object):
         
     def action_ok(self):
         
-        self.filtro = FiltroSavitzGolay()
+        self.filtro = FiltroSavitz()
         
         #self.executa(self.filtro)
 
@@ -89,7 +89,7 @@ class Controller(object):
         
     def carregarParamIN(self):
 
-        images = FileData()
+        images = SerialFile()
         parametrosIN = TableData()
         root_in = self.ui.leInFolder.text()
         root_in = _fromUtf8(str(root_in) + "\\")
@@ -102,12 +102,12 @@ class Controller(object):
         
         parametrosIN["images"] = images
         
-        conf_algoritimo = dict()
+        conf_algoritimo = TableData()
         conf_algoritimo["window_size"] = self.ui.leWindowSize.text()
         conf_algoritimo["order"] = self.ui.leOrdem.text()
         if self.ui.checkBox.isChecked() : conf_algoritimo["null_value"] = FileData(file_full_path = self.ui.leNullValue.text())
         else : conf_algoritimo["null_value"] = FileData(data= None)
         
-        self.descriptionIN["conf_algoritimo "] = conf_algoritimo
+        parametrosIN["conf_algoritimo "] = conf_algoritimo
         
         return parametrosIN

@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//Controle/AbstractController.py=utf-8
 encoding//Controle/ConEstatisticasEspectrais.py=utf-8
+encoding//Controle/ConEstimativaDatasCultura.py=utf-8
 encoding//Controle/__init__.py=utf-8
 encoding//Modelo/Funcoes/AbstractFunction.py=utf-8
 encoding//Modelo/Funcoes/BalancoHidrico/Etc.py=utf-8

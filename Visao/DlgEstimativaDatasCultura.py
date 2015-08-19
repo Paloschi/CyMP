@@ -8,7 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-from Controle import ConEstimativaDatasCultura
+from Controle.ConEstimativaDatasCultura import Controller
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -27,7 +27,7 @@ except AttributeError:
 class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
     def setupUi(self, DlgEstimativaDatasAgricolas):
         
-        self.controller = ConEstimativaDatasCultura.Controller(self);
+        self.controller = Controller(self);
         
         DlgEstimativaDatasAgricolas.setObjectName(_fromUtf8("DlgEstimativaDatasAgricolas"))
         DlgEstimativaDatasAgricolas.setWindowModality(QtCore.Qt.WindowModal)
@@ -259,9 +259,9 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.label_10.setText(_translate("DlgEstimativaDatasAgricolas", "Posição Colheita:", None))
         self.label_3.setText(_translate("DlgEstimativaDatasAgricolas", "Avanço semeadura (dias):", None))
         self.label_9.setText(_translate("DlgEstimativaDatasAgricolas", "Posição Semeadura:", None))
-        self.lePSemeadura.setText(_translate("DlgEstimativaDatasAgricolas", "0-14", None))
-        self.lePPico.setText(_translate("DlgEstimativaDatasAgricolas", "8-22", None))
-        self.lePColheita.setText(_translate("DlgEstimativaDatasAgricolas", "14-27", None))
+        self.lePSemeadura.setText(_translate("DlgEstimativaDatasAgricolas", "0-5", None))
+        self.lePPico.setText(_translate("DlgEstimativaDatasAgricolas", "4-9", None))
+        self.lePColheita.setText(_translate("DlgEstimativaDatasAgricolas", "8-11", None))
         self.label_14.setText(_translate("DlgEstimativaDatasAgricolas", "Valor Nulo:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("DlgEstimativaDatasAgricolas", "Configuração", None))
         self.label_12.setText(_translate("DlgEstimativaDatasAgricolas", "Nome imagem de pico:", None))
@@ -274,11 +274,11 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.leImgColheita.setText("colheita")
         self.leImgPico.setText("pico")
         self.leImgSemeadura.setText("semeadura")
-        self.lePrefixo.setText("_FiltroSavitsGolayMODMYD13Q1.")
-        self.leSufixo.setText(".250m_16_dias_EVI_PR.tif_EbM")
+        self.lePrefixo.setText("MYD13Q1.")
+        self.leSufixo.setText(".250m_16_dias_EVI_PR")
         self.leNullValue.setText("0")
-        self.leInFolder.setText("C:\\Users\\Paloschi\\Desktop\\data\\AjusteModeloDSDC\\3.EVI_Flat_Propriedades_SavitsGolay")
-        self.leOutFolder.setText("C:\\Users\\Paloschi\\Desktop\\data\\AjusteModeloDSDC\\5.Saida_testeUI")
+        self.leInFolder.setText("C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster")
+        self.leOutFolder.setText("C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\saidasTestesGerais")
         
         self.toolbFindInFolder.clicked.connect(self.controller.findInFolder)
         self.toolbFindOutFolder.clicked.connect(self.controller.findOutFolder)

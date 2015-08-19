@@ -129,7 +129,7 @@ class Controller(object):
     @abstractmethod
     def valida_form(self):
         '''
-        Esse método temque existir nas classes controladoras
+        Esse método tem que existir nas classes controladoras
         aqui serão feitas todas as validações do form    
         '''
     @abstractmethod

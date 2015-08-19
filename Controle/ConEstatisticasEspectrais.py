@@ -59,3 +59,4 @@ class Controller(AbstractController.Controller):
             self.message(u"Selecione pelo menos uma opção na aba Configuração")
             return False
         return True
+    

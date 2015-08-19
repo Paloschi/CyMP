@@ -58,8 +58,10 @@ class RasterFile(FileData):
             if self.file_ext == "tif" : self.metadata.update(driver="GTiff") 
             elif self.file_ext == "img" : self.metadata.update(driver="HFA") 
             
-            print(metadata)
-            print(len(self.data), len(self.data[0]))
+            self.metadata.update(dtype=self.data.dtype)
+            
+            #print(metadata)
+            #print(len(self.data), len(self.data[0]))
 
             with rasterio.open(path = self.file_full_path, mode = 'w', **self.metadata) as dst:
                 try:
