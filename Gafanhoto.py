@@ -8,16 +8,20 @@ from Visao import TelaPrincipal
 
 if __name__ == '__main__':
     import sys
+    import ctypes
+    myappid = 'mycompany.myproduct.subproduct.version' # arbitrary string
+    
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
     app = QtGui.QApplication(sys.argv)
     
-    app_icon = QtGui.QIcon()
-    app_icon.addFile('img/favicon.ico')
-    app.setWindowIcon(app_icon)
 
-    #controller = InterpoladorECMWF_Demo_Controller.InterpoladorECMWF_Demo_Controller()
+    
+    app.setWindowIcon(QtGui.QIcon('images/icons/icon_trator.png'))
+    #app_icon = QtGui.QIcon()
+    #app_icon.addFile('images/icons/icon_trator.png')
+    #app.setWindowIcon(app_icon)
 
     ex = TelaPrincipal.Ui_MainWindow()
-    #controller.form = ex
     
     ex.show()
     sys.exit(app.exec_())
