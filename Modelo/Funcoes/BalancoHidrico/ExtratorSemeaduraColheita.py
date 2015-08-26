@@ -5,13 +5,14 @@ Created on Apr 8, 2015
 @author: Paloschi
 '''
 
-from Modelo.beans import TableData, FileData, SERIAL_FILE_DATA                         
+from Modelo.beans import TableData, SERIAL_FILE_DATA, RasterData                         
 from numpy.core.numeric import array
 import gdal
 from Modelo.Funcoes import AbstractFunction
 progress = gdal.TermProgress_nocb   
 from datetime import datetime as dt
 import numpy as np
+import sys
 
 
 class ExtratorSemeaduraColheita(AbstractFunction):
@@ -36,6 +37,9 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         self.descriptionIN["intervalo_semeadura"] = {"Required":True, "Type":None, "Description":"intervalo para procura da data nas imagens ex.: 3-24"}
         self.descriptionIN["intervalo_pico"] = {"Required":True, "Type":None, "Description":"intervalo para procura da data nas imagens ex.: 3-24"}
         self.descriptionIN["intervalo_colheita"] = {"Required":True, "Type":None, "Description":"intervalo para procura da data nas imagens ex.: 3-24"}
+        self.descriptionIN["mask"] = {"Required":True, "Type":None, "Description":"Mascara usada para identificar a data de cada imagem ex.: %YY%mm%dd"}
+        self.descriptionIN["prefixo"] = {"Required":True, "Type":None, "Description":"Prefixo usado antes da data no nome da imagem"}
+        self.descriptionIN["sufixo"] = {"Required":True, "Type":None, "Description":"Sufixo usado depois da data no nome da imagem"}
         self.descriptionIN["null_value"] = {"Required":False, "Type":None, "Description":"valor nulo a ser ignorado"}
      
     def __setParamOUT__(self):
@@ -45,12 +49,12 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         
     def __execOperation__(self):
         
-        prefix = "_FiltroSavitsGolayMODMYD13Q1."
-        sufix = ".250m_16_dias_EVI_PR_EbM"
+        prefix = self.paramentrosIN_carregados["prefixo"]
+        sufix = self.paramentrosIN_carregados["sufixo"]
         
-        mask =  "%Y%m%d"
+        mask =  self.paramentrosIN_carregados["mask"]
         
-        images_super = self.brutedata["images"]
+        images_super = self.paramentrosIN_carregados["images"]
         avanco_semeadura = self.paramentrosIN_carregados["avanco_semeadura"]
         avanco_semeadura = avanco_semeadura / 100 + 1
         avanco_colheita = self.paramentrosIN_carregados["avanco_colheita"]
@@ -66,7 +70,10 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         intervalo_pico = intervalo_pico.split("-")
         intervalo_colheita = intervalo_colheita.split("-")
         
-        images = images_super.loadData()
+        images = images_super.loadListRasterData()
+        
+        if images==None:
+            raise Exception("A funcao necessita de uma serie de imagens para funcionar")
         
         n_images = len(images)
         n_linhas = len(images[0])
@@ -75,16 +82,20 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         #nullValue = images[0][0][0]
         nullValue = float(self.paramentrosIN_carregados["null_value"])
         
-        if(images[0][0][0] == nullValue) : print("null value igual") 
-        else : print("diferente")
+
+        #if(images[0][0][0] == nullValue) : print("null value igual") 
+        #else : print("diferente")
         
-        imagem_referencia = np.zeros((n_images, n_linhas, n_colunas,))
+        sys.stdout.write( "Criando imagens de referencia: ")
+        imagem_referencia = np.zeros((n_linhas, n_colunas))
         
         imagem_semeadura = array(imagem_referencia)#.astype(dtype="int16")
         imagem_colheita = array(imagem_referencia)#.astype(dtype="int16")
         imagem_pico = array(imagem_referencia)#.astype(dtype="int16")
+        print "done."
         
-        progress( 0.0)
+        sys.stdout.write( "Gerando estimativas: ")
+        progress(0.0)
         
         for i_linhas in range(0, n_linhas):
             progress(i_linhas/float(n_linhas))
@@ -100,7 +111,7 @@ class ExtratorSemeaduraColheita(AbstractFunction):
                         line.append(img[i_linhas][i_coluna])
                     
                     cenaPico = self.findPeakHelper(line, int(intervalo_pico[0]), int(intervalo_pico[1])) # 3 - 23
-                    data_txt = images_super[cenaPico].data_name.replace(prefix, "").replace(sufix, "") 
+                    data_txt = images_super[cenaPico].file_name.replace(prefix, "").replace(sufix, "") 
                     data_pico = dt.strptime(data_txt, mask).year
                     dia_juliano = dt.strptime(data_txt, mask).timetuple().tm_yday  
                     
@@ -109,20 +120,21 @@ class ExtratorSemeaduraColheita(AbstractFunction):
                     cenaSemeadura = self.findLowPeakHelper(line, int(intervalo_semeadura[0]), int(intervalo_semeadura[1])) # 6 - 23
                     cenaColheita = self.findLowPeakHelper(line, int(intervalo_colheita[0]), int(intervalo_colheita[1])) # 11 - 34
                     
-                    picoMenosSemeadura = cenaPico - cenaSemeadura
-                    ColheitaMenosPico = cenaColheita - cenaPico
-                    
-                    cenaSemeadura += picoMenosSemeadura * avanco_semeadura
-                    cenaColheita += ColheitaMenosPico * avanco_semeadura
-                    
-                    data_txt = images_super[cenaSemeadura].data_name.replace(prefix, "").replace(sufix, "") 
+                    data_txt = images_super[cenaSemeadura].file_name.replace(prefix, "").replace(sufix, "") 
                     data_semeadura = dt.strptime(data_txt, mask).year
+                                   
+                    data_txt = images_super[cenaColheita].file_name.replace(prefix, "").replace(sufix, "") 
+                    data_colheita = dt.strptime(data_txt, mask).year
+                    
+                    picoMenosSemeadura = data_pico - data_semeadura
+                    ColheitaMenosPico = data_colheita - data_pico
+                    
+                    data_semeadura += picoMenosSemeadura * avanco_semeadura
+                    data_colheita += ColheitaMenosPico * avanco_semeadura
+                                        
                     dia_juliano = dt.strptime(data_txt, mask).timetuple().tm_yday 
                     imagem_semeadura[i_linhas][i_coluna] = ((data_semeadura * 1000) + dia_juliano)
             
-                    data_txt = images_super[cenaColheita].data_name.replace(prefix, "").replace(sufix, "") 
-                    data_colheita = dt.strptime(data_txt, mask).year
-                    
                     dia_juliano = dt.strptime(data_txt, mask).timetuple().tm_yday 
                     imagem_colheita[i_linhas][i_coluna] = ((data_colheita * 1000) + dia_juliano)
                     
@@ -131,15 +143,15 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         #plt.show()
         
         saida = TableData()
-        imagem_semeadura = FileData(data=imagem_semeadura)
+        imagem_semeadura = RasterData(data=imagem_semeadura)
         imagem_semeadura.data_metadata = images_super[0].data_metadata
         imagem_semeadura.data_name = "semeadura"
         
-        imagem_colheita = FileData(data=imagem_colheita)
+        imagem_colheita = RasterData(data=imagem_colheita)
         imagem_colheita.data_metadata = images_super[0].data_metadata
         imagem_colheita.data_name = "colheita"
         
-        imagem_pico = FileData(data=imagem_pico)
+        imagem_pico = RasterData(data=imagem_pico)
         imagem_pico.data_metadata = images_super[0].data_metadata
         imagem_pico.data_name = "cenaPico"
         

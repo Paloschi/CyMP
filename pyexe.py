@@ -11,8 +11,10 @@ print(matplotlib.get_configdir())
 from distutils.core import setup
 import py2exe
 
+Mydata_files = [('images', ['images/icons/icon_trator.png'])]
+
 setup(
-    data_files= matplotlib.get_py2exe_datafiles(),
+    data_files= (matplotlib.get_py2exe_datafiles().append("workspace.properties")),
     options = {
             
             "py2exe":{

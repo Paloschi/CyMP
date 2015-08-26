@@ -79,11 +79,17 @@ class SerialFile(ABData, list):
         for f in self:
             files.append(f.loadRasterData())
             n_iteracoes+=1
-            progress( n_iteracoes / float(n_files))  
-            
-        self.metadata = self[0].metadata
+            progress( n_iteracoes / float(n_files))
         
-        return files
+         
+        
+        if len(self)!=0:
+            progress( float(1)) 
+            self.metadata = self[0].metadata
+            return files
+        else:
+            print "nenhuma imagem caregada"
+            return None
         
     def saveListByRoot(self, images_bands_matrix=None, root_path=None, ext=None, sufixo=None):
         

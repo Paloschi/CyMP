@@ -4,9 +4,9 @@ Created on Jun 10, 2015
 
 @author: Paloschi
 '''
-from PyQt4.QtGui import QFileDialog
+
 from Modelo.Funcoes.BalancoHidrico import ExtratorSemeaduraColheita
-from Modelo.beans import FileData, SerialFile, TableData
+from Modelo.beans import SerialFile, TableData
 from PyQt4 import QtCore
 from Controle import AbstractController
 from numpy import double
@@ -29,42 +29,34 @@ class Controller(AbstractController.Controller):
         
         extractor = ExtratorSemeaduraColheita()
         
-        root_out = self.ui.leOutFolder.text()
-        
-        extractor.data = self.carregarParamIN()
-        
-        imagens = extractor.data
-        
-        semeadura = imagens["imagem_semeadura"]
-        semeadura.data_name = self.ui.leImgSemeadura.text()
-        colheita = imagens["imagem_colheita"]
-        colheita.data_name = self.ui.leImgColheita.text()
-        pico = imagens["imagem_pico"]
-        pico.data_name = self.ui.leImgPico.text()
-        
-        semeadura.saveImage(root_out, ext=".tif")
-        colheita.saveImage(root_out, ext=".tif")
-        pico.saveImage(root_out, ext=".tif")
-        
-        
-    def carregarParamIN(self):
-
+        root_out = str(self.ui.leOutFolder.text())
+        root_in = str(self.ui.leInFolder.text())
         
         parametrosIN = TableData()
-        
-        root_in = self.ui.leInFolder.text()
-        
         images = SerialFile(root_path=root_in)
-        
         parametrosIN["images"] = images
         parametrosIN["avanco_semeadura"] = double(self.ui.dspASemeadura.value())
         parametrosIN["avanco_colheita"] = double(self.ui.dsbAColheita.value())
-        parametrosIN["intervalo_pico"] = self.ui.lePPico.text()
-        parametrosIN["intervalo_semeadura"] = self.ui.lePSemeadura.text()
-        parametrosIN["intervalo_colheita"] = self.ui.lePColheita.text()
+        parametrosIN["intervalo_pico"] = str(self.ui.lePPico.text())
+        parametrosIN["intervalo_semeadura"] = str(self.ui.lePSemeadura.text())
+        parametrosIN["intervalo_colheita"] = str(self.ui.lePColheita.text())
         parametrosIN["null_value"] = double(self.ui.leNullValue.text())
-
-        return parametrosIN
+        parametrosIN["prefixo"] = str(self.ui.lePrefixo.text())
+        parametrosIN["sufixo"] = str(self.ui.leSufixo.text())
+        parametrosIN["mask"] = str(self.ui.leMascara.text())
+        
+        images = extractor.executar(parametrosIN)
+        
+        semeadura = images["imagem_semeadura"]
+        semeadura.data_name = self.ui.leImgSemeadura.text()
+        colheita = images["imagem_colheita"]
+        colheita.data_name = self.ui.leImgColheita.text()
+        pico = images["imagem_pico"]
+        pico.data_name = self.ui.leImgPico.text()
+        
+        semeadura.saveImage(root_out, ext="tif")
+        colheita.saveImage(root_out, ext="tif")
+        pico.saveImage(root_out, ext="tif")
 
     def valida_form(self):
         '''

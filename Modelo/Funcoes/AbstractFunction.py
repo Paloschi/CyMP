@@ -98,6 +98,9 @@ class Function(ABData):
     def __execOperation__(self):
         pass
     
+    def executar(self, parametros):
+        self.data = parametros
+        return self.data
     
         
         

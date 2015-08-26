@@ -9,6 +9,7 @@
 
 from PyQt4 import QtCore, QtGui
 from Controle.ConEstimativaDatasCultura import Controller
+import ConfigParser
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -252,7 +253,7 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.label_6.setText(_translate("DlgEstimativaDatasAgricolas", "Sufixo:", None))
         self.label_7.setText(_translate("DlgEstimativaDatasAgricolas", "Máscara:", None))
         self.label_5.setText(_translate("DlgEstimativaDatasAgricolas", "Prefixo:", None))
-        self.leMascara.setText(_translate("DlgEstimativaDatasAgricolas", "%YY%mm%dd", None))
+        self.leMascara.setText(_translate("DlgEstimativaDatasAgricolas", "%Y%m%d", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("DlgEstimativaDatasAgricolas", "Dados de pasta", None))
         self.label_4.setText(_translate("DlgEstimativaDatasAgricolas", "Avanço colheita (dias):", None))
         self.label_2.setText(_translate("DlgEstimativaDatasAgricolas", "Posição pico:", None))
@@ -261,7 +262,7 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.label_9.setText(_translate("DlgEstimativaDatasAgricolas", "Posição Semeadura:", None))
         self.lePSemeadura.setText(_translate("DlgEstimativaDatasAgricolas", "0-5", None))
         self.lePPico.setText(_translate("DlgEstimativaDatasAgricolas", "4-9", None))
-        self.lePColheita.setText(_translate("DlgEstimativaDatasAgricolas", "8-11", None))
+        self.lePColheita.setText(_translate("DlgEstimativaDatasAgricolas", "8-10", None))
         self.label_14.setText(_translate("DlgEstimativaDatasAgricolas", "Valor Nulo:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("DlgEstimativaDatasAgricolas", "Configuração", None))
         self.label_12.setText(_translate("DlgEstimativaDatasAgricolas", "Nome imagem de pico:", None))
@@ -274,11 +275,20 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.leImgColheita.setText("colheita")
         self.leImgPico.setText("pico")
         self.leImgSemeadura.setText("semeadura")
-        self.lePrefixo.setText("MYD13Q1.")
-        self.leSufixo.setText(".250m_16_dias_EVI_PR")
+        self.lePrefixo.setText("Flat")
+        self.leSufixo.setText("")
         self.leNullValue.setText("0")
-        self.leInFolder.setText("C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster")
-        self.leOutFolder.setText("C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\saidasTestesGerais")
+        
+                
+        self.config = ConfigParser.RawConfigParser()
+        self.config.read('workspace.properties')
+        
+        workspace = self.config.get('WorkSpace', 'space.default')
+        raster = workspace + self.config.get('WorkSpace', 'space.raster')
+        out = workspace + self.config.get('WorkSpace', 'space.out')
+        
+        self.leInFolder.setText(raster)
+        self.leOutFolder.setText(out)
         
         self.toolbFindInFolder.clicked.connect(self.controller.findInFolder)
         self.toolbFindOutFolder.clicked.connect(self.controller.findOutFolder)
