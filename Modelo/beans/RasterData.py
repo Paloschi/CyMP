@@ -16,6 +16,7 @@ class RasterFile(FileData):
     caption_nx_ny_name = 'Size is ' 
     caption_xmin_ymin = 'Upper Left'
     caption_xmax_xmin = 'Lower Right'
+    caption_NoDataValue = 'NoData Value='
         
     def loadRasterData(self, isCube = False):
         
@@ -62,7 +63,7 @@ class RasterFile(FileData):
             
             #print(metadata)
             #print(len(self.data), len(self.data[0]))
-
+            print ("imagem " + self.file_full_path + " salva")
             with rasterio.open(path = self.file_full_path, mode = 'w', **self.metadata) as dst:
                 try:
                     dst.write(self.data, 1)
@@ -70,6 +71,7 @@ class RasterFile(FileData):
                     print str(e)
                     print "ERRO - Erro ao tentar salvar a imagem: ", self.file_full_path
                     print "MOTIVO - índices inconsistentes, erro ao escrever banda"
+            
         except ValueError: 
             print "ERRO - Erro ao tentar criar arquivo, verificar a existencia do diret�rio informado"
             
@@ -123,6 +125,15 @@ class RasterFile(FileData):
         
         data['xmax'] = info_s[0].replace(' ', '').replace(',', '')
         data['ymin'] = info_s[1].replace(' ', '').replace(',', '')
+        
+        #Recupera NoDataValue
+        index_init = info.index(self.caption_NoDataValue)
+        text_rest = info[index_init:]
+        index_end = text_rest.index('\n') + index_init
+        
+        info_s = info[index_init + len(self.caption_NoDataValue):index_end]
+        
+        data['NoData'] = info_s.replace('\r', '')
        
         print("Informacoes da imagem lidas")
        

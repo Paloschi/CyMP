@@ -6,7 +6,7 @@ Created on Jul 16, 2015
 '''
 
 from AbstractData import ABData, SERIAL_FILE_DATA
-from Modelo.beans import RasterFile
+from Modelo.beans import RasterFile, FILE_DATA 
 import os
 import gdal
 progress = gdal.TermProgress_nocb
@@ -99,20 +99,31 @@ class SerialFile(ABData, list):
             Se não tiver extenção declarada, será gravado na primeira extençao da primeira imagem
         '''
         
-        if images_bands_matrix == None : images_bands_matrix = self.loadListRasterData()
+        #if images_bands_matrix == None : images_bands_matrix = self.loadListRasterData()
         if root_path != None : self.root_path = root_path
         
-        n_images =  len(self)
+        
+        n_images =  len(images_bands_matrix)
         
         sys.stdout.write( "Salvando arquivos (" + str(n_images) + " arquivos): ")
         progress(0.0)
         
         for i in range(0, n_images): 
-            if sufixo != None : self[i].file_name = self[i].file_name + sufixo
-            if ext != None : self[i].file_ext = ext
-            if root_path != None : self[i].file_path = root_path
+            try:
+                if images_bands_matrix.data_type == FILE_DATA:
+                    image = images_bands_matrix
+                
+            except:
+                image = RasterFile(data = images_bands_matrix[i])
+                image.file_name = self.file_name + sufixo
+                image.file_ext = ext
+                image.file_path = root_path
             
-            self[i].saveRasterData(images_bands_matrix[i], metadata= self.metadata)
+            if sufixo != None : image.file_name = image.file_name + sufixo
+            if ext != None : image.file_ext = ext
+            if root_path != None : image.file_path = root_path
+            
+            image.saveRasterData(image, metadata= self.metadata)
             progress( i+1 / float(n_images)) 
 
     def saveListLike1Image(self, name=None, images_bands_matrix=None, root_path=None, ext=None):
@@ -130,7 +141,11 @@ class SerialFile(ABData, list):
         if name != None : self.name = name
         
         if ext == "tif" : self.metadata.update(driver="GTiff") 
-        elif ext == "img" : self.metadata.update(driver="HFA")  
+        elif ext == "img" : self.metadata.update(driver="HFA") 
+        
+        self.metadata.update(count=n_images)
+        
+        print self.metadata
         
         path = self.root_path + "\\" + name + "." + ext
         
@@ -140,6 +155,7 @@ class SerialFile(ABData, list):
         with rasterio.open(path = path, mode = 'w', **self.metadata) as dst:
             
             for i in range(0, n_images):
-                dst.write_band(1, images_bands_matrix[i])
-                progress( i+1 / float(n_images)) 
+                print(i)
+                dst.write_band(i+1, images_bands_matrix[i])
+                progress( i / float(n_images)) 
              

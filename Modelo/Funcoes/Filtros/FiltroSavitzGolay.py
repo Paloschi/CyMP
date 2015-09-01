@@ -8,6 +8,7 @@ Created on May 5, 2015
 import gdal
 from Modelo.Funcoes import AbstractFunction
 from numpy.core.numeric import array
+from numpy import double
 progress = gdal.TermProgress_nocb    
 import numpy as np
 from Modelo.beans import TableData, SERIAL_FILE_DATA, TABLE_DATA, SerialFile
@@ -29,7 +30,7 @@ class FiltroSavitz(AbstractFunction):
         conf_algoritimo = dict()
         conf_algoritimo["window_size"] = {"Required":True, "Type":None, "Description":"Série de imagens para aplicar o filtro"}
         conf_algoritimo["order"] = {"Required":True, "Type":None, "Description":"parametros de configuração filtro"} # não implementado
-        conf_algoritimo["null_value"] = {"Required":True, "Type":None, "Description":"parametros de configuração filtro"} # não implementado
+        #conf_algoritimo["null_value"] = {"Required":True, "Type":None, "Description":"parametros de configuração filtro"} # não implementado
         
         self.descriptionIN["conf_algoritimo "] = {"Required":False, "Type":TABLE_DATA, "Table_Description":conf_algoritimo,"Description":"tabela de parametros para configuração do filtro"}
    
@@ -43,10 +44,14 @@ class FiltroSavitz(AbstractFunction):
         if self.paramentrosIN_carregados.has_key("conf_algoritimo") : conf_algoritimo = self.paramentrosIN_carregados["conf_algoritimo"]
         else : conf_algoritimo = dict()
         img_matrix = images.loadListRasterData()
+        self.paramentrosIN_carregados["NoData"] = double(images[0].getRasterInformation()["NoData"])
 
         n_bandas = len(img_matrix)
         n_linhas = len(img_matrix[0])
         n_colunas = len(img_matrix[0][0])
+        
+        imagem_0 = img_matrix[0] # imagem de referencia pra leitura de valores null
+        null_value = imagem_0[0][0] #primeiro pixel como null value
     
         results = self.filtrar(img_matrix, conf_algoritimo)
         img_matrix = results
@@ -58,6 +63,8 @@ class FiltroSavitz(AbstractFunction):
         i_linha = 0
         i_coluna = 0
         
+
+        
         sys.stdout.write( "Criando nova série de imagens com valores filtrados: ")
         progress( 0.0 )
     
@@ -68,8 +75,8 @@ class FiltroSavitz(AbstractFunction):
             progress( (i_linha+1) / float(n_linhas))  
                   
             for pixel in linha:
-                if images[0][i_linha][i_coluna] != images[0][0][0] : 
-                    results[i_imagem][i_linha][i_coluna] = pixel
+                #if imagem_0[i_linha][i_coluna] != null_value : 
+                results[i_imagem][i_linha][i_coluna] = pixel
                 i_imagem+=1
             i_coluna+=1
             
@@ -77,7 +84,8 @@ class FiltroSavitz(AbstractFunction):
                 i_coluna=0
                 i_linha+=1
         
-        img_saida = SerialFile(data = results)
+        img_saida = SerialFile()
+        img_saida.data = results
         
         img_saida.metadata = images.metadata
         
@@ -111,16 +119,12 @@ class FiltroSavitz(AbstractFunction):
         if noData!=None: nullValue = float(noData) #-32768
         else : nullValue = None
         
-        #log.debug("primeiro valor: " + str(images[0][0][0]))
-        #if nullValue == images[0][0][0] : log.DEBUG("são iguais")
-        
-        
         print ("valor do primeiro pixel", images[0][0][0])
         
         sys.stdout.write( "Filtrando imagens: ")
         progress( 0.0)
         
-       imagem_0 = images[0]
+        imagem_0 = images[0] # imagem de referencia pra leitura de valores null
     
         for i_linhas in range(0, n_linhas):   
 
@@ -133,8 +137,8 @@ class FiltroSavitz(AbstractFunction):
                 line = list()
                 
                 #if images[0][i_linhas][i_colunas] == nullValue : 
-                if images[0][i_linhas][i_colunas] != images[0][0][0] :
-                    pass
+                if imagem_0[i_linhas][i_colunas] != nullValue :
+                    #pass
                     #line_filtred = np.zeros(n_images)     
                 
                     #else :  
@@ -175,7 +179,7 @@ def Smooth( array, smooth_window):
             else: print "ERROR in Smooth: out of range"
         return array
         
-def savitzky_golay(y, window_size, order, deriv=0, rate=1):
+def savitzky_golay(y, window_size=5, order=3, deriv=0, rate=1):
         r"""Smooth (and optionally differentiate) data with a Savitzky-Golay filter.
         The Savitzky-Golay filter removes high frequency noise from data.
         It has the advantage of preserving the original shape and
@@ -246,4 +250,9 @@ def savitzky_golay(y, window_size, order, deriv=0, rate=1):
         lastvals = y[-1] + np.abs(y[-half_window-1:-1][::-1] - y[-1])
         y = np.concatenate((firstvals, y, lastvals))
         return np.convolve( m[::-1], y, mode='valid')
+
+
+#vector = array([2402,2307,2093,1948,1865,1773,1937,2224,2837,3954,4605,7191,7744,7967,8188,8202,7708,7608,6360,5365,3173,2722,2621,2552,2659,3860,4609,5288,5749,5508,5649,2629])
+#print savitzky_golay(y = vector, window_size=)
+
 

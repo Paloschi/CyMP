@@ -42,13 +42,12 @@ class Controller(object):
         #self.executa(self.filtro)
 
         thread.start_new_thread( self.executa, (self.filtro,) )
-        self.updatePBar, (self.filtro,)
+        #self.updatePBar, (self.filtro,)
         
-    def actionCheckBox(self):
-        
-        if self.ui.checkBox.isChecked() :
-            self.ui.leNullValue.setEnabled(True)
-        else : self.ui.leNullValue.setEnabled(False)
+    #def actionCheckBox(self):
+        #if self.ui.checkBox.isChecked() :
+            #self.ui.leNullValue.setEnabled(True)
+        #else : self.ui.leNullValue.setEnabled(False)
     
 
     #def checa_progresso(self, extractor):
@@ -56,10 +55,10 @@ class Controller(object):
         #while(extractor.progresso<=100):
             #self.ui.progressBar.setProperty("value", extractor.progresso)
     
-    def updatePBar(self, extractor):
-        while(self.filtro.progresso<=100):
-            self.ui.progressBar.setValue(self.filtro.progresso) 
-            time.sleep(1)
+    #def updatePBar(self, extractor):
+        #while(self.filtro.progresso<=100):
+            #self.ui.progressBar.setValue(self.filtro.progresso) 
+            #time.sleep(1)
             #print(self.extractor.progresso)
         
             
@@ -77,8 +76,11 @@ class Controller(object):
         resultados = filtro.data
         
         imagens_filtradas = resultados["images"]
+        
+        #print imagens_filtradas.data
     
-        imagens_filtradas.saveListByRoot(images_bands_matrix=imagens_filtradas.data, root_path=root_out, ext="tif")
+        #imagens_filtradas.saveListByRoot(images_bands_matrix=imagens_filtradas.data, root_path=root_out, ext="tif")
+        imagens_filtradas.saveListLike1Image(name="Cubo teste", images_bands_matrix=imagens_filtradas.data, root_path=root_out, ext="tif")
         
         
     def carregarParamIN(self):
@@ -99,8 +101,8 @@ class Controller(object):
         conf_algoritimo = TableData()
         conf_algoritimo["window_size"] = self.ui.leWindowSize.text()
         conf_algoritimo["order"] = self.ui.leOrdem.text()
-        if self.ui.checkBox.isChecked() : conf_algoritimo["null_value"] = double(self.ui.leNullValue.text())
-        else : conf_algoritimo["null_value"] = FileData(data= None)
+        #if self.ui.checkBox.isChecked() : conf_algoritimo["null_value"] = double(self.ui.leNullValue.text())
+        #else : conf_algoritimo["null_value"] = FileData(data= None)
         
         parametrosIN["conf_algoritimo "] = conf_algoritimo
         
