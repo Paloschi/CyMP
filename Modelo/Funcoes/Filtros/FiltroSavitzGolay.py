@@ -68,7 +68,8 @@ class FiltroSavitz(AbstractFunction):
             progress( (i_linha+1) / float(n_linhas))  
                   
             for pixel in linha:
-                results[i_imagem][i_linha][i_coluna] = pixel
+                if images[0][i_linha][i_coluna] != images[0][0][0] : 
+                    results[i_imagem][i_linha][i_coluna] = pixel
                 i_imagem+=1
             i_coluna+=1
             
@@ -110,34 +111,40 @@ class FiltroSavitz(AbstractFunction):
         if noData!=None: nullValue = float(noData) #-32768
         else : nullValue = None
         
-        log.debug("primeiro valor: " + str(images[0][0][0]))
-        if nullValue == images[0][0][0] : log.DEBUG("são iguais")
+        #log.debug("primeiro valor: " + str(images[0][0][0]))
+        #if nullValue == images[0][0][0] : log.DEBUG("são iguais")
+        
+        
+        print ("valor do primeiro pixel", images[0][0][0])
         
         sys.stdout.write( "Filtrando imagens: ")
         progress( 0.0)
+        
+       imagem_0 = images[0]
     
         for i_linhas in range(0, n_linhas):   
 
             n_iteracoes+=1 
             progress( n_iteracoes / float(total))  
-            self.progresso = (n_iteracoes / float(total))*100
+            #self.progresso = (n_iteracoes / float(total))*100
                                                                                                                                                                                                                                                                                                                                                                                                             
             for i_colunas in range(0, n_colunas):
                 
                 line = list()
                 
-                if images[0][i_linhas][i_colunas] == nullValue : 
-                    
-                    line_filtred = np.zeros(n_images)     
+                #if images[0][i_linhas][i_colunas] == nullValue : 
+                if images[0][i_linhas][i_colunas] != images[0][0][0] :
+                    pass
+                    #line_filtred = np.zeros(n_images)     
                 
-                else :  
+                    #else :  
                     for img in images:
                         line.append(img[i_linhas][i_colunas])
-                    
+                        
                     line_filtred = array((savitzky_golay(line, window_size, order)))
-                    
-                line_filtred = line_filtred.astype(dtype="uint16")           
-                linhas_filtradas.append(line_filtred)    
+                        
+                    line_filtred = line_filtred.astype(dtype="uint16")           
+                    linhas_filtradas.append(line_filtred)    
 
                     
         return linhas_filtradas

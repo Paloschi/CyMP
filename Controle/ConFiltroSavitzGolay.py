@@ -6,7 +6,6 @@ Created on Jun 10, 2015
 from PyQt4.QtGui import QFileDialog
 from Modelo.Funcoes.Filtros import FiltroSavitz
 from Modelo.beans import FileData, TableData, SerialFile
-from ctypes.wintypes import DOUBLE
 from numpy import double
 from PyQt4 import QtCore
 import time
@@ -77,14 +76,9 @@ class Controller(object):
         
         resultados = filtro.data
         
-        imagens_filtradas = resultados["imagensFiltradas"]
-        imagens = parametrosIn["images"]
-        
-        metadata = resultados["metaData"]
-        
-        imagens.metadata = metadata
+        imagens_filtradas = resultados["images"]
     
-        imagens.saveListByRoot(imagens_filtradas, root_out, "tif")
+        imagens_filtradas.saveListByRoot(images_bands_matrix=imagens_filtradas.data, root_path=root_out, ext="tif")
         
         
     def carregarParamIN(self):
@@ -105,7 +99,7 @@ class Controller(object):
         conf_algoritimo = TableData()
         conf_algoritimo["window_size"] = self.ui.leWindowSize.text()
         conf_algoritimo["order"] = self.ui.leOrdem.text()
-        if self.ui.checkBox.isChecked() : conf_algoritimo["null_value"] = FileData(file_full_path = self.ui.leNullValue.text())
+        if self.ui.checkBox.isChecked() : conf_algoritimo["null_value"] = double(self.ui.leNullValue.text())
         else : conf_algoritimo["null_value"] = FileData(data= None)
         
         parametrosIN["conf_algoritimo "] = conf_algoritimo
