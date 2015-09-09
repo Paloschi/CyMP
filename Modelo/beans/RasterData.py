@@ -63,8 +63,20 @@ class RasterFile(FileData):
             
             #print(metadata)
             #print(len(self.data), len(self.data[0]))
-            print ("imagem " + self.file_full_path + " salva")
-            with rasterio.open(path = self.file_full_path, mode = 'w', **self.metadata) as dst:
+            print ("salvando imagem  " + self.file_full_path)
+            
+            import os
+
+            os.chdir(self.file_path)
+
+            for nome in os.listdir('.'):
+                #novo_nome = nome.replace(".tif_EbM", "")
+                #os.rename(nome, novo_nome)
+                print nome
+                
+            print self.file_full_path
+            
+            with rasterio.open(path = str(self.file_full_path), mode = 'w', **self.metadata) as dst:
                 try:
                     dst.write(self.data, 1)
                 except ValueError, e: 
@@ -127,14 +139,18 @@ class RasterFile(FileData):
         data['ymin'] = info_s[1].replace(' ', '').replace(',', '')
         
         #Recupera NoDataValue
-        index_init = info.index(self.caption_NoDataValue)
-        text_rest = info[index_init:]
-        index_end = text_rest.index('\n') + index_init
+        try: 
+            index_init = info.index(self.caption_NoDataValue)
         
-        info_s = info[index_init + len(self.caption_NoDataValue):index_end]
-        
-        data['NoData'] = info_s.replace('\r', '')
-       
+            text_rest = info[index_init:]
+            index_end = text_rest.index('\n') + index_init
+            
+            info_s = info[index_init + len(self.caption_NoDataValue):index_end]
+            
+            data['NoData'] = info_s.replace('\r', '')
+        except : 
+            data['NoData'] = None
+            
         print("Informacoes da imagem lidas")
        
         return data 

@@ -48,15 +48,22 @@ class Controller(AbstractController.Controller):
         images = extractor.executar(parametrosIN)
         
         semeadura = images["imagem_semeadura"]
-        semeadura.data_name = self.ui.leImgSemeadura.text()
-        colheita = images["imagem_colheita"]
-        colheita.data_name = self.ui.leImgColheita.text()
-        pico = images["imagem_pico"]
-        pico.data_name = self.ui.leImgPico.text()
+        semeadura.file_name = self.ui.leImgSemeadura.text()
+        semeadura.file_path = "C://Gafanhoto WorkSpace//DataTestes//out"
+        semeadura.file_ext = "tif"
+        semeadura.saveRasterData()
         
-        semeadura.saveImage(root_out, ext="tif")
-        colheita.saveImage(root_out, ext="tif")
-        pico.saveImage(root_out, ext="tif")
+        colheita = images["imagem_colheita"]
+        colheita.file_name = self.ui.leImgColheita.text()
+        colheita.file_path = "C://Gafanhoto WorkSpace//DataTestes//out"
+        colheita.file_ext = "tif"
+        colheita.saveRasterData()
+        
+        pico = images["imagem_pico"]
+        pico.file_name = self.ui.leImgPico.text()
+        pico.file_path = "C://Gafanhoto WorkSpace//DataTestes//out"
+        pico.file_ext = "tif"
+        pico.saveRasterData()
 
     def valida_form(self):
         '''

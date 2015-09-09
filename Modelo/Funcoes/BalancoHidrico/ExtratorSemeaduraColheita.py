@@ -5,7 +5,7 @@ Created on Apr 8, 2015
 @author: Paloschi
 '''
 
-from Modelo.beans import TableData, SERIAL_FILE_DATA, RasterData                         
+from Modelo.beans import TableData, SERIAL_FILE_DATA, RasterFile                   
 from numpy.core.numeric import array
 import gdal
 from Modelo.Funcoes import AbstractFunction
@@ -79,8 +79,8 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         n_linhas = len(images[0])
         n_colunas = len(images[0][0])
         
-        #nullValue = images[0][0][0]
-        nullValue = float(self.paramentrosIN_carregados["null_value"])
+        nullValue = images[0][0][0]
+        #nullValue = float(self.paramentrosIN_carregados["null_value"])
         
 
         #if(images[0][0][0] == nullValue) : print("null value igual") 
@@ -143,16 +143,16 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         #plt.show()
         
         saida = TableData()
-        imagem_semeadura = RasterData(data=imagem_semeadura)
-        imagem_semeadura.data_metadata = images_super[0].data_metadata
+        imagem_semeadura = RasterFile(data=imagem_semeadura)
+        imagem_semeadura.metadata = images_super[0].metadata
         imagem_semeadura.data_name = "semeadura"
         
-        imagem_colheita = RasterData(data=imagem_colheita)
-        imagem_colheita.data_metadata = images_super[0].data_metadata
+        imagem_colheita = RasterFile(data=imagem_colheita)
+        imagem_colheita.metadata = images_super[0].metadata
         imagem_colheita.data_name = "colheita"
         
-        imagem_pico = RasterData(data=imagem_pico)
-        imagem_pico.data_metadata = images_super[0].data_metadata
+        imagem_pico = RasterFile(data=imagem_pico)
+        imagem_pico.metadata = images_super[0].metadata
         imagem_pico.data_name = "cenaPico"
         
         saida["imagem_semeadura"] = imagem_semeadura

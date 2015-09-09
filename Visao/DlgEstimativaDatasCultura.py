@@ -260,9 +260,9 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.label_10.setText(_translate("DlgEstimativaDatasAgricolas", "Posição Colheita:", None))
         self.label_3.setText(_translate("DlgEstimativaDatasAgricolas", "Avanço semeadura (dias):", None))
         self.label_9.setText(_translate("DlgEstimativaDatasAgricolas", "Posição Semeadura:", None))
-        self.lePSemeadura.setText(_translate("DlgEstimativaDatasAgricolas", "0-5", None))
-        self.lePPico.setText(_translate("DlgEstimativaDatasAgricolas", "4-9", None))
-        self.lePColheita.setText(_translate("DlgEstimativaDatasAgricolas", "8-10", None))
+        self.lePSemeadura.setText(_translate("DlgEstimativaDatasAgricolas", "1-12", None))
+        self.lePPico.setText(_translate("DlgEstimativaDatasAgricolas", "4-21", None))
+        self.lePColheita.setText(_translate("DlgEstimativaDatasAgricolas", "14-25", None))
         self.label_14.setText(_translate("DlgEstimativaDatasAgricolas", "Valor Nulo:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("DlgEstimativaDatasAgricolas", "Configuração", None))
         self.label_12.setText(_translate("DlgEstimativaDatasAgricolas", "Nome imagem de pico:", None))
@@ -275,8 +275,8 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.leImgColheita.setText("colheita")
         self.leImgPico.setText("pico")
         self.leImgSemeadura.setText("semeadura")
-        self.lePrefixo.setText("Flat")
-        self.leSufixo.setText("")
+        self.lePrefixo.setText("")
+        self.leSufixo.setText(".250m_16_dias_EVI_PR")
         self.leNullValue.setText("0")
         
                 
