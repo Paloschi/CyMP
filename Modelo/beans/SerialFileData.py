@@ -91,7 +91,7 @@ class SerialFile(ABData, list):
             print "nenhuma imagem caregada"
             return None
         
-    def saveListByRoot(self, images_bands_matrix=None, root_path=None, ext=None, sufixo=None):
+    def saveListByRoot(self, root_path=None, ext=None, sufixo=None):
         
         '''
             Salva lista de dados presentes em uma determinada pasta
@@ -99,25 +99,20 @@ class SerialFile(ABData, list):
             Se não tiver extenção declarada, será gravado na primeira extençao da primeira imagem
         '''
         
-        #if images_bands_matrix == None : images_bands_matrix = self.loadListRasterData()
+        if len(self) == 0:
+            print "não há nenhuma imagem a ser salva"
+            
         if root_path != None : self.root_path = root_path
         
         
-        n_images =  len(images_bands_matrix)
+        n_images =  len(self)
         
         sys.stdout.write( "Salvando arquivos (" + str(n_images) + " arquivos): ")
         progress(0.0)
         
         for i in range(0, n_images): 
-            try:
-                if images_bands_matrix.data_type == FILE_DATA:
-                    image = images_bands_matrix
-                
-            except:
-                image = RasterFile(data = images_bands_matrix[i])
-                image.file_name = self.file_name + sufixo
-                image.file_ext = ext
-                image.file_path = root_path
+            
+            image = self[i]
             
             if sufixo != None : image.file_name = image.file_name + sufixo
             if ext != None : image.file_ext = ext
