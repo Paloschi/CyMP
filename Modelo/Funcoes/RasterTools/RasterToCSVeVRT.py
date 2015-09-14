@@ -5,7 +5,7 @@ Created on Jan 21, 2015
 @author: Paloschi
 '''
 
-from Modelo.beans import SerialFile, TableData, FileData, SERIAL_FILE_DATA
+from Modelo.beans import SerialFile, TableData, FileData, SERIAL_FILE_DATA 
 import gdal
 import Modelo
 progress = gdal.TermProgress_nocb
@@ -22,6 +22,7 @@ class RasterToCSVeVRT(AbstractFunction):
         
     def __setParamOUT__(self):
         self.descriptionOUT["CSVs"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"lista de arquivos CSV"}
+        self.descriptionOUT["VRTs"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"lista de arquivos vrt"}
         
     def __execOperation__(self):
         
@@ -83,15 +84,15 @@ class RasterToCSVeVRT(AbstractFunction):
                             line = str(cx) + ',' + cy + ',' + str(value) + '\n'
                             csv.write(line)
                             
-            csv = FileData(data=file_csv_path)
+            csv = FileData(file_full_path=file_csv_path)
             
             listaCSV.append(csv)
             
-            cvs_name = file_csv_path.split("/")[-1].split(".")[0]
-            file_vtr_path = outFolder + nome_img + '.vtr'
+            vrt = csv
+            vrt.file_ext = "vrt"
                 
             root = etree.Element("OGRVRTDataSource")
-            csv_node = etree.Element("OGRVRTLayer", name=cvs_name)   
+            csv_node = etree.Element("OGRVRTLayer", name=csv.file_name)   
             root.append(csv_node)
                                       
             csv_node.append(etree.XML("<SrcDataSource>" +file_csv_path+"</SrcDataSource>"))
@@ -99,9 +100,8 @@ class RasterToCSVeVRT(AbstractFunction):
             csv_node.append(etree.XML('<GeometryField encoding="PointFromColumns" x="Easting" y="Northing" z="Value"/>'))
                 
             tree = etree.ElementTree(root)
-            tree.write(file_vtr_path, pretty_print=True)
+            tree.write(vrt.file_full_path, pretty_print=True)
             
-            vrt = FileData(data=file_vtr_path)
             listaVRT.append(vrt)
                      
         print('-Arquivos CSV criados')

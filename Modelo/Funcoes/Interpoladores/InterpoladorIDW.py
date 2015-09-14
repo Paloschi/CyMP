@@ -6,6 +6,7 @@ Created on Jul 8, 2015
 '''
 from Modelo.Funcoes import AbstractFunction
 from Modelo.beans.AbstractData import FILE_DATA, TABLE_DATA
+from Modelo.beans.TableData import TableData
 import subprocess
 
 class IDW(AbstractFunction):
@@ -21,7 +22,7 @@ class IDW(AbstractFunction):
         '''
         self.descriptionIN["csv"] = {"Required":True, "Type":FILE_DATA, "Description":"nome do arquivo CSV"}
         self.descriptionIN["vrt"] = {"Required":True, "Type":FILE_DATA, "Description":"caminho completo do arquivo VRT"}
-        self.descriptionIN["img_out"] = {"Required":True, "Type":FILE_DATA, "Description":"caminho completo da imagem de saida"}
+        self.descriptionIN["img_out"] = {"Required":True, "Type":FILE_DATA, "Description":"Parametros de referencia para a imagem de saida"}
         
         '''
             Parametros de configuração do algorítimo
@@ -36,7 +37,7 @@ class IDW(AbstractFunction):
         conf_algoritimo["min_points"] = {"Required":False, "Type":None, "Description":"Minimum number of data points to use. If less amount of points found the grid node considered empty and will be filled with NODATA marker. This is only used if search ellipse is set (both radii are non-zero). Default is 0"}
         conf_algoritimo["nodata"] = {"Required":False, "Type":None, "Description":"NODATA marker to fill empty points (default 0.0)"}
         
-        self.descriptionIN["conf_algoritimo "] = {"Required":False, "Type":TABLE_DATA, "Table_Description":conf_algoritimo,"Description":"tabela de parametros para configuração do algoritimo"}
+        self.descriptionIN["conf_algoritimo"] = {"Required":False, "Type":TABLE_DATA, "Table_Description":conf_algoritimo,"Description":"tabela de parametros para configuração do algoritimo"}
         
         u'''
             Parametros de configuração da imagem de saida
@@ -66,29 +67,101 @@ class IDW(AbstractFunction):
         '''
         str_algoritimo_conf = ""
         
+        print self.paramentrosIN_carregados["conf_algoritimo"]
+        
         if self.paramentrosIN_carregados.has_key("conf_algoritimo") :
+            
             conf_algoritimo = self.paramentrosIN_carregados["conf_algoritimo"]
+            
             for key in conf_algoritimo.keys() :
-                str_algoritimo_conf.join(key + "=" + str(conf_algoritimo[key]))
+                print("aqui")
+                str_algoritimo_conf += (key + "=" + str(conf_algoritimo[key]))
+                
+            print "configuracao do algoritimo" + str_algoritimo_conf
+        
         
         '''
             Chama interpolador GDAl IDW
         '''
-        try:
-            subprocess.call (['gdal_grid', 
-                              '-a', str_algoritimo_conf, 
+                
+        string_execucao = ['gdal_grid',  
+                              
+                              '-a', 'invdistnn:' + str_algoritimo_conf,
                               '-txe', str(img_out_config["xmin"]), str(img_out_config["xmax"]), 
                               '-tye', str(img_out_config["ymin"]), str(img_out_config["ymax"]), 
                               '-outsize', str(img_out_config["nx"]), str(img_out_config["ny"]), 
                               '-of', 'GTiff', 
                               '-ot', 'Float64', 
-                              '-l', csv.data_name, vrt.path, img_out.path]) 
-            
+                              '-l', csv.file_name, vrt.file_full_path, img_out.file_full_path]
         
-        except Exception:
+        #if str_algoritimo_conf != "":
+            #string_execucao.append('-a')
+            #string_execucao.append(str_algoritimo_conf)
+        
+            
+        try:
+            print ("string de execucao: ", str(string_execucao))
+            subprocess.call (string_execucao) 
+            
+        except Exception:  
             print 'erro ao chamar subprocesso gdal_grid, verifiquei se a GDAL core está instalada e a variavel de ambiente está setada'
             
-        saida = img_out.path
+            
+        saida = img_out.file_full_path
         
         return saida
 
+if __name__ == '__main__':   
+    
+    from Modelo.beans import SerialFile
+    from Modelo.Funcoes.RasterTools import RasterToCSVeVRT
+    
+    '''
+        CSV e VRT
+    '''
+    img_teste_path = "C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster\\ECMWF\\Teste_raster_csv\\Imagens"
+    img_teste = SerialFile(root_path=img_teste_path)
+    img_teste.loadListByRoot()
+    
+    paramIN = dict()
+    paramIN["images"] = img_teste
+    paramIN["out_folder"] = "C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster\\ECMWF\\Teste_raster_csv\\Saida\\"
+    
+    csv_vrt_files = RasterToCSVeVRT().executar(paramIN)
+    
+    '''
+        Imagem de referencia
+    '''
+    from Modelo.beans import RasterFile
+     
+    img_referencia_path = "C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster\\Pesada\\MYD13Q1.20150210.250m_16_dias_EVI_PR.tif"
+    img_referencia = RasterFile(file_full_path = img_referencia_path)
+    
+    info_img_referencia = img_referencia.getRasterInformation()
+    
+    '''
+        Conf algoritimo 
+    '''
+    conf_alg = TableData()
+    conf_alg["max_points"] = "12"
+    conf_alg["radius"] = "50"
+    
+    '''
+        Imagem de saida
+    '''
+    img_out = RasterFile(file_full_path = "C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster\\ECMWF\\Teste_raster_csv\\Saida\\interpolada_max12_rad50_nn.tif")
+    
+    '''
+        Unindo e executando
+    '''
+    paramIN = dict()
+    paramIN["csv"] = csv_vrt_files["CSVs"][0]
+    paramIN["vrt"] = csv_vrt_files["VRTs"][0]
+    paramIN["img_out"] = img_out
+    paramIN["conf_algoritimo"] = conf_alg
+    paramIN["img_out_config"] = info_img_referencia
+    
+    imagem_interpolada = IDW().executar(paramIN)
+    
+    
+    

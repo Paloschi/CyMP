@@ -5,6 +5,7 @@ Created on Aug 4, 2015
 @author: Paloschi
 '''
 from Modelo.beans import FileData
+from Modelo.beans.TableData import TableData
 import rasterio
 import subprocess
 
@@ -89,13 +90,12 @@ class RasterFile(FileData):
             
     def getRasterInformation(self):
            
-        data = dict()
+        data = TableData()
         
         print("Obtendo informacao da imagem")
                
         info = subprocess.check_output(['gdalinfo', '-nogcp','-nomd', '-norat', '-noct', str(self.file_full_path)])
         
-        print info
         # recupera numero de linhas e colunas
         
         index_init = info.index(self.caption_nx_ny_name)
