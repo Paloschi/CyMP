@@ -91,4 +91,4 @@ class IDW(AbstractFunction):
         saida = img_out.path
         
         return saida
-    
+

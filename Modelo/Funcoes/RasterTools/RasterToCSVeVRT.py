@@ -5,8 +5,9 @@ Created on Jan 21, 2015
 @author: Paloschi
 '''
 
-from Modelo.beans import SerialFile, TableData, FileData
+from Modelo.beans import SerialFile, TableData, FileData, SERIAL_FILE_DATA
 import gdal
+import Modelo
 progress = gdal.TermProgress_nocb
 from Modelo.Funcoes import AbstractFunction
 from lxml import etree
@@ -16,15 +17,15 @@ class RasterToCSVeVRT(AbstractFunction):
     Operacao que transforma imagens em arquivos CSV
     '''
     def __setParamIN__(self):
-        self.descriptionIN["images"] = "lista de imagesn para transformar"
-        self.descriptionIN["out_folder"] = "outro numero"
+        self.descriptionIN["images"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"lista de imagens para transformar"}
+        self.descriptionIN["out_folder"] = {"Required":True, "Type":None, "Description":"Pasta de saida para os arquivos CSV"}
         
     def __setParamOUT__(self):
-        self.descriptionOUT["CSVs"] = "lista de arquivos CSV"  
+        self.descriptionOUT["CSVs"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"lista de arquivos CSV"}
         
     def __execOperation__(self):
         
-        imagensIN = self.brutedata["images"]
+        imagensIN = self.paramentrosIN_carregados["images"]
         outFolder = self.paramentrosIN_carregados["out_folder"]
         nullValue = float(-128)
         
@@ -35,9 +36,9 @@ class RasterToCSVeVRT(AbstractFunction):
         
         for img in imagensIN :
             
-            matriz = img.loadData()
+            matriz = img.loadRasterData()
             nullValue = matriz[0][0]
-            nome_img = img.data_name
+            nome_img = img.file_name
             info = img.getRasterInformation()
             
             print (info)
@@ -54,7 +55,6 @@ class RasterToCSVeVRT(AbstractFunction):
             
             print("-Criando arquivos CSV para alimentar intorpolador")
         
-            progress = progress   
             progress(0.0)
         
             n_linhas = len(matriz)
@@ -111,3 +111,18 @@ class RasterToCSVeVRT(AbstractFunction):
         saida["VRTs"] = listaVRT
         
         return saida
+
+if __name__ == '__main__':   
+    
+    img_teste_path = "C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster\\ECMWF\\Teste_raster_csv\\Imagens"
+    img_teste = SerialFile(root_path=img_teste_path)
+    img_teste.loadListByRoot()
+    
+    paramIN = dict()
+    paramIN["images"] = img_teste
+    paramIN["out_folder"] = "C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster\\ECMWF\\Teste_raster_csv\\Saida\\"
+    
+    f = RasterToCSVeVRT()
+    
+    f.executar(paramIN)
+    

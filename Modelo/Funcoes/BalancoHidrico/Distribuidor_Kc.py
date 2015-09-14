@@ -9,6 +9,8 @@ from Modelo.Funcoes import AbstractFunction
 from Modelo.beans import TABLE_DATA, FILE_DATA, RasterFile
 import datetime
 import numpy as np
+from numpy.core.numeric import array
+from datetime import timedelta
 
 class DistribuidorKC(AbstractFunction):
     
@@ -24,18 +26,52 @@ class DistribuidorKC(AbstractFunction):
             
     def __execOperation__(self):
         
-        kc_vetorizado = self.vetorizar_kc()
         try:
-            img_semeadura = self.paramentrosIN_carregados["semeadura"].loadRasterData()
-            img_colheita = self.paramentrosIN_carregados["colheita"].loadRasterData()
+            semeadura_ = self.paramentrosIN_carregados["semeadura"].loadRasterData()
+            colheita_ = self.paramentrosIN_carregados["colheita"].loadRasterData()
         except: 
+            print "não foi possivel carregar as imagens de semeadura e colheita"
+            return None
+        try:
+            #data_minima = self.Ds_DC_to_date(np.min(img_semeadura))
+            data_minima = self.Ds_DC_to_date("2013240")
+            #data_maxima = self.Ds_DC_to_date(np.max(img_colheita))
+            data_maxima = self.Ds_DC_to_date("201499")
+        except:
             print "não foi possivel converter os valores das imagens de semeadura e colheita em datas"
+            return None
         
-        data_minima = self.Ds_DC_to_date(np.min(img_semeadura))
-        data_maxima = self.Ds_DC_to_date(np.max(img_colheita))
+        kc_vetorizado = self.vetorizar_kc()
+        pf = len(kc_vetorizado)
         
-        for i_dia in range (data_maxima-data_minima):
-            dia = datetime.timedelta(data_minima+i_dia)
+        n_linhas = len(semeadura_)
+        n_colunas = len(colheita_[0])
+        
+        for i_dia in range ((data_maxima-data_minima).days):
+            dia = data_minima + timedelta(i_dia)
+            imagem_kc = RasterFile()
+            imagem_kc.data = array(semeadura_)
+            imagem_kc.name = dia.date()
+                    
+            for i_linha in range(0, n_linhas):
+                for i_coluna in range(0, n_colunas):
+                    Ds = self.Ds_DC_to_date(semeadura_[i_linha][i_coluna])
+                    Dc = self.Ds_DC_to_date(colheita_[i_linha][i_coluna])
+                    delta_c = Dc - Ds
+                    
+                    if(dia >= Ds and dia <= Dc):
+                        k = dia - Ds 
+                        
+                        i_FKc = int(k * delta_c / pf)
+                        Kc = kc_vetorizado[i_FKc]
+                        
+                    else: Kc = 1
+                    
+                    imagem_kc.data[i_linha][i_coluna] = Kc
+                    
+            print imagem_kc.name
+            print imagem_kc.data
+            
 
                 
     def vetorizar_kc(self): 
