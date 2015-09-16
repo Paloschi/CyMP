@@ -91,7 +91,7 @@ class IDW(AbstractFunction):
                               '-tye', str(img_out_config["ymin"]), str(img_out_config["ymax"]), 
                               '-outsize', str(img_out_config["nx"]), str(img_out_config["ny"]), 
                               '-of', 'GTiff', 
-                              '-ot', 'Float64', 
+                              '-ot', 'Float32', 
                               '-l', csv.file_name, vrt.file_full_path, img_out.file_full_path]
         
         #if str_algoritimo_conf != "":

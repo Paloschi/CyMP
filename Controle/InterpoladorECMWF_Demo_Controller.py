@@ -11,7 +11,6 @@ import sys
 from PyQt4 import QtCore, QtGui
 from Controle import AbstractController
 
-
 class Controller(AbstractController.Controller):
     '''
     classdocs
