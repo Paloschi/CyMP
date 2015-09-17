@@ -51,7 +51,12 @@ class FiltroSavitz(AbstractFunction):
         n_colunas = len(img_matrix[0][0])
         
         imagem_0 = img_matrix[0] # imagem de referencia pra leitura de valores null
-        null_value = imagem_0[0][0] #primeiro pixel como null value
+        
+        if conf_algoritimo.get("noData") == None : noData=0
+        else : noData = conf_algoritimo.get("noData")
+        
+        if noData!=None: nullValue = float(noData) #-32768
+        else : nullValue = None
     
         results = self.filtrar(img_matrix, conf_algoritimo)
         img_matrix = results
@@ -63,26 +68,34 @@ class FiltroSavitz(AbstractFunction):
         i_linha = 0
         i_coluna = 0
         
-
-        
         sys.stdout.write( "Criando nova série de imagens com valores filtrados: ")
         progress( 0.0 )
-    
+        
+        print ("numero de colunas", n_colunas)
 
         for linha in img_matrix:
             
             i_imagem=0      
             progress( (i_linha+1) / float(n_linhas))  
-                  
+              
+            #while imagem_0[i_linha][i_coluna] == nullValue :
+                
+                #i_coluna+=1
+                
+                #if i_coluna>=n_colunas:
+                   #i_coluna=0
+                   #i_linha+=1
+                
+                    
+            #if imagem_0[i_linha][i_coluna] != nullValue:
             for pixel in linha:
-                #if imagem_0[i_linha][i_coluna] != null_value : 
                 results[i_imagem][i_linha][i_coluna] = pixel
                 i_imagem+=1
             i_coluna+=1
-            
+ 
             if i_coluna>=n_colunas:
-                i_coluna=0
-                i_linha+=1
+                    i_coluna=0
+                    i_linha+=1   
         
         img_saida = SerialFile()
         img_saida.data = results
@@ -148,7 +161,9 @@ class FiltroSavitz(AbstractFunction):
                     line_filtred = array((savitzky_golay(line, window_size, order)))
                         
                     line_filtred = line_filtred.astype(dtype="uint16")           
-                    linhas_filtradas.append(line_filtred)    
+                       
+                else:
+                    linhas_filtradas.append(np.zeros(n_images).astype(dtype="uint16"))    
 
                     
         return linhas_filtradas

@@ -150,7 +150,7 @@ class SerialFile(ABData, list):
         with rasterio.open(path = path, mode = 'w', **self.metadata) as dst:
             
             for i in range(0, n_images):
-                print(i)
+                #print(i)
                 dst.write_band(i+1, images_bands_matrix[i])
                 progress( i / float(n_images)) 
              
