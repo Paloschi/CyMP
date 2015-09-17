@@ -1,0 +1,2 @@
+from InterpoladorIDW import IDW
+from Interpola import InterpoladorIvD

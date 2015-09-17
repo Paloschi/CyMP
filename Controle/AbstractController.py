@@ -9,7 +9,7 @@ from numpy.distutils.environment import __metaclass__
 from abc import ABCMeta, abstractmethod
 import threading
 from PyQt4 import QtCore, QtGui
-
+import ConfigParser
 
 import time
 import sys
@@ -102,7 +102,8 @@ class Controller(object):
         Este contrutor é padrão para os controladores, ele recebe uma user interface que permite o controle
         as classes controladoras finais não deverão ter construtores
         '''
-        
+        self.config = ConfigParser.RawConfigParser()
+        self.config.read('workspace.properties')
         self.ui = userInterface # seta interface para que seja visivel aos outros m�todos
 
         
@@ -129,7 +130,7 @@ class Controller(object):
     @abstractmethod
     def valida_form(self):
         '''
-        Esse método temque existir nas classes controladoras
+        Esse método tem que existir nas classes controladoras
         aqui serão feitas todas as validações do form    
         '''
     @abstractmethod
@@ -147,7 +148,7 @@ class Controller(object):
         """
             Essa função da uma arrumada no path por causa das barras invertidas que as vezes bugam
         """
-        root = _fromUtf8(str(pathIn) + "\\")
+        root = _fromUtf8(str(pathIn) + "/")
         root = str(root).replace("\\", "/")    
         
         return root   

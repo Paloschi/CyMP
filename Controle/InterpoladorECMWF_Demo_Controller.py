@@ -4,12 +4,12 @@ Created on Mar 6, 2015
 @author: Paloschi
 '''
 from PyQt4.QtGui import QFileDialog, QMessageBox
-from Modelo.beans import Dados
-from Modelo.Funcoes import *
+from Modelo.beans import TableData, FileData, VectorData
+from Modelo.Funcoes.VectorTools import SplitTable
+from Modelo.Funcoes.Interpoladores import Interpola
 import sys
 from PyQt4 import QtCore, QtGui
 from Controle import AbstractController
-
 
 class Controller(AbstractController.Controller):
     '''
@@ -36,27 +36,24 @@ class Controller(AbstractController.Controller):
 
     def le_shapePath_ChangeAction(self):
         if (self.ShapeSelected == None):
-            self.ShapeSelected = Dados.SimpleData(data = str(self.ui.leShapePath.text()))
+            self.ShapeSelected = VectorData(file_full_path = self.ui.leShapePath.text())
         else:
-            self.ShapeSelected.data = self.ui.leShapePath.text()
-        
-        getShapeProperties = GetShapeData.GetShapeData()
-        getShapeProperties.data = self.ShapeSelected
-        itens = getShapeProperties.getDataProperties().keys()
+            self.ShapeSelected.file_full_path = self.ui.leShapePath.text()
+            
+        itens = self.ShapeSelected.readVectorData().keys()
         self.ui.cbAtribute.addItems(itens)
         self.ui.cbAtribute.setEnabled(True)
         self.ui.cbAtribute.setCurrentIndex(0)
         
     def le_imgRefPath_ChangeAction(self):
         if (self.ImgRefSelected == None):
-            self.ImgRefSelected = Dados.SimpleData(data = self.ui.leImgRefPath.text())
+            self.ImgRefSelected = FileData(file_full_path = self.ui.leImgRefPath.text())
         else:
             self.ImgRefSelected.data = self.ui.leImgRefPath.text()
         
     def cb_Atribute_ChangeAction(self):
-        getShapeProperties = GetShapeData.GetShapeData()
-        getShapeProperties.data = self.ShapeSelected
-        itens = getShapeProperties.getDataProperties().keys()   
+
+        itens = self.ShapeSelected.readVectorData.keys()   
         itens.remove(self.ui.cbAtribute.currentText())
         
         self.ui.lwGroupAtributes.clear()
@@ -73,14 +70,10 @@ class Controller(AbstractController.Controller):
       
     
     def executar(self):
-         
-        getData = GetShapeData.GetShapeData()
         
-        getData.data = self.ShapeSelected
+        separador = SplitTable()   
         
-        separador = SplitTable.SplitTable()   
-        
-        dados_separador = Dados.TableData()
+        dados_separador = TableData()
         
         atributos = list()
         
@@ -88,15 +81,13 @@ class Controller(AbstractController.Controller):
             if self.ui.lwGroupAtributes.item(index).checkState() == 2:
                 atributos.append(str(self.ui.lwGroupAtributes.item(index).text()))
         
-        dados_separador.data = {'table' : getData, 'atributos' : atributos}
+        dados_separador.data = {'table' : self.ShapeSelected.readVectorData(), 'atributos' : atributos}
         
         separador.data = dados_separador
           
-        dados_interpolador = Dados.TableData('tabela pro interpolador')
+        dados_interpolador = TableData()
         
-        getImageInformatio = GetImageInformation.GetImgInfo("Pegar informacoes da imagem modis")
-        getImageInformatio.data = self.ImgRefSelected
-        image_information = getImageInformatio.data
+        image_information = self.ImgRefSelected.readVectorData()
         
         dados_interpolador.data = {'table_data' : separador, 'atributo' : str(self.ui.cbAtribute.currentText()), "format_image_data" : image_information}
         

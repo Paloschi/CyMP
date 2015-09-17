@@ -4,9 +4,8 @@ Created on Jun 10, 2015
 @author: Paloschi
 '''
 from PyQt4.QtGui import QFileDialog
-from Modelo.Funcoes import Filtro
-from Modelo.beans import Dados
-from ctypes.wintypes import DOUBLE
+from Modelo.Funcoes.Filtros import FiltroSavitz
+from Modelo.beans import FileData, TableData, SerialFile
 from numpy import double
 from PyQt4 import QtCore
 import time
@@ -38,18 +37,17 @@ class Controller(object):
         
     def action_ok(self):
         
-        self.filtro = Filtro.Filtro()
+        self.filtro = FiltroSavitz()
         
         #self.executa(self.filtro)
 
         thread.start_new_thread( self.executa, (self.filtro,) )
-        self.updatePBar, (self.filtro,)
+        #self.updatePBar, (self.filtro,)
         
-    def actionCheckBox(self):
-        
-        if self.ui.checkBox.isChecked() :
-            self.ui.leNullValue.setEnabled(True)
-        else : self.ui.leNullValue.setEnabled(False)
+    #def actionCheckBox(self):
+        #if self.ui.checkBox.isChecked() :
+            #self.ui.leNullValue.setEnabled(True)
+        #else : self.ui.leNullValue.setEnabled(False)
     
 
     #def checa_progresso(self, extractor):
@@ -57,10 +55,10 @@ class Controller(object):
         #while(extractor.progresso<=100):
             #self.ui.progressBar.setProperty("value", extractor.progresso)
     
-    def updatePBar(self, extractor):
-        while(self.filtro.progresso<=100):
-            self.ui.progressBar.setValue(self.filtro.progresso) 
-            time.sleep(1)
+    #def updatePBar(self, extractor):
+        #while(self.filtro.progresso<=100):
+            #self.ui.progressBar.setValue(self.filtro.progresso) 
+            #time.sleep(1)
             #print(self.extractor.progresso)
         
             
@@ -77,20 +75,18 @@ class Controller(object):
         
         resultados = filtro.data
         
-        imagens_filtradas = resultados["imagensFiltradas"]
-        imagens = parametrosIn["images"]
+        imagens_filtradas = resultados["images"]
         
-        metadata = resultados["metaData"]
-        
-        imagens.data_metadata = metadata
+        #print imagens_filtradas.data
     
-        imagens.saveListByRoot(imagens_filtradas, root_out, "tif")
+        #imagens_filtradas.saveListByRoot(images_bands_matrix=imagens_filtradas.data, root_path=root_out, ext="tif")
+        imagens_filtradas.saveListLike1Image(name="Cubo teste", images_bands_matrix=imagens_filtradas.data, root_path=root_out, ext="tif")
         
         
     def carregarParamIN(self):
 
-        images = Dados.ListData()
-        parametrosIN = Dados.TableData()
+        images = SerialFile()
+        parametrosIN = TableData()
         root_in = self.ui.leInFolder.text()
         root_in = _fromUtf8(str(root_in) + "\\")
         root_in = str(root_in).replace("\\", "/")
@@ -101,9 +97,13 @@ class Controller(object):
         print("numero de imagens: " + str(len(images)))
         
         parametrosIN["images"] = images
-        parametrosIN["window_size"] = Dados.SimpleData(data= self.ui.leWindowSize.text())
-        parametrosIN["order"] = Dados.SimpleData(data= self.ui.leOrdem.text())
-        if self.ui.checkBox.isChecked() : parametrosIN["null_value"] = Dados.SimpleData(data= self.ui.leNullValue.text())
-        else : parametrosIN["null_value"] = Dados.SimpleData(data= None)
+        
+        conf_algoritimo = TableData()
+        conf_algoritimo["window_size"] = self.ui.leWindowSize.text()
+        conf_algoritimo["order"] = self.ui.leOrdem.text()
+        #if self.ui.checkBox.isChecked() : conf_algoritimo["null_value"] = double(self.ui.leNullValue.text())
+        #else : conf_algoritimo["null_value"] = FileData(data= None)
+        
+        parametrosIN["conf_algoritimo "] = conf_algoritimo
         
         return parametrosIN

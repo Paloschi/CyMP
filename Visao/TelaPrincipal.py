@@ -61,8 +61,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         popup.setupUi(popup)
         popup.show()
                   
-                  
-                  
+                           
     def setupUi(self, MainWindow):
         
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
@@ -168,7 +167,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Gafanhoto 0.1.0", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Gafanhoto 0.1.1", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuDados.setTitle(_translate("MainWindow", "Dados", None))
         self.menuCarregar_Dado.setTitle(_translate("MainWindow", "Carregar dado", None))

@@ -5,19 +5,32 @@ Created on Jul 7, 2015
 '''
 from PyQt4 import QtGui
 from Visao import TelaPrincipal
+import ConfigParser
+from Modelo import GeneralTools
+
 
 if __name__ == '__main__':
     import sys
-    app = QtGui.QApplication(sys.argv)
-    
-    app_icon = QtGui.QIcon()
-    app_icon.addFile('img/favicon.ico')
-    app.setWindowIcon(app_icon)
+    import ctypes
 
-    #controller = InterpoladorECMWF_Demo_Controller.InterpoladorECMWF_Demo_Controller()
+    config = ConfigParser.RawConfigParser()
+    config.read('workspace.properties')
+    
+    company=config.get('Version', 'company')
+    product=config.get('Version', 'product')
+    subproduct=config.get('Version', 'subproduct')
+    version=config.get('Version', 'version')
+
+    myappid = (company + "." + product + "." + subproduct + "." + version)
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+    
+    app = QtGui.QApplication(sys.argv)
+    app.setWindowIcon(QtGui.QIcon(config.get('Icon', 'icon.general')))
+    
+    print("Numero de nucleos: " + str(GeneralTools.available_cpu_count()))
 
     ex = TelaPrincipal.Ui_MainWindow()
-    #controller.form = ex
     
     ex.show()
     sys.exit(app.exec_())
+    
