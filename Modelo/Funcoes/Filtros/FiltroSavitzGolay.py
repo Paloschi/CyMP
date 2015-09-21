@@ -44,24 +44,22 @@ class FiltroSavitz(AbstractFunction):
         if self.paramentrosIN_carregados.has_key("conf_algoritimo") : conf_algoritimo = self.paramentrosIN_carregados["conf_algoritimo"]
         else : conf_algoritimo = dict()
         img_matrix = images.loadListRasterData()
-        self.paramentrosIN_carregados["NoData"] = double(images[0].getRasterInformation()["NoData"])
+        
+        conf_algoritimo["NoData"] = double(images[0].getRasterInformation()["NoData"])
 
-        n_bandas = len(img_matrix)
-        n_linhas = len(img_matrix[0])
-        n_colunas = len(img_matrix[0][0])
+        self.n_bandas = len(img_matrix)
+        self.n_linhas = len(img_matrix[0])
+        self.n_colunas = len(img_matrix[0][0])
         
-        imagem_0 = img_matrix[0] # imagem de referencia pra leitura de valores null
+        sys.stdout.write("Numero de bandas: " + str(self.n_bandas))
+        sys.stdout.write(" Numero de linhas: " + str(self.n_linhas))
+        print(" Numero de colunas: " + str(self.n_colunas))
         
-        if conf_algoritimo.get("noData") == None : noData=0
-        else : noData = conf_algoritimo.get("noData")
-        
-        if noData!=None: nullValue = float(noData) #-32768
-        else : nullValue = None
+        self.imagem_0 = img_matrix[0] # imagem de referencia pra leitura de valores null
     
-        results = self.filtrar(img_matrix, conf_algoritimo)
-        img_matrix = results
+        linhas_filtradas = self.filtrar(img_matrix, conf_algoritimo)
         
-        results = np.zeros((n_bandas, n_linhas, n_colunas,))
+        results = np.zeros((self.n_bandas, self.n_linhas, self.n_colunas,))
         results = array(results).astype(dtype="int16")
 
         i_imagem = 0
@@ -71,29 +69,25 @@ class FiltroSavitz(AbstractFunction):
         sys.stdout.write( "Criando nova série de imagens com valores filtrados: ")
         progress( 0.0 )
         
-        print ("numero de colunas", n_colunas)
+        print ("numero de colunas", self.n_colunas)
 
-        for linha in img_matrix:
+        for linha in linhas_filtradas:
             
             i_imagem=0      
-            progress( (i_linha+1) / float(n_linhas))  
+            progress( (i_linha+1) / float(self.n_linhas))  
               
-            #while imagem_0[i_linha][i_coluna] == nullValue :
-                
-                #i_coluna+=1
-                
-                #if i_coluna>=n_colunas:
-                   #i_coluna=0
-                   #i_linha+=1
-                
+            while self.imagem_0[i_linha][i_coluna] == self.nullValue :
+                i_coluna+=1
+                if i_coluna>=self.n_colunas:
+                    i_coluna=0
+                    i_linha+=1
                     
-            #if imagem_0[i_linha][i_coluna] != nullValue:
             for pixel in linha:
                 results[i_imagem][i_linha][i_coluna] = pixel
                 i_imagem+=1
             i_coluna+=1
  
-            if i_coluna>=n_colunas:
+            if i_coluna>=self.n_colunas:
                     i_coluna=0
                     i_linha+=1   
         
@@ -102,10 +96,10 @@ class FiltroSavitz(AbstractFunction):
         
         img_saida.metadata = images.metadata
         
-        saida = TableData()
-        saida["images"] = img_saida
+        #saida = TableData()
+        #saida["images"] = img_saida
         
-        return saida
+        return img_saida
     
     def filtrar(self, images, lol, **config):
         
@@ -113,59 +107,27 @@ class FiltroSavitz(AbstractFunction):
         else : window_size = config.get("window_size")
         if config.get("order") == None : order=3
         else : order = config.get("order")
-        if config.get("noData") == None : noData=0
-        else : noData = config.get("noData")
-        
-        n_linhas = len(images[0])
-        n_colunas = len(images[0][0])
-        n_images = len(images)
-    
-        
-        i_linhas = float(0) 
-        
-            
-        linhas_filtradas = list()
-            
-        n_iteracoes= 0
-    
-        total = n_linhas
-        if noData!=None: nullValue = float(noData) #-32768
-        else : nullValue = None
-        
+        if config.get("NoData") == None : noData=0
+        else : noData = config.get("NoData")
+                
         print ("valor do primeiro pixel", images[0][0][0])
-        
         sys.stdout.write( "Filtrando imagens: ")
-        progress( 0.0)
         
-        imagem_0 = images[0] # imagem de referencia pra leitura de valores null
-    
-        for i_linhas in range(0, n_linhas):   
+        linhas_filtradas = list()   
+        n_iteracoes = 0
+        total = self.n_linhas
+        progress( 0.0)
 
+        for i_linhas in range(0, self.n_linhas):   
             n_iteracoes+=1 
-            progress( n_iteracoes / float(total))  
-            #self.progresso = (n_iteracoes / float(total))*100
-                                                                                                                                                                                                                                                                                                                                                                                                            
-            for i_colunas in range(0, n_colunas):
-                
+            progress(n_iteracoes/float(total))                                                                                                                                                                                                                                                                                                                                                                                         
+            for i_colunas in range(0, self.n_colunas):
                 line = list()
-                
-                #if images[0][i_linhas][i_colunas] == nullValue : 
-                if imagem_0[i_linhas][i_colunas] != nullValue :
-                    #pass
-                    #line_filtred = np.zeros(n_images)     
-                
-                    #else :  
+                if self.imagem_0[i_linhas][i_colunas] != noData :
                     for img in images:
                         line.append(img[i_linhas][i_colunas])
-                        
                     line_filtred = array((savitzky_golay(line, window_size, order)))
-                        
-                    line_filtred = line_filtred.astype(dtype="uint16")           
-                       
-                else:
-                    linhas_filtradas.append(np.zeros(n_images).astype(dtype="uint16"))    
-
-                    
+                linhas_filtradas.append(line_filtred)
         return linhas_filtradas
     
 def Smooth( array, smooth_window):

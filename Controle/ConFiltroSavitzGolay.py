@@ -71,16 +71,10 @@ class Controller(object):
         
         parametrosIn = self.carregarParamIN()
         
-        filtro.data = parametrosIn
-        
-        resultados = filtro.data
-        
-        imagens_filtradas = resultados["images"]
-        
-        #print imagens_filtradas.data
+        imagens_filtradas = filtro.executar(parametrosIn)
     
         #imagens_filtradas.saveListByRoot(images_bands_matrix=imagens_filtradas.data, root_path=root_out, ext="tif")
-        imagens_filtradas.saveListLike1Image(name="Cubo teste", images_bands_matrix=imagens_filtradas.data, root_path=root_out, ext="tif")
+        imagens_filtradas.saveListLike1Image(name="Cubo_filtro_savitsk", images_bands_matrix=imagens_filtradas.data, root_path=root_out, ext="tif")
         
         
     def carregarParamIN(self):
