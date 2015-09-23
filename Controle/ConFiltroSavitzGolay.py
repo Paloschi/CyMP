@@ -74,7 +74,7 @@ class Controller(object):
         imagens_filtradas = filtro.executar(parametrosIn)
     
         #imagens_filtradas.saveListByRoot(images_bands_matrix=imagens_filtradas.data, root_path=root_out, ext="tif")
-        imagens_filtradas.saveListLike1Image(name="Cubo_filtro_savitsk", images_bands_matrix=imagens_filtradas.data, root_path=root_out, ext="tif")
+        imagens_filtradas.saveListByRoot(root_path=root_out, ext="tif")
         
         
     def carregarParamIN(self):

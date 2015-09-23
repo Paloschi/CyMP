@@ -11,7 +11,7 @@ from numpy.core.numeric import array
 from numpy import double
 progress = gdal.TermProgress_nocb    
 import numpy as np
-from Modelo.beans import TableData, SERIAL_FILE_DATA, TABLE_DATA, SerialFile
+from Modelo.beans import SERIAL_FILE_DATA, TABLE_DATA, SerialFile, RasterFile
 import sys
 import logging as log
 
@@ -45,7 +45,9 @@ class FiltroSavitz(AbstractFunction):
         else : conf_algoritimo = dict()
         img_matrix = images.loadListRasterData()
         
-        conf_algoritimo["NoData"] = double(images[0].getRasterInformation()["NoData"])
+        self.imagem_0 = img_matrix[0] # imagem de referencia pra leitura de valores null
+        conf_algoritimo["NoData"] = self.imagem_0[0][0]
+        #conf_algoritimo["NoData"] = double(images[0].getRasterInformation()["NoData"])
 
         self.n_bandas = len(img_matrix)
         self.n_linhas = len(img_matrix[0])
@@ -55,51 +57,54 @@ class FiltroSavitz(AbstractFunction):
         sys.stdout.write(" Numero de linhas: " + str(self.n_linhas))
         print(" Numero de colunas: " + str(self.n_colunas))
         
-        self.imagem_0 = img_matrix[0] # imagem de referencia pra leitura de valores null
+        
     
         linhas_filtradas = self.filtrar(img_matrix, conf_algoritimo)
+        results = linhas_filtradas
         
-        results = np.zeros((self.n_bandas, self.n_linhas, self.n_colunas,))
-        results = array(results).astype(dtype="int16")
+        #results = np.zeros((self.n_bandas, self.n_linhas, self.n_colunas,))
+        #results = array(results).astype(dtype="int16")
 
-        i_imagem = 0
-        i_linha = 0
-        i_coluna = 0
+        #i_imagem = 0
+        #i_linha = 0
+        #i_coluna = 0
         
-        sys.stdout.write( "Criando nova série de imagens com valores filtrados: ")
-        progress( 0.0 )
+        #sys.stdout.write( "Criando nova série de imagens com valores filtrados: ")
+        #progress( 0.0 )
         
-        print ("numero de colunas", self.n_colunas)
+        #print ("numero de colunas", self.n_colunas)
 
-        for linha in linhas_filtradas:
+        #for linha in linhas_filtradas:
             
-            i_imagem=0      
-            progress( (i_linha+1) / float(self.n_linhas))  
+            #i_imagem=0      
+            #progress( (i_linha+1) / float(self.n_linhas))  
               
-            while self.imagem_0[i_linha][i_coluna] == self.nullValue :
-                i_coluna+=1
-                if i_coluna>=self.n_colunas:
-                    i_coluna=0
-                    i_linha+=1
+            #while self.imagem_0[i_linha][i_coluna] == conf_algoritimo["NoData"]:
+                #i_coluna+=1
+                #if i_coluna>=self.n_colunas:
+                    #i_coluna=0
+                    #i_linha+=1
                     
-            for pixel in linha:
-                results[i_imagem][i_linha][i_coluna] = pixel
-                i_imagem+=1
-            i_coluna+=1
+            #for pixel in linha:
+                #results[i_imagem][i_linha][i_coluna] = pixel
+                #i_imagem+=1
+            #i_coluna+=1
  
-            if i_coluna>=self.n_colunas:
-                    i_coluna=0
-                    i_linha+=1   
+            #if i_coluna>=self.n_colunas:
+                    #i_coluna=0
+                    #i_linha+=1   
         
-        img_saida = SerialFile()
-        img_saida.data = results
-        
-        img_saida.metadata = images.metadata
+        imgs_saida = SerialFile()
+        i_imagem = 0
+        for img in self.paramentrosIN_carregados["images"]:
+            img.data = results[i_imagem]
+            i_imagem+=1
+            imgs_saida.append(img)
         
         #saida = TableData()
         #saida["images"] = img_saida
         
-        return img_saida
+        return imgs_saida
     
     def filtrar(self, images, lol, **config):
         
@@ -118,6 +123,8 @@ class FiltroSavitz(AbstractFunction):
         total = self.n_linhas
         progress( 0.0)
 
+        results = np.zeros((self.n_bandas, self.n_linhas, self.n_colunas,))
+
         for i_linhas in range(0, self.n_linhas):   
             n_iteracoes+=1 
             progress(n_iteracoes/float(total))                                                                                                                                                                                                                                                                                                                                                                                         
@@ -127,8 +134,13 @@ class FiltroSavitz(AbstractFunction):
                     for img in images:
                         line.append(img[i_linhas][i_colunas])
                     line_filtred = array((savitzky_golay(line, window_size, order)))
-                linhas_filtradas.append(line_filtred)
-        return linhas_filtradas
+                    
+                    for i_images in range(self.n_bandas):
+                        results[i_images][i_linhas][i_colunas] = line_filtred[i_images]             
+                    
+                    #linhas_filtradas.append(line_filtred)
+                    
+        return results
     
 def Smooth( array, smooth_window):
 

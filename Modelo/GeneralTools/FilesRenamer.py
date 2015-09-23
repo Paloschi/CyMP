@@ -5,7 +5,7 @@ Created on Sep 17, 2015
 '''
 import os
 
-diretorio = "C:\\GafanhotoWorkspace\\Soja11-12\\Modis\\2-EVI_AQUA_TERA_11-12_renomeado"
+diretorio = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Modis\\1-EVI_AQUA_TERA_11-12"
 os.chdir(diretorio)
 
 '''

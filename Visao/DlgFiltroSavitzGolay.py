@@ -150,9 +150,9 @@ class Ui_DlgSavitzGolay(QtGui.QDialog):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("DlgEstimativaDatasAgricolas", "Dados de saída", None))
         
         
-        self.leInFolder.setText("C:\\GafanhotoWorkspace\\Soja11_12\\Modis\\6-EVI_AQUA_TERRA_11-12_FLAT_MASK_SOJA")
-        #self.leInFolder.setText("C:\\GafanhotoWorkspace\\Soja11_12\\ECMWF\\2-CORTADAS_11-12")
-        self.leOutFolder.setText("C:\\GafanhotoWorkspace\\Soja11_12\\Modis\\8-EVI_AQUA_TERRA_11-12_FLAT_MASK_SOJA_Comp_Savitzk")
+        self.leInFolder.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Modis\\6-EVI_AQUA_TERRA_11-12_FLAT_MASK_SOJA")
+        #self.leInFolder.setText("C:\\Gafanhoto Workspace\\Soja11_12\\ECMWF\\2-CORTADAS_11-12")
+        self.leOutFolder.setText("C:\Gafanhoto WorkSpace\Soja11_12\Modis\8-EVI_AQUA_TERRA_11-12_FLAT_MASK_SOJA_Comp_Savitzk")
         
         #self.checkBox.clicked.connect(self.controller.actionCheckBox)
         self.toolbFindInFolder.clicked.connect(self.controller.findInFolder)
