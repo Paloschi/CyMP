@@ -44,11 +44,11 @@ class RasterFile(FileData):
             #Salva imagem em uma determinada pasta
         '''
         
-        if band_matrix != None : self.data = self.data
+        if band_matrix != None : self.data = band_matrix
         if metadata != None : self.metadata = metadata
         
         #self.metadata.update(dtype=self.data.dtype) 
-        self.metadata.update(count=1) 
+
 
         
         try: 
@@ -60,7 +60,8 @@ class RasterFile(FileData):
             if self.file_ext == "tif" : self.metadata.update(driver="GTiff") 
             elif self.file_ext == "img" : self.metadata.update(driver="HFA") 
             
-            self.metadata.update(dtype=self.data.dtype)
+            self.metadata.update(dtype=self.data.dtype, compress='lzw')
+        
             
             #print(metadata)
             #print(len(self.data), len(self.data[0]))

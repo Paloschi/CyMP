@@ -109,7 +109,7 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         #print images_super[0].metadata
         
         for i_linhas in range(0, n_linhas):
-            progress(i_linhas/float(n_linhas))
+            #progress(i_linhas/float(n_linhas))
             #if (barra_progresso!=None) : barra_progresso.setProperty("value", (i_linhas/float(n_linhas))*100)
             progress(i_linhas/float(n_linhas))
             #if i_linhas/float(n_linhas) > 0.05 : break
