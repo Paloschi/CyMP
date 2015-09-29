@@ -38,11 +38,11 @@ def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, k
         imagem_kc_ = np.zeros((n_linhas, n_colunas))
         imagem_kc_ = array(imagem_kc_).astype(dtype="uint8")
         
-        delta_total = (data_maxima-data_minima).days
+        delta_total = (data_maxima-data_minima).days+1
         
         
         
-        for i_dia in range (delta_total):
+        for i_dia in range (0, delta_total):
             
             dia = data_minima + timedelta(i_dia)
             
@@ -54,21 +54,27 @@ def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, k
             progress(i_dia/float(delta_total))
                     
             for i_linha in range(0, n_linhas):
-                ini = time.time()
+                #ini = time.time()
                 for i_coluna in range(0, n_colunas):
             
+
+                    delta_c = None
+                    Ds = None
+                    
                     try:
                         #print  semeadura_[i_linha][i_coluna], colheita_[i_linha][i_coluna]
                         
                         Ds = Ds_DC_to_date(semeadura_[i_linha][i_coluna])
                         Dc = Ds_DC_to_date(colheita_[i_linha][i_coluna])
-                        delta_c = (Dc - Ds).days
+                        delta_c = (Dc - Ds).days + 1
                         
+                    except :
+                        pass                      
                         #print Ds, Dc, dia
-                        
+                    if Ds != None:
                         if(dia >= Ds and dia <= Dc):
                             #print Ds, Dc, dia
-                            k = dia - Ds 
+                            k = dia - Ds
                             #print k, 1
    
                             #print a, 2
@@ -82,15 +88,14 @@ def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, k
                         #else: 
                             #Kc = 1
                             #imagem_kc.data[i_linha][i_coluna] = Kc
-                    except :
-                        pass 
+
                         #Kc = 1
                         #imagem_kc.data[i_linha][i_coluna] = Kc
                         
-                if i == 0 :
-                    fim = time.time()
+                #if i == 0 :
+                    #fim = time.time()
                     #print "Tempo restante pra 1 imagem: "
-                    print (int((fim-ini) * (n_linhas - i_linha))/60)
+                    #print (int((fim-ini) * (n_linhas - i_linha))/60)
                     
             imagem_kc.metadata.update(nodata=0)
             imagem_kc.saveRasterData(band_matrix = imagem_kc_)
@@ -127,8 +132,16 @@ class DistribuidorKC(AbstractFunction):
             print "não foi possivel converter os valores das imagens de semeadura e colheita em datas"
             return None
         
+        
+        data_minima = datetime.datetime(2012, 04, 19)
+        print data_minima        
+        data_maxima = datetime.datetime(2012, 04, 19)
+        print data_maxima
+
+        
         kc_vetorizado = self.vetorizar_kc()
         periodo_kc = len(kc_vetorizado)
+        
         delta_total = (data_maxima-data_minima).days
         
         print data_maxima
@@ -139,15 +152,29 @@ class DistribuidorKC(AbstractFunction):
         
         print metadata
         
-        n_of_process = 5
+
+        
+        n_of_process = 1
         for i in range (0, n_of_process):
             
             path_img_semeadura = self.paramentrosIN_carregados["semeadura"].file_full_path
         
             q = Queue()
+            if i == 0 : data_minima_process = data_minima
+            else : 
+                dt = data_minima + timedelta(float(i)*int(float(delta_total)/float(n_of_process)))
+                data_minima_process =  dt
+                print data_minima_process
+                print data_minima_process.date()
+            #data_minima_process = datetime.datetime(2012, 04, 13)
             
-            data_minima_process = data_minima + timedelta(i*(delta_total/n_of_process)) # Acrescenta as partes na data minima
-            data_maxima_process = data_maxima - timedelta((n_of_process-1-i)*(delta_total/n_of_process)) #Retira as partes da data maxim
+            if i == n_of_process-1 : data_maxima_process = data_maxima
+            else : 
+                dt = data_minima + timedelta(((i+1)*int(float(delta_total)/float(n_of_process)))-1)
+                data_maxima_process =  dt
+            #data_maxima_process = datetime.datetime(2012, 04, 19)
+            
+            print data_minima_process, data_maxima_process
             
             p = Process(target=distribuir_kc, args=(data_minima_process, 
                                                      data_maxima_process, 
@@ -159,12 +186,26 @@ class DistribuidorKC(AbstractFunction):
             q.get()
                 
     def vetorizar_kc(self): 
-        kc_vetorizado = list()
+       
+        
+        tamanho = 0
+        for key in self.paramentrosIN_carregados["Kc"].keys():
+            fim = int(key.split("-")[1])
+            if fim > tamanho : tamanho = fim
+        
+        kc_vetorizado = np.zeros(tamanho)
+        
+        print len(kc_vetorizado)
+        
         for key in self.paramentrosIN_carregados["Kc"].keys():
             inicio = int(key.split("-")[0])
             fim = int(key.split("-")[1])
-            for x in range(inicio, fim):
-                kc_vetorizado.append(self.paramentrosIN_carregados["Kc"][key])
+            print "chave:", key, "- inicio:", inicio, "- fim:", fim, "- tamanho:", fim - inicio
+            for x in range(inicio, fim+1):
+                kc_vetorizado[x-1] = self.paramentrosIN_carregados["Kc"][key]
+                
+        print kc_vetorizado
+        print len(kc_vetorizado)
         return kc_vetorizado
     
     def Ds_DC_to_date(self, data):
@@ -185,15 +226,17 @@ if __name__ == '__main__':
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
     
     paramIN = dict()
-    paramIN["semeadura"] = RasterFile(file_full_path="C:\\Gafanhoto WorkSpace\\Soja11_12\\Datas_DS-DC\\semeadura_soja_11-12.tif")
-    paramIN["colheita"] = RasterFile(file_full_path="C:\\Gafanhoto WorkSpace\\Soja11_12\\Datas_DS-DC\\colheita_soja_11-12.tif")
-    paramIN["path_out"] = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Kc_distribuido"
+    paramIN["semeadura"] = RasterFile(file_full_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Datas_DS-DC\\semeadura_soja_11-12.tif")
+    paramIN["colheita"] = RasterFile(file_full_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Datas_DS-DC\\colheita_soja_11-12.tif")
+    paramIN["path_out"] = "E:\\Gafanhoto WorkSpace\\Soja11_12\\Zr_distribuido"
     paramIN["Kc"] = TableData()
-    paramIN["Kc"]["1-10"]=40
-    paramIN["Kc"]["10-50"]=80
-    paramIN["Kc"]["50-85"]=115
-    paramIN["Kc"]["85-125"]=80
-    paramIN["Kc"]["125-140"]=50
+    paramIN["Kc"]["0-10"]=10
+    paramIN["Kc"]["10-50"]=25
+    paramIN["Kc"]["50-85"]=60
+    paramIN["Kc"]["85-125"]=60
+    paramIN["Kc"]["125-140"]=60
+    
+ 
     
     Kc_distribuido = DistribuidorKC().executar(paramIN)
     
