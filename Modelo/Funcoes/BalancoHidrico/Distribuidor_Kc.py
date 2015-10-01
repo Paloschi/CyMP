@@ -16,6 +16,8 @@ progress = gdal.TermProgress_nocb
 from multiprocessing import Process, Queue
 import time
 
+
+
 def Ds_DC_to_date(data):
         
         n = len(str(data))
@@ -35,15 +37,12 @@ def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, k
         n_linhas = len(semeadura_)
         n_colunas = len(colheita_[0])
         
-        imagem_kc_ = np.zeros((n_linhas, n_colunas))
-        imagem_kc_ = array(imagem_kc_).astype(dtype="uint8")
-        
         delta_total = (data_maxima-data_minima).days+1
-        
-        
-        
         for i_dia in range (0, delta_total):
-            
+
+            imagem_kc_ = np.zeros((n_linhas, n_colunas))
+            imagem_kc_ = array(imagem_kc_).astype(dtype="uint8")
+        
             dia = data_minima + timedelta(i_dia)
             
             imagem_kc.data = array(semeadura_)
@@ -51,54 +50,34 @@ def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, k
             
             #print imagem_kc.file_name
             
-            progress(i_dia/float(delta_total))
+            progress(float(i_dia)/float(delta_total))
                     
             for i_linha in range(0, n_linhas):
-                #ini = time.time()
-                for i_coluna in range(0, n_colunas):
-            
+                    #ini = time.time()
+                    for i_coluna in range(0, n_colunas):
+                            delta_c = None
+                            Ds = None
+                        
+                            try:
+                                Ds = Ds_DC_to_date(semeadura_[i_linha][i_coluna])
+                                Dc = Ds_DC_to_date(colheita_[i_linha][i_coluna])
+                                delta_c = (Dc - Ds).days + 1
+                                
+                            except :
+                                pass                      
+                            if Ds != None:
+                                if(dia >= Ds and dia <= Dc):
+                                    k = dia - Ds
+                                    i_FKc = int( (k * periodo_kc).days / delta_c)
+                                    Kc = kc_vetorizado[i_FKc]
+                                    imagem_kc_[i_linha][i_coluna] = Kc
 
-                    delta_c = None
-                    Ds = None
-                    
-                    try:
-                        #print  semeadura_[i_linha][i_coluna], colheita_[i_linha][i_coluna]
-                        
-                        Ds = Ds_DC_to_date(semeadura_[i_linha][i_coluna])
-                        Dc = Ds_DC_to_date(colheita_[i_linha][i_coluna])
-                        delta_c = (Dc - Ds).days + 1
-                        
-                    except :
-                        pass                      
-                        #print Ds, Dc, dia
-                    if Ds != None:
-                        if(dia >= Ds and dia <= Dc):
-                            #print Ds, Dc, dia
-                            k = dia - Ds
-                            #print k, 1
-   
-                            #print a, 2
-                            i_FKc = int( (k * periodo_kc).days / delta_c)
-                            #print i_FKc, 3
-                            Kc = kc_vetorizado[i_FKc]
-                            #print Kc, 4
-                            imagem_kc_[i_linha][i_coluna] = Kc
-                            #print imagem_kc_[i_linha][i_coluna]
-                            
-                        #else: 
-                            #Kc = 1
-                            #imagem_kc.data[i_linha][i_coluna] = Kc
-
-                        #Kc = 1
-                        #imagem_kc.data[i_linha][i_coluna] = Kc
-                        
-                #if i == 0 :
                     #fim = time.time()
-                    #print "Tempo restante pra 1 imagem: "
                     #print (int((fim-ini) * (n_linhas - i_linha))/60)
-                    
+   
             imagem_kc.metadata.update(nodata=0)
             imagem_kc.saveRasterData(band_matrix = imagem_kc_)
+            
         return None
 
 
@@ -133,9 +112,9 @@ class DistribuidorKC(AbstractFunction):
             return None
         
         
-        data_minima = datetime.datetime(2012, 04, 19)
+        #data_minima = datetime.datetime(2012, 04, 19)
         print data_minima        
-        data_maxima = datetime.datetime(2012, 04, 19)
+        #data_maxima = datetime.datetime(2012, 04, 19)
         print data_maxima
 
         
@@ -154,7 +133,7 @@ class DistribuidorKC(AbstractFunction):
         
 
         
-        n_of_process = 1
+        n_of_process = 5
         for i in range (0, n_of_process):
             
             path_img_semeadura = self.paramentrosIN_carregados["semeadura"].file_full_path
@@ -226,16 +205,20 @@ if __name__ == '__main__':
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
     
     paramIN = dict()
-    paramIN["semeadura"] = RasterFile(file_full_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Datas_DS-DC\\semeadura_soja_11-12.tif")
-    paramIN["colheita"] = RasterFile(file_full_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Datas_DS-DC\\colheita_soja_11-12.tif")
-    paramIN["path_out"] = "E:\\Gafanhoto WorkSpace\\Soja11_12\\Zr_distribuido"
+    paramIN["semeadura"] = RasterFile(file_full_path="C:\\Gafanhoto WorkSpace\\Soja11_12\\Datas_DS-DC\\semeadura_soja_11-12.tif")
+    paramIN["colheita"] = RasterFile(file_full_path="C:\\Gafanhoto WorkSpace\\Soja11_12\\Datas_DS-DC\\colheita_soja_11-12.tif")
+    paramIN["path_out"] = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Zr_distribuido"
     paramIN["Kc"] = TableData()
     paramIN["Kc"]["0-10"]=10
     paramIN["Kc"]["10-50"]=25
     paramIN["Kc"]["50-85"]=60
     paramIN["Kc"]["85-125"]=60
     paramIN["Kc"]["125-140"]=60
-    
+    #paramIN["Kc"]["0-10"]=40
+    #paramIN["Kc"]["10-50"]=80
+    #paramIN["Kc"]["50-85"]=115
+    #paramIN["Kc"]["85-125"]=80
+    #paramIN["Kc"]["125-140"]=50    
  
     
     Kc_distribuido = DistribuidorKC().executar(paramIN)
