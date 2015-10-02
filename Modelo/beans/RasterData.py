@@ -71,12 +71,12 @@ class RasterFile(FileData):
 
             os.chdir(self.file_path)
 
-            for nome in os.listdir('.'):
+            #for nome in os.listdir('.'):
                 #novo_nome = nome.replace(".tif_EbM", "")
                 #os.rename(nome, novo_nome)
-                print nome
+                #print nome
                 
-            print self.file_full_path
+            #print self.file_full_path
             
             with rasterio.open(path = str(self.file_full_path), mode = 'w', **self.metadata) as dst:
                 try:

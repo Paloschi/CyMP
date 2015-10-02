@@ -12,6 +12,7 @@ import gdal
 progress = gdal.TermProgress_nocb
 import rasterio
 import sys
+import datetime
 
 class SerialFile(ABData, list):
     '''
@@ -25,7 +26,7 @@ class SerialFile(ABData, list):
     metadata = None    
 
     def __init__(self, **params):
-        super(self.__class__, self).__init__(SERIAL_FILE_DATA)
+        super(SerialFile, self).__init__(SERIAL_FILE_DATA)
         
         if params.get("root_filter") != None : self.root_filter = params.get("root_filter")
         if params.get("root_path") != None : self.root_path = params.get("root_path")
@@ -154,3 +155,40 @@ class SerialFile(ABData, list):
                 dst.write_band(i+1, images_bands_matrix[i])
                 progress( i / float(n_images)) 
              
+class SerialTemporalFiles(SerialFile):
+    
+    prefixo = ""
+    sufixo = ""
+    date_mask = ""
+    mutiply_factor = 1
+    
+    def getDate_time(self, i=None, file=None):
+        '''
+            Essa função foi criada para facilitar a obtenção da data do arquivo como objeto date
+        '''
+        
+        
+        if file==None : file = self[i]
+        
+        only_date = file.file_name
+
+        if self.prefixo!=None : 
+            only_date = only_date.replace(self.prefixo,"")
+        if self.sufixo!=None : only_date = only_date.replace(self.sufixo, "")  
+        date = datetime.datetime.strptime(only_date, self.date_mask) 
+
+        return date  
+
+    def setDate_time(self, date, i):
+        '''
+            Essa função foi criada para facilitar a criação do nome baseado em data
+        '''
+        
+        file = self[i]
+        only_date = date.strftime(self.date_mask)   
+        name = self.prefixo + only_date + self.sufixo
+        file.file_name = name
+    
+        
+
+    

@@ -5,10 +5,11 @@ Created on Jul 22, 2015
 @author: Paloschi
 '''
 from Modelo.Funcoes import AbstractFunction
-from Modelo.beans import SERIAL_FILE_DATA, TABLE_DATA, FILE_DATA, SerialFile
-from datetime import datetime
-import numpy as np
+from Modelo.beans import SERIAL_FILE_DATA, RasterData
+import subprocess
 import gdal
+import sys
+from Modelo.beans.RasterData import RasterFile
 progress = gdal.TermProgress_nocb
 
 class Etc(AbstractFunction):
@@ -26,13 +27,8 @@ class Etc(AbstractFunction):
     def __setParamIN__(self):
         
         self.descriptionIN["ET0"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de evapotranspiração de referencia"}
-        self.descriptionIN["Kc"] = {"Required":True, "Type":TABLE_DATA, "Description":"Valores tabelados de Kc. Ex.: '1-2':1.2,'2-6:0.8..'"}
-        self.descriptionIN["semeadura"] = {"Required":True, "Type":FILE_DATA, "Description":"Imagem de semeadura"}
-        self.descriptionIN["colheira"] = {"Required":True, "Type":FILE_DATA, "Description":"Imagem de colheita"}  
-        self.descriptionIN["noData"] = {"Required":None, "Type":None, "Description":"Valor a ser ignorado (verificado na da data de semeadura)"}
-        self.descriptionIN["mask_et0"] = {"Required":True, "Type":None, "Description":"mascara para conversão em data"}
-        self.descriptionIN["pref_etc"] = {"Required":True, "Type":None, "Description":"prefixo do etc"}
-        self.descriptionIN["sufix_etc"] = {"Required":True, "Type":None, "Description":"sufixo do etc"}
+        self.descriptionIN["Kc"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de Kc distribuido"}
+        self.descriptionIN["ETc"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Objeto série de imagens configurao para saida"}
     
     def __setParamOUT__(self):
         self.descriptionOUT["ETc"] = {"Type":SERIAL_FILE_DATA, "Description":"Série de imagens de evapotranspiração da cultura"}
@@ -45,77 +41,84 @@ class Etc(AbstractFunction):
         
         print("Carregando imagens (ET0, semeadura, colheita): ")
         
-        serie_et0_ = self.paramentrosIN_carregados["ET0"].loadRasterData()
-        semeadura_ = self.paramentrosIN_carregados["semeadura"].loadRasterData()
-        colheita_ = self.paramentrosIN_carregados["colheita"].loadRasterData()
-        kc_tabelado = self.paramentrosIN_carregados["Kc"]
-        FKc = self.kc_TabletoVector(kc_tabelado)
-        pf = len(FKc)
+        serie_ET0 = self.paramentrosIN_carregados["ET0"].loadListByRoot() # pucha e já carrega a lista caso não tenha sido carregada
+        serie_Kc = self.paramentrosIN_carregados["Kc"].loadListByRoot() # pucha e já carrega a lista caso não tenha sido carregada
+        serie_ETc = self.paramentrosIN_carregados["Kc"] # pucha lista
+        
+        Kc_factor = str(serie_Kc.mutiply_factor)
+        ET0_factor = str(serie_Kc.mutiply_factor)
+        ETC_factor = str(serie_Kc.mutiply_factor)
         
         
-        n_imagens = len(serie_et0_)
-        n_linhas = len(serie_et0_[0])
-        n_colunas = len(serie_et0_[0][0])
         
-        serie_etc_ = np.zeros((n_imagens, n_linhas, n_colunas,))
-        
-        for i_linha in range(0, n_linhas):
-            for i_coluna in range(0, n_colunas):
-                Ds = self.to_date(semeadura_[i_linha][i_coluna])
-                Dc = self.to_date(colheita_[i_linha][i_coluna])
-                delta_c = Dc - Ds
-                
-                for i_etc in range(0, len(serie_et0_)) :
-                    j0 = self.etc_name_to_date(serie_et0_[i_etc].file_name)
-                    jn = self.etc_name_to_date(serie_et0_[i_etc+1].file_name)
-                    
-                    ET0 = serie_et0_[i_etc][i_linha][i_coluna]/int(jn-j0)
-                    
-                    ETc = 0
-                    
-                    for k in range(j0-Ds, jn):
-                        if (0 < k and k <= delta_c):
-                            i_FKc = int(k * delta_c * pf)
-                            Kc = FKc[i_FKc]
-                        else: Kc = 1
-                        
-                        ETc += ET0 * Kc
-                        
-                serie_etc_[i_etc][i_linha][i_coluna]
-        
-        serie_etc = SerialFile(data=serie_etc_)     
-        return serie_etc
+        for i_Kc in range(len(serie_Kc)):
+            #gdal_calc.py [-A <filename>] [--A_band] [-B...-Z filename] [other_options]
+            Kc = serie_Kc[i_Kc]
+            data_kc = serie_Kc.getDate_time(file=Kc)
+            
+            ET0 = self.procurar_descende_correspondente(data_kc, serie_ET0)
+            
+            serie_ETc.append(RasterFile(file_path=serie_ETc.root_path))
+            serie_ETc.setDate_time(data_kc, i_Kc)
+            serie_ETc[i_Kc].ext = "tif"
+            
+            calculo = '(A *' + Kc_factor +') * ((B *' + ET0_factor + ") / " + str(self.dias_decend) + ") * " + ETC_factor # (A * Kc_factor) * (B * ET0_factor) / dias_decend) * ETC_factor
+            
+            string_execucao = [sys.executable, 'C:\\Program Files\\GDAL\\gdal_calc.py',  
+                               '-A', Kc.file_full_path,
+                               '-B', ET0.file_full_path, 
+                               '--outfile=', serie_ETc[i_Kc].file_full_path,
+                               '--calc=', calculo] 
+            try:
+                print ("string de execucao: ", str(string_execucao))
+                subprocess.call (string_execucao) 
+            
+            except Exception as e:  
+                print e
+                print 'erro ao chamar subprocesso gdal_grid, verifiquei se a GDAL core está instalada e a variavel de ambiente está setada'
     
-    def Ds_DC_to_date(self, data):
+    def procurar_descende_correspondente(self, data, serie_temporal):
+        '''
+            Esse método procura a imagem correspondente para a data informada (feito para capturar o descende correto)
+        '''
+        img_correspondente = None
         
-        n = len(str(data))
-        year = int(str(data)[0:4])    
-        days = int(str(data)[4:n])
-        date = datetime.datetime(year, 1, 1) + datetime.timedelta(days - 1)
-        return date
+        for i_img in range(len(serie_temporal)-1):
+            data_img =  serie_temporal.getDate_time(i_img)
+            data_img_1 = serie_temporal.getDate_time(i_img+1)
+            if data_img == data : 
+                img_correspondente = serie_temporal[i_img]
+                self.dias_decend = (data_img_1 - data_img).days
+                break
+            elif data_img < data and data_img_1 > data: 
+                img_correspondente = serie_temporal[i_img]
+                self.dias_decend = (data_img_1 - data_img).days
+        
+        if img_correspondente == None : img_correspondente = serie_temporal[-1]
+           
+        return img_correspondente
+
+if __name__ == '__main__':
+    from Modelo.beans import SerialTemporalFiles
     
-    def kc_TabletoVector(self, kc_t):
-        
-        kc_v = list()
-        for key in kc_t.keys():
-            fim = int(key.split("-")[-1])
-            inicio = int(key.split("-")[0])
-            for _ in range(inicio, fim+1):
-                kc_v.append(kc_t[key])
-        return kc_v
+    serie_Kc = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\Kc_distribuido\\soltas")
+    serie_Kc.mutiply_factor = 0.001
+    serie_Kc.date_mask = "%Y-%m-%d"
     
-    def etc_name_to_date(self, name):
-        
-        if self.paramentrosIN_carregados["pref_etc"]!=None : name = name.replace(self.paramentrosIN_carregados["pref_etc"],"")
-        if self.paramentrosIN_carregados["sufix_etc"]!=None :name = name.replace(self.paramentrosIN_carregados["sufix_etc"],"")
-        
-        decend = int(name[-1])
-        data = name[0:-1]
-        
-        # decend -1 pra começar no 0 multiplicado por 10 dias de um decend pra saber qual o dia inicial do decend
-        dias = datetime.timedelta(((decend - 1) * 10)) 
-        ano_mes = datetime.datetime.strptime(data, '%Y%m') 
-        date_object = ano_mes + dias
-        
-        return date_object
-        
+    serie_ET0 = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\6-MPMS-11-12_Comprimido\\evpt")
+    serie_ET0.sufixo = "evpt_"
+    serie_ET0.date_mask = "%Y%m%d"
+    
+    serie_ETC = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\ETc")
+    serie_ETC.sufixo = "ETc_"
+    serie_ETC.date_mask = "%Y-%m-%d"
+    
+    paramIN = dict()
+    paramIN["ET0"] = serie_ET0
+    paramIN["ETc"] = serie_ETC
+    paramIN["Kc"] = serie_Kc
+    
+    Etc().executar(paramIN)
+    
+
+
