@@ -105,9 +105,9 @@ class DistribuidorKC(AbstractFunction):
             return None
         
         
-        #data_minima = datetime.datetime(2012, 04, 14)
+        data_maxima = datetime.datetime(2011, 9, 25)
         print data_minima        
-        #data_maxima = datetime.datetime(2012, 04, 19)
+        data_maxima = datetime.datetime(2011, 10, 23)
         print data_maxima
 
         
@@ -126,7 +126,7 @@ class DistribuidorKC(AbstractFunction):
         
 
         
-        n_of_process = 5
+        n_of_process = 7
         for i in range (0, n_of_process):
             
             path_img_semeadura = self.paramentrosIN_carregados["semeadura"].file_full_path
@@ -200,13 +200,18 @@ if __name__ == '__main__':
     paramIN = dict()
     paramIN["semeadura"] = RasterFile(file_full_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Datas_DS-DC\\semeadura_soja_11-12.tif")
     paramIN["colheita"] = RasterFile(file_full_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Datas_DS-DC\\colheita_soja_11-12.tif")
-    paramIN["path_out"] = "E:\\Gafanhoto WorkSpace\\Soja11_12\\Zr_distribuido"
+    paramIN["path_out"] = "E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\Kc_distribuido"
     paramIN["Kc"] = TableData()
-    paramIN["Kc"]["0-10"]=10
-    paramIN["Kc"]["10-50"]=25
-    paramIN["Kc"]["50-85"]=60
-    paramIN["Kc"]["85-125"]=60
-    paramIN["Kc"]["125-140"]=60
+    paramIN["Kc"]["0-10"]=40
+    paramIN["Kc"]["10-50"]=80
+    paramIN["Kc"]["50-85"]=115
+    paramIN["Kc"]["85-125"]=80
+    paramIN["Kc"]["125-140"]=50
+    #paramIN["Kc"]["0-10"]=10
+    #paramIN["Kc"]["10-50"]=25
+    #paramIN["Kc"]["50-85"]=60
+    #paramIN["Kc"]["85-125"]=60
+    #paramIN["Kc"]["125-140"]=60
     
  
     

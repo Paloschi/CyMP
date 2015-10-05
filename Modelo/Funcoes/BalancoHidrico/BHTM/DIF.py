@@ -15,10 +15,8 @@ import numpy
 
 class Etc(AbstractFunction):
     '''
-        Essa função calcula a evapotranspiração da cultura ETc, baseado nas datas de plantio, evapotranspiração de referencia
-    e os coeficientes da cultura.
-        Formula: ETc = Kc * ET0
-        Onde o Kc varia dependendo do estado fenologico da cultura.
+        Essa função calcula a diferença (DIF, mm) entre a precipitação e a evapotranspiração da cultura (ETc)
+        Formula: DIF = PPP - ETc
         Para efeitos de histórico, periodos de ETc anteriores ao periodo da cultura devem ser inseridos, por default quando a
     cultura não está presente, o Kc é considerado de valor 1
         
@@ -27,20 +25,18 @@ class Etc(AbstractFunction):
     
     def __setParamIN__(self):
         
-        self.descriptionIN["ET0"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de evapotranspiração de referencia"}
-        self.descriptionIN["Kc"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de Kc distribuido"}
-        self.descriptionIN["ETc"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Objeto série de imagens configurao para saida"}
+        self.descriptionIN["DIF"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de diferença"}
+        self.descriptionIN["PPP"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de precipitacao"}
+        self.descriptionIN["ETc"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de evapotranspiração da cultura"}
     
     def __setParamOUT__(self):
-        self.descriptionOUT["ETc"] = {"Type":SERIAL_FILE_DATA, "Description":"Série de imagens de evapotranspiração da cultura"}
+        self.descriptionOUT["DIF"] = {"Type":SERIAL_FILE_DATA, "Description":"Série de imagens de evapotranspiração da cultura"}
     
     def __execOperation__(self):
         '''
             Por padrão agora assumo que, quando uma variavel tiver como sufixo um underline "_"
             é porque esta variavel contem os valores carregados (matrizes brutas) dos dados
         '''
-        
-        print("Carregando imagens (ET0, semeadura, colheita): ")
         
         serie_ET0 = self.paramentrosIN_carregados["ET0"].loadListByRoot() # pucha e já carrega a lista caso não tenha sido carregada
         serie_Kc = self.paramentrosIN_carregados["Kc"].loadListByRoot() # pucha e já carrega a lista caso não tenha sido carregada

@@ -50,14 +50,17 @@ class SerialFile(ABData, list):
         
         print("endereco das imagens: ", self.root_path)
         
-        for a, b, files in os.walk(self.root_path):
-            for f in files:
-                f = RasterFile(file_full_path = self.root_path + "\\" + f)  
-                if(self.root_filter==None):
+        caminhos = [os.path.join(self.root_path, nome) for nome in os.listdir(self.root_path)]
+        arquivos = [arq for arq in caminhos if os.path.isfile(arq)]
+        
+        
+        for f in arquivos:
+            f = RasterFile(file_full_path = self.root_path + "\\" + f)  
+            if(self.root_filter==None):
+                self.append(f)
+            else:
+                if( f.file_ext in self.root_filter):
                     self.append(f)
-                else:
-                    if( f.file_ext in self.root_filter):
-                        self.append(f)
                         
         return self 
         
