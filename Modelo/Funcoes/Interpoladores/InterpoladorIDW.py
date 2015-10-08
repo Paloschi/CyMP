@@ -83,8 +83,10 @@ class IDW(AbstractFunction):
         '''
             Chama interpolador GDAl IDW
         '''
+            
+            gdal_calc.py -A input1.tif -B input2.tif --outfile=result.tif --calc="A+B"
                 
-        string_execucao = ['gdal_grid',  
+        string_execucao = ['gdal_calc',  
                               
                               '-a', 'invdistnn:' + str_algoritimo_conf,
                               '-txe', str(img_out_config["xmin"]), str(img_out_config["xmax"]), 
