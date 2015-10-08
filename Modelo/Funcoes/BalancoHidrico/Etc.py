@@ -30,6 +30,7 @@ class Etc(AbstractFunction):
         self.descriptionIN["ET0"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de evapotranspiração de referencia"}
         self.descriptionIN["Kc"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de Kc distribuido"}
         self.descriptionIN["ETc"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Objeto série de imagens configurao para saida"}
+        #self.descriptionIN["dias_inicio"] = {"Required":True, "Type":None, "Description":"Indica quantos dias anteriores a primeira data de semeadura que deve ser considerado"}
     
     def __setParamOUT__(self):
         self.descriptionOUT["ETc"] = {"Type":SERIAL_FILE_DATA, "Description":"Série de imagens de evapotranspiração da cultura"}
@@ -61,18 +62,29 @@ class Etc(AbstractFunction):
             
             etc = RasterFile(file_path=serie_ETc.root_path, ext="tif", file_name=Kc.file_name)
             
-            ET0_ = numpy.array(ET0.loadRasterData()).astype(dtype="float32") * ET0_factor
-            Kc_ = numpy.array(Kc.loadRasterData()).astype(dtype="float32") * Kc_factor
+            print ET0.file_full_path
+            print Kc.file_full_path
+            print etc.file_full_path
+            
+            
+            ET0_ = numpy.array(ET0.loadRasterData()).astype(dtype="float32") #* ET0_factor
+            
+            Kc_ = numpy.array(Kc.loadRasterData()).astype(dtype="float32")  * Kc_factor
+            
+            Kc_[Kc_==0] = 1
             
             dias_decend = self.dias_decend
             
-            ETc_ = Kc_ * (ET0_  / dias_decend) * ETC_factor
-            
-            #print ET0.file_full_path
-            #print Kc.file_full_path
+            #print dias_decend
+            ETc_ = Kc_ * (ET0_  / dias_decend) #* ETC_factor
+                        
+            if serie_ETc.out_datatype != None:
+                ETc_ = numpy.array(ETc_).astype(serie_ETc.out_datatype)
             
             etc.metadata = Kc.metadata
             etc.data = ETc_
+
+    
             etc.saveRasterData()
             
     
@@ -104,11 +116,14 @@ if __name__ == '__main__':
     serie_Kc.mutiply_factor = 0.01
     serie_Kc.date_mask = "%Y-%m-%d"
     
-    serie_ET0 = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\7-Cortado_tamanho_Modis\\EVPT")
-    serie_ET0.sufixo = "evpt_"
-    serie_ET0.date_mask = "%Y%m%d"
+    serie_ET0 = SerialTemporalFiles(root_path="E:\\\Gafanhoto WorkSpace\\Soja11_12\\\Tratamento de dados\\\ECMWF\\\8-Diario\\\EVPT")
+    serie_Kc.mutiply_factor = 0.01
+    serie_ET0.sufixo = "evpt_diario_"
+    serie_ET0.date_mask = "%Y-%m-%d"
     
-    serie_ETC = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\ETc")
+    serie_ETC = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\ETc\\segunda_tentativa_diario")
+    serie_Kc.mutiply_factor = 100
+    serie_Kc.out_datatype = "int16"
     serie_ETC.sufixo = "ETc_"
     serie_ETC.date_mask = "%Y-%m-%d"
     

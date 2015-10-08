@@ -23,7 +23,8 @@ class SerialFile(ABData, list):
     
     __root_path = None
     root_filter = ("tif", "img")
-    metadata = None    
+    metadata = None  
+    out_datatype = None  
 
     def __init__(self, **params):
         super(SerialFile, self).__init__(SERIAL_FILE_DATA)
@@ -55,7 +56,7 @@ class SerialFile(ABData, list):
         
         
         for f in arquivos:
-            f = RasterFile(file_full_path = self.root_path + "\\" + f)  
+            f = RasterFile(file_full_path = f)  
             if(self.root_filter==None):
                 self.append(f)
             else:
@@ -164,6 +165,7 @@ class SerialTemporalFiles(SerialFile):
     sufixo = ""
     date_mask = ""
     mutiply_factor = 1
+    
     
     def getDate_time(self, i=None, file=None):
         '''
