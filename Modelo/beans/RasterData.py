@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 '''
 Created on Aug 4, 2015
 
@@ -59,9 +59,9 @@ class RasterFile(FileData):
             
             if self.file_ext == "tif" : self.metadata.update(driver="GTiff") 
             elif self.file_ext == "img" : self.metadata.update(driver="HFA") 
-            
             self.metadata.update(dtype=self.data.dtype, compress='lzw')
         
+
             
             #print(metadata)
             #print(len(self.data), len(self.data[0]))

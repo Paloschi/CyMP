@@ -15,10 +15,8 @@ import numpy
 
 class Etc(AbstractFunction):
     '''
-        Essa função calcula a evapotranspiração da cultura ETc, baseado nas datas de plantio, evapotranspiração de referencia
-    e os coeficientes da cultura.
-        Formula: ETc = Kc * ET0
-        Onde o Kc varia dependendo do estado fenologico da cultura.
+        Essa função calcula a diferença (DIF, mm) entre a precipitação e a evapotranspiração da cultura (ETc)
+        Formula: DIF = PPP - ETc
         Para efeitos de histórico, periodos de ETc anteriores ao periodo da cultura devem ser inseridos, por default quando a
     cultura não está presente, o Kc é considerado de valor 1
         
@@ -27,21 +25,18 @@ class Etc(AbstractFunction):
     
     def __setParamIN__(self):
         
-        self.descriptionIN["ET0"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de evapotranspiração de referencia"}
-        self.descriptionIN["Kc"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de Kc distribuido"}
-        self.descriptionIN["ETc"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Objeto série de imagens configurao para saida"}
-        #self.descriptionIN["dias_inicio"] = {"Required":True, "Type":None, "Description":"Indica quantos dias anteriores a primeira data de semeadura que deve ser considerado"}
+        self.descriptionIN["DIF"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de diferença"}
+        self.descriptionIN["PPP"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de precipitacao"}
+        self.descriptionIN["ETc"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de evapotranspiração da cultura"}
     
     def __setParamOUT__(self):
-        self.descriptionOUT["ETc"] = {"Type":SERIAL_FILE_DATA, "Description":"Série de imagens de evapotranspiração da cultura"}
+        self.descriptionOUT["DIF"] = {"Type":SERIAL_FILE_DATA, "Description":"Série de imagens de evapotranspiração da cultura"}
     
     def __execOperation__(self):
         '''
             Por padrão agora assumo que, quando uma variavel tiver como sufixo um underline "_"
             é porque esta variavel contem os valores carregados (matrizes brutas) dos dados
         '''
-        
-        print("Carregando imagens (ET0, semeadura, colheita): ")
         
         serie_ET0 = self.paramentrosIN_carregados["ET0"].loadListByRoot() # pucha e já carrega a lista caso não tenha sido carregada
         serie_Kc = self.paramentrosIN_carregados["Kc"].loadListByRoot() # pucha e já carrega a lista caso não tenha sido carregada
@@ -62,29 +57,18 @@ class Etc(AbstractFunction):
             
             etc = RasterFile(file_path=serie_ETc.root_path, ext="tif", file_name=Kc.file_name)
             
-            print ET0.file_full_path
-            print Kc.file_full_path
-            print etc.file_full_path
-            
-            
-            ET0_ = numpy.array(ET0.loadRasterData()).astype(dtype="float32") #* ET0_factor
-            
-            Kc_ = numpy.array(Kc.loadRasterData()).astype(dtype="float32")  * Kc_factor
-            
-            Kc_[Kc_==0] = 1
+            ET0_ = numpy.array(ET0.loadRasterData()).astype(dtype="float32") * ET0_factor
+            Kc_ = numpy.array(Kc.loadRasterData()).astype(dtype="float32") * Kc_factor
             
             dias_decend = self.dias_decend
             
-            #print dias_decend
-            ETc_ = Kc_ * (ET0_  / dias_decend) #* ETC_factor
-                        
-            if serie_ETc.out_datatype != None:
-                ETc_ = numpy.array(ETc_).astype(serie_ETc.out_datatype)
+            ETc_ = Kc_ * (ET0_  / dias_decend) * ETC_factor
+            
+            #print ET0.file_full_path
+            #print Kc.file_full_path
             
             etc.metadata = Kc.metadata
             etc.data = ETc_
-
-    
             etc.saveRasterData()
             
     
@@ -116,14 +100,11 @@ if __name__ == '__main__':
     serie_Kc.mutiply_factor = 0.01
     serie_Kc.date_mask = "%Y-%m-%d"
     
-    serie_ET0 = SerialTemporalFiles(root_path="E:\\\Gafanhoto WorkSpace\\Soja11_12\\\Tratamento de dados\\\ECMWF\\\8-Diario\\\EVPT")
-    serie_Kc.mutiply_factor = 0.01
-    serie_ET0.sufixo = "evpt_diario_"
-    serie_ET0.date_mask = "%Y-%m-%d"
+    serie_ET0 = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\7-Cortado_tamanho_Modis\\EVPT")
+    serie_ET0.sufixo = "evpt_"
+    serie_ET0.date_mask = "%Y%m%d"
     
-    serie_ETC = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\ETc\\segunda_tentativa_diario")
-    serie_Kc.mutiply_factor = 100
-    serie_Kc.out_datatype = "int16"
+    serie_ETC = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\ETc")
     serie_ETC.sufixo = "ETc_"
     serie_ETC.date_mask = "%Y-%m-%d"
     

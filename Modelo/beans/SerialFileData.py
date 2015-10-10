@@ -12,6 +12,7 @@ import gdal
 progress = gdal.TermProgress_nocb
 import rasterio
 import sys
+import datetime
 
 class SerialFile(ABData, list):
     '''
@@ -22,10 +23,11 @@ class SerialFile(ABData, list):
     
     __root_path = None
     root_filter = ("tif", "img")
-    metadata = None    
+    metadata = None  
+    out_datatype = None  
 
     def __init__(self, **params):
-        super(self.__class__, self).__init__(SERIAL_FILE_DATA)
+        super(SerialFile, self).__init__(SERIAL_FILE_DATA)
         
         if params.get("root_filter") != None : self.root_filter = params.get("root_filter")
         if params.get("root_path") != None : self.root_path = params.get("root_path")
@@ -49,14 +51,17 @@ class SerialFile(ABData, list):
         
         print("endereco das imagens: ", self.root_path)
         
-        for a, b, files in os.walk(self.root_path):
-            for f in files:
-                f = RasterFile(file_full_path = self.root_path + "\\" + f)  
-                if(self.root_filter==None):
+        caminhos = [os.path.join(self.root_path, nome) for nome in os.listdir(self.root_path)]
+        arquivos = [arq for arq in caminhos if os.path.isfile(arq)]
+        
+        
+        for f in arquivos:
+            f = RasterFile(file_full_path = f)  
+            if(self.root_filter==None):
+                self.append(f)
+            else:
+                if( f.file_ext in self.root_filter):
                     self.append(f)
-                else:
-                    if( f.file_ext in self.root_filter):
-                        self.append(f)
                         
         return self 
         
@@ -154,3 +159,41 @@ class SerialFile(ABData, list):
                 dst.write_band(i+1, images_bands_matrix[i])
                 progress( i / float(n_images)) 
              
+class SerialTemporalFiles(SerialFile):
+    
+    prefixo = ""
+    sufixo = ""
+    date_mask = ""
+    mutiply_factor = 1
+    
+    
+    def getDate_time(self, i=None, file=None):
+        '''
+            Essa função foi criada para facilitar a obtenção da data do arquivo como objeto date
+        '''
+        
+        
+        if file==None : file = self[i]
+        
+        only_date = file.file_name
+
+        if self.prefixo!=None : 
+            only_date = only_date.replace(self.prefixo,"")
+        if self.sufixo!=None : only_date = only_date.replace(self.sufixo, "")  
+        date = datetime.datetime.strptime(only_date, self.date_mask) 
+
+        return date  
+
+    def setDate_time(self, date, i):
+        '''
+            Essa função foi criada para facilitar a criação do nome baseado em data
+        '''
+        
+        file = self[i]
+        only_date = date.strftime(self.date_mask)   
+        name = self.prefixo + only_date + self.sufixo
+        file.file_name = name
+    
+        
+
+    
