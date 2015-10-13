@@ -27,7 +27,7 @@ if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon(config.get('Icon', 'icon.general')))
     
-    print("Numero de nucleos: " + str(GeneralTools.available_cpu_count()))
+    #print("Numero de nucleos: " + str(GeneralTools.available_cpu_count()))
 
     ex = TelaPrincipal.Ui_MainWindow()
     

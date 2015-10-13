@@ -10,69 +10,15 @@ from abc import ABCMeta, abstractmethod
 import threading
 from PyQt4 import QtCore, QtGui
 import ConfigParser
-
-import time
-import sys
-from py2exe.build_exe import Target
 from types import NoneType
+from Visao.Box_Progress_Bar import Ui_DlgProgressBar
+from PyQt4.Qt import QString
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
     def _fromUtf8(s):
         return s
-    
-
-class BatchProcesser(QtCore.QThread):
-    __errorHappened = False
-    
-    def __init__(self, target, parent=None):
-        QtCore.QThread.__init__(self, parent)
-        self.exiting = False
-        self.target = target
-         
-    def run(self):
-         while self.target == None : pass
-         while (  self.target.progresso < 100):
-            QtCore.QThread.msleep(1)
-            self.emit(QtCore.SIGNAL("progress(int)"), self.target.progresso)
-
-class AddProgresWin(QtGui.QWidget):
-    def __init__(self,target, parent=None):
-        super(AddProgresWin, self).__init__(parent)
-
-        self.nameLabel = QtGui.QLabel("0.0%")
-        self.nameLine = QtGui.QLineEdit()
-
-        self.progressbar = QtGui.QProgressBar()
-        self.progressbar.setMinimum(1)
-        self.progressbar.setMaximum(100)
-        
-        self.processThread = BatchProcesser(target)
-        
-        QtCore.QObject.connect(self.processThread, QtCore.SIGNAL("progress(int)"),self.progressbar, QtCore.SLOT("setValue(int)"), QtCore.Qt.QueuedConnection)
-
-        mainLayout = QtGui.QGridLayout()
-        mainLayout.addWidget(self.progressbar, 0, 0)
-        mainLayout.addWidget(self.nameLabel, 0, 1)
-
-        self.setLayout(mainLayout)
-        self.setWindowTitle("Processing")
-
-        #self.processThread.partDone.connect(self.updatePBar)
-        #self.processThread.procDone.connect(self.fin)
-
-        self.processThread.start()
-        
-        def updatePBar(self, val):
-            self.progressbar.setValue(val)   
-            perct = "{0}%".format(val)
-            self.nameLabel.setText(perct)
-
-        def fin(self):
-            sys.exit()
-            ##self.hide()
-
 
 class StoppableThread(threading.Thread):
     """Thread class with a stop() method. The thread itself has to check
@@ -111,14 +57,29 @@ class Controller(object):
         """
             Esse método cria uma thread pra executar a função
         """
-        
         if self.valida_form() :
-
-            #self.verify_progress = AddProgresWin(target=self.function)
-            #self.verify_progress.show()
-            
+         
             self.thread = StoppableThread(self.executa)
+            
+            progress_bar = Ui_DlgProgressBar(self.ui)
+            progress_bar.setupUi(progress_bar)
+            progress_bar.show()
+            
             self.thread.start()
+            
+            while(self.function!=None) : pass
+                
+            progress_bar.iniciar(self.function, self.thread)
+
+
+            
+        #QtGui.QWidget.__init__(self, self.ui)
+        
+
+        
+        
+        
+        
             
     def action_cancel(self):
             if self.thread != NoneType :
@@ -144,15 +105,6 @@ class Controller(object):
         Aqui a baixo estão alguns recursos para facilitar a vida dos controladores
     """
     
-    def ajeitarPath(self, pathIn):
-        """
-            Essa função da uma arrumada no path por causa das barras invertidas que as vezes bugam
-        """
-        root = _fromUtf8(str(pathIn) + "/")
-        root = str(root).replace("\\", "/")    
-        
-        return root   
-    
     def findPath(self, textToWrite, type="none"):
         if type == "folder" :
             fname = QtGui.QFileDialog.getExistingDirectory()
@@ -161,5 +113,6 @@ class Controller(object):
         textToWrite.setText (fname)
         
     def message(self, text):
+        text = QString(text)
         QtGui.QMessageBox.about(self.ui, "Ops...", text)
         

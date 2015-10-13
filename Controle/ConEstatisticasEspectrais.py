@@ -36,9 +36,12 @@ class Controller(AbstractController.Controller):
         paramsIN["statistics"] = self.statistical_list
         
         self.function = SpectreStatisticalStractor()
-        self.function.data = paramsIN
-        images_saida = self.function.data
-        images_saida.saveListByRoot(images_saida, root_out, "tif")      
+
+        images_saida = self.function.executar(paramsIN)
+        
+        for imagem in images_saida :
+            
+            imagem.saveRasterData(file_path=root_out, ext="tif")      
         
         
     def valida_form(self):

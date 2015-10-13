@@ -26,6 +26,8 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
+
+    
     def setupUi(self, DlgEstimativaDatasAgricolas):
         
         self.controller = Controller(self);
@@ -224,12 +226,12 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.horizontalLayout.setMargin(0)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         
-        self.progressBar = QtGui.QProgressBar(self.horizontalLayoutWidget)
-        self.progressBar.setProperty("value", 0)
-        self.progressBar.setMinimum(1)
-        self.progressBar.setMaximum(100)
-        self.progressBar.setObjectName(_fromUtf8("progressBar"))
-        self.horizontalLayout.addWidget(self.progressBar)
+        #self.progressBar = QtGui.QProgressBar(self.horizontalLayoutWidget)
+        #self.progressBar.setProperty("value", 0)
+        #self.progressBar.setMinimum(1)
+        #self.progressBar.setMaximum(100)
+        #self.progressBar.setObjectName(_fromUtf8("progressBar"))
+        #self.horizontalLayout.addWidget(self.progressBar)
         
         self.bbOkCancel = QtGui.QDialogButtonBox(self.horizontalLayoutWidget)
         self.bbOkCancel.setOrientation(QtCore.Qt.Horizontal)

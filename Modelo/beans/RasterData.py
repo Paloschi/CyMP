@@ -39,11 +39,13 @@ class RasterFile(FileData):
                         break
                 print ("imagem lida, numero de bandas:", i_band)
         
-    def saveRasterData(self, band_matrix=None, metadata=None):
+    def saveRasterData(self, band_matrix=None, metadata=None, file_path=None, ext=None):
         '''
             #Salva imagem em uma determinada pasta
         '''
         
+        if file_path != None : self.file_path = file_path
+        if ext != None : self.file_ext = ext
         if band_matrix != None : self.data = band_matrix
         if metadata != None : self.metadata = metadata
         

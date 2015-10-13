@@ -112,6 +112,7 @@ class ExtratorSemeaduraColheita(AbstractFunction):
             #progress(i_linhas/float(n_linhas))
             #if (barra_progresso!=None) : barra_progresso.setProperty("value", (i_linhas/float(n_linhas))*100)
             progress(i_linhas/float(n_linhas))
+            self.progresso = (i_linhas/float(n_linhas)) * 100
             #if i_linhas/float(n_linhas) > 0.05 : break
             for i_coluna in range(0, n_colunas):
                 line = list()
