@@ -14,6 +14,7 @@ from datetime import datetime as dt
 from datetime import timedelta
 import numpy as np
 import sys
+import threading
 
 
 class ExtratorSemeaduraColheita(AbstractFunction):
@@ -88,14 +89,16 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         #else : print("diferente")
         
         sys.stdout.write( "Criando imagens de referencia: ")
+        self.console.print_text(u"Criando imagens de referência.")
         imagem_referencia = np.zeros((n_linhas, n_colunas))
         
         imagem_semeadura = array(imagem_referencia).astype(dtype="int32")
         imagem_colheita = array(imagem_referencia).astype(dtype="int32")
         imagem_pico = array(imagem_referencia).astype(dtype="int32")
-        print "done."
+
         
         sys.stdout.write( "Gerando estimativas: ")
+        self.console.print_text("Gerando estimativas.")
         progress(0.0)
         
         imagem_for_null_value = images[0]
@@ -109,13 +112,13 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         #print images_super[0].metadata
         
         for i_linhas in range(0, n_linhas):
-            #progress(i_linhas/float(n_linhas))
-            #if (barra_progresso!=None) : barra_progresso.setProperty("value", (i_linhas/float(n_linhas))*100)
             progress(i_linhas/float(n_linhas))
             self.progresso = (i_linhas/float(n_linhas)) * 100
-            #if i_linhas/float(n_linhas) > 0.05 : break
             for i_coluna in range(0, n_colunas):
                 line = list()
+                
+                
+                if threading.currentThread().stopped()  : return 
                     
                 if nullValue != imagem_for_null_value[i_linhas][i_coluna] :
                             
@@ -126,8 +129,7 @@ class ExtratorSemeaduraColheita(AbstractFunction):
                     data_txt_pico = images_super[cenaPico].file_name.replace(prefix, "").replace(sufix, "") 
                     data_pico = dt.strptime(data_txt_pico, mask)
                     ano_pico = data_pico.year
-                    dia_juliano = data_pico.timetuple().tm_yday  
-                    
+                    dia_juliano = data_pico.timetuple().tm_yday     
                     
                     imagem_pico[i_linhas][i_coluna] = ((ano_pico * 1000) + dia_juliano)
                       
@@ -145,24 +147,12 @@ class ExtratorSemeaduraColheita(AbstractFunction):
                     data_semeadura += timedelta((picoMenosSemeadura.days * avanco_semeadura).days)
                     data_colheita += timedelta((ColheitaMenosPico.days * avanco_colheita).days)
                     
-                    #print("")              
-                    #print("data de semeadura", data_semeadura)
-                    #print("data de pico: ", data_pico)             
-                    #print("data de colheita: ", data_colheita)
-                    
                     dia_juliano_semeadura = data_semeadura.timetuple().tm_yday 
                     imagem_semeadura[i_linhas][i_coluna] = ((data_semeadura.year * 1000) + dia_juliano_semeadura)
-                    #print imagem_semeadura[i_linhas][i_coluna]
             
                     dia_juliano_colheita = data_colheita.timetuple().tm_yday 
                     imagem_colheita[i_linhas][i_coluna] = ((data_colheita.year * 1000) + dia_juliano_colheita)
                     
-                    #plt.plot(line)
-                      
-        #plt.show()
-        
-        
-        
         saida = TableData()
         imagem_semeadura = RasterFile(data=imagem_semeadura)
         imagem_semeadura.metadata = images_super[0].metadata
@@ -212,16 +202,9 @@ class ExtratorSemeaduraColheita(AbstractFunction):
 
     def valorPixelLinha(self, cena, vetor):
         if (cena - int(cena) > 0):
-            #if (vetor[int(cena)+1] - vetor[int(cena)]) > 0:
                 valor = vetor[int(cena)] + ((vetor[int(cena)+1] - vetor[int(cena)]) * (cena - int(cena)))
-            #else:
-             #   valor = vetor[int(cena)] + ((vetor[int(cena)] - vetor[int(cena)+1]) * (cena - int(cena)))
-                
         elif (cena - int(cena) < 0):  
-            #if  (vetor[int(cena)] - vetor[int(cena)-1]) > 0:
                 valor = vetor[int(cena)] + ((vetor[int(cena)] - vetor[int(cena)-1]) * (cena - int(cena)))
-            #else:
-            #    valor = vetor[int(cena)] + ((vetor[int(cena)-1] - vetor[int(cena)]) * (cena - int(cena)))
         else:
             valor = vetor[int(cena)]
         return valor

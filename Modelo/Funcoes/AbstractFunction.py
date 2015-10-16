@@ -25,6 +25,7 @@ class Function(ABData):
     descriptionOUT = None # descrição dos parametros de saída das funções
     paramentrosIN_carregados = dict() # parametros de entrada carrecados
     progresso = float(1)
+    console = None
     
     @abstractmethod # esse parametro deve ser implementado na classe filha
     def __setParamIN__(self):

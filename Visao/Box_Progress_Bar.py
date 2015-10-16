@@ -10,6 +10,7 @@
 from PyQt4 import QtCore, QtGui
 from PyQt4.Qt import QDialog
 import time
+from matplotlib.textpath import text_to_path
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -26,25 +27,40 @@ except AttributeError:
 
 class Ui_DlgProgressBar(QDialog):
     
+    
+    text_to_append = ""
+    
+    def print_text(self, text):
+        while self.text_to_append != "" : pass
+        self.text_to_append = text
+        
+    
     def iniciar(self, funcao, thread_executando):
         self.thread_executando = thread_executando
         print "iniciando"
         self._active = True
         while True:
             time.sleep(0.05)
+            if self.text_to_append != "" : 
+                self.console.appendPlainText(self.text_to_append)
+                self.text_to_append = ""
             value = funcao.progresso
             self.progressBar.setValue(value)
+            #print value
             QtGui.qApp.processEvents()
-            if (not self._active or
-                value >= self.progressBar.maximum()):
+            if (not self._active or value >= self.progressBar.maximum()):
+                self.btnOk.setEnabled(True)
                 break
+        self.btnOk.setEnabled(True)
         QtGui.qApp.processEvents()
         
     def cancelar(self):
         self.progressBar.setValue(0)
         self._active = False
-        print "cancelando"    
-        self.thread_executando.stop()     
+        self.thread_executando.stop() 
+        print "cancelando.."       
+        self.reject() 
+        
         
     def setupUi(self, DlgProgressBar):
         DlgProgressBar.setObjectName(_fromUtf8("DlgProgressBar"))

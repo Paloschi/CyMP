@@ -30,7 +30,7 @@ class IDW(AbstractFunction):
         conf_algoritimo = dict()
         conf_algoritimo["power"] = {"Required":False, "Type":None, "Description":"Weighting power (default 2.0)"}
         conf_algoritimo["smoothing"] = {"Required":False, "Type":None, "Description":"Smoothing parameter (default 0.0)"}
-        conf_algoritimo["radius1"] = {"Required":False, "Type":None, "Description":"The first radius (X axis if rotation angle is 0) of search ellipse. Set this parameter to zero to use whole point array. Default is 0.0"}
+        conf_algoritimo["radius"] = {"Required":False, "Type":None, "Description":"The first radius (X axis if rotation angle is 0) of search ellipse. Set this parameter to zero to use whole point array. Default is 0.0"}
         conf_algoritimo["radius2"] = {"Required":False, "Type":None, "Description":"The second radius (Y axis if rotation angle is 0) of search ellipse. Set this parameter to zero to use whole point array. Default is 0.0."}
         conf_algoritimo["angle"] = {"Required":False, "Type":None, "Description":"Angle of search ellipse rotation in degrees (counter clockwise, default 0.0)"}
         conf_algoritimo["max_points"] = {"Required":False, "Type":None, "Description":"Maximum number of data points to use. Do not search for more points than this number. This is only used if search ellipse is set (both radii are non-zero). Zero means that all found points should be used. Default is 0"}

@@ -29,6 +29,7 @@ class Controller(AbstractController.Controller):
     def executa(self):
         
         self.function = ExtratorSemeaduraColheita()
+        self.function.console = self
         
         root_out = str(self.ui.leOutFolder.text())
         root_in = str(self.ui.leInFolder.text())
@@ -48,6 +49,10 @@ class Controller(AbstractController.Controller):
         
         images = self.function.executar(parametrosIN)
         
+        if images == None : return
+        
+        self.progress_bar.print_text("Salvando imagens.")
+        
         semeadura = images["imagem_semeadura"]
         semeadura.file_name = self.ui.leImgSemeadura.text()
         semeadura.file_path = "C://Gafanhoto WorkSpace//DataTestes//out"
@@ -65,6 +70,11 @@ class Controller(AbstractController.Controller):
         pico.file_path = "C://Gafanhoto WorkSpace//DataTestes//out"
         pico.file_ext = "tif"
         pico.saveRasterData()
+        
+        
+        self.print_text("Terminado.")
+        
+        self.function.progresso = 100
 
     def valida_form(self):
         '''
@@ -90,13 +100,5 @@ class Controller(AbstractController.Controller):
         if str(self.ui.leMascara.text())  == "" : 
             self.message(u"É necessário informar uma máscara, (ex.: %Y%m%d).")
             return False    
-        if not os.path.exists(self.ui.leImgSemeadura.text()):
-            self.message(u"Imagem de semeadura não encontrada, verifique o endereço.")
-            return False
-        if not os.path.exists(self.ui.leImgColheita.text()):
-            self.message(u"Imagem de colheita não encontrada, verifique o endereço.") 
-            return False         
-        if not os.path.exists(self.ui.leImgPico.text()):
-            self.message(u"Imagem de pico não encontrada, verifique o endereço.") 
-            return False    
+   
         return True

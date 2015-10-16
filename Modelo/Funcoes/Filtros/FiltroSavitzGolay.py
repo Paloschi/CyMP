@@ -95,6 +95,7 @@ class FiltroSavitz(AbstractFunction):
                     #i_linha+=1   
         
         imgs_saida = SerialFile()
+        imgs_saida.metadata = images.metadata
         i_imagem = 0
         for img in self.paramentrosIN_carregados["images"]:
             img.data = results[i_imagem]

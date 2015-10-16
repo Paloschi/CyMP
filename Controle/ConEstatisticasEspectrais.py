@@ -8,6 +8,7 @@ Created on Jun 10, 2015
 from Modelo.Funcoes.Estatisticos import SpectreStatisticalStractor
 from Modelo.beans import SerialFile, TableData
 from Controle import AbstractController
+import os.path as path
 
 class Controller(AbstractController.Controller):
     '''
@@ -23,13 +24,13 @@ class Controller(AbstractController.Controller):
     def executa(self):
         
         root_in = self.ui.leInFolder.text()
-        root_in = self.ajeitarPath(root_in)
+        root_in = path.normpath(root_in)
         
         imagens_entrada = SerialFile()
         imagens_entrada = imagens_entrada.loadListByRoot(root_in, "tif")
         
         root_out = self.ui.leOutFolder.text()
-        root_out = self.ajeitarPath(root_out)
+        root_out = path.normpath(root_out)
         
         paramsIN = TableData()
         paramsIN["images"] = imagens_entrada

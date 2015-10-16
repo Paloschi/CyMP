@@ -13,6 +13,7 @@ import ConfigParser
 from types import NoneType
 from Visao.Box_Progress_Bar import Ui_DlgProgressBar
 from PyQt4.Qt import QString
+import time
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -52,6 +53,8 @@ class Controller(object):
         self.config.read('workspace.properties')
         self.ui = userInterface # seta interface para que seja visivel aos outros m�todos
 
+    def print_text(self, text):
+        self.progress_bar.print_text(text)
         
     def action_ok(self):
         """
@@ -61,25 +64,17 @@ class Controller(object):
          
             self.thread = StoppableThread(self.executa)
             
-            progress_bar = Ui_DlgProgressBar(self.ui)
-            progress_bar.setupUi(progress_bar)
-            progress_bar.show()
+            self.progress_bar = Ui_DlgProgressBar(self.ui)
+            self.progress_bar.setupUi(self.progress_bar)    
+            self.progress_bar.show()
             
             self.thread.start()
-            
-            while(self.function!=None) : pass
                 
-            progress_bar.iniciar(self.function, self.thread)
-
-
             
-        #QtGui.QWidget.__init__(self, self.ui)
-        
-
-        
-        
-        
-        
+            while(self.function==None) : 
+                time.sleep(0.05)
+                
+            self.progress_bar.iniciar(self.function, self.thread)
             
     def action_cancel(self):
             if self.thread != NoneType :

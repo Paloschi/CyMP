@@ -13,6 +13,7 @@ from DlgEstimativaDatasCultura import Ui_DlgEstimativaDatasAgricolas
 from DlgFiltroSavitzGolay import Ui_DlgSavitzGolay
 from DlgEstatisticasEspectrais import Ui_DlgEstatisticasEspectrais
 from InterpoladorECMWF_Demo import UI_DlgInterpoladorShapeEcmwf
+from DlgInvdistnnRaster2Raster import Ui_InvdistnnRaster2Raster
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -61,6 +62,13 @@ class Ui_MainWindow(QtGui.QMainWindow):
         popup.setupUi(popup)
         popup.show()
                   
+    def popupInterpoladorRaster2Raster(self):
+
+        popup = Ui_InvdistnnRaster2Raster()
+        popup.setupUi(popup)
+        popup.show()
+                  
+ 
                            
     def setupUi(self, MainWindow):
         
@@ -90,6 +98,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
         
         self.menuFun_o_es = QtGui.QMenu(self.menubar)
         self.menuFun_o_es.setObjectName(_fromUtf8("menuFun_o_es"))
+        
+        self.menuInterpoladores = QtGui.QMenu(self.menubar)
+        self.menuInterpoladores.setObjectName(_fromUtf8("menuInterpoladores"))
         
         self.menuModelo = QtGui.QMenu(self.menubar)
         self.menuModelo.setObjectName(_fromUtf8("menuModelo"))
@@ -129,6 +140,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
         
         self.actionInterpolador = QtGui.QAction(MainWindow)
         self.actionInterpolador.setObjectName(_fromUtf8("actionInterpolador"))
+
+        self.actionInterpoladorRaster2Raster = QtGui.QAction(MainWindow)
+        self.actionInterpoladorRaster2Raster.setObjectName(_fromUtf8("actionInterpoladorRaster2Raster"))
         
         self.actionEstimativa_de_datas_de_colheita = QtGui.QAction(MainWindow)
         self.actionEstimativa_de_datas_de_colheita.setObjectName(_fromUtf8("actionEstimativa_de_datas_de_colheita"))
@@ -150,8 +164,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuDados.addAction(self.menuCarregar_Dado.menuAction())
         self.menuDados.addAction(self.actionListar_dados)
         
+        self.menuInterpoladores.addAction(self.actionInterpolador)
+        self.menuInterpoladores.addAction(self.actionInterpoladorRaster2Raster)
+        
         self.menuFun_o_es.addAction(self.actionListar_Fun_oes)
-        self.menuFun_o_es.addAction(self.actionInterpolador)
+        self.menuFun_o_es.addAction(self.menuInterpoladores.menuAction())
         self.menuFun_o_es.addAction(self.actionEstimativa_de_datas_de_colheita)
         self.menuFun_o_es.addAction(self.actionFiltro_Savitz_Golay)
         self.menuFun_o_es.addAction(self.actionEstatisticasEspectrais)
@@ -170,6 +187,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Gafanhoto 0.1.1", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuDados.setTitle(_translate("MainWindow", "Dados", None))
+        self.menuInterpoladores.setTitle(_translate("MainWindow", "Interpoladores", None))
         self.menuCarregar_Dado.setTitle(_translate("MainWindow", "Carregar dado", None))
         self.menuFun_o_es.setTitle(_translate("MainWindow", "Funções", None))
         self.menuModelo.setTitle(_translate("MainWindow", "Modelo", None))
@@ -183,6 +201,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionListar_Fun_oes.setText(_translate("MainWindow", "Listar Funções", None))
         self.actionRodar.setText(_translate("MainWindow", "Executar", None))
         self.actionInterpolador.setText(_translate("MainWindow", "Interpolador ECMWF", None))
+        self.actionInterpoladorRaster2Raster.setText(_translate("MainWindow", "Interpolador Raster pra raster", None))
         self.actionEstimativa_de_datas_de_colheita.setText(_translate("MainWindow", "Estimativa de datas de colheita", None))
         
         self.actionFiltro_Savitz_Golay.setText(_translate("MainWindow", "Filtro Savitz Golay", None))
@@ -192,3 +211,4 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionFiltro_Savitz_Golay.triggered.connect(self.popupFiltro_Savitz_Golay)
         self.actionEstatisticasEspectrais.triggered.connect(self.popupEstatistiscas_Espectrais)
         self.actionInterpolador.triggered.connect(self.popupInterpolador_ECMWF)
+        self.actionInterpoladorRaster2Raster.triggered.connect(self.popupInterpoladorRaster2Raster)
