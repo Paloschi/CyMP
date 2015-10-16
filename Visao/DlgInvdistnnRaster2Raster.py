@@ -50,9 +50,11 @@ class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
         self.label_6 = QtGui.QLabel(self.tab_2)
         self.label_6.setObjectName(_fromUtf8("label_6"))
         self.gridLayout_3.addWidget(self.label_6, 1, 0, 1, 1)
+        
         self.txInFolder = QtGui.QLineEdit(self.tab_2)
         self.txInFolder.setObjectName(_fromUtf8("txInFolder"))
         self.gridLayout_3.addWidget(self.txInFolder, 0, 1, 1, 1)
+        
         self.txOutFolder = QtGui.QLineEdit(self.tab_2)
         self.txOutFolder.setObjectName(_fromUtf8("txOutFolder"))
         self.gridLayout_3.addWidget(self.txOutFolder, 1, 1, 1, 1)
@@ -223,3 +225,7 @@ class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
         self.btFindInFolder.clicked.connect(self.controller.findInFolder)
         self.btFindOutFolder.clicked.connect(self.controller.findOutFolder)
         self.btFindImgReference.clicked.connect(self.controller.findImgRef)
+        
+        self.txInFolder.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\2-CORTADAS_11-12")
+        self.txOutFolder.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\out\\Primeira tentativa")
+        self.txImgReference.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\out\\colheita.tif")

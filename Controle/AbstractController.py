@@ -110,4 +110,26 @@ class Controller(object):
     def message(self, text):
         text = QString(text)
         QtGui.QMessageBox.about(self.ui, "Ops...", text)
+
+    def confirmation(self, text):
+        text = QString(text)
+
+        quit_msg = "Are you sure you want to exit the program?"
         
+        reply = QtGui.QMessageBox.question(self.progress_bar, 'Message', 
+                     quit_msg, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+
+        if reply == QtGui.QMessageBox.Yes:
+            return True
+        else:
+            return False
+
+        
+    def funcao_cancelada(self):
+        if threading.currentThread().stopped():
+            if self.confirmation("Deseja realmente interromper o processo?"):
+                self.progress_bar.finalizar()
+                self.progress_bar.funcao_finalizada = True
+                return True
+            return False
+        return False

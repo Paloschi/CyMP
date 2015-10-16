@@ -29,6 +29,7 @@ class Ui_DlgProgressBar(QDialog):
     
     
     text_to_append = ""
+    funcao_finalizada = False
     
     def print_text(self, text):
         while self.text_to_append != "" : pass
@@ -49,16 +50,18 @@ class Ui_DlgProgressBar(QDialog):
             #print value
             QtGui.qApp.processEvents()
             if (not self._active or value >= self.progressBar.maximum()):
-                self.btnOk.setEnabled(True)
+                self.finalizar()
                 break
-        self.btnOk.setEnabled(True)
+
         QtGui.qApp.processEvents()
         
     def cancelar(self):
         self.progressBar.setValue(0)
         self._active = False
         self.thread_executando.stop() 
-        print "cancelando.."       
+        self.print_text("cancelando..")
+        while not self.funcao_finalizada : pass
+            
         self.reject() 
         
         
@@ -104,3 +107,6 @@ class Ui_DlgProgressBar(QDialog):
         self.btnCancelar.clicked.connect(self.cancelar)
         self.btnOk.clicked.connect(self.reject)
 
+    def finalizar(self):
+        self.progressBar.setValue(100)
+        self.btnOk.setEnabled(True)

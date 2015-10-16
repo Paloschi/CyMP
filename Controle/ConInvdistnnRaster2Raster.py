@@ -9,9 +9,9 @@ from Modelo.Funcoes.Interpoladores import IDW
 from Modelo.beans import SerialFile, TableData
 from PyQt4 import QtCore
 from Controle import AbstractController
-from numpy import double
 import os.path
 from Modelo.beans.RasterData import RasterFile
+import threading
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -47,36 +47,56 @@ class Controller(AbstractController.Controller):
 
     def executa(self):
         
+        '''
+            Criando arquivos CSVs e VRTs para submeter a interpolação
+        '''
+        
+        self.print_text(u'Criando arquivos necessários para a interpolação')
+        
         self.function = RasterToCSVeVRT()
+        paramIn = TableData()
+        paramIn["images"] = SerialFile(root_path=str(self.ui.txInFolder.text()))
+        paramIn["out_folder"] = str(self.ui.txOutFolder.text())
         
-        paramIn = dict()
-        paramIn["images"] = SerialFile(root_path=self.ui.txInFolder.text())
-        paramIn["out_folder"] = self.ui.txOutFoldertext()
+        resposta = self.function.executar(paramIn)
         
-        CSVs, VRTs = self.function.executar(paramIn)
+        if self.funcao_cancelada() : return
         
-        for i in len(range(CSVs)):
-            
-            conf_algoritimo = dict()
-            conf_algoritimo["power"] = double(self.ui.txPower.text())
-            conf_algoritimo["radius"] = double(self.ui.txRadius.text())
-            conf_algoritimo["max_points"] = double(self.ui.txMaxPoint.text())
-            conf_algoritimo["min_points"] = double(self.ui.txMinPoint.text())
-            
-            conf_img_out = RasterFile(file_full_path=self.ui.txImgReference.text()).getRasterInformation()
+        CSVs = resposta["CSVs"]
+        VRTs = resposta["VRTs"]
+        
+        self.print_text("Numero de imagens identificadas para interpolar: " + str(len(CSVs)))
+        
+        conf_algoritimo = TableData()
+        conf_algoritimo["power"] = str(self.ui.txPower.value())
+        conf_algoritimo["radius"] = str(self.ui.txRadius.value())
+        conf_algoritimo["max_points"] = str(self.ui.txMaxPoint.value())
+        conf_algoritimo["min_points"] = str(self.ui.txMinPoint.value())
+        
+        conf_img_out = RasterFile(file_full_path=str(self.ui.txImgReference.text())).getRasterInformation()
+        
+        self.print_text("Interpolando imagens")
+           
+        for i in range(len(CSVs)):
             
             img_out = RasterFile(file_full_path=VRTs[i].file_full_path)
-            img_out.ext = "tif"           
+            img_out.file_ext = "tif"           
             
-            paramIn = dict()
+            paramIn = TableData()
             paramIn["csv"] = CSVs[i]
             paramIn["vrt"] = VRTs[i]
-            paramIn["img_out"] = img_out
+            paramIn["img_out_config"] = conf_img_out
             paramIn["conf_algoritimo"] = conf_algoritimo
             paramIn["img_out"] = img_out
             
             self.function = IDW()
             imagem_interpolada = self.function.executar(paramIn)
+            
+            self.print_text("Imagem interpolada: " + imagem_interpolada.file_name)
+            
+            if self.funcao_cancelada() : return
+        
+        self.progress_bar.finalizar()
 
 
             

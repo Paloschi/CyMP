@@ -11,6 +11,7 @@ import Modelo
 progress = gdal.TermProgress_nocb
 from Modelo.Funcoes import AbstractFunction
 from lxml import etree
+import threading
 
 class RasterToCSVeVRT(AbstractFunction):
     '''
@@ -28,8 +29,10 @@ class RasterToCSVeVRT(AbstractFunction):
         
         imagensIN = self.paramentrosIN_carregados["images"]
         outFolder = self.paramentrosIN_carregados["out_folder"]
-        nullValue = float(-128)
         
+        imagensIN.loadListByRoot()
+        
+        nullValue = float(-128)
         listaCSV = SerialFile()
         listaVRT = SerialFile()
         
@@ -61,7 +64,10 @@ class RasterToCSVeVRT(AbstractFunction):
             n_linhas = len(matriz)
             n_colunas = len(matriz[0])
             
-            file_csv_path = outFolder + nome_img + '.csv'
+            
+            
+            csv_file = FileData(file_path=outFolder, file_name = nome_img, ext = "csv")
+            file_csv_path = csv_file.file_full_path
             
             print(file_csv_path)
             
@@ -77,22 +83,24 @@ class RasterToCSVeVRT(AbstractFunction):
                     for i_coluna in range(0, n_colunas):
                         value = matriz[i_linha][i_coluna]
                         
+                        if threading.current_thread().stopped() : return None
+                        
                         if value != nullValue:                 
-                            #print(cy)
                             cx = init_x_position + (x_pixelSize * i_coluna)
                             
                             line = str(cx) + ',' + cy + ',' + str(value) + '\n'
                             csv.write(line)
+                csv.close()
                             
-            csv = FileData(file_full_path=file_csv_path)
             
-            listaCSV.append(csv)
             
-            vrt = csv
-            vrt.file_ext = "vrt"
+            listaCSV.append(csv_file)
+            
+            vrt_file = csv_file
+            vrt_file.file_ext = "vrt"
                 
             root = etree.Element("OGRVRTDataSource")
-            csv_node = etree.Element("OGRVRTLayer", name=csv.file_name)   
+            csv_node = etree.Element("OGRVRTLayer", name=csv_file.file_name)   
             root.append(csv_node)
                                       
             csv_node.append(etree.XML("<SrcDataSource>" +file_csv_path+"</SrcDataSource>"))
@@ -100,9 +108,9 @@ class RasterToCSVeVRT(AbstractFunction):
             csv_node.append(etree.XML('<GeometryField encoding="PointFromColumns" x="Easting" y="Northing" z="Value"/>'))
                 
             tree = etree.ElementTree(root)
-            tree.write(vrt.file_full_path, pretty_print=True)
+            tree.write(vrt_file.file_full_path, pretty_print=True)
             
-            listaVRT.append(vrt)
+            listaVRT.append(vrt_file)
                      
         print('-Arquivos CSV criados')
 

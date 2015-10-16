@@ -289,7 +289,7 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         raster = workspace + self.config.get('WorkSpace', 'space.raster')
         out = workspace + self.config.get('WorkSpace', 'space.out')
         
-        self.leInFolder.setText(raster)
+        #self.leInFolder.setText(raster)
         self.leOutFolder.setText(out)
         
         self.toolbFindInFolder.clicked.connect(self.controller.findInFolder)

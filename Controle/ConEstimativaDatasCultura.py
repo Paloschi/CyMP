@@ -7,7 +7,6 @@ Created on Jun 10, 2015
 
 from Modelo.Funcoes.BalancoHidrico import ExtratorSemeaduraColheita
 from Modelo.beans import SerialFile, TableData
-from PyQt4 import QtCore
 from Controle import AbstractController
 from numpy import double
 import os.path

@@ -8,6 +8,7 @@ from Modelo.Funcoes import AbstractFunction
 from Modelo.beans.AbstractData import FILE_DATA, TABLE_DATA
 from Modelo.beans.TableData import TableData
 import subprocess
+from Modelo.beans.FileData import FileData
 
 class IDW(AbstractFunction):
     '''
@@ -74,21 +75,22 @@ class IDW(AbstractFunction):
             conf_algoritimo = self.paramentrosIN_carregados["conf_algoritimo"]
             
             for key in conf_algoritimo.keys() :
-                print("aqui")
-                str_algoritimo_conf += (key + "=" + str(conf_algoritimo[key]))
+                if (float(conf_algoritimo[key])!=float(0)):
+                    str_algoritimo_conf += ":"
+                    str_algoritimo_conf += (key + "=" + str(conf_algoritimo[key]))
+                    
                 
             print "configuracao do algoritimo" + str_algoritimo_conf
         
         
         '''
             Chama interpolador GDAl IDW
+            http://www.gisinternals.com/query.html?content=filelist&file=release-1800-x64-gdal-mapserver.zip
         '''
-            
-            #gdal_calc.py -A input1.tif -B input2.tif --outfile=result.tif --calc="A+B"
                 
-        string_execucao = ['gdal_calc',  
+        string_execucao = ['gdal_grid',  
                               
-                              '-a', 'invdistnn:' + str_algoritimo_conf,
+                              '-a', 'invdistnn' + str_algoritimo_conf,
                               '-txe', str(img_out_config["xmin"]), str(img_out_config["xmax"]), 
                               '-tye', str(img_out_config["ymin"]), str(img_out_config["ymax"]), 
                               '-outsize', str(img_out_config["nx"]), str(img_out_config["ny"]), 
@@ -121,22 +123,22 @@ if __name__ == '__main__':
     '''
         CSV e VRT
     '''
-    img_teste_path = "C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster\\ECMWF\\Teste_raster_csv\\Imagens"
-    img_teste = SerialFile(root_path=img_teste_path)
-    img_teste.loadListByRoot()
+    #img_teste_path = "C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster\\ECMWF\\Teste_raster_csv\\Imagens"
+    #img_teste = SerialFile(root_path=img_teste_path)
+    #img_teste.loadListByRoot()
     
-    paramIN = dict()
-    paramIN["images"] = img_teste
-    paramIN["out_folder"] = "C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster\\ECMWF\\Teste_raster_csv\\Saida\\"
+    #paramIN = dict()
+    #paramIN["images"] = img_teste
+    #paramIN["out_folder"] = "C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster\\ECMWF\\Teste_raster_csv\\Saida\\"
     
-    csv_vrt_files = RasterToCSVeVRT().executar(paramIN)
+    #csv_vrt_files = RasterToCSVeVRT().executar(paramIN)
     
     '''
         Imagem de referencia
     '''
     from Modelo.beans import RasterFile
-     
-    img_referencia_path = "C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster\\Pesada\\MYD13Q1.20150210.250m_16_dias_EVI_PR.tif"
+    
+    img_referencia_path = "C:\\Gafanhoto WorkSpace\\DataTestes\\raster\\Fazer\\20110101.tif"
     img_referencia = RasterFile(file_full_path = img_referencia_path)
     
     info_img_referencia = img_referencia.getRasterInformation()
@@ -145,25 +147,24 @@ if __name__ == '__main__':
         Conf algoritimo 
     '''
     conf_alg = TableData()
-    conf_alg["max_points"] = "12"
-    conf_alg["radius"] = "50"
+    #conf_alg["max_points"] = "12"
+    #conf_alg["radius"] = "0"
     
     '''
         Imagem de saida
     '''
-    img_out = RasterFile(file_full_path = "C:\\Users\\rennan.paloschi\\Desktop\\Dados_Gerais\\raster\\ECMWF\\Teste_raster_csv\\Saida\\interpolada_max12_rad50_nn.tif")
+    img_out = RasterFile(file_full_path = "C:\\Gafanhoto WorkSpace\\DataTestes\\out\\Primeira tentativa\\evpt_20110101.tif")
     
     '''
         Unindo e executando
     '''
     paramIN = dict()
-    paramIN["csv"] = csv_vrt_files["CSVs"][0]
-    paramIN["vrt"] = csv_vrt_files["VRTs"][0]
+    #paramIN["csv"] = csv_vrt_files["CSVs"][0]
+    #paramIN["vrt"] = csv_vrt_files["VRTs"][0]
+    paramIN["csv"] = FileData(file_full_path="C:\\Gafanhoto WorkSpace\\DataTestes\\out\\Primeira tentativa\\evpt_20110101.csv")
+    paramIN["vrt"] = FileData(file_full_path="C:\\Gafanhoto WorkSpace\\DataTestes\\out\\Primeira tentativa\\evpt_20110101.vrt")
     paramIN["img_out"] = img_out
     paramIN["conf_algoritimo"] = conf_alg
     paramIN["img_out_config"] = info_img_referencia
     
     imagem_interpolada = IDW().executar(paramIN)
-    
-    
-    
