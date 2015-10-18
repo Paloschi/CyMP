@@ -12,7 +12,7 @@ from PyQt4 import QtCore, QtGui
 from DlgEstimativaDatasCultura import Ui_DlgEstimativaDatasAgricolas
 from DlgFiltroSavitzGolay import Ui_DlgSavitzGolay
 from DlgEstatisticasEspectrais import Ui_DlgEstatisticasEspectrais
-from InterpoladorECMWF_Demo import UI_DlgInterpoladorShapeEcmwf
+from Visao.DlgInvdistnnShapeEcmwf2Raster import UI_DlgInterpoladorShapeEcmwf
 from DlgInvdistnnRaster2Raster import Ui_InvdistnnRaster2Raster
 
 try:

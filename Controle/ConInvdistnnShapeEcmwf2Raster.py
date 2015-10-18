@@ -4,7 +4,7 @@ Created on Mar 6, 2015
 @author: Paloschi
 '''
 from PyQt4.QtGui import QFileDialog, QMessageBox
-from Modelo.beans import TableData, FileData, VectorData
+from Modelo.beans import TableData, FileData, VectorFile, RasterFile
 from Modelo.Funcoes.VectorTools import SplitTable
 from Modelo.Funcoes.Interpoladores import Interpola
 import sys
@@ -18,42 +18,34 @@ class Controller(AbstractController.Controller):
     ShapeSelected = None
     ImgRefSelected = None
         
-    def btn_OK_ClickAction(self):
-        print("OK")
-        self.executar()
-        
-    def btn_Cancel_ClickAction(self):
-        print("Cancel")
-        self.ui.close()
-        
     def btn_FindShp_ClickAction(self):
-        fname = QFileDialog.getOpenFileName()
-        self.ui.leShapePath.setText(fname)
+        self.findPath(self.ui.leShapePath)
 
     def btn_FindImgRef_ClickAction(self):
-        fname = QFileDialog.getOpenFileName()
-        self.ui.leImgRefPath.setText(fname)
+        self.findPath(self.ui.leImgRefPath)
 
     def le_shapePath_ChangeAction(self):
         if (self.ShapeSelected == None):
-            self.ShapeSelected = VectorData(file_full_path = self.ui.leShapePath.text())
+            text = str(self.ui.leShapePath.text())
+            self.ShapeSelected = VectorFile(file_full_path = text)
         else:
             self.ShapeSelected.file_full_path = self.ui.leShapePath.text()
             
-        itens = self.ShapeSelected.readVectorData().keys()
+        itens = self.ShapeSelected.readVectorData()["properties"].keys()
         self.ui.cbAtribute.addItems(itens)
         self.ui.cbAtribute.setEnabled(True)
         self.ui.cbAtribute.setCurrentIndex(0)
         
     def le_imgRefPath_ChangeAction(self):
         if (self.ImgRefSelected == None):
-            self.ImgRefSelected = FileData(file_full_path = self.ui.leImgRefPath.text())
+            self.ImgRefSelected = RasterFile(file_full_path = str(self.ui.leImgRefPath.text()))
         else:
-            self.ImgRefSelected.data = self.ui.leImgRefPath.text()
+            self.ImgRefSelected.file_full_path = str(self.ui.leImgRefPath.text())
         
     def cb_Atribute_ChangeAction(self):
-
-        itens = self.ShapeSelected.readVectorData.keys()   
+        
+        itens = self.ShapeSelected.readVectorData()["properties"].keys()   
+        
         itens.remove(self.ui.cbAtribute.currentText())
         
         self.ui.lwGroupAtributes.clear()
@@ -68,13 +60,13 @@ class Controller(AbstractController.Controller):
         __sortingEnabled = self.ui.lwGroupAtributes.isSortingEnabled()
         self.ui.lwGroupAtributes.setSortingEnabled(__sortingEnabled)
       
-    
-    def executar(self):
+    def executa(self):
+        
+        print "executando.."
+        self.print_text("Executando..")
         
         separador = SplitTable()   
-        
         dados_separador = TableData()
-        
         atributos = list()
         
         for index in xrange(self.ui.lwGroupAtributes.count()):
@@ -87,11 +79,14 @@ class Controller(AbstractController.Controller):
           
         dados_interpolador = TableData()
         
-        image_information = self.ImgRefSelected.readVectorData()
+        image_information = self.ImgRefSelected.getRasterInformation()
         
-        dados_interpolador.data = {'table_data' : separador, 'atributo' : str(self.ui.cbAtribute.currentText()), "format_image_data" : image_information}
+        dados_interpolador['table_data'] = separador
+        dados_interpolador['atributo'] = str(self.ui.cbAtribute.currentText())
+        dados_interpolador["format_image_data"] = image_information
         
-        interpolador = Interpola.InterpolaTabela("teste ECMWF")
+        interpolador = Interpola.InterpolaTabela()
+        
         interpolador.data = dados_interpolador
 
         mensagem  = interpolador.data
@@ -99,6 +94,4 @@ class Controller(AbstractController.Controller):
         
 
     def valida_form(self):
-        pass
-    def executa(self):
-        pass
+        return True

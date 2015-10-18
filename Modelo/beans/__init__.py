@@ -6,6 +6,7 @@ from FileData import FileData
 from RasterData import RasterFile
 from SerialFileData import SerialFile, SerialTemporalFiles
 from TableData import TableData 
+from VectorData import VectorFile
 
 
 

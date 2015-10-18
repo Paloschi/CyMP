@@ -24,7 +24,7 @@ class InterpolaTabela(ABData):
     def data(self):             
         dados = self.__data.data
         table = dados['table_data']
-        tabela_data = table.data
+        tabela_data = table
         atributo_interpolacao = dados['atributo']
         format_image_data = dados['format_image_data']
         

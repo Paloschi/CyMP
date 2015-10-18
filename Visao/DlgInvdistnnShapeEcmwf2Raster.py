@@ -8,7 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-from Controle import InterpoladorECMWF_Demo_Controller
+from Controle import ConInvdistnnShapeEcmwf2Raster
  
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -28,7 +28,7 @@ class UI_DlgInterpoladorShapeEcmwf(QtGui.QDialog):
         
     def setupUi(self, Form):
         
-        self.controller = InterpoladorECMWF_Demo_Controller.Controller(self)
+        self.controller = ConInvdistnnShapeEcmwf2Raster.Controller(self)
         
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(436, 361)
@@ -76,6 +76,9 @@ class UI_DlgInterpoladorShapeEcmwf(QtGui.QDialog):
         self.btnFindImgRef.setGeometry(QtCore.QRect(330, 150, 75, 23))
         self.btnFindImgRef.setObjectName(_fromUtf8("btnFindImgRef"))
 
+        QtCore.QObject.connect(self.bbOkCancela, QtCore.SIGNAL(_fromUtf8("accepted()")), self.controller.action_ok)
+        QtCore.QObject.connect(self.bbOkCancela, QtCore.SIGNAL(_fromUtf8("rejected()")), self.controller.action_cancel)
+        
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -91,8 +94,6 @@ class UI_DlgInterpoladorShapeEcmwf(QtGui.QDialog):
         
         self.btnFindShp.clicked.connect(self.controller.btn_FindShp_ClickAction)
         self.btnFindImgRef.clicked.connect(self.controller.btn_FindImgRef_ClickAction)
-        self.bbOkCancela.buttons()[0].clicked.connect(self.controller.btn_OK_ClickAction)
-        self.bbOkCancela.buttons()[1].clicked.connect(self.controller.btn_Cancel_ClickAction)
         self.leShapePath.textChanged.connect(self.controller.le_shapePath_ChangeAction)
         self.leImgRefPath.textChanged.connect(self.controller.le_imgRefPath_ChangeAction)
         self.cbAtribute.currentIndexChanged.connect(self.controller.cb_Atribute_ChangeAction)

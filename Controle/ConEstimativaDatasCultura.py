@@ -48,7 +48,7 @@ class Controller(AbstractController.Controller):
         
         images = self.function.executar(parametrosIN)
         
-        if images == None : return
+        if self.funcao_cancelada() : return
         
         self.progress_bar.print_text("Salvando imagens.")
         
