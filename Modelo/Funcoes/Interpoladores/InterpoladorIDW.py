@@ -111,7 +111,7 @@ class IDW(AbstractFunction):
             print 'erro ao chamar subprocesso gdal_grid, verifiquei se a GDAL core está instalada e a variavel de ambiente está setada'
             
             
-        saida = img_out.file_full_path
+        saida = img_out
         
         return saida
 

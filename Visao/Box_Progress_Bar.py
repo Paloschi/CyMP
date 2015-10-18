@@ -8,6 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+import time
 from PyQt4.Qt import QDialog
 import time
 from matplotlib.textpath import text_to_path
@@ -36,7 +37,7 @@ class Ui_DlgProgressBar(QDialog):
         self.text_to_append = text
         
     
-    def iniciar(self, funcao, thread_executando):
+    def iniciar(self, controller, thread_executando):
         self.thread_executando = thread_executando
         print "iniciando"
         self._active = True
@@ -45,25 +46,37 @@ class Ui_DlgProgressBar(QDialog):
             if self.text_to_append != "" : 
                 self.console.appendPlainText(self.text_to_append)
                 self.text_to_append = ""
-            value = funcao.progresso
+            value = controller.function.progresso
             self.progressBar.setValue(value)
             #print value
             QtGui.qApp.processEvents()
             if (not self._active or value >= self.progressBar.maximum()):
-                self.finalizar()
                 break
 
         QtGui.qApp.processEvents()
         
     def cancelar(self):
-        self.progressBar.setValue(0)
-        self._active = False
-        self.thread_executando.stop() 
-        self.print_text("cancelando..")
-        while not self.funcao_finalizada : pass
+        if self.confirmar_cancelamento() :
+            self.console.appendPlainText("cancelando..")
+            self.thread_executando.stop() 
+            QtGui.qApp.processEvents()
+            while not self.funcao_finalizada : pass
+            self.console.appendPlainText(U"Função cancelada!")
+            self.btnCancelar.setEnabled(False)
+            self.btnOk.setEnabled(True)            
+            self._active = False
+            self.progressBar.setValue(100)
+
             
-        self.reject() 
         
+    def confirmar_cancelamento(self):
+        quit_msg = "Deseja realmente cancelar o processo?"
+        reply = QtGui.QMessageBox.question(self, 'Cancelamento', 
+                     quit_msg, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+        if reply == QtGui.QMessageBox.Yes:
+            return True
+        else:
+            return False
         
     def setupUi(self, DlgProgressBar):
         DlgProgressBar.setObjectName(_fromUtf8("DlgProgressBar"))
@@ -108,5 +121,4 @@ class Ui_DlgProgressBar(QDialog):
         self.btnOk.clicked.connect(self.reject)
 
     def finalizar(self):
-        self.progressBar.setValue(100)
-        self.btnOk.setEnabled(True)
+        self.funcao_finalizada = True

@@ -90,13 +90,14 @@ class Controller(AbstractController.Controller):
             paramIn["img_out"] = img_out
             
             self.function = IDW()
+            
+            self.function.progresso = (float(i+1) / len(CSVs)) * 100
+            
             imagem_interpolada = self.function.executar(paramIn)
             
             self.print_text("Imagem interpolada: " + imagem_interpolada.file_name)
             
             if self.funcao_cancelada() : return
-        
-        self.progress_bar.finalizar()
 
 
             

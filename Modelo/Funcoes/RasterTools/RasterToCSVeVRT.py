@@ -77,7 +77,10 @@ class RasterToCSVeVRT(AbstractFunction):
             with open(file_csv_path,'w') as csv:
                 csv.write("Easting,Northing,Value\n")
                 for i_linha in range(0, n_linhas):
-                    progress(i_linha/float(n_linhas))
+                    progress(i_linha/float(n_linhas-1))
+                    
+                    self.progresso = (i_linha/float(n_linhas) * 100)
+                    
                     cy = init_y_position - (y_pixelSize * i_linha)
                     cy = str(cy)
                     for i_coluna in range(0, n_colunas):
