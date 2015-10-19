@@ -116,4 +116,12 @@ class Controller(object):
                 self.progress_bar.finalizar()
                 return True
         return False
-
+    
+    def confirmar(self, text, title):
+        quit_msg = text
+        reply = QtGui.QMessageBox.question(self.ui, title, 
+                     quit_msg, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+        if reply == QtGui.QMessageBox.Yes:
+            return True
+        else:
+            return False

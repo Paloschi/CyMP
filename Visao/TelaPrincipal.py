@@ -14,6 +14,7 @@ from DlgFiltroSavitzGolay import Ui_DlgSavitzGolay
 from DlgEstatisticasEspectrais import Ui_DlgEstatisticasEspectrais
 from Visao.DlgInvdistnnShapeEcmwf2Raster import UI_DlgInterpoladorShapeEcmwf
 from DlgInvdistnnRaster2Raster import Ui_InvdistnnRaster2Raster
+from DlgDistribuidorDeIndice import Ui_DistribuidorDeIndice
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -34,10 +35,17 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         self.setupUi(self)
-        
+
     def popupEstimativa_de_datas_de_colheita(self):
         
         popup = Ui_DlgEstimativaDatasAgricolas(self)
+        popup.setupUi(popup)
+        
+        popup.show()
+        
+    def popupDestribuidor_de_indice(self):
+        
+        popup = Ui_DistribuidorDeIndice(self)
         popup.setupUi(popup)
         
         popup.show()
@@ -152,6 +160,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
         
         self.actionEstatisticasEspectrais = QtGui.QAction(MainWindow)
         self.actionEstatisticasEspectrais.setObjectName(_fromUtf8("actionEstatisticasEspectrais"))
+
+        self.actionDistribuidorDeIndice = QtGui.QAction(MainWindow)
+        self.actionDistribuidorDeIndice.setObjectName(_fromUtf8("actionDistribuidorDeIndice"))
         
         self.menuFile.addAction(self.actionCarregar_Modelo)
         self.menuFile.addAction(self.actionSalvar_Modelo_Ctrl_S)
@@ -172,6 +183,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuFun_o_es.addAction(self.actionEstimativa_de_datas_de_colheita)
         self.menuFun_o_es.addAction(self.actionFiltro_Savitz_Golay)
         self.menuFun_o_es.addAction(self.actionEstatisticasEspectrais)
+        self.menuFun_o_es.addAction(self.actionDistribuidorDeIndice)
         
         self.menuModelo.addAction(self.actionRodar)
         
@@ -203,6 +215,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionInterpolador.setText(_translate("MainWindow", "Interpolador ECMWF", None))
         self.actionInterpoladorRaster2Raster.setText(_translate("MainWindow", "Interpolador Raster pra raster", None))
         self.actionEstimativa_de_datas_de_colheita.setText(_translate("MainWindow", "Estimativa de datas de colheita", None))
+        self.actionDistribuidorDeIndice.setText(_translate("MainWindow", "Distribuidor de índice", None))
         
         self.actionFiltro_Savitz_Golay.setText(_translate("MainWindow", "Filtro Savitz Golay", None))
         self.actionEstatisticasEspectrais.setText(_translate("MainWindow", "Estatisticas Espectrais", None))
@@ -212,3 +225,4 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionEstatisticasEspectrais.triggered.connect(self.popupEstatistiscas_Espectrais)
         self.actionInterpolador.triggered.connect(self.popupInterpolador_ECMWF)
         self.actionInterpoladorRaster2Raster.triggered.connect(self.popupInterpoladorRaster2Raster)
+        self.actionDistribuidorDeIndice.triggered.connect(self.popupDestribuidor_de_indice)

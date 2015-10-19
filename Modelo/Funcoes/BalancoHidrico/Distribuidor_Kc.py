@@ -12,11 +12,11 @@ import numpy as np
 from numpy.core.numeric import array
 from datetime import timedelta
 import gdal
+from Modelo.beans.SerialFileData import SerialFile
 progress = gdal.TermProgress_nocb   
 from multiprocessing import Process, Queue
 import time
-
-
+import threading
 
 def Ds_DC_to_date(data):
         
@@ -26,7 +26,7 @@ def Ds_DC_to_date(data):
         date = datetime.datetime(year, 1, 1) + datetime.timedelta(days - 1)
         return date
 
-def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, kc_vetorizado, path_img_referencia, i, path_out):
+def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, kc_vetorizado, path_img_referencia, i, path_out, function):
     
         imagem_kc = RasterFile(file_full_path = path_img_referencia)
         imagem_kc.loadRasterData()
@@ -49,7 +49,9 @@ def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, k
             imagem_kc.data = array(semeadura_)
             imagem_kc.file_name = str(dia.date())
             
-            if delta_total > 1 :progress(i_dia/float(delta_total-1))
+            if delta_total > 1 : 
+                progress(i_dia/float(delta_total-1))
+                function.progresso = (i_dia/float(delta_total))*100
                     
             for i_linha in range(0, n_linhas):
                 for i_coluna in range(0, n_colunas):
@@ -71,7 +73,8 @@ def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, k
                     
             imagem_kc.metadata.update(nodata=0)
             imagem_kc.saveRasterData(band_matrix = imagem_kc_)
-            
+        print "returnando do processo", i
+        threading.currentThread().stopped = True
         return None
 
 
@@ -84,6 +87,7 @@ class DistribuidorKC(AbstractFunction):
         self.descriptionIN["semeadura"] = {"Required":True, "Type":FILE_DATA, "Description":"Imagem de semeadura"}
         self.descriptionIN["colheita"] = {"Required":True, "Type":FILE_DATA, "Description":"Imagem de colheita"} 
         self.descriptionIN["path_out"] = {"Required":True, "Type":None, "Description":"Caminho de saida das imagens"}   
+        self.descriptionIN["multply_factor"] = {"Required":True, "Type":None, "Description":"Fator multiplicador pelo indice"}   
         
     def __setParamOUT__(self):
         self.descriptionOUT["images"] = "Série de imagens kc distribuidas de acordo com as imagens de semeadura e  colheita" 
@@ -111,7 +115,6 @@ class DistribuidorKC(AbstractFunction):
         #data_maxima = datetime.datetime(2012, 04, 19)
 
         print data_maxima
-
         
         kc_vetorizado = self.vetorizar_kc()
         periodo_kc = len(kc_vetorizado)
@@ -128,6 +131,8 @@ class DistribuidorKC(AbstractFunction):
         
         n_of_process = 5
 
+        processos = list()
+        
         for i in range (0, n_of_process):
             
             path_img_semeadura = self.paramentrosIN_carregados["semeadura"].file_full_path
@@ -152,14 +157,38 @@ class DistribuidorKC(AbstractFunction):
             p = Process(target=distribuir_kc, args=(data_minima_process, 
                                                      data_maxima_process, 
                                                      semeadura_, colheita_, periodo_kc, kc_vetorizado, path_img_semeadura, 
-                                                     i, self.paramentrosIN_carregados["path_out"]))
+                                                     i, self.paramentrosIN_carregados["path_out"], self))
+            processos.append(p)
             p.start()
             
-        for i in range (0, n_of_process):
-            q.get()
+            
+            
+            
+        print "vai aguardar processos --------------------------------------------------"
+        
+        numero_de_processos_prontos = 0        
+        processos_prontos = False
+        while numero_de_processos_prontos < n_of_process:
+            processos_prontos = 0
+            for p in processos:
+                if p.is_alive() :
+                    numero_de_processos_prontos +=1
+                    print "mais um processo terminado -------------------------------------"
+                
+        #for i in range (0, n_of_process):
+            #q.join_thread()
+            print "pricesso", i, "retornado -------------------------------------------"
+        
+        print "Acabou, retornando ----------------------------------------------------"
+        
+        return SerialFile(root_path = self.paramentrosIN_carregados["path_out"])
                 
     def vetorizar_kc(self): 
-       
+        
+        if self.paramentrosIN_carregados.has_key("multply_factor") :
+            multply_factor = self.paramentrosIN_carregados["multply_factor"]
+        else :
+            multply_factor = 1
         
         tamanho = 0
         for key in self.paramentrosIN_carregados["Kc"].keys():
@@ -175,7 +204,7 @@ class DistribuidorKC(AbstractFunction):
             fim = int(key.split("-")[1])
             print "chave:", key, "- inicio:", inicio, "- fim:", fim, "- tamanho:", fim - inicio
             for x in range(inicio, fim+1):
-                kc_vetorizado[x-1] = self.paramentrosIN_carregados["Kc"][key]
+                kc_vetorizado[x-1] = self.paramentrosIN_carregados["Kc"][key] * multply_factor
                 
         print kc_vetorizado
         print len(kc_vetorizado)

@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//Controle/AbstractController.py=utf-8
+encoding//Controle/ConDistribuidorDeIndice.py=utf-8
 encoding//Controle/ConEstatisticasEspectrais.py=utf-8
 encoding//Controle/ConEstimativaDatasCultura.py=utf-8
 encoding//Controle/ConFiltroSavitzGolay.py=utf-8
@@ -26,6 +27,7 @@ encoding//Modelo/beans/SerialFileData.py=utf-8
 encoding//Modelo/beans/TableData.py=utf-8
 encoding//Modelo/beans/__init__.py=utf-8
 encoding//Visao/Box_Progress_Bar.py=utf-8
+encoding//Visao/DlgDistribuidorDeIndice.py=utf-8
 encoding//Visao/DlgEstatisticasEspectrais.py=utf-8
 encoding//Visao/DlgEstimativaDatasCultura.py=utf-8
 encoding//Visao/DlgFiltroSavitzGolay.py=utf-8
