@@ -54,19 +54,19 @@ class Controller(AbstractController.Controller):
         
         semeadura = images["imagem_semeadura"]
         semeadura.file_name = self.ui.leImgSemeadura.text()
-        semeadura.file_path = "C://Gafanhoto WorkSpace//DataTestes//out"
+        semeadura.file_path = str(self.ui.leOutFolder.text())
         semeadura.file_ext = "tif"
         semeadura.saveRasterData()
         
         colheita = images["imagem_colheita"]
         colheita.file_name = self.ui.leImgColheita.text()
-        colheita.file_path = "C://Gafanhoto WorkSpace//DataTestes//out"
+        colheita.file_path = str(self.ui.leOutFolder.text())
         colheita.file_ext = "tif"
         colheita.saveRasterData()
         
         pico = images["imagem_pico"]
         pico.file_name = self.ui.leImgPico.text()
-        pico.file_path = "C://Gafanhoto WorkSpace//DataTestes//out"
+        pico.file_path = str(self.ui.leOutFolder.text())
         pico.file_ext = "tif"
         pico.saveRasterData()
         

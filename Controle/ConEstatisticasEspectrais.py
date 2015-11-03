@@ -58,10 +58,10 @@ class Controller(AbstractController.Controller):
         
     def valida_form(self):
 
-        if path.exists(str(self.ui.leInFolder.text())):
+        if not path.exists(str(self.ui.leInFolder.text())):
             self.message(u"Pasta de entrada não encontrada")   
             return False     
-        if path.exists(str(self.ui.leOutFolder.text())):
+        if not path.exists(str(self.ui.leOutFolder.text())):
             self.message(u"Pasta de saída não encontrada")
             return False
         

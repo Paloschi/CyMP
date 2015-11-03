@@ -80,4 +80,5 @@ class Controller(AbstractController.Controller):
         if not os.path.exists(self.ui.leOutFolder.text()):
             self.message(u"Pasta de saida das imagens não encontrada, verifique o endereço.")
             return False 
+        return True
            
