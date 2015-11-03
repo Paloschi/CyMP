@@ -14,6 +14,6 @@ if __name__ == '__main__':
 
 from Etc import Etc
 from ExtratorSemeaduraColheita import ExtratorSemeaduraColheita
-from Distribuidor_Kc import DistribuidorKC
+from Modelo.Funcoes.BalancoHidrico.Distribuidor_IC import DistribuidorKC
 
 

@@ -11,7 +11,6 @@ from PyQt4 import QtCore
 from Controle import AbstractController
 import os.path
 from Modelo.beans.RasterData import RasterFile
-import threading
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8

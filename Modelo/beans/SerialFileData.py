@@ -6,13 +6,14 @@ Created on Jul 16, 2015
 '''
 
 from AbstractData import ABData, SERIAL_FILE_DATA
-from Modelo.beans import RasterFile, FILE_DATA 
+from Modelo.beans import RasterFile 
 import os
 import gdal
-progress = gdal.TermProgress_nocb
 import rasterio
 import sys
 import datetime
+
+progress = gdal.TermProgress_nocb
 
 class SerialFile(ABData, list):
     '''
@@ -22,7 +23,7 @@ class SerialFile(ABData, list):
     '''
     
     __root_path = None
-    root_filter = ("tif", "img")
+    root_filter = ("tif", "tiff", "img")
     metadata = None  
     out_datatype = None  
 
@@ -44,7 +45,6 @@ class SerialFile(ABData, list):
         '''
             Abre uma lista de mapas localizados em uma determinada pasta
         ''' 
-        
         
         if rootDir != None : self.root_path = rootDir
         if filtro != None : self.root_filter = filtro
@@ -123,7 +123,7 @@ class SerialFile(ABData, list):
             if ext != None : image.file_ext = ext
             if root_path != None : image.file_path = root_path
             
-            image.saveRasterData(image, metadata= self.metadata)
+            image.saveRasterData(image.data, metadata= self.metadata)
             progress( i+1 / float(n_images)) 
 
     def saveListLike1Image(self, name=None, images_bands_matrix=None, root_path=None, ext=None):

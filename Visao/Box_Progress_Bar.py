@@ -50,8 +50,10 @@ class Ui_DlgProgressBar(QDialog):
             self.progressBar.setValue(value)
             #print value
             QtGui.qApp.processEvents()
-            if (not self._active or value >= self.progressBar.maximum()):
+            if (not self._active):
+                self.funcao_terminada()
                 break
+            if self.funcao_finalizada : self.funcao_terminada()
 
         QtGui.qApp.processEvents()
         
@@ -67,7 +69,6 @@ class Ui_DlgProgressBar(QDialog):
             self._active = False
             self.progressBar.setValue(100)
 
-            
         
     def confirmar_cancelamento(self):
         quit_msg = "Deseja realmente cancelar o processo?"
@@ -122,3 +123,11 @@ class Ui_DlgProgressBar(QDialog):
 
     def finalizar(self):
         self.funcao_finalizada = True
+        
+        
+    def funcao_terminada(self):
+        self.funcao_finalizada = True
+        self.btnCancelar.setEnabled(False)
+        self.btnOk.setEnabled(True)            
+        self._active = False
+        self.progressBar.setValue(100)

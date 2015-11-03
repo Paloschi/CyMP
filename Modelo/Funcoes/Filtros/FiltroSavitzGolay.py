@@ -13,7 +13,6 @@ progress = gdal.TermProgress_nocb
 import numpy as np
 from Modelo.beans import SERIAL_FILE_DATA, TABLE_DATA, SerialFile, RasterFile
 import sys
-import logging as log
 
 
 class FiltroSavitz(AbstractFunction):

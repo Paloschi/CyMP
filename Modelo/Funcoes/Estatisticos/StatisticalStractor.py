@@ -11,7 +11,7 @@ from Modelo.beans import SerialFile, TableData, SERIAL_FILE_DATA, RasterFile
 from Modelo.Funcoes import AbstractFunction
 import gdal
 progress = gdal.TermProgress_nocb
-
+import threading
 
 class SpectreStatisticalStractor(AbstractFunction):
     '''
@@ -29,14 +29,14 @@ class SpectreStatisticalStractor(AbstractFunction):
         
     def __execOperation__(self):
         
-        print("executando operação")
+        self.print_text("executando operação")
         
         images_super = self.paramentrosIN_carregados["images"]
         print("Numero de imagens para ler: " + str(len(images_super)))
         nullValue = self.paramentrosIN_carregados["null_value"]
         statistics = self.paramentrosIN_carregados["statistics"]
         
-        print("Estatisticas a fazer: ", statistics)
+        self.print_text("Estatisticas a fazer: ", statistics)
         
         doMedia = "media" in statistics 
         doCV = "cv" in statistics
@@ -49,7 +49,7 @@ class SpectreStatisticalStractor(AbstractFunction):
         
         images = images_super.loadListRasterData()
         
-        print("Numero de imagens lidas: " + str(len(images)))
+        self.print_text("Numero de imagens lidas: " + str(len(images)))
         
         n_linhas = len(images[0])
         n_colunas = len(images[0][0])
@@ -59,7 +59,7 @@ class SpectreStatisticalStractor(AbstractFunction):
                 raise IndexError("Erro - As imagens precisam ter o mesmo número de linhas e colunas")
                 
                 
-        print("numero de colunas e linhas: " + str(n_linhas) + " : " + str(n_colunas))
+        self.print_text("numero de colunas e linhas: " + str(n_linhas) + " : " + str(n_colunas))
         
         #imagem_referencia = [[0 for x in range(n_colunas)] for x in range(n_linhas)]  
         imagem_referencia = np.zeros((n_linhas, n_colunas))
@@ -73,7 +73,7 @@ class SpectreStatisticalStractor(AbstractFunction):
         if doMediana : imagem_mediana = array(imagem_referencia)#.astype(dtype="int16")
         if doAmplitude : imagem_amplitude = array(imagem_referencia)#.astype(dtype="int16")
 
-        print("processando:")
+        self.print_text("processando:")
         
         
         progress( 0.0)
@@ -82,10 +82,12 @@ class SpectreStatisticalStractor(AbstractFunction):
             
             #status = i_linha+1/float(n_linhas)
             progress(float(i_linha/float(n_linhas)))
-            #self.progresso = status*100
+            self.progresso = (float(i_linha/float(n_linhas)))*100
 
             for i_coluna in range(0, n_colunas):
                 line = list()
+                
+                if threading.currentThread().stopped()  : return 
 
                 if nullValue != None and float(nullValue) == images[1][i_linha][i_coluna] :
                     pass
@@ -136,7 +138,7 @@ class SpectreStatisticalStractor(AbstractFunction):
                         amplitude = max - min
                         imagem_amplitude[i_linha][i_coluna] = amplitude
         
-        print("Arrumando imagens de saida")
+        self.print_text("Arrumando imagens de saida")
         
         saida = SerialFile ()
         saida.metadata = self.paramentrosIN_carregados["images"][0].metadata
@@ -182,7 +184,7 @@ class SpectreStatisticalStractor(AbstractFunction):
             imagem_amplitude.file_name = "imagem_amplitude"
             saida.append(imagem_amplitude)
             
-        print("imagens prontas para gravar, statistical stractor completo")
+        self.print_text("imagens prontas para gravar, statistical stractor completo")
 
         return saida
     

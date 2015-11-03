@@ -89,7 +89,7 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         #else : print("diferente")
         
         sys.stdout.write( "Criando imagens de referencia: ")
-        self.console.print_text(u"Criando imagens de referência.")
+        self.print_text(u"Criando imagens de referência.")
         imagem_referencia = np.zeros((n_linhas, n_colunas))
         
         imagem_semeadura = array(imagem_referencia).astype(dtype="int32")
@@ -98,7 +98,7 @@ class ExtratorSemeaduraColheita(AbstractFunction):
 
         
         sys.stdout.write( "Gerando estimativas: ")
-        self.console.print_text("Gerando estimativas.")
+        self.print_text("Gerando estimativas.")
         progress(0.0)
         
         imagem_for_null_value = images[0]

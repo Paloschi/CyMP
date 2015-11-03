@@ -15,8 +15,8 @@ import gdal
 from Modelo.beans.SerialFileData import SerialFile
 progress = gdal.TermProgress_nocb   
 from multiprocessing import Process, Queue
-import time
 import threading
+import time
 
 def Ds_DC_to_date(data):
         
@@ -26,8 +26,9 @@ def Ds_DC_to_date(data):
         date = datetime.datetime(year, 1, 1) + datetime.timedelta(days - 1)
         return date
 
-def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, kc_vetorizado, path_img_referencia, i, path_out, function):
+def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, kc_vetorizado, path_img_referencia, i, path_out):
     
+        threading.currentThread().terminada = False
         imagem_kc = RasterFile(file_full_path = path_img_referencia)
         imagem_kc.loadRasterData()
         imagem_kc.file_path = path_out
@@ -51,7 +52,7 @@ def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, k
             
             if delta_total > 1 : 
                 progress(i_dia/float(delta_total-1))
-                function.progresso = (i_dia/float(delta_total))*100
+                #progresso = (i_dia/float(delta_total))*100
                     
             for i_linha in range(0, n_linhas):
                 for i_coluna in range(0, n_colunas):
@@ -73,8 +74,9 @@ def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, k
                     
             imagem_kc.metadata.update(nodata=0)
             imagem_kc.saveRasterData(band_matrix = imagem_kc_)
-        print "returnando do processo", i
-        threading.currentThread().stopped = True
+        print "retornando do processo", i
+        #threading.currentThread().stopped = True
+        threading.currentThread().terminada = True
         return None
 
 
@@ -157,7 +159,7 @@ class DistribuidorKC(AbstractFunction):
             p = Process(target=distribuir_kc, args=(data_minima_process, 
                                                      data_maxima_process, 
                                                      semeadura_, colheita_, periodo_kc, kc_vetorizado, path_img_semeadura, 
-                                                     i, self.paramentrosIN_carregados["path_out"], self))
+                                                     i, self.paramentrosIN_carregados["path_out"]))
             processos.append(p)
             p.start()
             
@@ -166,18 +168,15 @@ class DistribuidorKC(AbstractFunction):
             
         print "vai aguardar processos --------------------------------------------------"
         
-        numero_de_processos_prontos = 0        
+        numero_de_processos_prontos = 1        
         processos_prontos = False
         while numero_de_processos_prontos < n_of_process:
             processos_prontos = 0
             for p in processos:
-                if p.is_alive() :
-                    numero_de_processos_prontos +=1
-                    print "mais um processo terminado -------------------------------------"
-                
-        #for i in range (0, n_of_process):
-            #q.join_thread()
-            print "pricesso", i, "retornado -------------------------------------------"
+                p.join()
+                numero_de_processos_prontos +=1
+                print "mais um processo terminado ", i, " -------------------------------------"
+            time.sleep(0.5)
         
         print "Acabou, retornando ----------------------------------------------------"
         

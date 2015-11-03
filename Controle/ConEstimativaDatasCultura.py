@@ -28,7 +28,7 @@ class Controller(AbstractController.Controller):
     def executa(self):
         
         self.function = ExtratorSemeaduraColheita()
-        self.function.console = self
+        self.function.print_text = self.print_text
         
         root_out = str(self.ui.leOutFolder.text())
         root_in = str(self.ui.leInFolder.text())
@@ -50,7 +50,7 @@ class Controller(AbstractController.Controller):
         
         if self.funcao_cancelada() : return
         
-        self.progress_bar.print_text("Salvando imagens.")
+        self.print_text(u"Salvando imagens.")
         
         semeadura = images["imagem_semeadura"]
         semeadura.file_name = self.ui.leImgSemeadura.text()
@@ -71,15 +71,10 @@ class Controller(AbstractController.Controller):
         pico.saveRasterData()
         
         
-        self.print_text("Terminado.")
-        
-        self.function.progresso = 100
+        self.print_text("Terminado.")        
+        self.finalizar()
 
     def valida_form(self):
-        '''
-        Esse método tem que existir nas classes controladoras
-        aqui serão feitas todas as validações do form    
-        '''
 
         if not os.path.exists(self.ui.leInFolder.text()):
             self.message(u"Pasta de entrada das imagens não encontrada, verifique o endereço.")

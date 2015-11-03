@@ -49,10 +49,6 @@ class RasterFile(FileData):
         if band_matrix != None : self.data = band_matrix
         if metadata != None : self.metadata = metadata
         
-        #self.metadata.update(dtype=self.data.dtype) 
-
-
-        
         try: 
 
             '''

@@ -50,9 +50,7 @@ class Etc(AbstractFunction):
         Kc_factor = float(serie_Kc.mutiply_factor)
         ET0_factor = serie_ET0.mutiply_factor
         ETC_factor = serie_ETc.mutiply_factor
-        
-        
-        
+
         for i_Kc in range(len(serie_Kc)):
             #gdal_calc.py [-A <filename>] [--A_band] [-B...-Z filename] [other_options]
             Kc = serie_Kc[i_Kc]
@@ -61,11 +59,6 @@ class Etc(AbstractFunction):
             ET0 = self.procurar_descende_correspondente(data_kc, serie_ET0)
             
             etc = RasterFile(file_path=serie_ETc.root_path, ext="tif", file_name=Kc.file_name)
-            
-            print ET0.file_full_path
-            print Kc.file_full_path
-            print etc.file_full_path
-            
             
             ET0_ = numpy.array(ET0.loadRasterData()).astype(dtype="float32") #* ET0_factor
             

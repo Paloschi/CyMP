@@ -64,16 +64,18 @@ class Controller(object):
          
             self.thread = StoppableThread(self.executa)
             
+            
+            
             self.progress_bar = Ui_DlgProgressBar(self.ui)
             self.progress_bar.setupUi(self.progress_bar)    
             self.progress_bar.show()
             
             self.thread.start()
                 
-            
             while(self.function==None) : 
-                time.sleep(0.05)
+                time.sleep(0.005)
                 
+            self.function.print_text = self.print_text
             self.progress_bar.iniciar(self, self.thread)
             
     def action_cancel(self):
@@ -105,7 +107,8 @@ class Controller(object):
             fname = QtGui.QFileDialog.getExistingDirectory()
         else :
             fname = QtGui.QFileDialog.getOpenFileName()
-        textToWrite.setText (fname)
+        if fname!="" :
+            textToWrite.setText (fname)
         
     def message(self, text):
         text = QString(text)
@@ -125,3 +128,6 @@ class Controller(object):
             return True
         else:
             return False
+    
+    def finalizar(self):
+        self.progress_bar.finalizar()

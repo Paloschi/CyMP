@@ -7,11 +7,10 @@ Created on Jun 10, 2015
 '''
 from PyQt4.QtGui import QFileDialog
 from Modelo.Funcoes.Filtros import FiltroSavitz
-from Modelo.beans import FileData, TableData, SerialFile
-from numpy import double
+from Modelo.beans import TableData, SerialFile
 from PyQt4 import QtCore
-import time
-import thread
+from Controle import AbstractController
+import os
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -19,53 +18,19 @@ except AttributeError:
     def _fromUtf8(s):
         return s
     
-class Controller(object):
-    '''
-    classdocs
-    '''
-    def __init__(self, ui):
-        
-        self.ui = ui
+class Controller(AbstractController.Controller):
     
     def findInFolder(self):
-        self.findPath(self.ui.leInFolder)
+        self.findPath(self.ui.leInFolder, "folder")
         
     def findOutFolder(self):
-        self.findPath(self.ui.leOutFolder)
-  
-    def findPath(self, textToWrite):
-        fname = QFileDialog.getExistingDirectory()
-        textToWrite.setText (fname)
+        self.findPath(self.ui.leOutFolder, "folder")         
         
-    def action_ok(self):
+    def executa(self):
         
-        self.filtro = FiltroSavitz()
+        self.function = FiltroSavitz()
         
-        #self.executa(self.filtro)
-
-        thread.start_new_thread( self.executa, (self.filtro,) )
-        #self.updatePBar, (self.filtro,)
-        
-    #def actionCheckBox(self):
-        #if self.ui.checkBox.isChecked() :
-            #self.ui.leNullValue.setEnabled(True)
-        #else : self.ui.leNullValue.setEnabled(False)
-    
-
-    #def checa_progresso(self, extractor):
-        
-        #while(extractor.progresso<=100):
-            #self.ui.progressBar.setProperty("value", extractor.progresso)
-    
-    #def updatePBar(self, extractor):
-        #while(self.filtro.progresso<=100):
-            #self.ui.progressBar.setValue(self.filtro.progresso) 
-            #time.sleep(1)
-            #print(self.extractor.progresso)
-        
-            
-        
-    def executa(self, filtro):
+        self.print_text(u"Inicializando filtro.")
         
         root_out = self.ui.leOutFolder.text()
         root_out = _fromUtf8(str(root_out) + "\\")
@@ -73,24 +38,27 @@ class Controller(object):
         
         parametrosIn = self.carregarParamIN()
         
-        imagens_filtradas = filtro.executar(parametrosIn)
-    
-        #imagens_filtradas.saveListByRoot(images_bands_matrix=imagens_filtradas.data, root_path=root_out, ext="tif")
-        imagens_filtradas.saveListByRoot(root_path=root_out, ext="tif")
+        self.print_text(u"Filtrando imagens...")
+        imagens_filtradas = self.function.executar(parametrosIn)
         
+        if self.funcao_cancelada() : return None
+        elif imagens_filtradas == None :
+            self.print_text(u"Erro desconhecido.")
+            self.finalizar()
+        else :
+            imagens_filtradas.saveListByRoot(root_path=root_out, ext="tif") 
+            self.print_text(u"Função concluída")
         
     def carregarParamIN(self):
-
+        
         images = SerialFile()
         parametrosIN = TableData()
         root_in = self.ui.leInFolder.text()
         root_in = _fromUtf8(str(root_in) + "\\")
         root_in = str(root_in).replace("\\", "/")
-        print(root_in)
-        
-        images.loadListByRoot(root_in, "tif")
-        
-        print("numero de imagens: " + str(len(images)))
+
+        images.loadListByRoot(root_in)
+        self.print_text(u"Numero de imagens encontradas:" + str(len(images)))
         
         parametrosIN["images"] = images
         
@@ -103,3 +71,13 @@ class Controller(object):
         parametrosIN["conf_algoritimo "] = conf_algoritimo
         
         return parametrosIN
+    
+    def valida_form(self):
+        
+        if not os.path.exists(self.ui.leInFolder.text()):
+            self.message(u"Pasta de entrada das imagens não encontrada, verifique o endereço.")
+            return False   
+        if not os.path.exists(self.ui.leOutFolder.text()):
+            self.message(u"Pasta de saida das imagens não encontrada, verifique o endereço.")
+            return False 
+           

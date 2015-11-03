@@ -23,29 +23,47 @@ class Controller(AbstractController.Controller):
   
     def executa(self):
         
-        root_in = self.ui.leInFolder.text()
+        self.function = SpectreStatisticalStractor()
+        
+        self.print_text("Organizando dados necessários")
+        
+        root_in = str(self.ui.leInFolder.text())
         root_in = path.normpath(root_in)
         
         imagens_entrada = SerialFile()
         imagens_entrada = imagens_entrada.loadListByRoot(root_in, "tif")
         
-        root_out = self.ui.leOutFolder.text()
+        root_out = str(self.ui.leOutFolder.text())
         root_out = path.normpath(root_out)
         
         paramsIN = TableData()
         paramsIN["images"] = imagens_entrada
         paramsIN["statistics"] = self.statistical_list
         
-        self.function = SpectreStatisticalStractor()
+        self.print_text("Criando estatisticas")
 
         images_saida = self.function.executar(paramsIN)
+    
+        self.print_text("Salvando imagens")
+        
+        if self.funcao_cancelada(): return None
         
         for imagem in images_saida :
             
-            imagem.saveRasterData(file_path=root_out, ext="tif")      
+            imagem.saveRasterData(file_path=root_out, ext="tif")     
+            
+        self.print_text("conluido")
+        self.finalizar()
         
         
     def valida_form(self):
+
+        if path.exists(str(self.ui.leInFolder.text())):
+            self.message(u"Pasta de entrada não encontrada")   
+            return False     
+        if path.exists(str(self.ui.leOutFolder.text())):
+            self.message(u"Pasta de saída não encontrada")
+            return False
         
         self.statistical_list = list()
         
@@ -58,9 +76,9 @@ class Controller(AbstractController.Controller):
         if self.ui.cbSoma.isChecked() : self.statistical_list.append("soma")
         if self.ui.cbCV.isChecked() : self.statistical_list.append("cv")
 
-        
         if len(self.statistical_list) == 0 :
             self.message(u"Selecione pelo menos uma opção na aba Configuração")
             return False
+        
         return True
     

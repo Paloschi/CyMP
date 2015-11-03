@@ -11,6 +11,7 @@ from Modelo.beans import TableData, RasterFile
 from PyQt4 import QtCore, QtGui
 import os
 import threading
+import time
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
@@ -203,7 +204,7 @@ class Controller(Controller):
         '''
             Executa a função
         '''
-        self.print_text(u"Distribuindo indice")
+        self.print_text(u"Distribuindo índice")
         resultado = self.function.executar(paramIN)
         '''
             Verifica o que aconteceu com o processo
@@ -212,10 +213,12 @@ class Controller(Controller):
         elif resultado == None :
             self.print_text(u"erro deconhecido, função interrompida")
             threading.currentThread().stop()
-            self.progress_bar.finalizar()
+            self.finalizar()
         else : 
             self.print_text(u"função concluída")
-            self.progress_bar.finalizar()
+            self.progress_bar.progressBar.setMaximum(100)
+            threading.currentThread().stop()
+            self.finalizar()
         
         
         
