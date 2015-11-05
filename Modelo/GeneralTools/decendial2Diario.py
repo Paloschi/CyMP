@@ -9,7 +9,7 @@ import calendar
 from Modelo.beans import RasterFile
 import numpy
 
-serie_imagem_in = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\7-Cortado_tamanho_Modis\\EVPT")
+serie_imagem_in = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\7-Cortado_tamanho_Modis\\evpt_2012")
 serie_imagem_in.loadListByRoot()
 serie_imagem_in.prefixo = "evpt_"
 serie_imagem_in.date_mask = "%Y%m%d"
@@ -18,8 +18,8 @@ serie_imagem_out = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja1
 serie_imagem_out.loadListByRoot()
 serie_imagem_out.prefixo = "evpt_diario_"
 serie_imagem_out.date_mask = "%Y-%m-%d"
-serie_imagem_out.mutiply_factor = 1
-serie_imagem_out.out_datatype = None # "uint16"
+serie_imagem_out.mutiply_factor = 100
+serie_imagem_out.out_datatype = "uint16"
 
 n_imagens = len(serie_imagem_in)
 

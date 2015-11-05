@@ -48,37 +48,62 @@ class Etc(AbstractFunction):
         serie_ETc = self.paramentrosIN_carregados["ETc"] # pucha lista
         
         Kc_factor = float(serie_Kc.mutiply_factor)
-        ET0_factor = serie_ET0.mutiply_factor
-        ETC_factor = serie_ETc.mutiply_factor
+        ET0_factor = float(serie_ET0.mutiply_factor)
+        ETC_factor = float(serie_ETc.mutiply_factor)
 
-        for i_Kc in range(len(serie_Kc)):
+        for i_ET0 in range(len(serie_ET0)):
             
             #gdal_calc.py [-A <filename>] [--A_band] [-B...-Z filename] [other_options]
-            Kc = serie_Kc[i_Kc]
-            data_kc = serie_Kc.getDate_time(file=Kc)
+            ET0 = serie_ET0[i_ET0]
             
-            ET0 = self.procurar_descende_correspondente(data_kc, serie_ET0)
+            data_ET0 = serie_ET0.getDate_time(file=ET0)
             
-            etc = RasterFile(file_path=serie_ETc.root_path, ext="tif", file_name=Kc.file_name)
+            kc = None
+            
+            for i_Kc in range(len(serie_Kc)):
+                
+                data = serie_Kc.getDate_time(file=serie_Kc[i_Kc])
+                if data == data_ET0:
+                    kc = serie_Kc[i_Kc]
+            
+            etc = RasterFile(file_path=serie_ETc.root_path, ext="tif", file_name=ET0.file_name)
             
             ET0_ = numpy.array(ET0.loadRasterData()).astype(dtype="float32") #* ET0_factor
             
-            Kc_ = numpy.array(Kc.loadRasterData()).astype(dtype="float32")  * Kc_factor
-            
-            Kc_[Kc_==0] = 1
-            
-            dias_decend = self.dias_decend
-            
-            #print dias_decend
-            ETc_ = Kc_ * (ET0_  / dias_decend) #* ETC_factor
-                        
-            if serie_ETc.out_datatype != None:
-                ETc_ = numpy.array(ETc_).astype(serie_ETc.out_datatype)
-            
-            etc.metadata = Kc.metadata
-            etc.data = ETc_
+            if kc == None: # caso não encontre nenhum kc correspondente a mesma data
+                etc.data = ET0_ * ETC_factor
+                
+            else: 
+                    
+                Kc_ = numpy.array(kc.loadRasterData()).astype(dtype="float32")  #* Kc_factor
+                
+                #ETc_ = numpy.array(kc.loadRasterData()).astype(dtype="float32")
+                
+                Kc_[Kc_==0] = 100
+                
+                ETc_ = (Kc_ * ET0_) / 100
+                
+                            
+                if serie_ETc.out_datatype != None:
+                    ETc_ = numpy.array(ETc_).astype(serie_ETc.out_datatype)
+                    
+                etc.data = ETc_ #* ETC_factor
+                
+                #for i in range(len(ET0_)):
+                #    for ii in range (len(ET0_[0])):
+                #        if ET0_[i][ii] != 0 : 
+                #            print "---------------------------"
+                #            print Kc_[i][ii]
+                 #           print ET0_[i][ii]
+                #            print ETc_[i][ii]
+                #            print "---------------------------"
+                            
+                    
+                
 
-    
+                
+                
+            etc.metadata = ET0.metadata
             etc.saveRasterData()
             
     
@@ -110,14 +135,14 @@ if __name__ == '__main__':
     serie_Kc.mutiply_factor = 0.01
     serie_Kc.date_mask = "%Y-%m-%d"
     
-    serie_ET0 = SerialTemporalFiles(root_path="E:\\\Gafanhoto WorkSpace\\Soja11_12\\\Tratamento de dados\\\ECMWF\\\8-Diario\\\EVPT")
-    serie_Kc.mutiply_factor = 0.01
+    serie_ET0 = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\8-Diario\\EVPT 07-11 _ 05-12")
+    serie_ET0.mutiply_factor = 0.01
     serie_ET0.sufixo = "evpt_diario_"
     serie_ET0.date_mask = "%Y-%m-%d"
     
-    serie_ETC = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\ETc\\segunda_tentativa_diario")
-    serie_Kc.mutiply_factor = 100
-    serie_Kc.out_datatype = "int16"
+    serie_ETC = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\ETc\\soltas")
+    serie_ETC.mutiply_factor = 100
+    serie_ETC.out_datatype = "int16"
     serie_ETC.sufixo = "ETc_"
     serie_ETC.date_mask = "%Y-%m-%d"
     

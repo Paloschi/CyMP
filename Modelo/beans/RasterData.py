@@ -63,6 +63,7 @@ class RasterFile(FileData):
             '''
                 Listas de Drivers GDAL: http://www.gdal.org/formats_list.html
             '''
+            print ("salvando imagem  " + self.file_full_path)
             
             if self.file_ext == "tif" : self.metadata.update(driver="GTiff") 
             elif self.file_ext == "img" : self.metadata.update(driver="HFA") 
@@ -72,7 +73,7 @@ class RasterFile(FileData):
             
             #print(metadata)
             #print(len(self.data), len(self.data[0]))
-            print ("salvando imagem  " + self.file_full_path)
+            
             
             #import os
 
