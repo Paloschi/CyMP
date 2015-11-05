@@ -52,6 +52,7 @@ class Etc(AbstractFunction):
         ETC_factor = serie_ETc.mutiply_factor
 
         for i_Kc in range(len(serie_Kc)):
+            
             #gdal_calc.py [-A <filename>] [--A_band] [-B...-Z filename] [other_options]
             Kc = serie_Kc[i_Kc]
             data_kc = serie_Kc.getDate_time(file=Kc)

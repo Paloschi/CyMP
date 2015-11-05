@@ -82,12 +82,15 @@ class SerialFile(ABData, list):
         progress(0.0)
         
         for f in self:
-            files.append(f.loadRasterData())
-            n_iteracoes+=1
-            progress( n_iteracoes / float(n_files))
-        
-         
-        
+            file = f.loadRasterData()
+            if (file==None):
+                print "Não foi possivel carregar a imagem", f.file_full_path
+                return None
+            else:
+                files.append(file)
+                n_iteracoes+=1
+                progress( n_iteracoes / float(n_files))
+
         if len(self)!=0:
             progress( float(1)) 
             self.metadata = self[0].metadata

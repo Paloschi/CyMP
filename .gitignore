@@ -1,0 +1,13 @@
+build/
+dist/
+API-MS-Win-Core-ErrorHandling-L1-1-0.dll
+API-MS-Win-Core-LibraryLoader-L1-1-0.dll
+API-MS-Win-Core-LocalRegistry-L1-1-0.dll
+API-MS-Win-Core-Misc-L1-1-0.dll
+API-MS-Win-Core-ProcessThreads-L1-1-0.dll
+api-ms-win-core-processthreads-l1-1-2.dll
+API-MS-Win-Core-Profile-L1-1-0.dll
+API-MS-Win-Core-String-L1-1-0.dll
+API-MS-Win-Core-SysInfo-L1-1-0.dll
+api-ms-win-core-sysinfo-l1-2-1.dll
+API-MS-Win-Security-Base-L1-1-0.dll

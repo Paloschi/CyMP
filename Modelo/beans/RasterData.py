@@ -23,21 +23,30 @@ class RasterFile(FileData):
         
         if self.data != None : return self.data
         
-        with rasterio.open(self.file_full_path) as raster:
+        try :
+        
+            with rasterio.open(self.file_full_path) as raster:
+                
+                self.metadata = raster.meta
+                if (not isCube) : 
+                    return raster.read_band(1)
+                else :
+                    while True :
+                        cubo = list()
+                        i_band = 1
+                        try:
+                            cubo.append(raster.read_band(i_band))
+                            i_band+=1
+                        except :
+                            break
+                    print ("imagem lida, numero de bandas:", i_band)
+                
+                return self
+        
+        except :
             
-            self.metadata = raster.meta
-            if (not isCube) : 
-                return raster.read_band(1)
-            else :
-                while True :
-                    cubo = list()
-                    i_band = 1
-                    try:
-                        cubo.append(raster.read_band(i_band))
-                        i_band+=1
-                    except :
-                        break
-                print ("imagem lida, numero de bandas:", i_band)
+            print "Falha ao tentar abrir imagem", self.file_full_path   
+            return None
         
     def saveRasterData(self, band_matrix=None, metadata=None, file_path=None, ext=None):
         '''

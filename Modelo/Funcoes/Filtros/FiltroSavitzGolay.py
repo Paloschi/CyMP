@@ -13,6 +13,7 @@ progress = gdal.TermProgress_nocb
 import numpy as np
 from Modelo.beans import SERIAL_FILE_DATA, TABLE_DATA, SerialFile, RasterFile
 import sys
+import threading
 
 
 class FiltroSavitz(AbstractFunction):
@@ -44,6 +45,11 @@ class FiltroSavitz(AbstractFunction):
         else : conf_algoritimo = dict()
         img_matrix = images.loadListRasterData()
         
+        if img_matrix == None:
+            print self.console("Erro no carregamento das imagens")
+            threading.currentThread().stop() 
+            return
+        
         self.imagem_0 = img_matrix[0] # imagem de referencia pra leitura de valores null
         conf_algoritimo["NoData"] = self.imagem_0[0][0]
         #conf_algoritimo["NoData"] = double(images[0].getRasterInformation()["NoData"])
@@ -59,6 +65,7 @@ class FiltroSavitz(AbstractFunction):
         
     
         linhas_filtradas = self.filtrar(img_matrix, conf_algoritimo)
+        if threading.currentThread().stopped()  : return 
         results = linhas_filtradas
         
         #results = np.zeros((self.n_bandas, self.n_linhas, self.n_colunas,))
@@ -127,7 +134,13 @@ class FiltroSavitz(AbstractFunction):
 
         for i_linhas in range(0, self.n_linhas):   
             n_iteracoes+=1 
-            progress(n_iteracoes/float(total))                                                                                                                                                                                                                                                                                                                                                                                         
+            
+            progresso = n_iteracoes/float(total)
+            progress(progresso)
+            self.progresso  = progresso*100
+            
+            if threading.currentThread().stopped()  : return 
+                                                                                                                                                                                                                                                                                                                                                                                                   
             for i_colunas in range(0, self.n_colunas):
                 line = list()
                 if self.imagem_0[i_linhas][i_colunas] != noData :

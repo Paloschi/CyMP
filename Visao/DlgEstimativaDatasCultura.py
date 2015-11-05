@@ -290,7 +290,7 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         out = workspace + self.config.get('WorkSpace', 'space.out')
         
         #self.leInFolder.setText(raster)
-        self.leOutFolder.setText(out)
+        #self.leOutFolder.setText(out)
         
         self.toolbFindInFolder.clicked.connect(self.controller.findInFolder)
         self.toolbFindOutFolder.clicked.connect(self.controller.findOutFolder)

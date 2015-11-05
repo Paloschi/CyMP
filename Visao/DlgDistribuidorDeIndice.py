@@ -169,7 +169,7 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
         self.btAdicionar.clicked.connect(self.controller.addEstagio)
         self.btRemover.clicked.connect(self.controller.remEstagio)
         
-        self.txImgColheita.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\raster\\cortadinhas\\colheita.tif")
-        self.txImgSemeadura.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\raster\\cortadinhas\\semeadura.tif")
-        self.txOutFolder.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\out\\teste_distribuidor")
+        #self.txImgColheita.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\raster\\cortadinhas\\colheita.tif")
+        #self.txImgSemeadura.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\raster\\cortadinhas\\semeadura.tif")
+        #self.txOutFolder.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\out\\teste_distribuidor")
 

@@ -226,6 +226,6 @@ class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
         self.btFindOutFolder.clicked.connect(self.controller.findOutFolder)
         self.btFindImgReference.clicked.connect(self.controller.findImgRef)
         
-        self.txInFolder.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\2-CORTADAS_11-12")
-        self.txOutFolder.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\out\\Primeira tentativa")
-        self.txImgReference.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\out\\colheita.tif")
+        #self.txInFolder.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\2-CORTADAS_11-12")
+        #self.txOutFolder.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\out\\Primeira tentativa")
+        #self.txImgReference.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\out\\colheita.tif")

@@ -14,7 +14,7 @@ Mydata_files = [('images', ['images/icons/icon_trator.png'])]
 
 setup(
     windows=["Gafanhoto.py"],
-    data_files= (matplotlib.get_py2exe_datafiles().append("workspace.properties")),
+    data_files= (matplotlib.get_py2exe_datafiles()),
     options = {
             
             "py2exe":{

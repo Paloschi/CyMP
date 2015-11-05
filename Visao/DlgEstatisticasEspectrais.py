@@ -140,8 +140,8 @@ class Ui_DlgEstatisticasEspectrais(QtGui.QDialog):
         self.cbMediana.setText(_translate("DlgEstatisticasEspectrais", "Mediana", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("DlgEstatisticasEspectrais", "Configuração", None))
         
-        self.leInFolder.setText("C:\\Users\\Paloschi\\Desktop\\data\\Rasters\\TesteFiltro\\entrada_pesada")
-        self.leOutFolder.setText("C:\\Users\\Paloschi\\Desktop\\data\\Rasters\\TesteFiltro\\saida")
+        #self.leInFolder.setText("C:\\Users\\Paloschi\\Desktop\\data\\Rasters\\TesteFiltro\\entrada_pesada")
+        #self.leOutFolder.setText("C:\\Users\\Paloschi\\Desktop\\data\\Rasters\\TesteFiltro\\saida")
         
 
         self.toolbFindInFolder.clicked.connect(self.controller.findInFolder)

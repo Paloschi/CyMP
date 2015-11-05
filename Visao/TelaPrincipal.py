@@ -12,9 +12,10 @@ from PyQt4 import QtCore, QtGui
 from DlgEstimativaDatasCultura import Ui_DlgEstimativaDatasAgricolas
 from DlgFiltroSavitzGolay import Ui_DlgSavitzGolay
 from DlgEstatisticasEspectrais import Ui_DlgEstatisticasEspectrais
-from Visao.DlgInvdistnnShapeEcmwf2Raster import UI_DlgInterpoladorShapeEcmwf
+from DlgInvdistnnShapeEcmwf2Raster import UI_DlgInterpoladorShapeEcmwf
 from DlgInvdistnnRaster2Raster import Ui_InvdistnnRaster2Raster
 from DlgDistribuidorDeIndice import Ui_DistribuidorDeIndice
+import ConfigParser
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -187,22 +188,27 @@ class Ui_MainWindow(QtGui.QMainWindow):
         
         self.menuModelo.addAction(self.actionRodar)
         
-        self.menubar.addAction(self.menuFile.menuAction())
-        self.menubar.addAction(self.menuDados.menuAction())
+        #self.menubar.addAction(self.menuFile.menuAction())
+        #self.menubar.addAction(self.menuDados.menuAction())
         self.menubar.addAction(self.menuFun_o_es.menuAction())
-        self.menubar.addAction(self.menuModelo.menuAction())
+        #self.menubar.addAction(self.menuModelo.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Gafanhoto 0.1.1", None))
-        self.menuFile.setTitle(_translate("MainWindow", "File", None))
-        self.menuDados.setTitle(_translate("MainWindow", "Dados", None))
+        
+        config = ConfigParser.RawConfigParser()
+        config.read('workspace.properties')
+        version=config.get('Version', 'version')
+            
+        MainWindow.setWindowTitle(_translate("MainWindow", "Gafanhoto " + version, None))
+        #self.menuFile.setTitle(_translate("MainWindow", "File", None))
+        #self.menuDados.setTitle(_translate("MainWindow", "Dados", None))
         self.menuInterpoladores.setTitle(_translate("MainWindow", "Interpoladores", None))
         self.menuCarregar_Dado.setTitle(_translate("MainWindow", "Carregar dado", None))
         self.menuFun_o_es.setTitle(_translate("MainWindow", "Funções", None))
-        self.menuModelo.setTitle(_translate("MainWindow", "Modelo", None))
+        #self.menuModelo.setTitle(_translate("MainWindow", "Modelo", None))
         self.actionCarregar_Modelo.setText(_translate("MainWindow", "Carregar Modelo", None))
         self.actionSalvar_Modelo_Ctrl_S.setText(_translate("MainWindow", "Salvar Modelo (Ctrl + S)", None))
         self.actionSalvar_Como.setText(_translate("MainWindow", "Salvar Como", None))
