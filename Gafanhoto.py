@@ -7,11 +7,15 @@ from PyQt4 import QtGui
 from Visao import TelaPrincipal
 import ConfigParser
 from Modelo import GeneralTools
+from PyQt4.Qt import QLocale, QTranslator
 
 
 if __name__ == '__main__':
     import sys
     import ctypes
+    
+
+
 
     config = ConfigParser.RawConfigParser()
     config.read('workspace.properties')
@@ -26,6 +30,12 @@ if __name__ == '__main__':
     
     app = QtGui.QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon(config.get('Icon', 'icon.general')))
+
+    
+    locale = QLocale.system().name()
+    qtTranslator = QTranslator()
+    if qtTranslator.load("qt_"+locale):
+        app.installTranslator(qtTranslator)
     
     #print("Numero de nucleos: " + str(GeneralTools.available_cpu_count()))
 

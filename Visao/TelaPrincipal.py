@@ -15,6 +15,7 @@ from DlgEstatisticasEspectrais import Ui_DlgEstatisticasEspectrais
 from DlgInvdistnnShapeEcmwf2Raster import UI_DlgInterpoladorShapeEcmwf
 from DlgInvdistnnRaster2Raster import Ui_InvdistnnRaster2Raster
 from DlgDistribuidorDeIndice import Ui_DistribuidorDeIndice
+from DlgDecendial2Diario import Ui_Decendial2Diario
 import ConfigParser
 
 try:
@@ -36,6 +37,13 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         self.setupUi(self)
+        
+    def popupDecendial_2_diario(self):
+        
+        popup = Ui_Decendial2Diario(self)
+        popup.setupUi(popup)
+        
+        popup.show()
 
     def popupEstimativa_de_datas_de_colheita(self):
         
@@ -155,7 +163,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
         
         self.actionEstimativa_de_datas_de_colheita = QtGui.QAction(MainWindow)
         self.actionEstimativa_de_datas_de_colheita.setObjectName(_fromUtf8("actionEstimativa_de_datas_de_colheita"))
-        
+
+        self.actionDecendial_2_diario = QtGui.QAction(MainWindow)
+        self.actionDecendial_2_diario.setObjectName(_fromUtf8("actionDecendial_2_diario"))
+               
         self.actionFiltro_Savitz_Golay = QtGui.QAction(MainWindow)
         self.actionFiltro_Savitz_Golay.setObjectName(_fromUtf8("actionFiltro_Savitz_Golay"))
         
@@ -185,6 +196,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuFun_o_es.addAction(self.actionFiltro_Savitz_Golay)
         self.menuFun_o_es.addAction(self.actionEstatisticasEspectrais)
         self.menuFun_o_es.addAction(self.actionDistribuidorDeIndice)
+        self.menuFun_o_es.addAction(self.actionDecendial_2_diario)
         
         self.menuModelo.addAction(self.actionRodar)
         
@@ -207,7 +219,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         #self.menuDados.setTitle(_translate("MainWindow", "Dados", None))
         self.menuInterpoladores.setTitle(_translate("MainWindow", "Interpoladores", None))
         self.menuCarregar_Dado.setTitle(_translate("MainWindow", "Carregar dado", None))
-        self.menuFun_o_es.setTitle(_translate("MainWindow", "Funções", None))
+        self.menuFun_o_es.setTitle(_translate("MainWindow", "Functions", None))
         #self.menuModelo.setTitle(_translate("MainWindow", "Modelo", None))
         self.actionCarregar_Modelo.setText(_translate("MainWindow", "Carregar Modelo", None))
         self.actionSalvar_Modelo_Ctrl_S.setText(_translate("MainWindow", "Salvar Modelo (Ctrl + S)", None))
@@ -222,6 +234,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionInterpoladorRaster2Raster.setText(_translate("MainWindow", "Interpolador Raster pra raster", None))
         self.actionEstimativa_de_datas_de_colheita.setText(_translate("MainWindow", "Estimativa de datas de colheita", None))
         self.actionDistribuidorDeIndice.setText(_translate("MainWindow", "Distribuidor de índice", None))
+        self.actionDecendial_2_diario.setText(_translate("MainWindow", "Decendial para diário", None))
         
         self.actionFiltro_Savitz_Golay.setText(_translate("MainWindow", "Filtro Savitz Golay", None))
         self.actionEstatisticasEspectrais.setText(_translate("MainWindow", "Estatisticas Espectrais", None))
@@ -232,3 +245,4 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionInterpolador.triggered.connect(self.popupInterpolador_ECMWF)
         self.actionInterpoladorRaster2Raster.triggered.connect(self.popupInterpoladorRaster2Raster)
         self.actionDistribuidorDeIndice.triggered.connect(self.popupDestribuidor_de_indice)
+        self.actionDecendial_2_diario.triggered.connect(self.popupDecendial_2_diario)

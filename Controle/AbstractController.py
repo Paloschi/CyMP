@@ -14,6 +14,7 @@ from types import NoneType
 from Visao.Box_Progress_Bar import Ui_DlgProgressBar
 from PyQt4.Qt import QString
 import time
+from Visao import DlgNovaSerieTemporal
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -56,6 +57,10 @@ class Controller(object):
     def print_text(self, text):
         self.progress_bar.print_text(text)
         
+    def console(self, text):
+        self.progress_bar.print_text(text)
+        
+        
     def action_ok(self):
         """
             Esse método cria uma thread pra executar a função
@@ -63,9 +68,7 @@ class Controller(object):
         if self.valida_form() :
          
             self.thread = StoppableThread(self.executa)
-            
-            
-            
+
             self.progress_bar = Ui_DlgProgressBar(self.ui)
             self.progress_bar.setupUi(self.progress_bar)    
             self.progress_bar.show()
@@ -76,6 +79,7 @@ class Controller(object):
                 time.sleep(0.005)
                 
             self.function.print_text = self.print_text
+            self.function.console = self.print_text
             self.progress_bar.iniciar(self, self.thread)
             
     def action_cancel(self):
@@ -109,6 +113,21 @@ class Controller(object):
             fname = QtGui.QFileDialog.getOpenFileName()
         if fname!="" :
             textToWrite.setText (fname)
+    
+    def getSerieTemporal(self, serieTemporal=None):
+        
+        if serieTemporal is not None : print serieTemporal.root_path
+        
+        dlgSerieTemporal = DlgNovaSerieTemporal.Ui_Dialog(self.ui)
+        dlgSerieTemporal.setupUi(dlgSerieTemporal) 
+        dlgSerieTemporal.setWindowModality(QtCore.Qt.WindowModal)   
+        
+        dlgSerieTemporal.setForm(serieTemporal)
+        
+        serie_temporal = dlgSerieTemporal.exec_()
+         
+        serie_temporal = dlgSerieTemporal.SerieTemporal
+        return serie_temporal       
         
     def message(self, text):
         text = QString(text)

@@ -71,7 +71,7 @@ class Function(ABData):
             
             if key not in params.keys() or params[key] is None:
                 if self.descriptionIN[key]["Required"] :
-                    raise Exception("Parametro " + key + " é requerido na função " + self.__class__.__name__)   
+                    raise Exception(u"Parametro " + key + u" é requerido na função " + self.__class__.__name__)   
                 else :
                     self.paramentrosIN_carregados[key] = None
             elif self.descriptionIN[key]["Type"] == FUNCTION_DATA:         
