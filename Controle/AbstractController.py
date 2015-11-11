@@ -79,7 +79,7 @@ class Controller(object):
                 time.sleep(0.005)
                 
             self.function.print_text = self.print_text
-            self.function.console = self.print_text
+            self.function.console = self.console
             self.progress_bar.iniciar(self, self.thread)
             
     def action_cancel(self):

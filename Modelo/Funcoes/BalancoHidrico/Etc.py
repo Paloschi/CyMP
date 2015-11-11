@@ -12,6 +12,7 @@ import sys
 from Modelo.beans.RasterData import RasterFile
 progress = gdal.TermProgress_nocb
 import numpy
+import threading
 
 class Etc(AbstractFunction):
     '''
@@ -42,6 +43,7 @@ class Etc(AbstractFunction):
         '''
         
         print("Carregando imagens (ET0, semeadura, colheita): ")
+        self.print_text("Carregando imagens.")
         
         serie_ET0 = self.paramentrosIN_carregados["ET0"].loadListByRoot() # pucha e já carrega a lista caso não tenha sido carregada
         serie_Kc = self.paramentrosIN_carregados["Kc"].loadListByRoot() # pucha e já carrega a lista caso não tenha sido carregada
@@ -50,59 +52,62 @@ class Etc(AbstractFunction):
         Kc_factor = float(serie_Kc.mutiply_factor)
         ET0_factor = float(serie_ET0.mutiply_factor)
         ETC_factor = float(serie_ETc.mutiply_factor)
+        
+        n_et0 = len(serie_ET0)
+        
+        self.console(str(n_et0) + " imagens de ET0 encontradas.")
+        self.console(str(len(serie_Kc)) + " imagens de Kc encontradas.")
+        
+        self.console("Gerando imagens de ETc")
 
-        for i_ET0 in range(len(serie_ET0)):
+        '''
+            O laço a seguir percorre todas as imagens de ET0 presentes
+            ele verifica se há imagens de Kc correspondentes para realizar a multiplicação
+            caso não haja ele simplesmente mantém a imagem de ET0 como imagem de ETc
             
-            #gdal_calc.py [-A <filename>] [--A_band] [-B...-Z filename] [other_options]
+            O calculo de Etc é Etc = Et0 * Kc
+        '''
+
+        for i_ET0 in range(n_et0):
+            
+            if threading.currentThread().stopped()  : return 
+            self.setProgresso(i_ET0, n_et0)
+
             ET0 = serie_ET0[i_ET0]
-            
             data_ET0 = serie_ET0.getDate_time(file=ET0)
-            
             kc = None
             
             for i_Kc in range(len(serie_Kc)):
-                
                 data = serie_Kc.getDate_time(file=serie_Kc[i_Kc])
                 if data == data_ET0:
                     kc = serie_Kc[i_Kc]
             
-            etc = RasterFile(file_path=serie_ETc.root_path, ext="tif", file_name=ET0.file_name)
+            etc = RasterFile(file_path=serie_ETc.root_path, ext="tif")
+            print data_ET0
+            print kc
+            etc = serie_ETc.setDate_time(data_ET0, file=etc)
             
             ET0_ = numpy.array(ET0.loadRasterData()).astype(dtype="float32") #* ET0_factor
+            ET0_ = ET0_ * ET0_factor
             
             if kc == None: # caso não encontre nenhum kc correspondente a mesma data
-                etc.data = ET0_ * ETC_factor
+                etc.data = ET0_
                 
             else: 
                     
-                Kc_ = numpy.array(kc.loadRasterData()).astype(dtype="float32")  #* Kc_factor
+                Kc_ = numpy.array(kc.loadRasterData()).astype(dtype="float32")
+                Kc_ = Kc_ * Kc_factor
                 
-                #ETc_ = numpy.array(kc.loadRasterData()).astype(dtype="float32")
-                
-                Kc_[Kc_==0] = 100
-                
-                ETc_ = (Kc_ * ET0_) / 100
-                
-                            
+                '''1 é o valor default pra quando o Kc for 0 isso tem que ser visto'''
+                Kc_[Kc_==0] = 1 
+
+                ETc_ = Kc_ * ET0_
+                   
                 if serie_ETc.out_datatype != None:
                     ETc_ = numpy.array(ETc_).astype(serie_ETc.out_datatype)
                     
-                etc.data = ETc_ #* ETC_factor
-                
-                #for i in range(len(ET0_)):
-                #    for ii in range (len(ET0_[0])):
-                #        if ET0_[i][ii] != 0 : 
-                #            print "---------------------------"
-                #            print Kc_[i][ii]
-                 #           print ET0_[i][ii]
-                #            print ETc_[i][ii]
-                #            print "---------------------------"
-                            
-                    
-                
-
-                
-                
+                etc.data = ETc_ * ETC_factor
+   
             etc.metadata = ET0.metadata
             etc.saveRasterData()
             

@@ -54,6 +54,8 @@ class Function(ABData):
         
         self.__setParamIN__() # inicializa descrição de entrada
         self.__setParamOUT__() # inicializa descrição de saída
+        
+        
 
 
     def __LoadParams__(self, params):
@@ -100,8 +102,11 @@ class Function(ABData):
         pass
     
     def executar(self, parametros):
+        while self.console is None : pass
         self.data = parametros
         return self.data
     
+    def setProgresso (self, indice, total):
+        self.progresso = (indice / float(total) * 100)
         
         

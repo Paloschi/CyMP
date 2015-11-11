@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//Controle/AbstractController.py=utf-8
+encoding//Controle/ConBH.py=utf-8
 encoding//Controle/ConDecendial2Diario.py=utf-8
 encoding//Controle/ConDistribuidorDeIndice.py=utf-8
 encoding//Controle/ConEstatisticasEspectrais.py=utf-8
@@ -31,6 +32,7 @@ encoding//Modelo/beans/__init__.py=utf-8
 encoding//Visao/Box_Progress_Bar.py=utf-8
 encoding//Visao/DlgDecendial2Diario.py=utf-8
 encoding//Visao/DlgDistribuidorDeIndice.py=utf-8
+encoding//Visao/DlgETc.py=utf-8
 encoding//Visao/DlgEstatisticasEspectrais.py=utf-8
 encoding//Visao/DlgEstimativaDatasCultura.py=utf-8
 encoding//Visao/DlgFiltroSavitzGolay.py=utf-8

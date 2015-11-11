@@ -17,6 +17,7 @@ from DlgInvdistnnRaster2Raster import Ui_InvdistnnRaster2Raster
 from DlgDistribuidorDeIndice import Ui_DistribuidorDeIndice
 from DlgDecendial2Diario import Ui_Decendial2Diario
 import ConfigParser
+from Visao import DlgETc
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -38,11 +39,14 @@ class Ui_MainWindow(QtGui.QMainWindow):
         QtGui.QMainWindow.__init__(self)
         self.setupUi(self)
         
-    def popupDecendial_2_diario(self):
+    def popupETc(self):
+        popup = DlgETc.Ui_Dialog(self)
+        popup.setupUi(popup)
+        popup.show()        
         
+    def popupDecendial_2_diario(self):
         popup = Ui_Decendial2Diario(self)
         popup.setupUi(popup)
-        
         popup.show()
 
     def popupEstimativa_de_datas_de_colheita(self):
@@ -104,8 +108,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menubar.setGeometry(QtCore.QRect(0, 0, 751, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         
-        self.menuFile = QtGui.QMenu(self.menubar)
-        self.menuFile.setObjectName(_fromUtf8("menuFile"))
+        self.menuBH = QtGui.QMenu(self.menubar)
+        self.menuBH.setObjectName(_fromUtf8("menuBH"))
         
         self.menuDados = QtGui.QMenu(self.menubar)
         self.menuDados.setObjectName(_fromUtf8("menuDados"))
@@ -128,8 +132,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
         
-        self.actionCarregar_Modelo = QtGui.QAction(MainWindow)
-        self.actionCarregar_Modelo.setObjectName(_fromUtf8("actionCarregar_Modelo"))
+        self.actionETc = QtGui.QAction(MainWindow)
+        self.actionETc.setObjectName(_fromUtf8("actionETc"))
         
         self.actionSalvar_Modelo_Ctrl_S = QtGui.QAction(MainWindow)
         self.actionSalvar_Modelo_Ctrl_S.setObjectName(_fromUtf8("actionSalvar_Modelo_Ctrl_S"))
@@ -176,9 +180,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionDistribuidorDeIndice = QtGui.QAction(MainWindow)
         self.actionDistribuidorDeIndice.setObjectName(_fromUtf8("actionDistribuidorDeIndice"))
         
-        self.menuFile.addAction(self.actionCarregar_Modelo)
-        self.menuFile.addAction(self.actionSalvar_Modelo_Ctrl_S)
-        self.menuFile.addAction(self.actionSalvar_Como)
+        self.menuBH.addAction(self.actionETc)
+        #self.menuBH.addAction(self.actionSalvar_Modelo_Ctrl_S)
+        #self.menuBH.addAction(self.actionSalvar_Como)
         
         self.menuCarregar_Dado.addAction(self.actionCarregar_dado_Simples)
         self.menuCarregar_Dado.addAction(self.actionCarregar_lista_de_dados)
@@ -200,7 +204,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         
         self.menuModelo.addAction(self.actionRodar)
         
-        #self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuBH.menuAction())
         #self.menubar.addAction(self.menuDados.menuAction())
         self.menubar.addAction(self.menuFun_o_es.menuAction())
         #self.menubar.addAction(self.menuModelo.menuAction())
@@ -215,13 +219,13 @@ class Ui_MainWindow(QtGui.QMainWindow):
         version=config.get('Version', 'version')
             
         MainWindow.setWindowTitle(_translate("MainWindow", "Gafanhoto " + version, None))
-        #self.menuFile.setTitle(_translate("MainWindow", "File", None))
+        self.menuBH.setTitle(_translate("MainWindow", "Balanço Hídrico (BH)", None))
         #self.menuDados.setTitle(_translate("MainWindow", "Dados", None))
         self.menuInterpoladores.setTitle(_translate("MainWindow", "Interpoladores", None))
         self.menuCarregar_Dado.setTitle(_translate("MainWindow", "Carregar dado", None))
         self.menuFun_o_es.setTitle(_translate("MainWindow", "Functions", None))
         #self.menuModelo.setTitle(_translate("MainWindow", "Modelo", None))
-        self.actionCarregar_Modelo.setText(_translate("MainWindow", "Carregar Modelo", None))
+        self.actionETc.setText(_translate("MainWindow", "Evapotranspiração da cultura (ETc)", None))
         self.actionSalvar_Modelo_Ctrl_S.setText(_translate("MainWindow", "Salvar Modelo (Ctrl + S)", None))
         self.actionSalvar_Como.setText(_translate("MainWindow", "Salvar Como", None))
         self.actionCarregar_dado_Simples.setText(_translate("MainWindow", "Carregar dado Simples", None))
@@ -246,3 +250,4 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionInterpoladorRaster2Raster.triggered.connect(self.popupInterpoladorRaster2Raster)
         self.actionDistribuidorDeIndice.triggered.connect(self.popupDestribuidor_de_indice)
         self.actionDecendial_2_diario.triggered.connect(self.popupDecendial_2_diario)
+        self.actionETc.triggered.connect(self.popupETc)

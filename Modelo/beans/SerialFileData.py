@@ -187,15 +187,16 @@ class SerialTemporalFiles(SerialFile):
 
         return date  
 
-    def setDate_time(self, date, i):
+    def setDate_time(self, date, i=None, file=None):
         '''
             Essa função foi criada para facilitar a criação do nome baseado em data
         '''
-        
-        file = self[i]
+        if i is not None:
+            file = self[i]
         only_date = date.strftime(self.date_mask)   
         name = self.prefixo + only_date + self.sufixo
         file.file_name = name
+        return file
     
         
 

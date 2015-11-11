@@ -141,7 +141,7 @@ class Ui_Dialog(QDialog):
         self.tbIn.clicked.connect(self.findPath)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Hello", None))
+        Dialog.setWindowTitle(_translate("Dialog", "Nova série temporal", None))
         self.tbIn.setText(_translate("Dialog", "...", None))
         self.label.setText(_translate("Dialog", "Endereço das imagens", None))
         self.label_3.setText(_translate("Dialog", "Sufixo", None))

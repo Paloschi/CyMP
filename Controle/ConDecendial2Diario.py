@@ -20,17 +20,15 @@ class Controller(AbstractController.Controller):
     
     def setSerieEntrada(self):
         imagens = self.getSerieTemporal(self.serie_entrada_decendial)
-        if self.serie_entrada_decendial is not None : print self.serie_entrada_decendial.root_path
         if imagens is not None:
             self.serie_entrada_decendial = imagens
-            self.ui.chDecendiais.setCheckState(True)
-            if self.serie_entrada_decendial is not None : print self.serie_entrada_decendial.root_path
+            self.ui.chDiario.setCheckState(True)
     
     def setSerieSaida(self):
-        imagens = self.getSerieTemporal()
+        imagens = self.getSerieTemporal(self.serie_saida_diaria)
         if imagens is not None:
             self.serie_saida_diaria = imagens
-            self.ui.chDiario.setCheckState(True)
+            self.ui.chDecendial.setCheckState(True)
 
     def executa(self):
         
