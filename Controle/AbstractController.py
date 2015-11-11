@@ -116,15 +116,13 @@ class Controller(object):
     
     def getSerieTemporal(self, serieTemporal=None):
         
-        if serieTemporal is not None : print serieTemporal.root_path
-        
         dlgSerieTemporal = DlgNovaSerieTemporal.Ui_Dialog(self.ui)
         dlgSerieTemporal.setupUi(dlgSerieTemporal) 
         dlgSerieTemporal.setWindowModality(QtCore.Qt.WindowModal)   
         
         dlgSerieTemporal.setForm(serieTemporal)
         
-        serie_temporal = dlgSerieTemporal.exec_()
+        dlgSerieTemporal.exec_()
          
         serie_temporal = dlgSerieTemporal.SerieTemporal
         return serie_temporal       

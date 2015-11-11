@@ -8,7 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-from Controle.ConBH import Controller
+from Controle.ConEtc import Controller
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -89,7 +89,7 @@ class Ui_Dialog(QtGui.QDialog):
         self.btnConfKc.clicked.connect(self.controller.setSerie_Kc)
         self.btnConfETc.clicked.connect(self.controller.setSerie_ETc)
         
-        #self.controller.parametros_teste()
+        self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Evapotranspiração da cultura", None))

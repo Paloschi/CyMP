@@ -17,7 +17,7 @@ from DlgInvdistnnRaster2Raster import Ui_InvdistnnRaster2Raster
 from DlgDistribuidorDeIndice import Ui_DistribuidorDeIndice
 from DlgDecendial2Diario import Ui_Decendial2Diario
 import ConfigParser
-from Visao import DlgETc
+from Visao import DlgETc, DlgTAW, DlgDr
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -38,6 +38,16 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         self.setupUi(self)
+
+    def popupDr(self):
+        popup = DlgDr.Ui_Dialog(self)
+        popup.setupUi(popup)
+        popup.show()   
+
+    def popupTAW(self):
+        popup = DlgTAW.Ui_Dialog(self)
+        popup.setupUi(popup)
+        popup.show()   
         
     def popupETc(self):
         popup = DlgETc.Ui_Dialog(self)
@@ -135,11 +145,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionETc = QtGui.QAction(MainWindow)
         self.actionETc.setObjectName(_fromUtf8("actionETc"))
         
-        self.actionSalvar_Modelo_Ctrl_S = QtGui.QAction(MainWindow)
-        self.actionSalvar_Modelo_Ctrl_S.setObjectName(_fromUtf8("actionSalvar_Modelo_Ctrl_S"))
+        self.actionTAW = QtGui.QAction(MainWindow)
+        self.actionTAW.setObjectName(_fromUtf8("actionTAW"))
         
-        self.actionSalvar_Como = QtGui.QAction(MainWindow)
-        self.actionSalvar_Como.setObjectName(_fromUtf8("actionSalvar_Como"))
+        self.actionEsgotamento_BHFAO = QtGui.QAction(MainWindow)
+        self.actionEsgotamento_BHFAO.setObjectName(_fromUtf8("actionEsgotamento_BHFAO"))
         
         self.actionCarregar_dado_Simples = QtGui.QAction(MainWindow)
         self.actionCarregar_dado_Simples.setObjectName(_fromUtf8("actionCarregar_dado_Simples"))
@@ -181,8 +191,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionDistribuidorDeIndice.setObjectName(_fromUtf8("actionDistribuidorDeIndice"))
         
         self.menuBH.addAction(self.actionETc)
-        #self.menuBH.addAction(self.actionSalvar_Modelo_Ctrl_S)
-        #self.menuBH.addAction(self.actionSalvar_Como)
+        self.menuBH.addAction(self.actionTAW)
+        self.menuBH.addAction(self.actionEsgotamento_BHFAO)
         
         self.menuCarregar_Dado.addAction(self.actionCarregar_dado_Simples)
         self.menuCarregar_Dado.addAction(self.actionCarregar_lista_de_dados)
@@ -226,8 +236,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuFun_o_es.setTitle(_translate("MainWindow", "Functions", None))
         #self.menuModelo.setTitle(_translate("MainWindow", "Modelo", None))
         self.actionETc.setText(_translate("MainWindow", "Evapotranspiração da cultura (ETc)", None))
-        self.actionSalvar_Modelo_Ctrl_S.setText(_translate("MainWindow", "Salvar Modelo (Ctrl + S)", None))
-        self.actionSalvar_Como.setText(_translate("MainWindow", "Salvar Como", None))
+        self.actionTAW.setText(_translate("MainWindow", "Capacidade de armazenamento de água (TAW)", None))
+        self.actionEsgotamento_BHFAO.setText(_translate("MainWindow", "Calcular Esgotamento BHFAO (Dr)", None))
         self.actionCarregar_dado_Simples.setText(_translate("MainWindow", "Carregar dado Simples", None))
         self.actionCarregar_lista_de_dados.setText(_translate("MainWindow", "Carregar lista de dados", None))
         self.actionCriar_dado_tabelado.setText(_translate("MainWindow", "Criar dado tabelado", None))
@@ -251,3 +261,5 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionDistribuidorDeIndice.triggered.connect(self.popupDestribuidor_de_indice)
         self.actionDecendial_2_diario.triggered.connect(self.popupDecendial_2_diario)
         self.actionETc.triggered.connect(self.popupETc)
+        self.actionTAW.triggered.connect(self.popupTAW)
+        self.actionEsgotamento_BHFAO.triggered.connect(self.popupDr)

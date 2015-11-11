@@ -5,10 +5,8 @@ Created on Jul 22, 2015
 @author: Paloschi
 '''
 from Modelo.Funcoes import AbstractFunction
-from Modelo.beans import SERIAL_FILE_DATA, RasterData
-import subprocess
+from Modelo.beans import SERIAL_FILE_DATA
 import gdal
-import sys
 from Modelo.beans.RasterData import RasterFile
 progress = gdal.TermProgress_nocb
 import numpy

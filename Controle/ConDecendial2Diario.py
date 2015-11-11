@@ -73,4 +73,22 @@ class Controller(AbstractController.Controller):
         if self.serie_saida_diaria is None:
             return False
         
-        return True       
+        return True    
+    
+    
+    def parametros_teste(self):
+        root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\7-Cortado_tamanho_Modis\\evpt_2012"
+        self.serie_entrada_decendial = SerialTemporalFiles()
+        self.serie_entrada_decendial.root_path = root_path
+        self.serie_entrada_decendial.prefixo = "evpt_"
+        self.serie_entrada_decendial.mutiply_factor = 1
+        self.serie_entrada_decendial.date_mask = "%Y%m%d"
+        
+        root_path = "C:\\Gafanhoto WorkSpace\\DataTestes\\out\\Primeira tentativa"
+        self.serie_saida_diaria = SerialTemporalFiles()
+        self.serie_saida_diaria.root_path = root_path
+        self.serie_saida_diaria.prefixo = "Etc_"
+        self.serie_saida_diaria.mutiply_factor = 100
+        self.serie_saida_diaria.date_mask = "%Y-%m-%d"
+        
+ 
