@@ -10,10 +10,12 @@ import gdal
 progress = gdal.TermProgress_nocb
 
 
+
 class VectorFile(FileData):
     '''
     essa classe representa um arquivo do tipo vetorial (shp)
     '''
+
 
     def readVectorData(self):
         

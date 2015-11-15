@@ -4,7 +4,7 @@ Created on Oct 5, 2015
 
 @author: rennan.paloschi
 '''
-from Modelo.beans import SerialTemporalFiles
+
 from Modelo.beans import TABLE_DATA, FILE_DATA, SERIAL_FILE_DATA
 from datetime import timedelta
 import calendar
@@ -40,6 +40,10 @@ class Funcao(AbstractFunction):
         serie_imagem_in = self.paramentrosIN_carregados["In"].loadListByRoot()
         serie_imagem_out = self.paramentrosIN_carregados["Out_config"]
         
+        imagem_in_factor = float(serie_imagem_in.mutiply_factor)
+        imagem_out_factor = float(serie_imagem_out.mutiply_factor)
+        
+        
         n_imagens = len(serie_imagem_in)
         
         if n_imagens is 0 :
@@ -68,16 +72,19 @@ class Funcao(AbstractFunction):
                 return 
            
             imagem_ = serie_imagem_in[i].loadRasterData()
+            imagem_ *= imagem_in_factor
             
-            if self.paramentrosIN_carregados["Operation"] is "dividir valores": 
+
+            if self.paramentrosIN_carregados["Operation"] == "dividir valores": 
                 imagem_ = (imagem_ / float(duracao))
-            elif self.paramentrosIN_carregados["Operation"] is "manter valores": 
+            elif self.paramentrosIN_carregados["Operation"] == "manter valores": 
                 pass
                 
-            imagem_ *= serie_imagem_out.mutiply_factor
+            imagem_ *= imagem_out_factor
             
             if serie_imagem_out.out_datatype != None:
                 imagem_ = numpy.array(imagem_).astype(serie_imagem_out.out_datatype)
+                #imagem_ = numpy.round(imagem_, 2)
             
             for ii in range (0, duracao):
                 img = RasterFile()
@@ -90,7 +97,7 @@ class Funcao(AbstractFunction):
                 metadata.update(nodata=0)
                 img.saveRasterData(metadata=metadata)
 
-        
+   
         self.console(u"Série temporal diária concluída.")
 
         

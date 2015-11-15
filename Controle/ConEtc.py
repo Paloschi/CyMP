@@ -8,7 +8,6 @@ from Controle import AbstractController
 from Modelo.Funcoes.BalancoHidrico import Etc
 from Modelo.beans.TableData import TableData
 from Modelo.beans.SerialFileData import SerialTemporalFiles
-import os.path as path
 class Controller(AbstractController.Controller):
     
     serie_ET0 = None
