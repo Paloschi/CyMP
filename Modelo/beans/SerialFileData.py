@@ -170,6 +170,7 @@ class SerialTemporalFiles(SerialFile):
     mutiply_factor = 1
     
     
+    
     def getDate_time(self, i=None, file=None):
         '''
             Essa função foi criada para facilitar a obtenção da data do arquivo como objeto date

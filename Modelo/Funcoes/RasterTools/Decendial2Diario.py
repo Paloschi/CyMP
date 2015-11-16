@@ -82,10 +82,11 @@ class Funcao(AbstractFunction):
                 
             imagem_ *= imagem_out_factor
             
-            if serie_imagem_out.out_datatype != None:
-                imagem_ = numpy.array(imagem_).astype(serie_imagem_out.out_datatype)
-                #imagem_ = numpy.round(imagem_, 2)
+            imagem_ = numpy.round(imagem_, 2)
             
+            imagem_ = self.compactar(imagem_)
+                 
+
             for ii in range (0, duracao):
                 img = RasterFile()
                 img.file_path = serie_imagem_out.root_path   

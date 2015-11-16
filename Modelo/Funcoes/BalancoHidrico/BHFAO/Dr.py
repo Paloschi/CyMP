@@ -54,6 +54,8 @@ class Dr(AbstractFunction):
             O laço a seguir percorre todas as imagens de Zr presentes
             O calculo da TAW é Zr = CAD * Zr
         '''
+        
+        Dr_anterior = None
 
         for i in range(n_ppp):
             
@@ -66,34 +68,30 @@ class Dr(AbstractFunction):
             ppp_ *= PPP_factor
             
             etc = self.procura_img_por_data(serie_Etc, data_ppp)
-            if etc is not None :
-                etc_ = numpy.array(etc.loadRasterData()).astype(dtype="float32")
-                etc_ *= Etc_factor
+            etc_ = numpy.array(etc.loadRasterData()).astype(dtype="float32")
+            etc_ *= Etc_factor
                 
             taw = self.procura_img_por_data(serie_TAW, data_ppp)
             if taw is not None :
                 taw_ = numpy.array(taw.loadRasterData()).astype(dtype="float32")   
                 taw_ *= TAW_factor 
             else :
-                taw_ = CAD_
-                       
-            if etc is not None : 
-                dif_ = ppp_ - etc_
-            else :
-                dif_ = ppp_   
-              
-            Dr_ = taw_
+                taw_ = CAD_  
+                
             
-            mask = taw_ > dif_
+            if Dr_anterior != None:
+                ppp_ -= Dr_anterior
             
-            for m in mask:
-                print m
-            
-            print mask
-            
-            if etc is not None : 
-                Dr_[mask] = etc_ - ppp_      
+            Dr_ = etc_ - ppp_
+
+            for i in range(len(taw_)) :
+                Dr_[i][-Dr_[i] > taw_[i]] = -taw_[i][-Dr_[i] > taw_[i]]
+                
+            Dr_anterior = numpy.copy(Dr_)  
+            Dr_ = numpy.round(Dr_, 2)   
             Dr_ *= Dr_factor
+            
+            Dr_ = self.compactar(Dr_)        
             
             dr = RasterFile(file_path=serie_Dr.root_path, ext="tif")
             dr = serie_Dr.setDate_time(data_ppp, file=dr)       
@@ -101,8 +99,11 @@ class Dr(AbstractFunction):
             dr.metadata = ppp.metadata
             dr.saveRasterData()
             
+           
+            
             dr.data = None
             serie_Dr.append(dr)
+
         
         return serie_Dr
 

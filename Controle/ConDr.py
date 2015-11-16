@@ -59,6 +59,7 @@ class Controller(AbstractController.Controller):
         
         if self.funcao_cancelada():
             self.console(u"Função interrompida")
+            self.finalizar()
         elif resultado is not None:
             self.console(u"Função conluída")
             self.finalizar()
@@ -87,7 +88,7 @@ class Controller(AbstractController.Controller):
         self.serie_ETc.root_path = root_path
         self.serie_ETc.prefixo = "etc_"
         self.serie_ETc.date_mask = "%Y-%m-%d"     
-        self.serie_ETc.mutiply_factor = 1 
+        self.serie_ETc.mutiply_factor = 0.01
         
         root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\8-Diario\\PPP"
         self.serie_PPP = SerialTemporalFiles()
@@ -103,12 +104,13 @@ class Controller(AbstractController.Controller):
         self.serie_TAW.mutiply_factor = 1
         self.serie_TAW.date_mask = "%Y%m%d"
         
-        self.ui.txImgCAD.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Mapa_solo\\Cad_mm_250m_TamanhoZr.tif")
+        self.ui.txImgCAD.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Mapa_solo\\soloVSMascaraSoja11_12.tif")
         
         root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\Dr"
         self.serie_Dr = SerialTemporalFiles()
         self.serie_Dr.root_path = root_path
-        self.serie_Dr.prefixo = ""
+        self.serie_Dr.prefixo = "dr_"
         self.serie_Dr.mutiply_factor = 100
+
         self.serie_Dr.date_mask = "%Y-%m-%d"  
         

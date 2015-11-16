@@ -81,33 +81,42 @@ class Etc(AbstractFunction):
                     kc = serie_Kc[i_Kc]
             
             etc = RasterFile(file_path=serie_ETc.root_path, ext="tif")
-            print data_ET0
-            print kc
+            #print data_ET0
+            #print kc
             etc = serie_ETc.setDate_time(data_ET0, file=etc)
             
             ET0_ = numpy.array(ET0.loadRasterData()).astype(dtype="float32") #* ET0_factor
             ET0_ = ET0_ * ET0_factor
             
             if kc == None: # caso não encontre nenhum kc correspondente a mesma data
-                etc.data = ET0_
+                ETc_ = ET0_
+                ETc_ *= ETC_factor
+                ETc_ = self.compactar(ETc_)
+                etc.data = ETc_
                 
             else: 
                     
                 Kc_ = numpy.array(kc.loadRasterData()).astype(dtype="float32")
-                Kc_ = Kc_ * Kc_factor
+                Kc_ *= Kc_factor
                 
                 '''1 é o valor default pra quando o Kc for 0 isso tem que ser visto'''
                 Kc_[Kc_==0] = 1 
 
                 ETc_ = Kc_ * ET0_
-                   
-                if serie_ETc.out_datatype != None:
-                    ETc_ = numpy.array(ETc_).astype(serie_ETc.out_datatype)
+                ETc_ = numpy.round(ETc_, 2)  
+                
+                
+                ETc_ *= ETC_factor
+                ETc_ = self.compactar(ETc_)
                     
-                etc.data = ETc_ * ETC_factor
+                etc.data = ETc_
    
             etc.metadata = ET0.metadata
             etc.saveRasterData()
+            
+            serie_ETc.append(etc)
+            
+        return serie_ETc
             
     
     def procurar_descende_correspondente(self, data, serie_temporal):

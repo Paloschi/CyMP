@@ -44,6 +44,7 @@ class Controller(AbstractController.Controller):
         
         if self.funcao_cancelada():
             self.console(u"Função interrompida")
+            self.finalizar()
         elif resultado is not None:
             self.console(u"Função conluída")
             self.finalizar()
@@ -68,16 +69,17 @@ class Controller(AbstractController.Controller):
         self.serie_ET0.mutiply_factor = 0.01
         self.serie_ET0.date_mask = "%Y-%m-%d"
         
-        root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\Kc_distribuido\\soltas"
+        root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\Kc\\soltas"
         self.serie_Kc = SerialTemporalFiles()
         self.serie_Kc.root_path = root_path
         self.serie_Kc.prefixo = ""
         self.serie_Kc.mutiply_factor = 0.01
         self.serie_Kc.date_mask = "%Y-%m-%d"
         
-        root_path = "C:\\Gafanhoto WorkSpace\\DataTestes\\out\\Primeira tentativa"
+        root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\ETc\\ETC_soltas"
         self.serie_ETc = SerialTemporalFiles()
         self.serie_ETc.root_path = root_path
-        self.serie_ETc.prefixo = "teste_etc_"
-        self.serie_ETc.date_mask = "%Y%m%d"        
+        self.serie_ETc.prefixo = "etc_"
+        self.serie_ETc.date_mask = "%Y-%m-%d"    
+        self.serie_ETc.mutiply_factor = 100    
         

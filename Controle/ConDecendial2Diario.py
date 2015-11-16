@@ -78,19 +78,19 @@ class Controller(AbstractController.Controller):
     
     
     def parametros_teste(self):
-        root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\7.1-MultiplicadasPelaMascaraSoja11-12\\rain\\selecionadas"
+        root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\7.1-MultiplicadasPelaMascaraSoja11-12\\evpt"
         self.serie_entrada_decendial = SerialTemporalFiles()
         self.serie_entrada_decendial.root_path = root_path
-        self.serie_entrada_decendial.prefixo = "rain_"
+        self.serie_entrada_decendial.prefixo = "evpt_"
         self.serie_entrada_decendial.mutiply_factor = 1
         self.serie_entrada_decendial.date_mask = "%Y%m%d"
         
-        root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\8-Diario\\PPP"
+        root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\8-Diario\\EVPT\\novo"
         self.serie_saida_diaria = SerialTemporalFiles()
         self.serie_saida_diaria.root_path = root_path
-        self.serie_saida_diaria.prefixo = "rain_diario_"
+        self.serie_saida_diaria.prefixo = "evpt_diario_"
         self.serie_saida_diaria.mutiply_factor = 100
-        self.serie_saida_diaria.out_datatype = "int16"
+
         self.serie_saida_diaria.date_mask = "%Y-%m-%d"
         
  

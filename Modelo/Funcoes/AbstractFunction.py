@@ -8,6 +8,7 @@ Created on May 11, 2015
 from Modelo.beans.AbstractData import ABData, FUNCTION_DATA
 from abc import ABCMeta, abstractmethod
 from numpy.distutils.environment import __metaclass__
+import numpy
 
 import logging as log
 
@@ -109,4 +110,21 @@ class Function(ABData):
     def setProgresso (self, indice, total):
         self.progresso = (indice / float(total) * 100)
         
+    def compactar(self, imagem_):
+        
+        minimo = numpy.min(imagem_)
+        maximo = numpy.max(imagem_) 
+            
+        if minimo >= 0 :
+            if maximo <= 255:
+                imagem_ = numpy.array(imagem_).astype("uint8")
+            elif maximo <= 65535:
+                imagem_ = numpy.array(imagem_).astype("uint16")
+        else :
+            if minimo >= -128 and maximo <=127 : 
+                imagem_ = numpy.array(imagem_).astype("int8")
+            elif minimo >= -32768 and maximo <= 32767 : 
+                imagem_ = numpy.array(imagem_).astype("int16")
+        
+        return imagem_
         
