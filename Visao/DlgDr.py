@@ -101,7 +101,7 @@ class Ui_Dialog(QtGui.QDialog):
         self.btnConfTAW.clicked.connect(self.controller.setSerie_TAW)
         self.btnFindImgCAD.clicked.connect(self.controller.findImgCAD)
         
-        self.controller.parametros_teste()
+        #self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Valor de esgotamento (Dr)", None))

@@ -89,7 +89,7 @@ class Ui_Dialog(QtGui.QDialog):
         self.btnConfKc.clicked.connect(self.controller.setSerie_Kc)
         self.btnConfETc.clicked.connect(self.controller.setSerie_ETc)
         
-        self.controller.parametros_teste()
+        #self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Evapotranspiração da cultura", None))

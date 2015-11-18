@@ -88,7 +88,7 @@ class Ui_Dialog(QtGui.QDialog):
         self.btnConfZr.clicked.connect(self.controller.setSerieZr)
         self.btnFindImgCAD.clicked.connect(self.controller.findImgCAD)
         
-        self.controller.parametros_teste()
+        #self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "TAW", None))

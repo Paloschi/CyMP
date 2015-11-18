@@ -229,7 +229,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         version=config.get('Version', 'version')
             
         MainWindow.setWindowTitle(_translate("MainWindow", "Gafanhoto " + version, None))
-        self.menuBH.setTitle(_translate("MainWindow", "Balanço Hídrico (BH)", None))
+        self.menuBH.setTitle(_translate("MainWindow", "Balanço Hídrico FAO (BHFAO)", None))
         #self.menuDados.setTitle(_translate("MainWindow", "Dados", None))
         self.menuInterpoladores.setTitle(_translate("MainWindow", "Interpoladores", None))
         self.menuCarregar_Dado.setTitle(_translate("MainWindow", "Carregar dado", None))
