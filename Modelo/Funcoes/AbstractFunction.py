@@ -127,4 +127,13 @@ class Function(ABData):
                 imagem_ = numpy.array(imagem_).astype("int16")
         
         return imagem_
+
+    def procura_img_por_data(self, serie, data):
+        img = None
+        for i in range(len(serie)):
+            data_i = serie.getDate_time(file=serie[i])
+            if data_i == data:
+                img = serie[i]
+                break  
+        return img
         

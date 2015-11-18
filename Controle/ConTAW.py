@@ -65,19 +65,19 @@ class Controller(AbstractController.Controller):
 
     def parametros_teste(self):
         
-        self.ui.txImgCAD.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Mapa_solo\\Cad_mm_250m_TamanhoZr.tif")
+        self.ui.txImgCAD.setText("E:\\Gafanhoto WorkSpace\\Soja11_12\\Mapa_solo\\Cad_mm_250m_TamanhoZr.tif")
         
-        root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\Zr_distribuido\\soltas"
+        root_path = "E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\Zr\\soltas"
         self.serie_Zr = SerialTemporalFiles()
         self.serie_Zr.root_path = root_path
         self.serie_Zr.prefixo = ""
         self.serie_Zr.mutiply_factor = 0.01
         self.serie_Zr.date_mask = "%Y-%m-%d"
         
-        root_path = "C:\\Gafanhoto WorkSpace\\DataTestes\\out\\Primeira tentativa"
+        root_path = "E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\RAW"
         self.serie_TAW = SerialTemporalFiles()
         self.serie_TAW.root_path = root_path
-        self.serie_TAW.prefixo = "TAW_Teste"
-        self.serie_TAW.mutiply_factor = 1
+        self.serie_TAW.prefixo = "RAW_"
+        self.serie_TAW.mutiply_factor = 0.5
         self.serie_TAW.date_mask = "%Y-%m-%d"   
         

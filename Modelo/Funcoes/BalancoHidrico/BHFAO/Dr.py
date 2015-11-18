@@ -98,20 +98,8 @@ class Dr(AbstractFunction):
             dr.data = Dr_
             dr.metadata = ppp.metadata
             dr.saveRasterData()
-            
-           
-            
             dr.data = None
             serie_Dr.append(dr)
-
-        
+  
         return serie_Dr
 
-    def procura_img_por_data(self, serie, data):
-        img = None
-        for i in range(len(serie)):
-            data_i = serie.getDate_time(file=serie[i])
-            if data_i == data:
-                img = serie[i]
-                break  
-        return img

@@ -12,6 +12,7 @@ encoding//Controle/ConTAW.py=utf-8
 encoding//Controle/__init__.py=utf-8
 encoding//Modelo/Funcoes/AbstractFunction.py=utf-8
 encoding//Modelo/Funcoes/BalancoHidrico/BHFAO/Dr.py=utf-8
+encoding//Modelo/Funcoes/BalancoHidrico/BHFAO/Ks.py=utf-8
 encoding//Modelo/Funcoes/BalancoHidrico/BHFAO/TAW.py=utf-8
 encoding//Modelo/Funcoes/BalancoHidrico/BHTM/DIF.py=utf-8
 encoding//Modelo/Funcoes/BalancoHidrico/Distribuidor_IC.py=utf-8
