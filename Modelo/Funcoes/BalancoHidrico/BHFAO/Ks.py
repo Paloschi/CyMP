@@ -24,11 +24,11 @@ class Ks(AbstractFunction):
     
     def __execOperation__(self):
         
-        serie_raw = self.paramentrosIN_carregados=["RAW"].loadListByRoot()
-        serie_taw = self.paramentrosIN_carregados=["TAW"].loadListByRoot()
-        serie_dr = self.paramentrosIN_carregados=["Dr"].loadListByRoot()
+        serie_raw = self.paramentrosIN_carregados["RAW"].loadListByRoot()
+        serie_taw = self.paramentrosIN_carregados["TAW"].loadListByRoot()
+        serie_dr = self.paramentrosIN_carregados["Dr"].loadListByRoot()
         
-        serie_ks = self.paramentrosIN_carregados=["Ks"]
+        serie_ks = self.paramentrosIN_carregados["Ks"]
         
         factor_raw = float(serie_raw.mutiply_factor)
         factor_taw = float(serie_taw.mutiply_factor)
@@ -52,20 +52,38 @@ class Ks(AbstractFunction):
             taw_ *= factor_taw
             
             raw_ = self.LoadImgByDate(serie_raw, data_taw, factor_raw)
-            dr_ = self.LoadImgByDate(factor_dr, data_taw, factor_dr)
+            dr_ = self.LoadImgByDate(serie_dr, data_taw, factor_dr)
             
             ''' ----------------------------------------------- '''
             
             ks_ = numpy.zeros((n_linhas, n_colunas))
-            ks_ +=1
+            #ks_ +=1
             
             ''' ----------------------------------------------- '''
             
-            temp = numpy.array(numpy.zeros((n_linhas, n_colunas))).astype(dtype="float32")
-            temp = (taw_ - dr_) / (taw_ - raw_)
+
+            a = (taw_ - (- dr_)) 
+            b = (taw_ - raw_)
+            c = a / b
             
-            for i in range(len(taw_)) :
-                ks_[i][dr_ >= raw_] = temp[i][dr_ >= raw_]
+            #print len(temp)
+            #print len(temp[1])
+            
+            #print temp
+            
+            
+
+            
+            for i in range(len(ks_)) :
+
+                ks_[i][-dr_[i] >= raw_[i]] = c[i][-dr_[i] >= raw_[i]]
+                ks_[i][-dr_[i] < raw_[i]] = 1
+                ks_[i][ks_[i] == -float('Inf')] = 2
+                ks_[i][taw_[i] == float('NaN')] = 2
+                ks_[i][taw_[i] == 127] = 2
+                ks_[i][raw_[i] == 0] = 2
+
+                
             
             ''' ------------------------------------------------ '''
             
@@ -73,11 +91,20 @@ class Ks(AbstractFunction):
             ks_ *= factor_ks
             ks_ = self.compactar(ks_)
             
+            #print data_taw
+            #for i in range(n_linhas):
+                #for ii in range(n_colunas):
+                    #if taw_[i][ii] != 0.0 and taw_[i][ii] != 127.0 and ks_[i][ii] != 1 and ks_[i][ii] != 0:
+                        #print a[i][ii], b[i][ii], c[i][ii]
+                        #print taw_[i][ii], raw_[i][ii], dr_[i][ii], ks_[i][ii]
+                        #print "----------------------------------"
+            
             
             ks = RasterFile(file_path=serie_ks.root_path, ext="tif")
             ks = serie_ks.setDate_time(data_taw, file=ks)       
             ks.data = ks_
             ks.metadata = taw.metadata
+            ks.metadata.update(nodata=200)
             ks.saveRasterData()
             ks.data = None
             serie_ks.append(ks)

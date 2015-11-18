@@ -17,7 +17,7 @@ from DlgInvdistnnRaster2Raster import Ui_InvdistnnRaster2Raster
 from DlgDistribuidorDeIndice import Ui_DistribuidorDeIndice
 from DlgDecendial2Diario import Ui_Decendial2Diario
 import ConfigParser
-from Visao import DlgETc, DlgTAW, DlgDr
+from Visao import DlgETc, DlgTAW, DlgDr, DlgKs
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -38,6 +38,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         self.setupUi(self)
+
+    def popupKs(self):
+        popup = DlgKs.Ui_Dialog(self)
+        popup.setupUi(popup)
+        popup.show()   
 
     def popupDr(self):
         popup = DlgDr.Ui_Dialog(self)
@@ -151,6 +156,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionEsgotamento_BHFAO = QtGui.QAction(MainWindow)
         self.actionEsgotamento_BHFAO.setObjectName(_fromUtf8("actionEsgotamento_BHFAO"))
         
+        self.actionKs = QtGui.QAction(MainWindow)
+        self.actionKs.setObjectName(_fromUtf8("actionKs"))
+        
         self.actionCarregar_dado_Simples = QtGui.QAction(MainWindow)
         self.actionCarregar_dado_Simples.setObjectName(_fromUtf8("actionCarregar_dado_Simples"))
         
@@ -193,6 +201,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuBH.addAction(self.actionETc)
         self.menuBH.addAction(self.actionTAW)
         self.menuBH.addAction(self.actionEsgotamento_BHFAO)
+        self.menuBH.addAction(self.actionKs)
         
         self.menuCarregar_Dado.addAction(self.actionCarregar_dado_Simples)
         self.menuCarregar_Dado.addAction(self.actionCarregar_lista_de_dados)
@@ -238,6 +247,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionETc.setText(_translate("MainWindow", "Evapotranspiração da cultura (ETc)", None))
         self.actionTAW.setText(_translate("MainWindow", "Capacidade de armazenamento de água (TAW)", None))
         self.actionEsgotamento_BHFAO.setText(_translate("MainWindow", "Calcular Esgotamento BHFAO (Dr)", None))
+        self.actionKs.setText(_translate("MainWindow", "Fator de estresse hídrico da cultura (Ks)", None))
+        
         self.actionCarregar_dado_Simples.setText(_translate("MainWindow", "Carregar dado Simples", None))
         self.actionCarregar_lista_de_dados.setText(_translate("MainWindow", "Carregar lista de dados", None))
         self.actionCriar_dado_tabelado.setText(_translate("MainWindow", "Criar dado tabelado", None))
@@ -263,3 +274,4 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionETc.triggered.connect(self.popupETc)
         self.actionTAW.triggered.connect(self.popupTAW)
         self.actionEsgotamento_BHFAO.triggered.connect(self.popupDr)
+        self.actionKs.triggered.connect(self.popupKs)
