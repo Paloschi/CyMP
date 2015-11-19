@@ -40,7 +40,6 @@ class Etc(AbstractFunction):
             é porque esta variavel contem os valores carregados (matrizes brutas) dos dados
         '''
         
-        print("Carregando imagens (ET0, semeadura, colheita): ")
         self.print_text("Carregando imagens.")
         
         serie_ET0 = self.paramentrosIN_carregados["ET0"].loadListByRoot() # pucha e já carrega a lista caso não tenha sido carregada
@@ -53,10 +52,10 @@ class Etc(AbstractFunction):
         
         n_et0 = len(serie_ET0)
         
-        self.console(str(n_et0) + " imagens de ET0 encontradas.")
-        self.console(str(len(serie_Kc)) + " imagens de Kc encontradas.")
+        #self.console(str(n_et0) + " imagens de ET0 encontradas.")
+        #self.console(str(len(serie_Kc)) + " imagens de Kc encontradas.")
         
-        self.console("Gerando imagens de ETc")
+        self.console("Gerando imagens de saída...")
 
         '''
             O laço a seguir percorre todas as imagens de ET0 presentes
@@ -86,6 +85,7 @@ class Etc(AbstractFunction):
             etc = serie_ETc.setDate_time(data_ET0, file=etc)
             
             ET0_ = numpy.array(ET0.loadRasterData()).astype(dtype="float32") #* ET0_factor
+            ET0_[ET0_==ET0.metadata["nodata"]] = 0 
             ET0_ = ET0_ * ET0_factor
             
             if kc == None: # caso não encontre nenhum kc correspondente a mesma data
@@ -101,6 +101,9 @@ class Etc(AbstractFunction):
                 
                 '''1 é o valor default pra quando o Kc for 0 isso tem que ser visto'''
                 Kc_[Kc_==0] = 1 
+                
+                #print ET0.metadata
+                #print kc.metadata
 
                 ETc_ = Kc_ * ET0_
                 ETc_ = numpy.round(ETc_, 2)  
@@ -115,6 +118,8 @@ class Etc(AbstractFunction):
             etc.saveRasterData()
             
             serie_ETc.append(etc)
+            
+        self.console(u"Concluído")
             
         return serie_ETc
             

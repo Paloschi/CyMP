@@ -63,7 +63,11 @@ class Ks(AbstractFunction):
             
 
             a = (taw_ - (- dr_)) 
+            
+            
             b = (taw_ - raw_)
+            
+            
             c = a / b
             
             #print len(temp)

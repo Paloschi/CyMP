@@ -35,11 +35,11 @@ class Controller(Controller):
             ultimo_dia_int = int(ultimo_dia)
             float(valor)
         except:
-            self.message(u"Preencha corretamente o estágio anterior")
+            self.message(u"Preencha corretamente o Estádio anterior")
             return
             
         if(ultimo_dia_int<=int(dia_inicial)):
-            self.message(u"O dia final do estágio anterior precisa ser maior que o inicial")
+            self.message(u"O dia final do Estádio anterior precisa ser maior que o inicial")
             return
         else:
             i_nova_linha = numero_de_linhas
@@ -50,7 +50,7 @@ class Controller(Controller):
             
             item = self.ui.tableWidget.verticalHeaderItem(i_nova_linha)
             item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
-            item.setText(_translate("Dialog", ("Estágio " + str(i_nova_linha+1)), None))
+            item.setText(_translate("Dialog", ("Estádio " + str(i_nova_linha+1)), None))
             
             item = QtGui.QTableWidgetItem()
             item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
@@ -152,7 +152,7 @@ class Controller(Controller):
             return False
             
         if(ultimo_dia_int<=int(dia_inicial)):
-            self.message(_translate("O dia final do estágio anterior precisa ser maior que o inicial"))
+            self.message(_translate("O dia final do Estádio anterior precisa ser maior que o inicial"))
             return False
         if self.confirmar(_translate("MainWindow","Caso esteja disponível, "+
                             "essa função utilizará os multiplos nucleos deste processador. " +

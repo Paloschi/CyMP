@@ -7,7 +7,6 @@ Created on 09/11/2015
 from Controle import AbstractController
 from Modelo.Funcoes.RasterTools import Decendial2Diario
 from Modelo.beans.TableData import TableData
-from Visao import DlgNovaSerieTemporal
 from Modelo.beans.SerialFileData import SerialTemporalFiles
 
 class Controller(AbstractController.Controller):

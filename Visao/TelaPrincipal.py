@@ -244,7 +244,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuCarregar_Dado.setTitle(_translate("MainWindow", "Carregar dado", None))
         self.menuFun_o_es.setTitle(_translate("MainWindow", "Functions", None))
         #self.menuModelo.setTitle(_translate("MainWindow", "Modelo", None))
-        self.actionETc.setText(_translate("MainWindow", "Evapotranspiração da cultura (ETc)", None))
+        self.actionETc.setText(_translate("MainWindow", "Evapotranspiração (ETc - ETa)", None))
         self.actionTAW.setText(_translate("MainWindow", "Capacidade de armazenamento de água (TAW)", None))
         self.actionEsgotamento_BHFAO.setText(_translate("MainWindow", "Calcular Esgotamento BHFAO (Dr)", None))
         self.actionKs.setText(_translate("MainWindow", "Fator de estresse hídrico da cultura (Ks)", None))

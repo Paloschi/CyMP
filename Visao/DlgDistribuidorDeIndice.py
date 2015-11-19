@@ -128,7 +128,7 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
         
         
         item = self.tableWidget.verticalHeaderItem(0)
-        item.setText(_translate("Dialog", "Estágio 1", None))
+        item.setText(_translate("Dialog", "Estádio 1", None))
         item = self.tableWidget.horizontalHeaderItem(0)
         self.tableWidget.setColumnWidth(0, 60)
         item.setText(_translate("Dialog", "Dia inicial", None))
@@ -156,7 +156,7 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
         self.btFindImgColheita.setText(_translate("Dialog", "...", None))
         self.comboBox.setItemText(1, _translate("Dialog", "Kc FAO", None))
         self.comboBox.setItemText(2, _translate("Dialog", "Zr FAO", None))
-        self.label_5.setText(_translate("Dialog", "Distribuidor de índice por estágio fenológico", None))
+        self.label_5.setText(_translate("Dialog", "Distribuidor de índice por Estádio fenológico", None))
         self.txMultiplyFactor.setValue(100)
         
         self.btFindImgSemeadura.clicked.connect(self.controller.findImgSemeadura)
