@@ -59,12 +59,20 @@ class Ks(AbstractFunction):
                 DR = 1 + 0.0033 * np.cos(np.radians(360/(365*declinacao_solar)))
             else :
                 DR = 1
-                
-            #print angulo_solar
             
             radiacao_topo_atmosfera = 37.6 * DR * ((np.pi/180) * angulo_solar * np.sin(declinacao_solar_r) * np.sin(lat_rad) + np.cos(declinacao_solar_r) * np.cos(lat_rad) * np.sin(agulo_solar_r))
             
-            print radiacao_topo_atmosfera
+            ctn = 0.583 + 0.014 * T + 0.0013 * (T^2) - 0.000037 * (T^3)
+            for i in range(len(T)): 
+                ctn[i][16.5>T>37] = -0.0425 + 0.035 * T[i][16.5>T>37] + 0.00325 * (T[i][16.5>T>37]^2) - 0.0000925 * (T[i][16.5>T>37]^3)
+            
+            ctc = -0.0425 + 0.035 * T + 0.00325 * (T^2) - 0.0000925 * (T^3)
+            for i in range(len(T)):
+                ctc[i][16.5>T>37] = -1.085 + 0.07 * T[i][16.5>T>37] + 0.0065 * (T[i][16.5>T>37]^2) - 0.000185 * (T[i][16.5>T>37]^3)
+                
+            
+            print ctn
+            print ctc
             
             
             
