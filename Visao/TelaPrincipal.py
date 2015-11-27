@@ -17,7 +17,7 @@ from DlgInvdistnnRaster2Raster import Ui_InvdistnnRaster2Raster
 from DlgDistribuidorDeIndice import Ui_DistribuidorDeIndice
 from DlgDecendial2Diario import Ui_Decendial2Diario
 import ConfigParser
-from Visao import DlgETc, DlgTAW, DlgDr, DlgKs
+from Visao import DlgETc, DlgTAW, DlgDr, DlgKs, DlgPPB
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -38,6 +38,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         self.setupUi(self)
+
+    def popupPPB(self):
+        popup = DlgPPB.Ui_Dialog(self)
+        popup.setupUi(popup)
+        popup.show()   
 
     def popupKs(self):
         popup = DlgKs.Ui_Dialog(self)
@@ -224,7 +229,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuModelo.addAction(self.actionRodar)
         
         self.menubar.addAction(self.menuBH.menuAction())
-        #self.menubar.addAction(self.menuProdutividade.menuAction())
+        self.menubar.addAction(self.menuProdutividade.menuAction())
         self.menubar.addAction(self.menuFun_o_es.menuAction())
         #self.menubar.addAction(self.menuModelo.menuAction())
 
@@ -275,3 +280,4 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionTAW.triggered.connect(self.popupTAW)
         self.actionEsgotamento_BHFAO.triggered.connect(self.popupDr)
         self.actionKs.triggered.connect(self.popupKs)
+        self.actionPPB.triggered.connect(self.popupPPB)
