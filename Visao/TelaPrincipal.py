@@ -126,10 +126,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuBH = QtGui.QMenu(self.menubar)
         self.menuBH.setObjectName(_fromUtf8("menuBH"))
         
-        self.menuDados = QtGui.QMenu(self.menubar)
-        self.menuDados.setObjectName(_fromUtf8("menuDados"))
+        self.menuProdutividade = QtGui.QMenu(self.menubar)
+        self.menuProdutividade.setObjectName(_fromUtf8("menuProdutividade"))
         
-        self.menuCarregar_Dado = QtGui.QMenu(self.menuDados)
+        self.menuCarregar_Dado = QtGui.QMenu(self.menuProdutividade)
         self.menuCarregar_Dado.setObjectName(_fromUtf8("menuCarregar_Dado"))
         
         self.menuFun_o_es = QtGui.QMenu(self.menubar)
@@ -159,8 +159,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionKs = QtGui.QAction(MainWindow)
         self.actionKs.setObjectName(_fromUtf8("actionKs"))
         
-        self.actionCarregar_dado_Simples = QtGui.QAction(MainWindow)
-        self.actionCarregar_dado_Simples.setObjectName(_fromUtf8("actionCarregar_dado_Simples"))
+        self.actionPPB = QtGui.QAction(MainWindow)
+        self.actionPPB.setObjectName(_fromUtf8("actionPPB"))
         
         self.actionCarregar_lista_de_dados = QtGui.QAction(MainWindow)
         self.actionCarregar_lista_de_dados.setObjectName(_fromUtf8("actionCarregar_lista_de_dados"))
@@ -203,12 +203,12 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuBH.addAction(self.actionEsgotamento_BHFAO)
         self.menuBH.addAction(self.actionKs)
         
-        self.menuCarregar_Dado.addAction(self.actionCarregar_dado_Simples)
-        self.menuCarregar_Dado.addAction(self.actionCarregar_lista_de_dados)
-        self.menuCarregar_Dado.addAction(self.actionCriar_dado_tabelado)
+        #self.menuCarregar_Dado.addAction(self.actionPPB)
+        #self.menuCarregar_Dado.addAction(self.actionCarregar_lista_de_dados)
+        #self.menuCarregar_Dado.addAction(self.actionCriar_dado_tabelado)
         
-        self.menuDados.addAction(self.menuCarregar_Dado.menuAction())
-        self.menuDados.addAction(self.actionListar_dados)
+        self.menuProdutividade.addAction(self.actionPPB)
+        #self.menuProdutividade.addAction(self.actionListar_dados)
         
         self.menuInterpoladores.addAction(self.actionInterpolador)
         self.menuInterpoladores.addAction(self.actionInterpoladorRaster2Raster)
@@ -224,7 +224,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuModelo.addAction(self.actionRodar)
         
         self.menubar.addAction(self.menuBH.menuAction())
-        #self.menubar.addAction(self.menuDados.menuAction())
+        #self.menubar.addAction(self.menuProdutividade.menuAction())
         self.menubar.addAction(self.menuFun_o_es.menuAction())
         #self.menubar.addAction(self.menuModelo.menuAction())
 
@@ -239,7 +239,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
             
         MainWindow.setWindowTitle(_translate("MainWindow", "Gafanhoto " + version, None))
         self.menuBH.setTitle(_translate("MainWindow", "Balanço Hídrico FAO (BHFAO)", None))
-        #self.menuDados.setTitle(_translate("MainWindow", "Dados", None))
+        self.menuProdutividade.setTitle(_translate("MainWindow", "Calculos de produtividade", None))
         self.menuInterpoladores.setTitle(_translate("MainWindow", "Interpoladores", None))
         self.menuCarregar_Dado.setTitle(_translate("MainWindow", "Carregar dado", None))
         self.menuFun_o_es.setTitle(_translate("MainWindow", "Functions", None))
@@ -249,7 +249,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionEsgotamento_BHFAO.setText(_translate("MainWindow", "Calcular Esgotamento BHFAO (Dr)", None))
         self.actionKs.setText(_translate("MainWindow", "Fator de estresse hídrico da cultura (Ks)", None))
         
-        self.actionCarregar_dado_Simples.setText(_translate("MainWindow", "Carregar dado Simples", None))
+        self.actionPPB.setText(_translate("MainWindow", "Produtividade Potencial Bruta (PPB)", None))
         self.actionCarregar_lista_de_dados.setText(_translate("MainWindow", "Carregar lista de dados", None))
         self.actionCriar_dado_tabelado.setText(_translate("MainWindow", "Criar dado tabelado", None))
         self.actionListar_dados.setText(_translate("MainWindow", "Mostrar dados do modelo", None))
