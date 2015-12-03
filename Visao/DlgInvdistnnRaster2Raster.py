@@ -184,6 +184,8 @@ class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), self.controller.action_ok)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), self.controller.action_cancel)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+        
+        self.controller.set_param()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Gafanhoto 2.2 - Interpolador Invdistnn", None))

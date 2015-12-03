@@ -1,3 +1,4 @@
+﻿# -*- coding: utf-8 -*-
 '''
 Created on Nov 19, 2015
 
@@ -5,27 +6,29 @@ Created on Nov 19, 2015
 '''
 
 from Modelo.Funcoes import AbstractFunction
-import threading
 import numpy as np
-
-from Modelo.beans.RasterData import RasterFile
-from Modelo.beans.SerialFileData import SerialFile, SerialTemporalFiles
-
+from Modelo.beans import RasterFile, SERIAL_FILE_DATA
+from Modelo.beans.SerialFileData import  SerialTemporalFiles
 import gdal
-from math import radians
 progress = gdal.TermProgress_nocb
+import time
+import threading
 
-class Ks(AbstractFunction):
+class PPR(AbstractFunction):
     
     def __setParamIN__(self):
-        pass
+        self.descriptionIN["T"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens de temperatura média"}
+        self.descriptionIN["Cc"] = {"Required":True, "Type":None, "Description":"ìndice de colheita, valor double"}
+        self.descriptionIN["PPR"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Configuração de imagens produtividade potencial bruta"}
     
     def __setParamOUT__(self):
-        pass
+        self.descriptionOUT["PPR"] = {"Required":True, "Type":SERIAL_FILE_DATA, "Description":"Série de imagens produtividade potencial bruta"}
     
     def __execOperation__(self):
         
-        serie_T = self.paramentrosIN_carregados["images"].loadListByRoot()
+        serie_T = self.paramentrosIN_carregados["T"].loadListByRoot()
+        serie_PPR = self.paramentrosIN_carregados["PPR"]
+        self.Cc = self.paramentrosIN_carregados["Cc"]
         
         matriz = serie_T[0]
         matriz_ = matriz.loadRasterData()
@@ -33,15 +36,19 @@ class Ks(AbstractFunction):
         nullValue = info["NoData"]
         
         img_lat = self.img_lat_long(info, matriz_, nullValue)
-        #img_lat = -26
         lat_rad = np.radians(img_lat)
         
         a = float(180)/np.pi
-        b = float(np.pi)/180
         
+        ii=1
         
         for T in serie_T:
-            T_ = T.loadRasterData()
+            
+            if threading.currentThread().stopped()  : return 
+
+            
+            start = time.time()
+            T_ = np.array(T.loadRasterData()).astype(dtype="float32")
             data_T = serie_T.getDate_time(file=T)
             dj = data_T.timetuple().tm_yday # Dia Juliano
             
@@ -51,8 +58,7 @@ class Ks(AbstractFunction):
             declinacao_solar_r = np.radians(declinacao_solar)
             
             angulo_solar = np.arccos(np.radians(-np.tan(lat_rad) * np.tan(declinacao_solar_r))) * a
-            #angulo_solar = angulo_solar * (float(2)/15)
-            #angulo_solar = 12 - (angulo_solar/2)
+
             "DR = Distancia relativa sol-terra"
             agulo_solar_r = np.radians(angulo_solar)
             if declinacao_solar != 0:
@@ -61,19 +67,44 @@ class Ks(AbstractFunction):
                 DR = 1
             
             radiacao_topo_atmosfera = 37.6 * DR * ((np.pi/180) * angulo_solar * np.sin(declinacao_solar_r) * np.sin(lat_rad) + np.cos(declinacao_solar_r) * np.cos(lat_rad) * np.sin(agulo_solar_r))
+            radiacao_topo_atmosfera = radiacao_topo_atmosfera * 23.92344
             
-            ctn = 0.583 + 0.014 * T + 0.0013 * (T^2) - 0.000037 * (T^3)
-            for i in range(len(T)): 
-                ctn[i][16.5>T>37] = -0.0425 + 0.035 * T[i][16.5>T>37] + 0.00325 * (T[i][16.5>T>37]^2) - 0.0000925 * (T[i][16.5>T>37]^3)
+            ctn = 0.583 + 0.014 * T_ + 0.0013 * (T_**2) - 0.000037 * (T_**3)
+            ctc = -0.0425 + 0.035 * T_ + 0.00325 * (T_**2) - 0.0000925 * (T_**3)
             
-            ctc = -0.0425 + 0.035 * T + 0.00325 * (T^2) - 0.0000925 * (T^3)
-            for i in range(len(T)):
-                ctc[i][16.5>T>37] = -1.085 + 0.07 * T[i][16.5>T>37] + 0.0065 * (T[i][16.5>T>37]^2) - 0.000185 * (T[i][16.5>T>37]^3)
+            n_t = range(len(T_))
+            
+            for i in n_t: 
+                
+                index = [(T_[i]<16.5) & (T_[i]>37)]
+                
+                ctn[i][index] = -0.0425 + 0.035 * T_[i][index] + 0.00325 * (T_[i][index]**2) - 0.0000925 * (T_[i][index]**3)
+                ctc[i][index] = -1.085 + 0.07 * T_[i][index] + 0.0065 * (T_[i][index]**2) - 0.000185 * (T_[i][index]**3)
                 
             
-            print ctn
-            print ctc
+            PPBn = (31.7+0.219*radiacao_topo_atmosfera) * ctn * 0.6
             
+            PPBc = (107.2+0.219*radiacao_topo_atmosfera) * ctc * 0.6
+            
+            PPBp = PPBn + PPBc
+            
+            PPR_ = 0.265455 * self.Cc * PPBp
+
+            PPR = RasterFile(file_path=serie_PPR.root_path, ext="tif")
+            PPR = serie_PPR.setDate_time(data_T, file=PPR)       
+            PPR.metadata = T.metadata
+            PPR.data = PPR_
+            PPR.saveRasterData()
+            PPR.data = None
+            serie_PPR.append(PPR)
+            
+            ii +=1
+            end = time.time()
+            
+            self.console("tempo restante(m):" + str( np.round(((end - start)  * (len(serie_T)-ii)) /60, 2)))
+            self.setProgresso(ii, len(serie_T))
+            
+        return serie_PPR
             
             
     def img_lat_long(self, info, matriz_, nullValue):
@@ -87,25 +118,14 @@ class Ks(AbstractFunction):
         x_pixelSize, y_pixelSize = self.pixel_size(info)
         
         init_y_position = float(info["ymax"]) - (y_pixelSize/2)
-        init_x_position = float(info["xmin"]) + (x_pixelSize/2)
+        #init_x_position = float(info["xmin"]) + (x_pixelSize/2)
         
         for i_linha in range(0, n_linhas):
             
             self.setProgresso(i_linha, n_linhas)
-            progress(self.progresso/100)
-            
+            progress(self.progresso/100) 
             cy = init_y_position - (y_pixelSize * i_linha)
-            
-            #for i_coluna in range(0, n_colunas/4):
-                
-                #value = matriz_[i_linha][i_coluna]
-                        
-                #if threading.current_thread().stopped() : return None
-                        
-                #if value != nullValue:                 
-                #cx = init_x_position + (x_pixelSize * i_coluna)
             img_lat[i_linha][:] = cy
-                #img_long[i_linha][i_coluna] = cx
         
         return img_lat#, img_long       
                       
@@ -126,11 +146,19 @@ class Ks(AbstractFunction):
     def testar(self):
         
         self.paramentrosIN_carregados = dict()
-        self.paramentrosIN_carregados["images"] = SerialTemporalFiles(root_path = "C:\\GafanhotoWorkspace\\Indices_BH\\ETc")
-        self.paramentrosIN_carregados["images"].date_mask = "%Y-%m-%d"  
+        self.paramentrosIN_carregados["images"] = SerialTemporalFiles(root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\8-Diario\\tav")
+        self.paramentrosIN_carregados["images"].prefixo = "tav_"  
+        self.paramentrosIN_carregados["images"].date_mask = "%Y%m%d" 
+
+        self.paramentrosIN_carregados["PPR"] = SerialTemporalFiles(root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\PPR")
+        self.paramentrosIN_carregados["PPR"].prefixo = "ppr_"  
+        self.paramentrosIN_carregados["PPR"].date_mask = "%Y-%m-%d" 
+                
+        self.Cc = 0.355994271009505
+         
         self.__execOperation__()
         
     
 if __name__ == '__main__':
-    ks = Ks()
-    ks.testar()
+    ppr = PPR()
+    ppr.testar()

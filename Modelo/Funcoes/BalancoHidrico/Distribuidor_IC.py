@@ -144,17 +144,17 @@ class DistribuidorKC(AbstractFunction):
             else : 
                 dt = data_minima + timedelta(float(i)*int(float(delta_total)/float(n_of_process)))
                 data_minima_process =  dt
-                print data_minima_process
-                print data_minima_process.date()
-            #data_minima_process = datetime.datetime(2012, 04, 13)
+                #print data_minima_process
+                #print data_minima_process.date()
+
             
             if i == n_of_process-1 : data_maxima_process = data_maxima
             else : 
                 dt = data_minima + timedelta(((i+1)*int(float(delta_total)/float(n_of_process)))-1)
                 data_maxima_process =  dt
-            #data_maxima_process = datetime.datetime(2012, 04, 19)
+
             
-            print data_minima_process, data_maxima_process
+            #print data_minima_process, data_maxima_process
             
             p = Process(target=distribuir_kc, args=(data_minima_process, 
                                                      data_maxima_process, 

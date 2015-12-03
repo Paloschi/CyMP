@@ -79,12 +79,14 @@ class Funcao(AbstractFunction):
                 imagem_ = (imagem_ / float(duracao))
             elif self.paramentrosIN_carregados["Operation"] == "manter valores": 
                 pass
+            
+            imagem_ = numpy.round(imagem_, 4)
                 
-            imagem_ *= imagem_out_factor
+            #imagem_ *= imagem_out_factor
             
-            imagem_ = numpy.round(imagem_, 2)
             
-            imagem_ = self.compactar(imagem_)
+            
+            #imagem_ = self.compactar(imagem_)
                  
 
             for ii in range (0, duracao):

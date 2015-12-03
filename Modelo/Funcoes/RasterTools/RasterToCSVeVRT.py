@@ -67,28 +67,31 @@ class RasterToCSVeVRT(AbstractFunction):
             csv_file = FileData(file_path=outFolder, file_name = nome_img, ext = "csv")
             file_csv_path = csv_file.file_full_path
             
-            print(file_csv_path)
+            #print(file_csv_path)
             
             init_y_position = ymax - (y_pixelSize/2)
             init_x_position = xmin + (x_pixelSize/2)
-        
-
-            for i_linha in range(0, n_linhas):
-                progress(i_linha/float(n_linhas-1))
-                    
-                self.progresso = (i_linha/float(n_linhas) * 100)
-                    
-                cy = init_y_position - (y_pixelSize * i_linha)
-                cy = str(cy)
-                for i_coluna in range(0, n_colunas):
-                    value = matriz[i_linha][i_coluna]
+            
+            with open(file_csv_path,'w') as csv:
+                csv.write("Easting,Northing,Value\n")
+                for i_linha in range(0, n_linhas):
+                    progress(i_linha/float(n_linhas-1))
                         
-                    if threading.current_thread().stopped() : return None
+                    self.progresso = (i_linha/float(n_linhas) * 100)
                         
-                    if value != nullValue:                 
-                        cx = init_x_position + (x_pixelSize * i_coluna)
+                    cy = init_y_position - (y_pixelSize * i_linha)
+                    cy = str(cy)
+                    for i_coluna in range(0, n_colunas):
+                        
+                        value = matriz[i_linha][i_coluna]
                             
-                        line = str(cx) + ',' + cy + ',' + str(value) + '\n'
+                        if threading.current_thread().stopped() : return None
+                            
+                        if value != nullValue:                 
+                            cx = init_x_position + (x_pixelSize * i_coluna)
+                                
+                            line = str(cx) + ',' + cy + ',' + str(value) + '\n'
+                            csv.write(line)
             
             
             listaCSV.append(csv_file)

@@ -92,13 +92,25 @@ class Controller(AbstractController.Controller):
             
             self.function.progresso = (float(i+1) / len(CSVs)) * 100
             
-            imagem_interpolada = self.function.executar(paramIn)
+            print len(VRTs)
+            print len(CSVs)
+            
+            print "1----------------------------------------------------------------------------------"
+            self.function.data = paramIn
+            
+            imagem_interpolada = self.function.data
+            
+            print "2----------------------------------------------------------------------------------"
             
             self.print_text("Imagem interpolada: " + imagem_interpolada.file_name)
             
             if self.funcao_cancelada() : return
 
-
+    def set_param(self):
+            
+        self.ui.txInFolder.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\2-CORTADAS_11-12\\Tav")
+        self.ui.txOutFolder.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\7.0-Cortado_tamanho_Modis\\tav")
+        self.ui.txImgReference.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\Kc\\soltas\\2011-09-23.tif")
             
             
             

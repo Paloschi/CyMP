@@ -17,7 +17,7 @@ from DlgInvdistnnRaster2Raster import Ui_InvdistnnRaster2Raster
 from DlgDistribuidorDeIndice import Ui_DistribuidorDeIndice
 from DlgDecendial2Diario import Ui_Decendial2Diario
 import ConfigParser
-from Visao import DlgETc, DlgTAW, DlgDr, DlgKs, DlgPPB
+from Visao import DlgETc, DlgTAW, DlgDr, DlgKs, DlgPPR
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -40,7 +40,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.setupUi(self)
 
     def popupPPB(self):
-        popup = DlgPPB.Ui_Dialog(self)
+        popup = DlgPPR.Ui_Dialog(self)
         popup.setupUi(popup)
         popup.show()   
 

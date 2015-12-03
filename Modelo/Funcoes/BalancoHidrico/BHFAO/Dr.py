@@ -86,6 +86,8 @@ class Dr(AbstractFunction):
 
             for i in range(len(taw_)) :
                 Dr_[i][-Dr_[i] > taw_[i]] = -taw_[i][-Dr_[i] > taw_[i]]
+                "isso aqui em baixo é pro balanço idrico nao ser menor que 0 ou seja o Dr nao pode ser maior q 0"
+                Dr_[i][Dr_[i] > 0] = 0 
                 
             Dr_anterior = numpy.copy(Dr_)  
             Dr_ = numpy.round(Dr_, 2)   

@@ -57,17 +57,18 @@ class IDW(AbstractFunction):
         self.descriptionOUT["imagem_interpolada"] = "imagem de saida interpolada"  
         
     def __execOperation__(self):
-        
+        print "-----------------------------------------------------------------------------------"
         csv = self.paramentrosIN_carregados["csv"]
         vrt = self.paramentrosIN_carregados["vrt"]
         img_out = self.paramentrosIN_carregados["img_out"]
         img_out_config = self.paramentrosIN_carregados["img_out_config"]
+        print "-----------------------------------------------------------------------------------"
         
         '''
             Monta string de de parametros para configurar o algoritimo IDW
         '''
         str_algoritimo_conf = ""
-        
+        print "-----------------------------------------------------------------------------------"
         print self.paramentrosIN_carregados["conf_algoritimo"]
         
         if self.paramentrosIN_carregados.has_key("conf_algoritimo") :
