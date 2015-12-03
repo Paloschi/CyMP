@@ -1,5 +1,6 @@
 build/
 dist/
+DDLS/
 API-MS-Win-Core-ErrorHandling-L1-1-0.dll
 API-MS-Win-Core-LibraryLoader-L1-1-0.dll
 API-MS-Win-Core-LocalRegistry-L1-1-0.dll
