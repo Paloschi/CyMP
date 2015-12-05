@@ -1,14 +1,11 @@
 
 from numpy import ma
 import numpy
+from Modelo.beans.RasterData import RasterFile
 
 if __name__ == '__main__':
-    matriz = [[1,2,3,4],[1,2,3,4],[1,2,3,4]]
-    matriz = numpy.array(matriz)
-    matriz[0] = ma.masked
+    img = RasterFile(file_full_path="C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\Modis\\DATAS\\32bSigned\\semeadura.tif")
+    img_ = img.loadRasterData()
+
     
-    print matriz
-    
-    matriz += 8
-    
-    print matriz
+    print numpy.min(img_)

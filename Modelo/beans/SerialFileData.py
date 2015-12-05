@@ -136,17 +136,25 @@ class SerialFile(ABData, list):
             n_images =  len(images_bands_matrix)
 
         else:
-            images_bands_matrix = self.loadListRasterData()
+            images_bands_matrix = self.loadListByRoot()
             n_images =  len(self)
             
         if root_path != None : self.root_path = root_path
         if ext == None : ext = self[0].file_ext
         if name != None : self.name = name
         
+        self[0].loadRasterData()
+        
+        self.metadata = self[0].metadata
+        
         if ext == "tif" : self.metadata.update(driver="GTiff") 
         elif ext == "img" : self.metadata.update(driver="HFA") 
         
+        
+        
         self.metadata.update(count=n_images)
+        
+        self.metadata.update(compress='lzw')
         
         print self.metadata
         
@@ -159,8 +167,9 @@ class SerialFile(ABData, list):
             
             for i in range(0, n_images):
                 #print(i)
-                dst.write_band(i+1, images_bands_matrix[i])
-                progress( i / float(n_images)) 
+                band = self[i].loadRasterData()
+                dst.write_band(i+1, band)
+                progress( float(i) / float(n_images)) 
              
 class SerialTemporalFiles(SerialFile):
     

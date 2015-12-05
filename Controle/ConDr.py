@@ -31,7 +31,7 @@ class Controller(AbstractController.Controller):
         imagens = self.getSerieTemporal(self.serie_ETc)
         if imagens is not None:
             self.serie_ETc = imagens
-            self.ui.chETc.setCheckState(True)
+            self.ui.chEtc.setCheckState(True)
 
     def setSerie_TAW(self):
         imagens = self.getSerieTemporal(self.serie_TAW)
@@ -83,21 +83,21 @@ class Controller(AbstractController.Controller):
         return True
 
     def parametros_teste(self):
-        root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\ETc\\ETC_soltas"
+        root_path = "C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\3-ETc"
         self.serie_ETc = SerialTemporalFiles()
         self.serie_ETc.root_path = root_path
         self.serie_ETc.prefixo = "etc_"
         self.serie_ETc.date_mask = "%Y-%m-%d"     
         self.serie_ETc.mutiply_factor = 0.01
         
-        root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\8-Diario\\PPP"
+        root_path = "C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\1-ECMWF\\Precipitacao"
         self.serie_PPP = SerialTemporalFiles()
         self.serie_PPP.root_path = root_path
         self.serie_PPP.prefixo = "rain_diario_"
         self.serie_PPP.mutiply_factor = 0.01
         self.serie_PPP.date_mask = "%Y-%m-%d"
         
-        root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\TAW\\soltas"
+        root_path = "C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\3-TAW"
         self.serie_TAW = SerialTemporalFiles()
         self.serie_TAW.root_path = root_path
         self.serie_TAW.prefixo = "TAW_"
@@ -106,7 +106,7 @@ class Controller(AbstractController.Controller):
         
         self.ui.txImgCAD.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Mapa_solo\\soloVSMascaraSoja11_12.tif")
         
-        root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\Dr"
+        root_path = "C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\4-Dr"
         self.serie_Dr = SerialTemporalFiles()
         self.serie_Dr.root_path = root_path
         self.serie_Dr.prefixo = "dr_"

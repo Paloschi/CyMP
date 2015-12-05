@@ -55,7 +55,7 @@ class Etc(AbstractFunction):
         #self.console(str(n_et0) + " imagens de ET0 encontradas.")
         #self.console(str(len(serie_Kc)) + " imagens de Kc encontradas.")
         
-        self.console("Gerando imagens de saída...")
+        self.console(u"Gerando imagens de saída...")
 
         '''
             O laço a seguir percorre todas as imagens de ET0 presentes
@@ -78,6 +78,7 @@ class Etc(AbstractFunction):
                 data = serie_Kc.getDate_time(file=serie_Kc[i_Kc])
                 if data == data_ET0:
                     kc = serie_Kc[i_Kc]
+                    break
             
             etc = RasterFile(file_path=serie_ETc.root_path, ext="tif")
             #print data_ET0
@@ -100,7 +101,7 @@ class Etc(AbstractFunction):
                 Kc_ *= Kc_factor
                 
                 '''1 é o valor default pra quando o Kc for 0 isso tem que ser visto'''
-                Kc_[Kc_==0] = 1 
+                #Kc_[Kc_==0] = 1 
                 
                 #print ET0.metadata
                 #print kc.metadata
@@ -108,13 +109,21 @@ class Etc(AbstractFunction):
                 ETc_ = Kc_ * ET0_
                 ETc_ = numpy.round(ETc_, 2)  
                 
+                print "Etc", Kc_[695][879]
+                print "Ks", ET0_[695][879]
+                print "ETs", ETc_[695][879]
+                
                 
                 ETc_ *= ETC_factor
                 ETc_ = self.compactar(ETc_)
+                
+                print "ETs", ETc_[695][879]
                     
                 etc.data = ETc_
-   
+            
+            
             etc.metadata = ET0.metadata
+            etc.metadata.update(nodata=0)
             etc.saveRasterData()
             
             serie_ETc.append(etc)

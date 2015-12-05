@@ -76,7 +76,7 @@ class Controller(AbstractController.Controller):
         return True
 
     def parametros_teste(self):
-        root_path = "E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\Ks\\soltas"
+        root_path = "C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\5-Ks"
         self.serie_Ks = SerialTemporalFiles()
         self.serie_Ks.root_path = root_path
         self.serie_Ks.prefixo = "Ks_"

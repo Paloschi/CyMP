@@ -17,7 +17,7 @@ from DlgInvdistnnRaster2Raster import Ui_InvdistnnRaster2Raster
 from DlgDistribuidorDeIndice import Ui_DistribuidorDeIndice
 from DlgDecendial2Diario import Ui_Decendial2Diario
 import ConfigParser
-from Visao import DlgETc, DlgTAW, DlgDr, DlgKs, DlgPPR
+from Visao import DlgETc, DlgTAW, DlgDr, DlgKs, DlgPPR, DlgYaFao
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -38,6 +38,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         self.setupUi(self)
+
+    def popupYaFao(self):
+        popup = DlgYaFao.Ui_Dialog(self)
+        popup.setupUi(popup)
+        popup.show()  
 
     def popupPPB(self):
         popup = DlgPPR.Ui_Dialog(self)
@@ -173,8 +178,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionCriar_dado_tabelado = QtGui.QAction(MainWindow)
         self.actionCriar_dado_tabelado.setObjectName(_fromUtf8("actionCriar_dado_tabelado"))
         
-        self.actionListar_dados = QtGui.QAction(MainWindow)
-        self.actionListar_dados.setObjectName(_fromUtf8("actionListar_dados"))
+        self.actionYaFao = QtGui.QAction(MainWindow)
+        self.actionYaFao.setObjectName(_fromUtf8("actionYaFao"))
         
         self.actionListar_Fun_oes = QtGui.QAction(MainWindow)
         self.actionListar_Fun_oes.setObjectName(_fromUtf8("actionListar_Fun_oes"))
@@ -213,7 +218,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         #self.menuCarregar_Dado.addAction(self.actionCriar_dado_tabelado)
         
         self.menuProdutividade.addAction(self.actionPPB)
-        #self.menuProdutividade.addAction(self.actionListar_dados)
+        self.menuProdutividade.addAction(self.actionYaFao)
         
         self.menuInterpoladores.addAction(self.actionInterpolador)
         self.menuInterpoladores.addAction(self.actionInterpoladorRaster2Raster)
@@ -257,7 +262,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionPPB.setText(_translate("MainWindow", "Produtividade Potencial Bruta (PPB)", None))
         self.actionCarregar_lista_de_dados.setText(_translate("MainWindow", "Carregar lista de dados", None))
         self.actionCriar_dado_tabelado.setText(_translate("MainWindow", "Criar dado tabelado", None))
-        self.actionListar_dados.setText(_translate("MainWindow", "Mostrar dados do modelo", None))
+        self.actionYaFao.setText(_translate("MainWindow", "Produtividade atingível (Ya)", None))
         self.actionListar_Fun_oes.setText(_translate("MainWindow", "Listar Funções", None))
         self.actionRodar.setText(_translate("MainWindow", "Executar", None))
         self.actionInterpolador.setText(_translate("MainWindow", "Interpolador ECMWF", None))
@@ -281,3 +286,4 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionEsgotamento_BHFAO.triggered.connect(self.popupDr)
         self.actionKs.triggered.connect(self.popupKs)
         self.actionPPB.triggered.connect(self.popupPPB)
+        self.actionYaFao.triggered.connect(self.popupYaFao)

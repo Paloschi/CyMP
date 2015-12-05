@@ -116,10 +116,12 @@ class Function(ABData):
         maximo = numpy.max(imagem_) 
             
         if minimo >= 0 :
-            if maximo <= 255:
-                imagem_ = numpy.array(imagem_).astype("uint8")
-            elif maximo <= 65535:
+            #if maximo <= 255:
+            #    imagem_ = numpy.array(imagem_).astype("uint8")
+            if maximo <= 65535:
                 imagem_ = numpy.array(imagem_).astype("uint16")
+            elif maximo <= 4294967295:
+                imagem_ = numpy.array(imagem_).astype("uint32")
         else :
             if minimo >= -128 and maximo <=127 : 
                 imagem_ = numpy.array(imagem_).astype("int8")

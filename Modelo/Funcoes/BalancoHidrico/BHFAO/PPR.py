@@ -67,7 +67,7 @@ class PPR(AbstractFunction):
                 DR = 1
             
             radiacao_topo_atmosfera = 37.6 * DR * ((np.pi/180) * angulo_solar * np.sin(declinacao_solar_r) * np.sin(lat_rad) + np.cos(declinacao_solar_r) * np.cos(lat_rad) * np.sin(agulo_solar_r))
-            radiacao_topo_atmosfera = radiacao_topo_atmosfera * 23.92344
+            #radiacao_topo_atmosfera = radiacao_topo_atmosfera * 23.92344
             
             ctn = 0.583 + 0.014 * T_ + 0.0013 * (T_**2) - 0.000037 * (T_**3)
             ctc = -0.0425 + 0.035 * T_ + 0.00325 * (T_**2) - 0.0000925 * (T_**3)

@@ -61,22 +61,9 @@ class Ks(AbstractFunction):
             
             ''' ----------------------------------------------- '''
             
-
             a = (taw_ - (- dr_)) 
-            
-            
             b = (taw_ - raw_)
-            
-            
             c = a / b
-            
-            #print len(temp)
-            #print len(temp[1])
-            
-            #print temp
-            
-            
-
             
             for i in range(len(ks_)) :
 
