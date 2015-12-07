@@ -2,14 +2,12 @@
 
 # Form implementation generated from reading ui file 'DlgYa.ui'
 #
-# Created: Thu Dec 03 17:49:02 2015
+# Created: Mon Dec 07 03:15:49 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-
-from Controle.ConYaFao import Controller
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -25,11 +23,8 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_Dialog(QtGui.QDialog):
+class Ui_Dialog(object):
     def setupUi(self, Dialog):
-        
-        self.controller = Controller(self)
-        
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(400, 300)
         self.verticalLayout = QtGui.QVBoxLayout(Dialog)
@@ -108,19 +103,9 @@ class Ui_Dialog(QtGui.QDialog):
         self.verticalLayout.addWidget(self.buttonBox)
 
         self.retranslateUi(Dialog)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), self.controller.action_ok)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), self.controller.action_cancel)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), Dialog.accept)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-        
-        self.txKy.setValue(0.8)
-        
-        self.btnConfEta.clicked.connect(self.controller.setSerie_ETa)
-        self.BtnConfETc.clicked.connect(self.controller.setSerie_ETc)
-        self.btnConfYa.clicked.connect(self.controller.setSerie_Ya)
-        self.btnConfYx.clicked.connect(self.controller.setSerie_Yx)
-        self.btnConfKc.clicked.connect(self.controller.setSerie_Kc)
-        
-        self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Produtividade Atingível (Ya)", None))

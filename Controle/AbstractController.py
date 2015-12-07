@@ -148,5 +148,6 @@ class Controller(object):
     
     def finalizar(self):
         self.function.progresso = 100
+        self.thread.stop()
         time.sleep(0.2)
         self.progress_bar.finalizar()

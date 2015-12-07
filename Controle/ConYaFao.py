@@ -5,6 +5,9 @@ Created on 03/12/2015
 @author: Paloschi
 '''
 from Controle import AbstractController
+from Modelo.Funcoes.BalancoHidrico.BHFAO.Ya import Ya
+from Modelo.beans.TableData import TableData
+from Modelo.beans.SerialFileData import SerialTemporalFiles
 
 class Controller(AbstractController.Controller):
     
@@ -12,6 +15,7 @@ class Controller(AbstractController.Controller):
     serie_ETc = None
     serie_Yx = None
     serie_Ya = None
+    serie_Kc = None
     
     def setSerie_ETa(self):
         imagens = self.getSerieTemporal(self.serie_ETa)
@@ -36,9 +40,34 @@ class Controller(AbstractController.Controller):
         if imagens is not None:
             self.serie_Ya = imagens
             self.ui.chYa.setCheckState(True)
+            
+    def setSerie_Kc(self):
+        imagens = self.getSerieTemporal(self.serie_Kc)
+        if imagens is not None:
+            self.serie_Kc = imagens
+            self.ui.chKc.setCheckState(True)
 
     def executa(self):
-        pass
+        self.function = Ya()
+        
+        param = TableData()
+        
+        param["ETa"] = self.serie_ETa
+        param["ETc"] = self.serie_ETc
+        param["Ky"] = self.ui.txKy.value()
+        param["Yx"] = self.serie_Yx
+        param["Ya"] = self.serie_Ya
+        param["Kc"] = self.serie_Kc
+        
+        resultado = self.function.executar(param)
+        
+        if self.funcao_cancelada():
+            self.console(u"Função interrompida")
+            self.finalizar()
+        elif resultado is not None:
+            self.console(u"Função conluída")
+            
+            self.finalizar()
     
     def valida_form(self):
         if self.serie_ETa == None :
@@ -56,5 +85,28 @@ class Controller(AbstractController.Controller):
         return True
     
     def parametros_teste(self):
-        pass
+
+
+        self.serie_ETa = SerialTemporalFiles(root_path="C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\6-Eta")
+        self.serie_ETa.prefixo = "eta_"
+        self.serie_ETa.date_mask = "%Y-%m-%d"
+        self.serie_ETa.mutiply_factor = 0.01
+        
+        self.serie_ETc = SerialTemporalFiles(root_path="C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\3-ETc")
+        self.serie_ETc.prefixo = "etc_"
+        self.serie_ETc.date_mask = "%Y-%m-%d"
+        self.serie_ETc.mutiply_factor = 0.01
+        
+        self.serie_Yx = SerialTemporalFiles(root_path="C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\5-PPR(Yx)")
+        self.serie_Yx.prefixo = "ppr_"
+        self.serie_Yx.date_mask = "%Y-%m-%d"
+        self.serie_Yx.mutiply_factor = 1
+        
+        self.serie_Ya = SerialTemporalFiles(root_path="C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\7-Ya")
+        self.serie_Ya.prefixo = "Ya_"
+        self.serie_Ya.date_mask = "%Y-%m-%d"
+        self.serie_Ya.mutiply_factor = 1
+        
+        self.serie_Kc = SerialTemporalFiles(root_path="C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\2-Kc")
+        self.serie_Kc.date_mask = "%Y-%m-%d"
     

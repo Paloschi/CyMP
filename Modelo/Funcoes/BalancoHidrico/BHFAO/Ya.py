@@ -31,7 +31,7 @@ class Ya(AbstractFunction):
     
     def __execOperation__(self):
 
-        #self.console("Carregando imagens.")
+        self.console("Carregando imagens.")
         
         serie_eta = self.paramentrosIN_carregados["ETa"].loadListByRoot() # pucha e já carrega a lista caso não tenha sido carregada
         serie_etc = self.paramentrosIN_carregados["ETc"].loadListByRoot()
@@ -48,15 +48,15 @@ class Ya(AbstractFunction):
         
         n_img = len(serie_Kc)
         
-        #self.console("As imagens de Kc serão usadas como referencia")
-        #self.console(str(n_img) + " imagens de Kc encontradas.")
+        self.console("As imagens de Kc serão usadas como referencia")
+        self.console(str(n_img) + " imagens de Kc encontradas.")
         
-        #self.console(u"Gerando série de imagens de Ya..")
+        self.console(u"Gerando série de imagens de Ya..")
 
         for i in range(n_img):
             
-            #if threading.currentThread().stopped()  : return 
-            #self.setProgresso(i, n_img)
+            if threading.currentThread().stopped()  : return 
+            self.setProgresso(i, n_img)
 
             kc = serie_Kc[i]
             data_ref = serie_Kc.getDate_time(file=kc)
@@ -72,6 +72,11 @@ class Ya(AbstractFunction):
             
             for i in range(len(ya_)): 
                 ya_[i][kc_[i]==0] = 0
+                
+            ya_ = numpy.round(ya_, 3)   
+            ya_ *= factor_ya
+            
+            #ya_ = self.compactar(ya_)   
             
             ya = RasterFile(file_path=serie_ya.root_path, ext="tif")
             ya = serie_ya.setDate_time(data_ref, file=ya)       
@@ -112,10 +117,10 @@ class Ya(AbstractFunction):
         self.paramentrosIN_carregados["Yx"].date_mask = "%Y-%m-%d"
         self.paramentrosIN_carregados["Yx"].multply_factor = 1
         
-        self.paramentrosIN_carregados["Ya"] = SerialTemporalFiles(root_path="C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\7-Ya2")
+        self.paramentrosIN_carregados["Ya"] = SerialTemporalFiles(root_path="C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\7-Ya")
         self.paramentrosIN_carregados["Ya"].prefixo = "Ya_"
         self.paramentrosIN_carregados["Ya"].date_mask = "%Y-%m-%d"
-        self.paramentrosIN_carregados["Ya"].multply_factor = 1
+        self.paramentrosIN_carregados["Ya"].multply_factor = 100
         
         self.paramentrosIN_carregados["Kc"] = SerialTemporalFiles(root_path="C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\2-Kc")
         self.paramentrosIN_carregados["Kc"].date_mask = "%Y-%m-%d"
