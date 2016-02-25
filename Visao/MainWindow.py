@@ -97,6 +97,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
         item_1 = TreeWidgetItem(item_0)
         item_1.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsEditable|QtCore.Qt.ItemIsDragEnabled|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsTristate|QtCore.Qt.ItemIsDropEnabled|QtCore.Qt.ItemIsDragEnabled)
        
+        self.menuFun_o_es = QtGui.QMenu(self.menubar)
+        self.menuFun_o_es.setObjectName(_fromUtf8("menuFun_o_es"))
+        
         self.horizontalLayout.addWidget(self.treeWidget_2)
         self.treeWidget = QtGui.QTreeWidget(self.centralwidget)
         self.treeWidget.setAcceptDrops(True)
@@ -154,10 +157,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuProdutividade.setObjectName(_fromUtf8("menuProdutividade"))
         self.menuCarregar_Dado = QtGui.QMenu(self.menuProdutividade)
         self.menuCarregar_Dado.setObjectName(_fromUtf8("menuCarregar_Dado"))
-        self.menuFun_o_es = QtGui.QMenu(self.menubar)
-        self.menuFun_o_es.setObjectName(_fromUtf8("menuFun_o_es"))
-        self.menuModelo = QtGui.QMenu(self.menubar)
-        self.menuModelo.setObjectName(_fromUtf8("menuModelo"))
+        self.menuEstatisticas = QtGui.QMenu(self.menubar)
+        self.menuEstatisticas.setObjectName(_fromUtf8("menuEstatisticas"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
@@ -188,12 +189,15 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuCarregar_Dado.addAction(self.actionCriar_dado_tabelado)
         self.menuProdutividade.addAction(self.menuCarregar_Dado.menuAction())
         self.menuProdutividade.addAction(self.actionYaFao)
+        
         self.menuFun_o_es.addAction(self.actionListar_Fun_oes)
-        self.menuModelo.addAction(self.actionRodar)
+        self.menuEstatisticas.addAction(self.actionRodar)
+        self.menubar.addAction(self.menuFun_o_es.menuAction())        
+        self.menubar.addAction(self.menuEstatisticas.menuAction())
         self.menubar.addAction(self.menuBH.menuAction())
+        
         self.menubar.addAction(self.menuProdutividade.menuAction())
-        self.menubar.addAction(self.menuFun_o_es.menuAction())
-        self.menubar.addAction(self.menuModelo.menuAction())
+
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -253,7 +257,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.memenuProdutividadeetTitle(_translate("MainWindow", "Dados", None))
         self.menuCarregar_Dado.setTitle(_translate("MainWindow", "Carregar dado", None))
         self.menuFun_o_es.setTitle(_translate("MainWindow", "Funções", None))
-        self.menuModelo.setTitle(_translate("MainWindow", "Modelo", None))
+        self.menumenuEstatisticasTitle(_translate("MainWindow", "Modelo", None))
         self.actiactionETcText(_translate("MainWindow", "Carregar Modelo", None))
         self.actiactionTAWText(_translate("MainWindow", "Salvar Modelo (Ctrl + S)", None))
         self.actiBHFAOText(_translate("MainWindow", "Salvar Como", None))

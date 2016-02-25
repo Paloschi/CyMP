@@ -9,7 +9,7 @@
 
 from PyQt4 import QtCore, QtGui
 from Controle.ConEstimativaDatasCultura import Controller
-import ConfigParser
+#import ConfigParser
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -249,7 +249,7 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
 
     def retranslateUi(self, DlgEstimativaDatasAgricolas):
         
-        DlgEstimativaDatasAgricolas.setWindowTitle(_translate("DlgEstimativaDatasAgricolas", "Estimativa de dadas da cultura", None))
+        DlgEstimativaDatasAgricolas.setWindowTitle(_translate("DlgEstimativaDatasAgricolas", "Estimativa de datas da cultura", None))
         self.toolbFindInFolder.setText(_translate("DlgEstimativaDatasAgricolas", "...", None))
         self.label.setText(_translate("DlgEstimativaDatasAgricolas", "Pasta de entrada das imagens:", None))
         self.label_6.setText(_translate("DlgEstimativaDatasAgricolas", "Sufixo:", None))
@@ -258,7 +258,7 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.leMascara.setText(_translate("DlgEstimativaDatasAgricolas", "%Y%m%d", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("DlgEstimativaDatasAgricolas", "Dados de pasta", None))
         self.label_4.setText(_translate("DlgEstimativaDatasAgricolas", "Avanço colheita:", None))
-        self.label_2.setText(_translate("DlgEstimativaDatasAgricolas", "Posição pico:", None))
+        self.label_2.setText(_translate("DlgEstimativaDatasAgricolas", "Posição DMDV:", None))
         self.label_10.setText(_translate("DlgEstimativaDatasAgricolas", "Posição Colheita:", None))
         self.label_3.setText(_translate("DlgEstimativaDatasAgricolas", "Avanço semeadura:", None))
         self.label_9.setText(_translate("DlgEstimativaDatasAgricolas", "Posição Semeadura:", None))
@@ -267,7 +267,7 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.lePColheita.setText(_translate("DlgEstimativaDatasAgricolas", "4-6", None))
         self.label_14.setText(_translate("DlgEstimativaDatasAgricolas", "Valor Nulo:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("DlgEstimativaDatasAgricolas", "Configuração", None))
-        self.label_12.setText(_translate("DlgEstimativaDatasAgricolas", "Nome imagem de pico:", None))
+        self.label_12.setText(_translate("DlgEstimativaDatasAgricolas", "Nome imagem de DMDV:", None))
         self.label_8.setText(_translate("DlgEstimativaDatasAgricolas", "Pasta de saída das imagens:", None))
         self.toolbFindOutFolder.setText(_translate("DlgEstimativaDatasAgricolas", "...", None))
         self.label_11.setText(_translate("DlgEstimativaDatasAgricolas", "Nome imagem de Semeadura", None))
@@ -282,12 +282,12 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.leNullValue.setText("0")
         
                 
-        self.config = ConfigParser.RawConfigParser()
-        self.config.read('workspace.properties')
+        #self.config = ConfigParser.RawConfigParser()
+        #self.config.read('workspace.properties')
         
-        workspace = self.config.get('WorkSpace', 'space.default')
-        raster = workspace + self.config.get('WorkSpace', 'space.raster')
-        out = workspace + self.config.get('WorkSpace', 'space.out')
+        #workspace = self.config.get('WorkSpace', 'space.default')
+        #raster = workspace + self.config.get('WorkSpace', 'space.raster')
+        #out = workspace + self.config.get('WorkSpace', 'space.out')
         
         #self.leInFolder.setText(raster)
         #self.leOutFolder.setText(out)

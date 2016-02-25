@@ -130,7 +130,7 @@ class Ui_Dialog(QtGui.QDialog):
         self.label_2.setText(_translate("Dialog", "Evapotranspiração real (Eta)", None))
         self.btnConfEta.setText(_translate("Dialog", "Configurar", None))
         self.btnConfYx.setText(_translate("Dialog", "Configurar", None))
-        self.label_5.setText(_translate("Dialog", "Produtividade Potencial (Yx):", None))
+        self.label_5.setText(_translate("Dialog", "Produtividade Potencial Bruta (PPB-Yx):", None))
         self.label_6.setText(_translate("Dialog", "Dados de saída:", None))
         self.chETa.setText(_translate("Dialog", "configurado", None))
         self.label_3.setText(_translate("Dialog", "Evapotranspiração da cultura (ETc):", None))

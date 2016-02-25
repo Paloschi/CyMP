@@ -1,3 +1,4 @@
+﻿# -*- coding: utf-8 -*-
 '''
 Created on Aug 4, 2015
 
@@ -5,8 +6,15 @@ Created on Aug 4, 2015
 '''
 
 from Modelo.beans import FileData
-import fiona
-import gdal
+try:
+    import fiona
+except:
+    print u"ERRO - não foi possível carregar a biblioteca fiona, tente configurar as variáveis de ambiente"
+try:
+    import gdal
+except:
+    print u"ERRO - não foi possível carregar a biblioteca gdal, tente configurar as variáveis de ambiente"
+       
 progress = gdal.TermProgress_nocb
 
 

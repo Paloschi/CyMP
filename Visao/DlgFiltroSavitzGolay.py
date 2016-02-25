@@ -135,7 +135,7 @@ class Ui_DlgSavitzGolay(QtGui.QDialog):
         QtCore.QMetaObject.connectSlotsByName(DlgSavitzGolay)
 
     def retranslateUi(self, DlgEstimativaDatasAgricolas):
-        DlgEstimativaDatasAgricolas.setWindowTitle(_translate("DlgEstimativaDatasAgricolas", "Filtro Savitz Golay", None))
+        DlgEstimativaDatasAgricolas.setWindowTitle(_translate("DlgEstimativaDatasAgricolas", "Filtro Savitzky-golay", None))
         self.toolbFindInFolder.setText(_translate("DlgEstimativaDatasAgricolas", "...", None))
         self.label.setText(_translate("DlgEstimativaDatasAgricolas", "Pasta de entrada das imagens:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("DlgEstimativaDatasAgricolas", "Dados de pasta", None))

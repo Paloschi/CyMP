@@ -119,9 +119,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def setupUi(self, MainWindow):
         
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(751, 59)
+        MainWindow.resize(751, 240)
         MainWindow.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         MainWindow.setAcceptDrops(True)
+        
+        MainWindow.setIconSize(QtCore.QSize(200, 200))
         
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
@@ -148,8 +150,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuInterpoladores = QtGui.QMenu(self.menubar)
         self.menuInterpoladores.setObjectName(_fromUtf8("menuInterpoladores"))
         
-        self.menuModelo = QtGui.QMenu(self.menubar)
-        self.menuModelo.setObjectName(_fromUtf8("menuModelo"))
+        self.menuEstatisticas = QtGui.QMenu(self.menubar)
+        self.menuEstatisticas.setObjectName(_fromUtf8("menuEstatisticas"))
         
         MainWindow.setMenuBar(self.menubar)
         
@@ -181,8 +183,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionYaFao = QtGui.QAction(MainWindow)
         self.actionYaFao.setObjectName(_fromUtf8("actionYaFao"))
         
-        self.actionListar_Fun_oes = QtGui.QAction(MainWindow)
-        self.actionListar_Fun_oes.setObjectName(_fromUtf8("actionListar_Fun_oes"))
+       #self.actionListar_Fun_oes = QtGui.QAction(MainWindow)
+        #self.actionListar_Fun_oes.setObjectName(_fromUtf8("actionListar_Fun_oes"))
         
         self.actionRodar = QtGui.QAction(MainWindow)
         self.actionRodar.setObjectName(_fromUtf8("actionRodar"))
@@ -223,39 +225,82 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuInterpoladores.addAction(self.actionInterpolador)
         self.menuInterpoladores.addAction(self.actionInterpoladorRaster2Raster)
         
-        self.menuFun_o_es.addAction(self.actionListar_Fun_oes)
+        #self.menuFun_o_es.addAction(self.actionListar_Fun_oes)
         self.menuFun_o_es.addAction(self.menuInterpoladores.menuAction())
         self.menuFun_o_es.addAction(self.actionEstimativa_de_datas_de_colheita)
         self.menuFun_o_es.addAction(self.actionFiltro_Savitz_Golay)
-        self.menuFun_o_es.addAction(self.actionEstatisticasEspectrais)
         self.menuFun_o_es.addAction(self.actionDistribuidorDeIndice)
         self.menuFun_o_es.addAction(self.actionDecendial_2_diario)
         
-        self.menuModelo.addAction(self.actionRodar)
+        #self.menuEstatisticas.addAction(self.actionRodar)
+        self.menuEstatisticas.addAction(self.actionEstatisticasEspectrais)
         
+        self.menubar.addAction(self.menuFun_o_es.menuAction())
         self.menubar.addAction(self.menuBH.menuAction())
         self.menubar.addAction(self.menuProdutividade.menuAction())
-        self.menubar.addAction(self.menuFun_o_es.menuAction())
-        #self.menubar.addAction(self.menuModelo.menuAction())
+        self.menubar.addAction(self.menuEstatisticas.menuAction())
+        
+        self.label = QtGui.QLabel(MainWindow)
+        self.label.setGeometry(QtCore.QRect(26, 44, 600, 75))
+        self.label.setObjectName(_fromUtf8("label"))
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        
+        #import inspect
+        
+        #path_ = inspect.getfile(self.__class__)
+        #path_ = str(path_).replace("Visao\TelaPrincipal.py", "")
+        
+        self.logo_lea = QtGui.QPushButton(MainWindow)
+        self.logo_lea.setGeometry(QtCore.QRect(26, 130, 200, 82))
+        self.icon_lea = QtGui.QIcon("images\logo_lea.jpg")
+        self.icon_lea.pixmap(QtCore.QSize(200, 200))
+        self.logo_lea.setIcon(self.icon_lea)
+        self.logo_lea.setIconSize(QtCore.QSize(200, 100))
+ 
+        
+        
+        self.logo_lea = QtGui.QPushButton(MainWindow)
+        self.logo_lea.setGeometry(QtCore.QRect(250, 130, 82, 82))
+        self.icon_lea = QtGui.QIcon("images\logo_campus_cvel.jpg")
+        self.icon_lea.pixmap(QtCore.QSize(200, 200))
+        self.logo_lea.setIcon(self.icon_lea)
+        self.logo_lea.setIconSize(QtCore.QSize(120, 82))       
+
+        self.logo_lea = QtGui.QPushButton(MainWindow)
+        self.logo_lea.setGeometry(QtCore.QRect(350, 130, 110, 82))
+        self.icon_lea = QtGui.QIcon("images\capes-logo-CAPES.jpg")
+        self.icon_lea.pixmap(QtCore.QSize(200, 200))
+        self.logo_lea.setIcon(self.icon_lea)
+        self.logo_lea.setIconSize(QtCore.QSize(120, 82))       
+                
+        #MainWindow.add(self.logo_lea)
 
     def retranslateUi(self, MainWindow):
         
         config = ConfigParser.RawConfigParser()
         config.read('workspace.properties')
         version=config.get('Version', 'version')
+        
+        texto = "Software de Estimativa de Produtividade\n"
+        
+        texto += "Desenvolvido pelo Laboratório de Estatística Aplicada (LEA) - UNIOESTE - 2016\n"
+        texto += "Desenvolvedor: Rennan Andres Paloschi - rennan_paloschi@yahoo.com\n"
+        texto += "Orientação: Jerry Adriani Johann\n"
+        texto += "Co-orientação: Adair Santa Catarina"
+        
+        self.label.setText(_translate("Dialog", texto, None))
             
         MainWindow.setWindowTitle(_translate("MainWindow", "Gafanhoto " + version, None))
-        self.menuBH.setTitle(_translate("MainWindow", "Balanço Hídrico FAO (BHFAO)", None))
-        self.menuProdutividade.setTitle(_translate("MainWindow", "Calculos de produtividade", None))
+        self.menuBH.setTitle(_translate("MainWindow", "Balanço Hídrico (FAO)", None))
+        self.menuProdutividade.setTitle(_translate("MainWindow", "Estimativa de produtividade (FAO)", None))
         self.menuInterpoladores.setTitle(_translate("MainWindow", "Interpoladores", None))
         self.menuCarregar_Dado.setTitle(_translate("MainWindow", "Carregar dado", None))
-        self.menuFun_o_es.setTitle(_translate("MainWindow", "Functions", None))
-        #self.menuModelo.setTitle(_translate("MainWindow", "Modelo", None))
+        self.menuFun_o_es.setTitle(_translate("MainWindow", "Tratamento de dados", None))
+        self.menuEstatisticas.setTitle(_translate("MainWindow", "Estatísticas", None))
         self.actionETc.setText(_translate("MainWindow", "Evapotranspiração (ETc - ETa)", None))
-        self.actionTAW.setText(_translate("MainWindow", "Capacidade de armazenamento de água (TAW)", None))
+        self.actionTAW.setText(_translate("MainWindow", "Capacidade Hídrica (TAW/RAW)", None))
         self.actionEsgotamento_BHFAO.setText(_translate("MainWindow", "Calcular Esgotamento BHFAO (Dr)", None))
         self.actionKs.setText(_translate("MainWindow", "Fator de estresse hídrico da cultura (Ks)", None))
         
@@ -263,16 +308,16 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionCarregar_lista_de_dados.setText(_translate("MainWindow", "Carregar lista de dados", None))
         self.actionCriar_dado_tabelado.setText(_translate("MainWindow", "Criar dado tabelado", None))
         self.actionYaFao.setText(_translate("MainWindow", "Produtividade atingível (Ya)", None))
-        self.actionListar_Fun_oes.setText(_translate("MainWindow", "Listar Funções", None))
+        #self.actionListar_Fun_oes.setText(_translate("MainWindow", "Listar Funções", None))
         self.actionRodar.setText(_translate("MainWindow", "Executar", None))
-        self.actionInterpolador.setText(_translate("MainWindow", "Interpolador ECMWF", None))
-        self.actionInterpoladorRaster2Raster.setText(_translate("MainWindow", "Interpolador Raster pra raster", None))
-        self.actionEstimativa_de_datas_de_colheita.setText(_translate("MainWindow", "Estimativa de datas de colheita", None))
+        self.actionInterpolador.setText(_translate("MainWindow", "Interpolador shape ECMWF para raster", None))
+        self.actionInterpoladorRaster2Raster.setText(_translate("MainWindow", "Interpolador raster pra raster", None))
+        self.actionEstimativa_de_datas_de_colheita.setText(_translate("MainWindow", "Estimativa de datas da cultura", None))
         self.actionDistribuidorDeIndice.setText(_translate("MainWindow", "Distribuidor de índice", None))
         self.actionDecendial_2_diario.setText(_translate("MainWindow", "Decendial para diário", None))
         
-        self.actionFiltro_Savitz_Golay.setText(_translate("MainWindow", "Filtro Savitz Golay", None))
-        self.actionEstatisticasEspectrais.setText(_translate("MainWindow", "Estatisticas Espectrais", None))
+        self.actionFiltro_Savitz_Golay.setText(_translate("MainWindow", "Filtro Savitzky-golay", None))
+        self.actionEstatisticasEspectrais.setText(_translate("MainWindow", "Estatísticas Descritivas (Perfil)", None))
 
         self.actionEstimativa_de_datas_de_colheita.triggered.connect(self.popupEstimativa_de_datas_de_colheita)
         self.actionFiltro_Savitz_Golay.triggered.connect(self.popupFiltro_Savitz_Golay)

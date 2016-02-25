@@ -154,8 +154,8 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
         #self.btFindImgPico.setText(_translate("Dialog", "...", None))
         self.label_4.setText(_translate("Dialog", "Imagem de colheita:", None))
         self.btFindImgColheita.setText(_translate("Dialog", "...", None))
-        self.comboBox.setItemText(1, _translate("Dialog", "Kc FAO", None))
-        self.comboBox.setItemText(2, _translate("Dialog", "Zr FAO", None))
+        self.comboBox.setItemText(1, _translate("Dialog", "Kc FAO - Soja", None))
+        self.comboBox.setItemText(2, _translate("Dialog", "Zr FAO - Soja", None))
         self.label_5.setText(_translate("Dialog", "Distribuidor de índice por Estádio fenológico", None))
         self.txMultiplyFactor.setValue(100)
         

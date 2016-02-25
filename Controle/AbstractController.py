@@ -38,10 +38,10 @@ class StoppableThread(threading.Thread):
 
 class Controller(object):
     '''
-    Essa classe � um controlador abstrato, criado para padronizar os controladores.
+    Essa classe é um controlador abstrato, criado para padronizar os controladores.
     '''
     
-    __metaclass__ = ABCMeta
+    __metaclass__ = ABCMeta # define a classe como abstrata
     function = None
     thread = None
 
@@ -59,7 +59,6 @@ class Controller(object):
         
     def console(self, text):
         self.progress_bar.print_text(text)
-        
         
     def action_ok(self):
         """
@@ -95,6 +94,7 @@ class Controller(object):
         Esse método tem que existir nas classes controladoras
         aqui serão feitas todas as validações do form    
         '''
+   
     @abstractmethod
     def executa(self):
         '''

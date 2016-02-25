@@ -84,7 +84,7 @@ class UI_DlgInterpoladorShapeEcmwf(QtGui.QDialog):
 
     def retranslateUi(self, Form):
         
-        Form.setWindowTitle(_translate("Form", "Gafanhoto Beta 0.01 - Interpolador ECMWF", None))
+        Form.setWindowTitle(_translate("Form", "Interpolador shape ECMWF para raster", None))
         self.btnFindShp.setText(_translate("Form", "Procurar", None))
         self.label_2.setText(_translate("Form", "Agrupar dados pelor atributos:", None))
         self.label_3.setText(_translate("Form", "Atributo a ser interpolado", None))

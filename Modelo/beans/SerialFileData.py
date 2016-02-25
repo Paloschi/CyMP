@@ -6,7 +6,7 @@ Created on Jul 16, 2015
 '''
 
 from AbstractData import ABData, SERIAL_FILE_DATA
-from Modelo.beans import RasterFile 
+from Modelo.beans import RasterFile
 import os
 import gdal
 import rasterio
@@ -194,8 +194,8 @@ class SerialTemporalFiles(SerialFile):
             only_date = only_date.replace(self.prefixo,"")
         if self.sufixo!=None : only_date = only_date.replace(self.sufixo, "")  
         date = datetime.datetime.strptime(only_date, self.date_mask) 
-
-        return date  
+        
+        return date
 
     def setDate_time(self, date, i=None, file=None):
         '''

@@ -78,7 +78,7 @@ class Ui_Dialog(QtGui.QDialog):
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout.addWidget(self.buttonBox)
         
-        self.txCc.setValue(0.35599427)
+        #self.txCc.setValue(0.35599427)
 
         self.retranslateUi(Dialog)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), self.controller.action_ok)
@@ -88,12 +88,12 @@ class Ui_Dialog(QtGui.QDialog):
         self.btnConfTemp.clicked.connect(self.controller.setSerieT)
         self.btnConfPPR.clicked.connect(self.controller.setSeriePPR)
         
-        self.controller.parametros_teste()
+        #self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Produtividade potencial bruta (PPR)", None))
+        Dialog.setWindowTitle(_translate("Dialog", "Produtividade potencial bruta (PPB)", None))
         self.chT.setText(_translate("Dialog", "Configurado", None))
-        self.label_2.setText(_translate("Dialog", "Série de imagens de PPR:", None))
+        self.label_2.setText(_translate("Dialog", "Série de imagens de PPB:", None))
         self.label_3.setText(_translate("Dialog", "Dados de entrada:", None))
         self.chPPR.setText(_translate("Dialog", "Configurado", None))
         self.label_4.setText(_translate("Dialog", "Configuração de saída:", None))

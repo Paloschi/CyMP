@@ -73,22 +73,18 @@ class Funcao(AbstractFunction):
            
             imagem_ = serie_imagem_in[i].loadRasterData()
             imagem_ *= imagem_in_factor
-            
 
             if self.paramentrosIN_carregados["Operation"] == "dividir valores": 
                 imagem_ = (imagem_ / float(duracao))
+                imagem_ = numpy.round(imagem_, 4)
             elif self.paramentrosIN_carregados["Operation"] == "manter valores": 
                 pass
-            
-            imagem_ = numpy.round(imagem_, 4)
+
                 
-            #imagem_ *= imagem_out_factor
-            
-            
-            
+            imagem_ *= imagem_out_factor
+
             #imagem_ = self.compactar(imagem_)
                  
-
             for ii in range (0, duracao):
                 img = RasterFile()
                 img.file_path = serie_imagem_out.root_path   
@@ -97,7 +93,7 @@ class Funcao(AbstractFunction):
                 img.data = imagem_
                 img.file_ext = "tif"
                 metadata = serie_imagem_in[i].metadata
-                metadata.update(nodata=0)
+                #metadata.update(nodata=0)
                 img.saveRasterData(metadata=metadata)
 
    

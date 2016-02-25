@@ -100,7 +100,7 @@ class Ui_Dialog(QtGui.QDialog):
         self.btnConfKs.clicked.connect(self.controller.setSerie_Ks)
         self.btnConfRAW.clicked.connect(self.controller.setSerieRAW)
         
-        self.controller.parametros_teste()
+        #self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Fator de estresse hídrico da cultura (Ks)", None))

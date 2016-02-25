@@ -93,7 +93,7 @@ class Controller(Controller):
         
         op_selected = str(self.ui.comboBox.currentText())
         
-        if (op_selected=="Kc FAO"):
+        if (op_selected=="Kc FAO - Soja"):
         
             self.ui.tableWidget.item(0, 1).setText("10") 
             self.ui.tableWidget.item(0, 2).setText("0.4") 

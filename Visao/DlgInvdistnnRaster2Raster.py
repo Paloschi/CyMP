@@ -188,7 +188,7 @@ class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
         self.controller.set_param()
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Gafanhoto 2.2 - Interpolador Invdistnn", None))
+        Dialog.setWindowTitle(_translate("Dialog", "Gafanhoto - Interpolador raster pra raster", None))
         self.textBrowser.setHtml(_translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

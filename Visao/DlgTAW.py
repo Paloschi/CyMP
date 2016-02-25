@@ -70,14 +70,23 @@ class Ui_Dialog(QtGui.QDialog):
         self.btnFindImgCAD = QtGui.QToolButton(Dialog)
         self.btnFindImgCAD.setObjectName(_fromUtf8("btnFindImgCAD"))
         self.gridLayout.addWidget(self.btnFindImgCAD, 1, 2, 1, 1)
+        
+        self.label_desc = QtGui.QLabel(Dialog)
+        self.label_desc.setObjectName(_fromUtf8("label_3"))
+        self.gridLayout.addWidget(self.label_desc, 5, 0, 1, 1)
+        
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
-        self.gridLayout.addItem(spacerItem, 5, 1, 1, 1)
+        
+        self.gridLayout.addItem(spacerItem, 6, 1, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
         self.buttonBox = QtGui.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout.addWidget(self.buttonBox)
+        
+        
+
 
         self.retranslateUi(Dialog)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), self.controller.action_ok)
@@ -88,10 +97,10 @@ class Ui_Dialog(QtGui.QDialog):
         self.btnConfZr.clicked.connect(self.controller.setSerieZr)
         self.btnFindImgCAD.clicked.connect(self.controller.findImgCAD)
         
-        self.controller.parametros_teste()
+        #self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "TAW", None))
+        Dialog.setWindowTitle(_translate("Dialog", "TAW/RAW", None))
         self.label_2.setText(_translate("Dialog", "Série de imagens de Zr:", None))
         self.label.setText(_translate("Dialog", "Imagem de CAD:", None))
         self.chZr.setText(_translate("Dialog", "configurado", None))
@@ -102,4 +111,6 @@ class Ui_Dialog(QtGui.QDialog):
         self.label_3.setText(_translate("Dialog", "Configuração de entrada:", None))
         self.btnConfZr.setText(_translate("Dialog", "configurar", None))
         self.btnFindImgCAD.setText(_translate("Dialog", "...", None))
+        
+        self.label_desc.setText(_translate("Dialog", "Altere o fator multiplicador para a RAW!", None))
 

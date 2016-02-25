@@ -6,7 +6,11 @@ Created on Aug 4, 2015
 '''
 from Modelo.beans import FileData
 from Modelo.beans.TableData import TableData
-import rasterio
+
+try:
+    import rasterio
+except:
+    print u"ERRO - não foi possível carregar a biblioteca rasterIO, tente configurar as variáveis de ambiente"
 import subprocess
 
 class RasterFile(FileData):
@@ -31,15 +35,16 @@ class RasterFile(FileData):
                 if (not isCube) : 
                     return raster.read_band(1)
                 else :
+                    cubo = list()
+                    i_band = 1
                     while True :
-                        cubo = list()
-                        i_band = 1
                         try:
                             cubo.append(raster.read_band(i_band))
                             i_band+=1
                         except :
                             break
-                    print ("imagem lida, numero de bandas:", i_band)
+                    print ("imagem lida, numero de bandas:", i_band-1)
+                    return cubo
                 
                 return self
         
@@ -95,7 +100,7 @@ class RasterFile(FileData):
                     print "MOTIVO - índices inconsistentes, erro ao escrever banda"
             
         except ValueError: 
-            print "ERRO - Erro ao tentar criar arquivo, verificar a existencia do diret�rio informado"
+            print u"ERRO - Erro ao tentar criar arquivo, verificar a existência do diretório informado"
             
     def getRasterInformation(self):
            
