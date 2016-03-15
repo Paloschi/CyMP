@@ -17,12 +17,12 @@ def Ds_DC_to_date(data):
 
 
 
-raster = RasterFile(file_full_path="C:\\Gafanhoto WorkSpace\\Soja11_12\\Datas_DS-DC\\semeadura_soja_11-12.tif")
-matriz = raster.loadRasterData()
+raster = RasterFile(file_full_path="C:\\Gafanhoto WorkSpace\\DataTestes\\out\\interpolado_no_gafanhoto\\evpt_20110101.tif")
+raster.loadRasterData()
+print raster.getRasterInformation()
+raster = RasterFile(file_full_path="C:\\Gafanhoto WorkSpace\\DataTestes\\out\\interpolado_no_arcgis\\evpt_20110101.tif")
+raster.loadRasterData()
+print raster.getRasterInformation()
+#print raster.metadata
 
 
-matriz = Ds_DC_to_date(matriz)
-
-
-
-print matriz[600:1000,700:1200]

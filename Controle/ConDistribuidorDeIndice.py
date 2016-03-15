@@ -78,7 +78,14 @@ class Controller(Controller):
         numero_de_linhas = self.ui.tableWidget.rowCount()
         if numero_de_linhas > 1 :
             self.ui.tableWidget.setRowCount(numero_de_linhas - 1)
-  
+            
+            item = self.ui.tableWidget.item(numero_de_linhas -2, 1)
+            item.setFlags(QtCore.Qt.ItemIsEditable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
+            
+            item = self.ui.tableWidget.item(numero_de_linhas -2, 2)
+            item.setFlags(QtCore.Qt.ItemIsEditable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled) 
+            
+            
     def findImgColheita(self):
         self.findPath(self.ui.txImgColheita)
     
