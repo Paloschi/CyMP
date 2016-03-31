@@ -56,9 +56,23 @@ class Controller(AbstractController.Controller):
         paramIn = TableData()
         paramIn["images"] = SerialFile(root_path=str(self.ui.txInFolder.text()))
         paramIn["out_folder"] = str(self.ui.txOutFolder.text())
+          
         
+        
+        resultado = self.interpolar_todas_as_imagens(paramIn)
+            
+        if self.funcao_cancelada():
+            self.console(u"Função interrompida")
+            self.finalizar()
+        elif resultado is not None:
+            self.console(u"Função conluída")
+            self.finalizar()
+    
+    def interpolar_todas_as_imagens(self, paramIn):
+        
+        self.print_text(u"Lendo imagens e criando arquivos para a interpolação")
+    
         resposta = self.function.executar(paramIn)
-        
         if self.funcao_cancelada() : return
         
         CSVs = resposta["CSVs"]
@@ -74,9 +88,9 @@ class Controller(AbstractController.Controller):
         
         conf_img_out = RasterFile(file_full_path=str(self.ui.txImgReference.text())).getRasterInformation()
         
-        self.print_text("Interpolando imagens")
-           
         for i in range(len(CSVs)):
+            
+            resultado = None
             
             img_out = RasterFile(file_full_path=VRTs[i].file_full_path)
             img_out.file_ext = "tif"           
@@ -95,22 +109,27 @@ class Controller(AbstractController.Controller):
             print len(VRTs)
             print len(CSVs)
             
-            print "1----------------------------------------------------------------------------------"
+            #print "1----------------------------------------------------------------------------------"
             self.function.data = paramIn
+            
+            self.print_text("Interpolando imagens...")
+            
+            self.function.progresso = 0
             
             imagem_interpolada = self.function.data
             
-            print "2----------------------------------------------------------------------------------"
+            #print "2----------------------------------------------------------------------------------"
             
             self.print_text("Imagem interpolada: " + imagem_interpolada.file_name)
-            
-            if self.funcao_cancelada() : return
+        
+        return "tudo certo!"
+        
 
     def set_param(self):
             
-        self.ui.txInFolder.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\2-CORTADAS_11-12\\Tav")
-        self.ui.txOutFolder.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\7.0-Cortado_tamanho_Modis\\tav")
-        self.ui.txImgReference.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\Kc\\soltas\\2011-09-23.tif")
+        self.ui.txInFolder.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\raster\\Para interpolar")
+        self.ui.txOutFolder.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\out\\interpolado_no_gafanhoto")
+        self.ui.txImgReference.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\raster\\rain_20110101_imagem de referencia.tif")
             
             
             

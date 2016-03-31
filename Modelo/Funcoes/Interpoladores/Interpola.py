@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on Mar 1, 2015
 
@@ -6,27 +7,31 @@ Created on Mar 1, 2015
 
 
 from Modelo.beans import ABData, TableData
+from Modelo.Funcoes import AbstractFunction
 from lxml import etree
 
 
-class InterpolaTabela(ABData):
+class InterpolaTabela(AbstractFunction):
     
     '''
     faz todos os tramites necessarios pra interpolar uma tabela
     '''
-    
-    def __init__(self, nome):
-        self.__data = None
-        self.data_name = nome
-        self.data_type = "operation"
-    
-    @property    
-    def data(self):             
-        dados = self.__data.data
-        table = dados['table_data']
-        tabela_data = table
-        atributo_interpolacao = dados['atributo']
-        format_image_data = dados['format_image_data']
+    def __setParamIN__(self):
+        
+        self.descriptionIN["table_data"] = {"Required":True, "Type":None, "Description":"Tabela de dados a ser interpolada"}
+        self.descriptionIN["atributo"] = {"Required":True, "Type":None, "Description":"Atributo escolhido para a interpolação"}
+        self.descriptionIN["format_image_data"] = {"Required":True, "Type":None, "Description":"Formato de saida"}
+
+    def __setParamOUT__(self):
+        self.descriptionOUT["Mensagem"] = {"Type":None, "Description":"saida"}
+        
+    def __execOperation__(self):     
+               
+        print "iniciando operação de interpolação"
+
+        tabela_data = self.paramentrosIN_carregados['table_data']
+        atributo_interpolacao = self.paramentrosIN_carregados['atributo']
+        format_image_data = self.paramentrosIN_carregados['format_image_data']
         
         print("Preparando interpolacao:")
               
@@ -53,10 +58,6 @@ class InterpolaTabela(ABData):
         print ("Interpolacao completa")
         return ("Interpolacao completa")
         
-    @data.setter
-    def data(self, data):
-        self.__data = data
-        
     def WriteCSVfiles(self, table, atribute):
         
         print("-Criando arquivos CSV para alimentar intorpolador")
@@ -82,6 +83,8 @@ class InterpolaTabela(ABData):
     def WriteVRTfiles(self, table, atribute):
         
         print("-Criando arquivos VTR para alimentar intorpolador")
+        
+        print table
         
         path = table['data_path']
         keys = table.keys()

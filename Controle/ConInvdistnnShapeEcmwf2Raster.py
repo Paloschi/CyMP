@@ -63,6 +63,9 @@ class Controller(AbstractController.Controller):
     def executa(self):
         
         print "executando.."
+        
+        self.function = Interpola.InterpolaTabela()
+        
         self.print_text("Executando..")
         
         separador = SplitTable()   
@@ -81,15 +84,13 @@ class Controller(AbstractController.Controller):
         
         image_information = self.ImgRefSelected.getRasterInformation()
         
-        dados_interpolador['table_data'] = separador
+        #dados_interpolador['table_data'] = separador
+        dados_interpolador['table_data'] = dados_separador.data
         dados_interpolador['atributo'] = str(self.ui.cbAtribute.currentText())
         dados_interpolador["format_image_data"] = image_information
         
-        interpolador = Interpola.InterpolaTabela()
         
-        interpolador.data = dados_interpolador
-
-        mensagem  = interpolador.data
+        mensagem = self.function.executar(dados_interpolador)
         
         
 

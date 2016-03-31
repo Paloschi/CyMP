@@ -292,7 +292,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         
         self.label.setText(_translate("Dialog", texto, None))
             
-        MainWindow.setWindowTitle(_translate("MainWindow", "Gafanhoto " + version, None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Crop-yeld Modeling Platform - CyMP " + version, None))
         self.menuBH.setTitle(_translate("MainWindow", "Balanço Hídrico (FAO)", None))
         self.menuProdutividade.setTitle(_translate("MainWindow", "Estimativa de produtividade (FAO)", None))
         self.menuInterpoladores.setTitle(_translate("MainWindow", "Interpoladores", None))

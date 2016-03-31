@@ -29,6 +29,7 @@ encoding//Modelo/Funcoes/Estatisticos/StatisticalStractorMT.py=utf-8
 encoding//Modelo/Funcoes/Estatisticos/StatisticalStractorMT_PorLinha.py=utf-8
 encoding//Modelo/Funcoes/Filtros/FiltroSavitzGolay.py=utf-8
 encoding//Modelo/Funcoes/IndicesVegetativos/EVI2.py=utf-8
+encoding//Modelo/Funcoes/Interpoladores/Interpola.py=utf-8
 encoding//Modelo/Funcoes/Interpoladores/InterpoladorIDW.py=utf-8
 encoding//Modelo/Funcoes/RasterTools/Decendial2Diario.py=utf-8
 encoding//Modelo/Funcoes/RasterTools/RasterToCSVeVRT.py=utf-8

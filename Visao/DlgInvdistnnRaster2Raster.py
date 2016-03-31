@@ -200,8 +200,10 @@ class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">Inverse distance to a power with nearest neighbor searching.</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:11pt; color:#000000;\">Mais informações: </span><a href=\"http://www.gdal.org/gdal_grid.html\"><span style=\" font-size:11pt; text-decoration: underline; color:#0000ff;\">http://www.gdal.org/gdal_grid.html</span></a></p></body></html>", None))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:11pt; color:#000000;\">Mais informações: http://www.gdal.org/gdal_grid.html</span></a></p></body></html>", None))
         self.TabContent.setTabText(self.TabContent.indexOf(self.tab_4), _translate("Dialog", "Descrição", None))
+        
+        
         self.label_6.setText(_translate("Dialog", "Pasta de saída das imagens", None))
         self.label_2.setText(_translate("Dialog", "Pasta de entrada das imagens", None))
         self.btFindInFolder.setText(_translate("Dialog", "...", None))
