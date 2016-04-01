@@ -13,7 +13,7 @@ import py2exe
 Mydata_files = [('images', ['images/icons/icon_trator.png'])]
 
 setup(
-    windows=["Gafanhoto.py"],
+    windows=["CyMP.py"],
     data_files= (matplotlib.get_py2exe_datafiles()),
     options = {
             

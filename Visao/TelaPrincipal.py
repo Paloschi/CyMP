@@ -258,18 +258,23 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.icon_lea.pixmap(QtCore.QSize(200, 200))
         self.logo_lea.setIcon(self.icon_lea)
         self.logo_lea.setIconSize(QtCore.QSize(200, 100))
- 
-        
-        
+
         self.logo_lea = QtGui.QPushButton(MainWindow)
-        self.logo_lea.setGeometry(QtCore.QRect(250, 130, 82, 82))
+        self.logo_lea.setGeometry(QtCore.QRect(250, 130, 120, 82))
+        self.icon_lea = QtGui.QIcon("images\logoPgeagrid2.png")
+        self.icon_lea.pixmap(QtCore.QSize(200, 200))
+        self.logo_lea.setIcon(self.icon_lea)
+        self.logo_lea.setIconSize(QtCore.QSize(145, 80))        
+
+        self.logo_lea = QtGui.QPushButton(MainWindow)
+        self.logo_lea.setGeometry(QtCore.QRect(394, 130, 82, 82))
         self.icon_lea = QtGui.QIcon("images\logo_campus_cvel.jpg")
         self.icon_lea.pixmap(QtCore.QSize(200, 200))
         self.logo_lea.setIcon(self.icon_lea)
         self.logo_lea.setIconSize(QtCore.QSize(120, 82))       
 
         self.logo_lea = QtGui.QPushButton(MainWindow)
-        self.logo_lea.setGeometry(QtCore.QRect(350, 130, 110, 82))
+        self.logo_lea.setGeometry(QtCore.QRect(500, 130, 110, 82))
         self.icon_lea = QtGui.QIcon("images\capes-logo-CAPES.jpg")
         self.icon_lea.pixmap(QtCore.QSize(200, 200))
         self.logo_lea.setIcon(self.icon_lea)
