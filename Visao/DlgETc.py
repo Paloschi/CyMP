@@ -104,7 +104,7 @@ class Ui_Dialog(QtGui.QDialog):
         self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Evapotranspiração", None))
+        Dialog.setWindowTitle(_translate("Dialog", "CyMP - Evapotranspiração", None))
         self.label_4.setText(_translate("Dialog", "Configuração de saída:", None))
         self.label_5.setText(_translate("Dialog", "Imagens diárias de ETc", None))
         self.btnConfETc.setText(_translate("Dialog", "Configurar", None))

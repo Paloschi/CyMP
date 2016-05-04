@@ -113,7 +113,7 @@ class Ui_DlgProgressBar(QDialog):
         QtCore.QMetaObject.connectSlotsByName(DlgProgressBar)
 
     def retranslateUi(self, DlgProgressBar):
-        DlgProgressBar.setWindowTitle(_translate("DlgProgressBar", "Gafanhoto", None))
+        DlgProgressBar.setWindowTitle(_translate("DlgProgressBar", "CyMP - Execução da função", None))
         self.label.setText(_translate("DlgProgressBar", "Status:", None))
         self.btnCancelar.setText(_translate("DlgProgressBar", "Cancelar", None))
         self.btnOk.setText(_translate("DlgProgressBar", "OK", None))

@@ -100,7 +100,7 @@ class Ui_Dialog(QtGui.QDialog):
         #self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "TAW/RAW", None))
+        Dialog.setWindowTitle(_translate("Dialog", "CyMP - TAW/RAW", None))
         self.label_2.setText(_translate("Dialog", "Série de imagens de Zr:", None))
         self.label.setText(_translate("Dialog", "Imagem de CAD:", None))
         self.chZr.setText(_translate("Dialog", "configurado", None))

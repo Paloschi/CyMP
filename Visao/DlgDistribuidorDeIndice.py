@@ -120,7 +120,7 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Gafanhoto - Distribuidor de índice.", None))
+        Dialog.setWindowTitle(_translate("Dialog", "CyMP - Distribuidor de índice.", None))
         self.label.setText(_translate("Dialog", "Imagem de semeadura", None))
         self.btFindImgSemeadura.setText(_translate("Dialog", "...", None))
         self.btFindOutFolder.setText(_translate("Dialog", "...", None))

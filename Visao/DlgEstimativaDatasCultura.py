@@ -249,7 +249,7 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
 
     def retranslateUi(self, DlgEstimativaDatasAgricolas):
         
-        DlgEstimativaDatasAgricolas.setWindowTitle(_translate("DlgEstimativaDatasAgricolas", "Estimativa de datas da cultura", None))
+        DlgEstimativaDatasAgricolas.setWindowTitle(_translate("DlgEstimativaDatasAgricolas", "CyMP - Estimativa de datas da cultura", None))
         self.toolbFindInFolder.setText(_translate("DlgEstimativaDatasAgricolas", "...", None))
         self.label.setText(_translate("DlgEstimativaDatasAgricolas", "Pasta de entrada das imagens:", None))
         self.label_6.setText(_translate("DlgEstimativaDatasAgricolas", "Sufixo:", None))

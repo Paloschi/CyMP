@@ -297,7 +297,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         
         self.label.setText(_translate("Dialog", texto, None))
             
-        MainWindow.setWindowTitle(_translate("MainWindow", "Crop-yeld Modeling Platform - CyMP " + version, None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Crop-yield Modeling Platform - CyMP " + version, None))
         self.menuBH.setTitle(_translate("MainWindow", "Balanço Hídrico (FAO)", None))
         self.menuProdutividade.setTitle(_translate("MainWindow", "Estimativa de produtividade (FAO)", None))
         self.menuInterpoladores.setTitle(_translate("MainWindow", "Interpoladores", None))
@@ -316,6 +316,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         #self.actionListar_Fun_oes.setText(_translate("MainWindow", "Listar Funções", None))
         self.actionRodar.setText(_translate("MainWindow", "Executar", None))
         self.actionInterpolador.setText(_translate("MainWindow", "Interpolador shape ECMWF para raster", None))
+        #self.actionInterpolador.setText(_translate("MainWindow", "Interpolador shape ECMWF para raster (em manutenção)", None))
+        #self.actionInterpolador.setEnabled(False)
         self.actionInterpoladorRaster2Raster.setText(_translate("MainWindow", "Interpolador raster pra raster", None))
         self.actionEstimativa_de_datas_de_colheita.setText(_translate("MainWindow", "Estimativa de datas da cultura", None))
         self.actionDistribuidorDeIndice.setText(_translate("MainWindow", "Distribuidor de índice", None))

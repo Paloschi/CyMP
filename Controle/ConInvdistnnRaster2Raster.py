@@ -65,7 +65,7 @@ class Controller(AbstractController.Controller):
             self.console(u"Função interrompida")
             self.finalizar()
         elif resultado is not None:
-            self.console(u"Função conluída")
+            self.console(u"Função concluída")
             self.finalizar()
     
     def interpolar_todas_as_imagens(self, paramIn):

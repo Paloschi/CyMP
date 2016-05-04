@@ -123,7 +123,7 @@ class Ui_DlgEstatisticasEspectrais(QtGui.QDialog):
         QtCore.QMetaObject.connectSlotsByName(DlgEstatisticasEspectrais)
 
     def retranslateUi(self, DlgEstatisticasEspectrais):
-        DlgEstatisticasEspectrais.setWindowTitle(_translate("DlgEstatisticasEspectrais", "Estatísticas Descritivas (Perfil)", None))
+        DlgEstatisticasEspectrais.setWindowTitle(_translate("DlgEstatisticasEspectrais", "CyMP - Estatísticas Descritivas (Perfil)", None))
         self.toolbFindInFolder.setText(_translate("DlgEstatisticasEspectrais", "...", None))
         self.label.setText(_translate("DlgEstatisticasEspectrais", "Pasta de entrada das imagens:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("DlgEstatisticasEspectrais", "Dados de entrada", None))

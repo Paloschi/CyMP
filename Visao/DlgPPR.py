@@ -36,7 +36,7 @@ class Ui_Dialog(QtGui.QDialog):
         self.gridLayout = QtGui.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.txCc = QtGui.QDoubleSpinBox(Dialog)
-        self.txCc.setDecimals(8)
+        self.txCc.setDecimals(4)
         self.txCc.setMaximum(999.99999999)
         self.txCc.setObjectName(_fromUtf8("txCc"))
         self.gridLayout.addWidget(self.txCc, 2, 1, 1, 1)
@@ -91,7 +91,7 @@ class Ui_Dialog(QtGui.QDialog):
         #self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Produtividade potencial bruta (PPB)", None))
+        Dialog.setWindowTitle(_translate("Dialog", "CyMP - Produtividade potencial bruta (PPB)", None))
         self.chT.setText(_translate("Dialog", "Configurado", None))
         self.label_2.setText(_translate("Dialog", "Série de imagens de PPB:", None))
         self.label_3.setText(_translate("Dialog", "Dados de entrada:", None))
