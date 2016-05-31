@@ -31,6 +31,7 @@ encoding//Modelo/Funcoes/Filtros/FiltroSavitzGolay.py=utf-8
 encoding//Modelo/Funcoes/IndicesVegetativos/EVI2.py=utf-8
 encoding//Modelo/Funcoes/Interpoladores/Interpola.py=utf-8
 encoding//Modelo/Funcoes/Interpoladores/InterpoladorIDW.py=utf-8
+encoding//Modelo/Funcoes/RasterTools/AnoDia2Numero.py=UTF-8
 encoding//Modelo/Funcoes/RasterTools/Decendial2Diario.py=utf-8
 encoding//Modelo/Funcoes/RasterTools/RasterToCSVeVRT.py=utf-8
 encoding//Modelo/Funcoes/__init__.py=utf-8
