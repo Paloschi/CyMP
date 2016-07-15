@@ -6,6 +6,7 @@ Created on Aug 4, 2015
 '''
 
 from Modelo.beans import FileData
+from Modelo.beans.TableData import TableData
 try:
     import fiona
 except:
@@ -30,7 +31,7 @@ class VectorFile(FileData):
         print("Lendo Shape...")
         
         data_values = list()
-        data = dict()
+        data = TableData()
         
         progress( 0.0 )
         

@@ -27,11 +27,11 @@ except AttributeError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
+    def _translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+    def _translate(context, text, disambig=None):
+        return QtGui.QApplication.translate(context, text)
 
 class Ui_MainWindow(QtGui.QMainWindow):
     
@@ -117,6 +117,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
  
                            
     def setupUi(self, MainWindow):
+        
+        print self.tr("foo")
         
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(751, 240)
@@ -298,7 +300,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.label.setText(_translate("Dialog", texto, None))
             
         MainWindow.setWindowTitle(_translate("MainWindow", "Crop-yield Modeling Platform - CyMP " + version, None))
-        self.menuBH.setTitle(_translate("MainWindow", "Balanço Hídrico (FAO)", None))
+        self.menuBH.setTitle(_translate("MainWindow", "Balanço Hídrico", None))
         self.menuProdutividade.setTitle(_translate("MainWindow", "Estimativa de produtividade (FAO)", None))
         self.menuInterpoladores.setTitle(_translate("MainWindow", "Interpoladores", None))
         self.menuCarregar_Dado.setTitle(_translate("MainWindow", "Carregar dado", None))

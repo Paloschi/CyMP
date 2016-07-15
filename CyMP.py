@@ -6,11 +6,28 @@ Created on Jul 7, 2015
 from PyQt4 import QtGui
 from Visao import TelaPrincipal
 import ConfigParser
-from Modelo import GeneralTools
+from PyQt4 import QtCore
 from PyQt4.Qt import QLocale, QTranslator
+
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 import warnings
 warnings.filterwarnings('ignore')
+
+
+
 
 if __name__ == '__main__':
     import sys
@@ -31,16 +48,18 @@ if __name__ == '__main__':
     icon=config.get('Icon', 'icon.general')
     app.setWindowIcon(QtGui.QIcon(icon))
 
-    
     locale = QLocale.system().name()
     qtTranslator = QTranslator()
+    coretranslator = QtCore.QTranslator(app)
     if qtTranslator.load("qt_"+locale):
+        qtTranslator.load('qt_%s' % locale,
+                          QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.TranslationsPath))
         app.installTranslator(qtTranslator)
+        app.installTranslator(coretranslator)
     
     #print("Numero de nucleos: " + str(GeneralTools.available_cpu_count()))
 
     ex = TelaPrincipal.Ui_MainWindow()
-    
     ex.show()
     sys.exit(app.exec_())
     

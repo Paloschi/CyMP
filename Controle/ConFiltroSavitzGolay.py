@@ -29,6 +29,7 @@ class Controller(AbstractController.Controller):
     def executa(self):
         
         self.function = FiltroSavitz()
+        
         self.function.console = self.print_text
         
         self.print_text(u"Inicializando filtro.")

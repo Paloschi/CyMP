@@ -9,6 +9,7 @@
 
 from PyQt4 import QtCore, QtGui
 from Controle import ConInvdistnnRaster2Raster
+from PyQt4.Qt import QLocale, QTranslator
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -24,8 +25,15 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
+
+
 class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
     def setupUi(self, Dialog):
+        
+        locale = QLocale.system().name()
+        qtTranslator = QTranslator()
+        if qtTranslator.load("qt_"+locale):
+            Dialog.installTranslator(qtTranslator)
         
         self.controller = ConInvdistnnRaster2Raster.Controller(self)
         

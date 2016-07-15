@@ -11,7 +11,8 @@ from PyQt4 import QtCore, QtGui
 import time
 from PyQt4.Qt import QDialog
 import time
-from matplotlib.textpath import text_to_path
+#from matplotlib.textpath import text_to_path
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:

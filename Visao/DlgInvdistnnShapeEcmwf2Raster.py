@@ -9,6 +9,7 @@
 
 from PyQt4 import QtCore, QtGui
 from Controle import ConInvdistnnShapeEcmwf2Raster
+
  
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -81,6 +82,8 @@ class UI_DlgInterpoladorShapeEcmwf(QtGui.QDialog):
         
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+        
+        self.controller.inicializar()
 
     def retranslateUi(self, Form):
         
