@@ -56,8 +56,6 @@ class Function(ABData):
         self.__setParamIN__() # inicializa descrição de entrada
         self.__setParamOUT__() # inicializa descrição de saída
         
-        
-
 
     def __LoadParams__(self, params):
         '''

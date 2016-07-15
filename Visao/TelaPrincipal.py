@@ -27,11 +27,11 @@ except AttributeError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
+    def _translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+    def _translate(context, text, disambig=None):
+        return QtGui.QApplication.translate(context, text)
 
 class Ui_MainWindow(QtGui.QMainWindow):
     
@@ -117,6 +117,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
  
                            
     def setupUi(self, MainWindow):
+        
+        print self.tr("foo")
         
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(751, 240)
@@ -258,18 +260,23 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.icon_lea.pixmap(QtCore.QSize(200, 200))
         self.logo_lea.setIcon(self.icon_lea)
         self.logo_lea.setIconSize(QtCore.QSize(200, 100))
- 
-        
-        
+
         self.logo_lea = QtGui.QPushButton(MainWindow)
-        self.logo_lea.setGeometry(QtCore.QRect(250, 130, 82, 82))
+        self.logo_lea.setGeometry(QtCore.QRect(250, 130, 120, 82))
+        self.icon_lea = QtGui.QIcon("images\logoPgeagrid2.png")
+        self.icon_lea.pixmap(QtCore.QSize(200, 200))
+        self.logo_lea.setIcon(self.icon_lea)
+        self.logo_lea.setIconSize(QtCore.QSize(145, 80))        
+
+        self.logo_lea = QtGui.QPushButton(MainWindow)
+        self.logo_lea.setGeometry(QtCore.QRect(394, 130, 82, 82))
         self.icon_lea = QtGui.QIcon("images\logo_campus_cvel.jpg")
         self.icon_lea.pixmap(QtCore.QSize(200, 200))
         self.logo_lea.setIcon(self.icon_lea)
         self.logo_lea.setIconSize(QtCore.QSize(120, 82))       
 
         self.logo_lea = QtGui.QPushButton(MainWindow)
-        self.logo_lea.setGeometry(QtCore.QRect(350, 130, 110, 82))
+        self.logo_lea.setGeometry(QtCore.QRect(500, 130, 110, 82))
         self.icon_lea = QtGui.QIcon("images\capes-logo-CAPES.jpg")
         self.icon_lea.pixmap(QtCore.QSize(200, 200))
         self.logo_lea.setIcon(self.icon_lea)
@@ -292,8 +299,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         
         self.label.setText(_translate("Dialog", texto, None))
             
-        MainWindow.setWindowTitle(_translate("MainWindow", "Gafanhoto " + version, None))
-        self.menuBH.setTitle(_translate("MainWindow", "Balanço Hídrico (FAO)", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Crop-yield Modeling Platform - CyMP " + version, None))
+        self.menuBH.setTitle(_translate("MainWindow", "Balanço Hídrico", None))
         self.menuProdutividade.setTitle(_translate("MainWindow", "Estimativa de produtividade (FAO)", None))
         self.menuInterpoladores.setTitle(_translate("MainWindow", "Interpoladores", None))
         self.menuCarregar_Dado.setTitle(_translate("MainWindow", "Carregar dado", None))
@@ -311,6 +318,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
         #self.actionListar_Fun_oes.setText(_translate("MainWindow", "Listar Funções", None))
         self.actionRodar.setText(_translate("MainWindow", "Executar", None))
         self.actionInterpolador.setText(_translate("MainWindow", "Interpolador shape ECMWF para raster", None))
+        #self.actionInterpolador.setText(_translate("MainWindow", "Interpolador shape ECMWF para raster (em manutenção)", None))
+        #self.actionInterpolador.setEnabled(False)
         self.actionInterpoladorRaster2Raster.setText(_translate("MainWindow", "Interpolador raster pra raster", None))
         self.actionEstimativa_de_datas_de_colheita.setText(_translate("MainWindow", "Estimativa de datas da cultura", None))
         self.actionDistribuidorDeIndice.setText(_translate("MainWindow", "Distribuidor de índice", None))

@@ -123,7 +123,7 @@ class Ui_DlgEstatisticasEspectrais(QtGui.QDialog):
         QtCore.QMetaObject.connectSlotsByName(DlgEstatisticasEspectrais)
 
     def retranslateUi(self, DlgEstatisticasEspectrais):
-        DlgEstatisticasEspectrais.setWindowTitle(_translate("DlgEstatisticasEspectrais", "Estatísticas Descritivas (Perfil)", None))
+        DlgEstatisticasEspectrais.setWindowTitle(_translate("DlgEstatisticasEspectrais", "CyMP - Estatísticas Descritivas (Perfil)", None))
         self.toolbFindInFolder.setText(_translate("DlgEstatisticasEspectrais", "...", None))
         self.label.setText(_translate("DlgEstatisticasEspectrais", "Pasta de entrada das imagens:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("DlgEstatisticasEspectrais", "Dados de entrada", None))
@@ -131,7 +131,7 @@ class Ui_DlgEstatisticasEspectrais(QtGui.QDialog):
         self.toolbFindOutFolder.setText(_translate("DlgEstatisticasEspectrais", "...", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("DlgEstatisticasEspectrais", "Dados de saída", None))
         self.cbSD.setText(_translate("DlgEstatisticasEspectrais", "Desvio padrão", None))
-        self.cbMedia.setText(_translate("DlgEstatisticasEspectrais", "Media", None))
+        self.cbMedia.setText(_translate("DlgEstatisticasEspectrais", "Média", None))
         self.cbAmplitude.setText(_translate("DlgEstatisticasEspectrais", "Amplitude", None))
         self.cbMin.setText(_translate("DlgEstatisticasEspectrais", "Mínimo", None))
         self.cbCV.setText(_translate("DlgEstatisticasEspectrais", "Coeficiente de variação", None))
@@ -146,3 +146,5 @@ class Ui_DlgEstatisticasEspectrais(QtGui.QDialog):
 
         self.toolbFindInFolder.clicked.connect(self.controller.findInFolder)
         self.toolbFindOutFolder.clicked.connect(self.controller.findOutFolder)
+        
+        #self.controller.parametros_teste()

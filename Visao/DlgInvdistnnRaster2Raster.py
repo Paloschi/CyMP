@@ -9,6 +9,7 @@
 
 from PyQt4 import QtCore, QtGui
 from Controle import ConInvdistnnRaster2Raster
+from PyQt4.Qt import QLocale, QTranslator
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -24,8 +25,15 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
+
+
 class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
     def setupUi(self, Dialog):
+        
+        locale = QLocale.system().name()
+        qtTranslator = QTranslator()
+        if qtTranslator.load("qt_"+locale):
+            Dialog.installTranslator(qtTranslator)
         
         self.controller = ConInvdistnnRaster2Raster.Controller(self)
         
@@ -188,7 +196,7 @@ class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
         self.controller.set_param()
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Gafanhoto - Interpolador raster pra raster", None))
+        Dialog.setWindowTitle(_translate("Dialog", "CyMP - Interpolador raster pra raster", None))
         self.textBrowser.setHtml(_translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -200,8 +208,10 @@ class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">Inverse distance to a power with nearest neighbor searching.</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:11pt; color:#000000;\">Mais informações: </span><a href=\"http://www.gdal.org/gdal_grid.html\"><span style=\" font-size:11pt; text-decoration: underline; color:#0000ff;\">http://www.gdal.org/gdal_grid.html</span></a></p></body></html>", None))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Times New Roman\'; font-size:11pt; color:#000000;\">Mais informações: http://www.gdal.org/gdal_grid.html</span></a></p></body></html>", None))
         self.TabContent.setTabText(self.TabContent.indexOf(self.tab_4), _translate("Dialog", "Descrição", None))
+        
+        
         self.label_6.setText(_translate("Dialog", "Pasta de saída das imagens", None))
         self.label_2.setText(_translate("Dialog", "Pasta de entrada das imagens", None))
         self.btFindInFolder.setText(_translate("Dialog", "...", None))

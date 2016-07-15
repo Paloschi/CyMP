@@ -95,6 +95,7 @@ class Funcao(AbstractFunction):
                 metadata = serie_imagem_in[i].metadata
                 #metadata.update(nodata=0)
                 img.saveRasterData(metadata=metadata)
+                print metadata
 
    
         self.console(u"Série temporal diária concluída.")

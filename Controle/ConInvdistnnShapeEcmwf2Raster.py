@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on Mar 6, 2015
 
@@ -10,6 +11,7 @@ from Modelo.Funcoes.Interpoladores import Interpola
 import sys
 from PyQt4 import QtCore, QtGui
 from Controle import AbstractController
+import os.path
 
 class Controller(AbstractController.Controller):
     '''
@@ -17,6 +19,11 @@ class Controller(AbstractController.Controller):
     '''
     ShapeSelected = None
     ImgRefSelected = None
+    
+    def inicializar(self):
+        
+        self.ui.leImgRefPath.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\raster\\semeadura_soja_11-12.tif")
+        self.ui.leShapePath.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\shape\\Contorno_Agassis_Pontos_2015.shp")
         
     def btn_FindShp_ClickAction(self):
         self.findPath(self.ui.leShapePath)
@@ -63,6 +70,10 @@ class Controller(AbstractController.Controller):
     def executa(self):
         
         print "executando.."
+        
+        self.function = Interpola.InterpolaTabela()
+        self.function.console = self.print_text
+        
         self.print_text("Executando..")
         
         separador = SplitTable()   
@@ -73,25 +84,33 @@ class Controller(AbstractController.Controller):
             if self.ui.lwGroupAtributes.item(index).checkState() == 2:
                 atributos.append(str(self.ui.lwGroupAtributes.item(index).text()))
         
-        dados_separador.data = {'table' : self.ShapeSelected.readVectorData(), 'atributos' : atributos}
         
-        separador.data = dados_separador
+        vector_table = self.ShapeSelected.readVectorData()
+        
+        dados_separador.data = {'table' : vector_table, 'atributos' : atributos}
+        dados_separador.data["data_path"] = self.ui.leShapePath.text()
+        
           
         dados_interpolador = TableData()
-        
         image_information = self.ImgRefSelected.getRasterInformation()
-        
-        dados_interpolador['table_data'] = separador
+
+        dados_interpolador['table_data'] = dados_separador
         dados_interpolador['atributo'] = str(self.ui.cbAtribute.currentText())
         dados_interpolador["format_image_data"] = image_information
-        
-        interpolador = Interpola.InterpolaTabela()
-        
-        interpolador.data = dados_interpolador
 
-        mensagem  = interpolador.data
         
+        self.print_text("Interpolando")
+        
+        mensagem = self.function.executar(dados_interpolador)
+        self.finalizar()
         
 
     def valida_form(self):
+        if self.ShapeSelected is None:
+            self.message(u"Shape para interpolação não encontrado.")
+            return False   
+        if self.ImgRefSelected is None:
+            self.message(u"Imagem de referencia não encontrada.")
+            return False   
         return True
+    

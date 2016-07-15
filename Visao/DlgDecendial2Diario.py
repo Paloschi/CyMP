@@ -90,7 +90,7 @@ class Ui_Decendial2Diario(QtGui.QDialog):
         #self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Decendial para diário", None))
+        Dialog.setWindowTitle(_translate("Dialog", "CyMP - Decendial para diário", None))
         self.label_2.setText(_translate("Dialog", "Entrada de imagens decendiais", None))
         self.label_3.setText(_translate("MainWindow", "", None))
         self.label.setText(_translate("Dialog", "Saída de imagens diárias", None))

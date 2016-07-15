@@ -11,7 +11,8 @@ from PyQt4 import QtCore, QtGui
 import time
 from PyQt4.Qt import QDialog
 import time
-from matplotlib.textpath import text_to_path
+#from matplotlib.textpath import text_to_path
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -113,7 +114,7 @@ class Ui_DlgProgressBar(QDialog):
         QtCore.QMetaObject.connectSlotsByName(DlgProgressBar)
 
     def retranslateUi(self, DlgProgressBar):
-        DlgProgressBar.setWindowTitle(_translate("DlgProgressBar", "Gafanhoto", None))
+        DlgProgressBar.setWindowTitle(_translate("DlgProgressBar", "CyMP - Execução da função", None))
         self.label.setText(_translate("DlgProgressBar", "Status:", None))
         self.btnCancelar.setText(_translate("DlgProgressBar", "Cancelar", None))
         self.btnOk.setText(_translate("DlgProgressBar", "OK", None))

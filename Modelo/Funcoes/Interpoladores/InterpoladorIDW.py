@@ -80,6 +80,7 @@ class IDW(AbstractFunction):
                     str_algoritimo_conf += ":"
                     str_algoritimo_conf += (key + "=" + str(conf_algoritimo[key]))
                     
+            str_algoritimo_conf += ':nodata=0'       
                 
             print "configuracao do algoritimo" + str_algoritimo_conf
         
@@ -88,7 +89,8 @@ class IDW(AbstractFunction):
             Chama interpolador GDAl IDW
             http://www.gisinternals.com/query.html?content=filelist&file=release-1800-x64-gdal-mapserver.zip
         '''
-                
+
+        
         string_execucao = ['gdal_grid',  
                               
                               '-a', 'invdistnn' + str_algoritimo_conf,
@@ -96,7 +98,8 @@ class IDW(AbstractFunction):
                               '-tye', str(img_out_config["ymin"]), str(img_out_config["ymax"]), 
                               '-outsize', str(img_out_config["nx"]), str(img_out_config["ny"]), 
                               '-of', 'GTiff', 
-                              '-ot', 'Float32', 
+                              '-ot', 'Float32',
+                              '-a_srs', 'EPSG:4326',
                               '-l', csv.file_name, vrt.file_full_path, img_out.file_full_path]
         
         #if str_algoritimo_conf != "":
@@ -106,7 +109,8 @@ class IDW(AbstractFunction):
             
         try:
             print ("string de execucao: ", str(string_execucao))
-            subprocess.call (string_execucao) 
+            subprocess.call (string_execucao, creationflags=subprocess.SW_HIDE, shell=True) 
+  
             
         except Exception:  
             print 'erro ao chamar subprocesso gdal_grid, verifiquei se a GDAL core está instalada e a variavel de ambiente está setada'

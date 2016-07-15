@@ -113,10 +113,9 @@ class DistribuidorKC(AbstractFunction):
         
 
         #data_minima = datetime.datetime(2012, 04, 19)
-        print data_minima        
+        #print data_minima        
         #data_maxima = datetime.datetime(2012, 04, 19)
-
-        print data_maxima
+        #print data_maxima
         
         kc_vetorizado = self.vetorizar_kc()
         periodo_kc = len(kc_vetorizado)

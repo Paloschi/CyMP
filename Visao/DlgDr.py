@@ -104,13 +104,13 @@ class Ui_Dialog(QtGui.QDialog):
         self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Valor de esgotamento (Dr)", None))
+        Dialog.setWindowTitle(_translate("Dialog", "CyMP - Valor de esgotamento (Dr)", None))
         self.chTAW.setText(_translate("Dialog", "configurado", None))
         self.btnConfPPP.setText(_translate("Dialog", "configurar", None))
         self.label.setText(_translate("Dialog", "Configuração de entrada:", None))
         self.chDr.setText(_translate("Dialog", "configurado", None))
         self.label_2.setText(_translate("Dialog", "Série de imagens de Etc:", None))
-        self.label_3.setText(_translate("Dialog", "Série de imagens de Precipitção:", None))
+        self.label_3.setText(_translate("Dialog", "Série de imagens de Precipitação:", None))
         self.label_4.setText(_translate("Dialog", "Série de imagens TAW:", None))
         self.label_5.setText(_translate("Dialog", "Configuração de saída:", None))
         self.label_5.setText(_translate("Dialog", "Configuração de saída:", None))

@@ -9,6 +9,7 @@
 
 from PyQt4 import QtCore, QtGui
 from Controle import ConInvdistnnShapeEcmwf2Raster
+
  
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -81,10 +82,12 @@ class UI_DlgInterpoladorShapeEcmwf(QtGui.QDialog):
         
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+        
+        self.controller.inicializar()
 
     def retranslateUi(self, Form):
         
-        Form.setWindowTitle(_translate("Form", "Interpolador shape ECMWF para raster", None))
+        Form.setWindowTitle(_translate("Form", "CyMP - Interpolador shape ECMWF para raster", None))
         self.btnFindShp.setText(_translate("Form", "Procurar", None))
         self.label_2.setText(_translate("Form", "Agrupar dados pelor atributos:", None))
         self.label_3.setText(_translate("Form", "Atributo a ser interpolado", None))

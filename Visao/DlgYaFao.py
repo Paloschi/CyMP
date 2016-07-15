@@ -123,7 +123,7 @@ class Ui_Dialog(QtGui.QDialog):
         self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Produtividade Atingível (Ya)", None))
+        Dialog.setWindowTitle(_translate("Dialog", "CyMP - Produtividade Atingível (Ya)", None))
         self.label_7.setText(_translate("Dialog", "Produtividade atingível (Ya):", None))
         self.btnConfYa.setText(_translate("Dialog", "Configurar", None))
         self.label.setText(_translate("Dialog", "Dados de entrada:", None))

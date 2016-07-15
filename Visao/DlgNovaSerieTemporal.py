@@ -11,6 +11,7 @@ from PyQt4 import QtCore, QtGui
 from Modelo.beans.SerialFileData import SerialTemporalFiles
 from PyQt4.Qt import QDialog
 import os
+import ConfigParser
 from PyQt4.Qt import QString
 
 try:
@@ -70,11 +71,13 @@ class Ui_Dialog(QDialog):
         QtGui.QMessageBox.about(self, "Ops...", text)       
     
     def findPath(self):
-        fname = QtGui.QFileDialog.getExistingDirectory()
+        config = ConfigParser.RawConfigParser()
+        config.read('workspace.properties')
+        workspace=config.get('WorkSpace', 'space.default')
+        fname = QtGui.QFileDialog.getExistingDirectory(None, "Escolha uma pasta", workspace,)
         if fname!="" :
             self.txIn.setText (fname)
-        
-        
+ 
     def setupUi(self, Dialog):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.setWindowModality(QtCore.Qt.WindowModal)
@@ -141,7 +144,7 @@ class Ui_Dialog(QDialog):
         self.tbIn.clicked.connect(self.findPath)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Nova série temporal", None))
+        Dialog.setWindowTitle(_translate("Dialog", "CyMP - Nova série temporal", None))
         self.tbIn.setText(_translate("Dialog", "...", None))
         self.label.setText(_translate("Dialog", "Endereço das imagens", None))
         self.label_3.setText(_translate("Dialog", "Sufixo", None))
