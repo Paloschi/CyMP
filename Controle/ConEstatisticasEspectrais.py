@@ -25,6 +25,7 @@ class Controller(AbstractController.Controller):
         
         self.function = SpectreStatisticalStractor()
         
+
         self.print_text(u"Organizando dados necessários")
         
         root_in = str(self.ui.leInFolder.text())

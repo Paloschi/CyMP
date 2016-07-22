@@ -82,6 +82,8 @@ class Ks(AbstractFunction):
             ks_ *= factor_ks
             ks_ = self.compactar(ks_)
             
+            ks_ = 1 - ks_ # invertendo o Ks pra dar certo na formulas
+            
             #print data_taw
             #for i in range(n_linhas):
                 #for ii in range(n_colunas):

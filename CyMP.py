@@ -5,7 +5,7 @@ Created on Jul 7, 2015
 '''
 from PyQt4 import QtGui
 from Visao import TelaPrincipal
-import ConfigParser
+from multiprocessing import Process
 from PyQt4 import QtCore
 from PyQt4.Qt import QLocale, QTranslator
 
@@ -27,11 +27,18 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
+    
+import multiprocessing as mp
 
-
+        
 if __name__ == '__main__':
+
+    
     import sys
     import ctypes
+    import ConfigParser
+    
+    mp.freeze_support() # optional if the program is not frozen
 
     config = ConfigParser.RawConfigParser()
     config.read('workspace.properties')

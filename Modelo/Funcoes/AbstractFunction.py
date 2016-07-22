@@ -72,7 +72,7 @@ class Function(ABData):
             
             if key not in params.keys() or params[key] is None:
                 if self.descriptionIN[key]["Required"] :
-                    raise Exception(u"Parametro " + key + u" é requerido na função " + self.__class__.__name__)   
+                    raise Exception((u"Parametro " + key + u" é requerido na função " + self.__class__.__name__))   
                 else :
                     self.paramentrosIN_carregados[key] = None
             elif self.descriptionIN[key]["Type"] == FUNCTION_DATA:         
@@ -101,7 +101,9 @@ class Function(ABData):
         pass
     
     def executar(self, parametros):
+        print "aque1"
         while self.console is None : pass
+        print "aque2"
         self.data = parametros
         return self.data
     

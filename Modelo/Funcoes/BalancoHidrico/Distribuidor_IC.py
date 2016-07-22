@@ -13,10 +13,13 @@ from numpy.core.numeric import array
 from datetime import timedelta
 import gdal
 from Modelo.beans.SerialFileData import SerialFile
+import Modelo
+from Modelo.GeneralTools import available_cpu_count
 progress = gdal.TermProgress_nocb   
 from multiprocessing import Process, Queue
 import threading
 import time
+from Modelo import GeneralTools
 
 def Ds_DC_to_date(data):
         
@@ -27,6 +30,19 @@ def Ds_DC_to_date(data):
         return date
 
 def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, kc_vetorizado, path_img_referencia, i, path_out):
+    
+        import ctypes
+        import ConfigParser
+        config = ConfigParser.RawConfigParser()
+        config.read('workspace.properties')
+    
+        company=config.get('Version', 'company')
+        product=config.get('Version', 'product')
+        subproduct=config.get('Version', 'subproduct')
+        version=config.get('Version', 'Version')
+    
+        myappid = (company + "." + product + "." + subproduct + "." + version)
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
     
         threading.currentThread().terminada = False
         imagem_kc = RasterFile(file_full_path = path_img_referencia)
@@ -50,28 +66,31 @@ def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, k
             imagem_kc.data = array(semeadura_)
             imagem_kc.file_name = str(dia.date())
             
-            if delta_total > 1 : 
-                progress(i_dia/float(delta_total-1))
+            #if delta_total > 1 : 
+                
                 #progresso = (i_dia/float(delta_total))*100
                     
             for i_linha in range(0, n_linhas):
+                
+                progress(i_linha/float(n_linhas-1))
+                
+                
+                
                 for i_coluna in range(0, n_colunas):
-                    delta_c = None
-                    Ds = None
                      
                     try:
                         Ds = Ds_DC_to_date(semeadura_[i_linha][i_coluna])
                         Dc = Ds_DC_to_date(colheita_[i_linha][i_coluna])
                         delta_c = (Dc - Ds).days + 1
-                    except :
-                        pass                      
-                    if Ds != None:
+                        
                         if(dia >= Ds and dia <= Dc):
                             k = dia - Ds
                             i_FKc = int( (k * periodo_kc).days / delta_c)
                             Kc = kc_vetorizado[i_FKc]
-                            imagem_kc_[i_linha][i_coluna] = Kc
-                    
+                            imagem_kc_[i_linha][i_coluna] = Kc                       
+                    except :
+                        pass                      
+
             imagem_kc.metadata.update(nodata=0)
             imagem_kc.saveRasterData(band_matrix = imagem_kc_)
         print "retornando do processo", i
@@ -122,15 +141,15 @@ class DistribuidorKC(AbstractFunction):
         
         delta_total = (data_maxima-data_minima).days
         
-        print data_maxima
+        #print data_maxima
         
-        print "total de dias", delta_total
+        #print "total de dias", delta_total
         
         metadata = self.paramentrosIN_carregados["semeadura"].metadata
         
-        print metadata
+        #print metadata
         
-        n_of_process = 5
+        n_of_process = available_cpu_count() - 2
 
         processos = list()
         
@@ -159,6 +178,7 @@ class DistribuidorKC(AbstractFunction):
                                                      data_maxima_process, 
                                                      semeadura_, colheita_, periodo_kc, kc_vetorizado, path_img_semeadura, 
                                                      i, self.paramentrosIN_carregados["path_out"]))
+            p.daemon = True
             processos.append(p)
             p.start()
             
@@ -246,5 +266,4 @@ if __name__ == '__main__':
     Kc_distribuido = DistribuidorKC().executar(paramIN)
     
     #print Kc_distribuido[0]
-    
-    
+

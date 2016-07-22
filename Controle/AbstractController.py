@@ -76,9 +76,9 @@ class Controller(object):
             
             while(self.function==None) : 
                 time.sleep(0.005)
-            if (self.print_text!= None and self.console!= None):                  
-                self.function.print_text = self.print_text
-                self.function.console = self.console                  
+                              
+            self.function.print_text = self.progress_bar.print_text
+            self.function.console = self.progress_bar.print_text                  
             
             self.progress_bar.iniciar(self, self.thread)
             

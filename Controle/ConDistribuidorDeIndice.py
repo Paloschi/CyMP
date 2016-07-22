@@ -6,12 +6,12 @@ Created on 19/10/2015
 @author: Rennan
 '''
 from Controle.AbstractController import Controller
-from Modelo.Funcoes.BalancoHidrico import DistribuidorKC
+from Modelo.Funcoes.BalancoHidrico import Distribuidor_IC_2
 from Modelo.beans import TableData, RasterFile
 from PyQt4 import QtCore, QtGui
 import os
 import threading
-import time
+
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
@@ -161,24 +161,28 @@ class Controller(Controller):
         if(ultimo_dia_int<=int(dia_inicial)):
             self.message(_translate("O dia final do Estádio anterior precisa ser maior que o inicial"))
             return False
-        if self.confirmar(_translate("MainWindow","Caso esteja disponível, "+
-                            "essa função utilizará os multiplos nucleos deste processador. " +
-                            "Não há controle de multiprocesso implementado nesta versão logo " +
-                            "este processo não poderá ser encerrado até que seja terminado, "+
-                            "ela poderá levar várias horas para ser concluída, deseja realmente continuar?", None), 
-                            u"Aviso!") :
+        
+        self.message(_translate("MainWindow",u"Caso esteja disponível, "+
+                            u"essa função utilizará os multiplos núcleos deste processador. ", 
+                            None)) 
             
-            self.message(_translate("MainWindow","Verifique na pasta de saída se as imagens estão sendo criadas, "+
-                         "as imagens poderão demorar até 10 minutos para aparecerem (com 5 milhões de pixels por imagem).", None))
-            return True
-        return False
+            #self.message(_translate("MainWindow","Verifique na pasta de saída se as imagens estão sendo criadas, "+
+                    #     "as imagens poderão demorar até 10 minutos para aparecerem (com 5 milhões de pixels por imagem).", None))
+        return True
+
                  
     def executa(self):
         
         self.print_text(u"Configurando função")
-        self.progress_bar.btnCancelar.setEnabled(False)
-        self.progress_bar.progressBar.setMaximum(0)
-        self.function = DistribuidorKC() #função utilizada por este contrlolador
+        
+        #self.progress_bar.btnCancelar.setEnabled(False)
+        #self.progress_bar.progressBar.setMaximum(0)
+        
+        self.function = Distribuidor_IC_2.DistribuidorKC_() #função utilizada por este contrlolador
+        
+        self.function.console = self.console
+        self.function.print_text = self.print_text
+        
         
         '''
             Organizando tabela de kc em tabela para passar para a funcao

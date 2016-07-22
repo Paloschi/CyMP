@@ -23,7 +23,7 @@ setup(
                       
             #"dll_include" : [ "api-ms-win-core-processthreads-l1-1-2.dll"],
             'packages':['fiona',"rasterio","PyQt4.QtCore","PyQt4.QtGui", ],
-            'excludes': ['_gtkagg', '_tkagg'],
+            'excludes': ['_gtkagg', '_tkagg', "mswsock.dll", "powrprof.dll"],
             "includes" : ["sip", "matplotlib.backends.backend_tkagg", "FileDialog", "lxml._elementpath"],
 
         }
