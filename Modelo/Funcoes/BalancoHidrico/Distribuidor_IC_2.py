@@ -24,33 +24,28 @@ def distribuir_kc(dia, semeadura_, colheita_, ano_inicio, dia_inicio, periodo_kc
     
         threading.currentThread().terminada = False
         imagem_kc = RasterFile(file_full_path = path_img_referencia)
-        imagem_kc.loadRasterData()
+        imagem_kc.getLoadJustMetaData()
         imagem_kc.file_path = path_out
 
         n_linhas = len(semeadura_)
         n_colunas = len(semeadura_[0])
         
-        delta_c = colheita_ - semeadura_
-
-        tempo_em_campo = dia - semeadura_
+        delta_c = (colheita_ - semeadura_)#.astype(np.float32)
+        tempo_em_campo = (dia+1 - semeadura_)#.astype(np.float32)
             
-        i_FKc = np.zeros((n_linhas, n_colunas)).astype(dtype="uint8")
+        i_FKc = np.zeros((n_linhas, n_colunas)).astype(np.float32)
                         
         for i in range(n_linhas) :
             mask = ((tempo_em_campo[i] > 0) & (tempo_em_campo[i] < delta_c[i]))
-            i_FKc[i][mask] = (tempo_em_campo[i][mask] * (periodo_kc-1))/delta_c[i][mask]
-            i_FKc[i][mask] +=1
-        
-
-                       
-        for i in range(n_linhas) :
-            i_FKc[i] = [kc_vetorizado[int(index)] for index in i_FKc[i]]
-
+            i_FKc[i][mask] = ((tempo_em_campo[i][mask]-1) * periodo_kc)/delta_c[i][mask]
+            i_FKc[i][mask] = np.ceil(i_FKc[i][mask])
+            i_FKc[i][mask] = [kc_vetorizado[index] for index in i_FKc[i][mask]]
+            
         imagem_kc.file_name = str(datetime.datetime(ano_inicio, 1, 1) + datetime.timedelta(dia + dia_inicio - 1))[:10]
         imagem_kc.metadata.update(nodata=0)
+        imagem_kc.metadata.update(dtype="float32")
+
         imagem_kc.saveRasterData(band_matrix = i_FKc)
-            
-        print "retornando do processo", dia
 
         threading.currentThread().terminada = True
                 
@@ -73,26 +68,28 @@ class DistribuidorKC_(AbstractFunction):
             
     def __execOperation__(self):
         
-        #self.console(u"Iniciando distribuidor")
+        self.console(u"Carregando imagens de semeadura e colheita...")
         
         try:
             semeadura_ = self.paramentrosIN_carregados["semeadura"].loadRasterData()
             colheita_ = self.paramentrosIN_carregados["colheita"].loadRasterData()
         except: 
-            print "não foi possivel carregar as imagens de semeadura e colheita"
+            self.console ("não foi possivel carregar as imagens de semeadura e colheita")
             return None
         try:
             data_minima = self.Ds_DC_to_date(np.min(semeadura_))
             data_maxima = self.Ds_DC_to_date(np.max(colheita_))          
-    
         except:
-            print u"não foi possivel converter os valores das imagens de semeadura e colheita em datas"
-            return None     
+            self.console( u"As imagens foram carregadas mas não foi possível converter os valores das imagens de semeadura e colheita em datas")
+            return None 
+            
+        self.console(u"Convertendo datas e gerando dados necessários...")
         
         semeadura_, colheita_, primeiro_ano, primeiro_dia = self.normalize_datas(semeadura_, colheita_)
         
+        data_minima_ = np.min(semeadura_)
+        data_maxima_ = np.max(colheita_)
         
-
         kc_vetorizado = self.vetorizar_kc()
         periodo_kc = len(kc_vetorizado)
         
@@ -102,27 +99,25 @@ class DistribuidorKC_(AbstractFunction):
         self.console(u"Numero de processadores identificados: " +  str(available_cpu_count()))
 
         if (available_cpu_count()>4):
-            n_of_process = available_cpu_count() - 2
-        elif (available_cpu_count()>1) :
             n_of_process = available_cpu_count() - 1
+        elif (available_cpu_count()>1) :
+            n_of_process = available_cpu_count()
         else :
             n_of_process = 1
-        
+
+        processadores_disponiveis = n_of_process
         self.console(u"Numero de processadores utilizados: "+  str(n_of_process))
 
         processos = list()
         
         path_img_semeadura = self.paramentrosIN_carregados["semeadura"].file_full_path
-        
-        processadores_disponiveis = n_of_process
-        
         self.console("Processando...")
-        
-        for dia in range (0, delta_total):
+
+        for dia in range (data_maxima_, data_maxima_):
             
             if threading.currentThread().stopped()  : return 
         
-            p = Process(target=distribuir_kc, args=(dia,      
+            p = Process(target=distribuir_kc, args=(dia,     
                                                         semeadura_, colheita_,
                                                         primeiro_ano, primeiro_dia,
                                                         periodo_kc, kc_vetorizado, path_img_semeadura, 
@@ -142,7 +137,7 @@ class DistribuidorKC_(AbstractFunction):
             
             self.setProgresso(dia, delta_total)
             
-        print "Acabou, retornando ----------------------------------------------------"
+        ##print "Acabou, retornando ----------------------------------------------------"
         
         return SerialFile(root_path = self.paramentrosIN_carregados["path_out"])
                 
@@ -153,21 +148,22 @@ class DistribuidorKC_(AbstractFunction):
         else :
             multply_factor = 1
         
-        if multply_factor is None :  multply_factor = 1
         tamanho = 0
         for key in self.paramentrosIN_carregados["Kc"].keys():
             fim = int(key.split("-")[1])
             if fim > tamanho : tamanho = fim
         
-        kc_vetorizado = np.zeros(tamanho+1)
+        kc_vetorizado = np.zeros(tamanho)
         
         for key in self.paramentrosIN_carregados["Kc"].keys():
             inicio = int(key.split("-")[0])
             fim = int(key.split("-")[1])
+            #print "chave:", key, "- inicio:", inicio, "- fim:", fim, "- tamanho:", fim - inicio
             for x in range(inicio, fim+1):
-                kc_vetorizado[x] = self.paramentrosIN_carregados["Kc"][key] * multply_factor
+                kc_vetorizado[x-1] = self.paramentrosIN_carregados["Kc"][key] * multply_factor
                 
-        kc_vetorizado[0] = 0
+        #print kc_vetorizado
+        #print len(kc_vetorizado)
         return kc_vetorizado
         
     def normalize_datas(self, semeadura, colheita):
@@ -233,7 +229,7 @@ if __name__ == '__main__':
     #paramIN["Kc"]["85-125"]=60
     #paramIN["Kc"]["125-140"]=60
     
-    print "chamando funcao"
+    #print "chamando funcao"
     
     funcao = DistribuidorKC_()
     
@@ -245,5 +241,5 @@ if __name__ == '__main__':
 
     
     
-    #print Kc_distribuido[0]
+    ##print Kc_distribuido[0]
 

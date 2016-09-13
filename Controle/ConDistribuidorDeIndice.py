@@ -161,10 +161,6 @@ class Controller(Controller):
         if(ultimo_dia_int<=int(dia_inicial)):
             self.message(_translate("O dia final do Estádio anterior precisa ser maior que o inicial"))
             return False
-        
-        self.message(_translate("MainWindow",u"Caso esteja disponível, "+
-                            u"essa função utilizará os multiplos núcleos deste processador. ", 
-                            None)) 
             
             #self.message(_translate("MainWindow","Verifique na pasta de saída se as imagens estão sendo criadas, "+
                     #     "as imagens poderão demorar até 10 minutos para aparecerem (com 5 milhões de pixels por imagem).", None))
@@ -183,17 +179,27 @@ class Controller(Controller):
         self.function.console = self.console
         self.function.print_text = self.print_text
         
+       # print ("Controller -------------------------------")
         
         '''
             Organizando tabela de kc em tabela para passar para a funcao
         '''
         numero_de_linhas = self.ui.tableWidget.rowCount()
         Kc = TableData()
-        for i in range(numero_de_linhas):
-            dia_inicio = str(self.ui.tableWidget.item(numero_de_linhas-1, 0).text())
-            dia_fim = str(self.ui.tableWidget.item(numero_de_linhas-1, 1).text())
-            valor =  float(str(self.ui.tableWidget.item(numero_de_linhas-1, 2).text()))
-            Kc[dia_inicio+"-"+dia_fim] = valor
+        
+        #print("numero de linhas", numero_de_linhas)
+        
+        for i in range(0, numero_de_linhas-1):
+            dia_inicio = str(self.ui.tableWidget.item(i, 0).text())
+            dia_fim = str(self.ui.tableWidget.item(i, 1).text())
+            valor =  float(str(self.ui.tableWidget.item(i, 2).text()))
+            key = dia_inicio+"-"+dia_fim
+            Kc[key] = valor
+            #print (key)
+            #print (valor)
+        
+
+        #print ("Controller -------------------------------")
         '''
             Montando objetos raster referentes as imagens de semeadura e colheita para passar para a funcao
         '''

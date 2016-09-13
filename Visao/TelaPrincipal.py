@@ -118,8 +118,6 @@ class Ui_MainWindow(QtGui.QMainWindow):
                            
     def setupUi(self, MainWindow):
         
-        print self.tr("foo")
-        
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(751, 240)
         MainWindow.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)

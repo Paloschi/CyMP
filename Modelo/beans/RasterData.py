@@ -102,6 +102,17 @@ class RasterFile(FileData):
         except ValueError: 
             print u"ERRO - Erro ao tentar criar arquivo, verificar a existência do diretório informado"
             
+    def getLoadJustMetaData(self):
+        
+        try :
+            with rasterio.open(self.file_full_path) as raster:
+                
+                self.metadata = raster.meta
+        
+        except :
+            print "Falha ao tentar abrir imagem", self.file_full_path   
+            return None
+            
     def getRasterInformation(self):
            
         data = TableData()
