@@ -32,8 +32,12 @@ class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
         
         locale = QLocale.system().name()
         qtTranslator = QTranslator()
-        if qtTranslator.load("qt_"+locale):
-            Dialog.installTranslator(qtTranslator)
+        
+        try:     
+            if qtTranslator.load("qt_"+locale):
+                Dialog.installTranslator(qtTranslator)
+        except:
+            pass
         
         self.controller = ConInvdistnnRaster2Raster.Controller(self)
         
