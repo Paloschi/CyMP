@@ -36,7 +36,7 @@ def distribuir_kc(dia, semeadura_, colheita_, ano_inicio, dia_inicio, periodo_kc
         i_FKc = np.zeros((n_linhas, n_colunas)).astype(np.float32)
                         
         for i in range(n_linhas) :
-            mask = ((tempo_em_campo[i] > 0) & (tempo_em_campo[i] < delta_c[i]))
+            mask = ((tempo_em_campo[i] > 0) & (tempo_em_campo[i] <= delta_c[i]))
             i_FKc[i][mask] = ((tempo_em_campo[i][mask]-1) * periodo_kc)/delta_c[i][mask]
             i_FKc[i][mask] = np.ceil(i_FKc[i][mask])
             i_FKc[i][mask] = [kc_vetorizado[index] for index in i_FKc[i][mask]]
@@ -44,7 +44,7 @@ def distribuir_kc(dia, semeadura_, colheita_, ano_inicio, dia_inicio, periodo_kc
         imagem_kc.file_name = str(datetime.datetime(ano_inicio, 1, 1) + datetime.timedelta(dia + dia_inicio - 1))[:10]
         imagem_kc.metadata.update(nodata=0)
         imagem_kc.metadata.update(dtype="float32")
-
+        
         imagem_kc.saveRasterData(band_matrix = i_FKc)
 
         threading.currentThread().terminada = True
@@ -68,6 +68,8 @@ class DistribuidorKC_(AbstractFunction):
             
     def __execOperation__(self):
         
+        self.setProgresso(0, 100)
+        
         self.console(u"Carregando imagens de semeadura e colheita...")
         
         try:
@@ -87,7 +89,7 @@ class DistribuidorKC_(AbstractFunction):
         
         semeadura_, colheita_, primeiro_ano, primeiro_dia = self.normalize_datas(semeadura_, colheita_)
         
-        data_minima_ = np.min(semeadura_)
+        data_minima_ = 0
         data_maxima_ = np.max(colheita_)
         
         kc_vetorizado = self.vetorizar_kc()
@@ -113,7 +115,7 @@ class DistribuidorKC_(AbstractFunction):
         path_img_semeadura = self.paramentrosIN_carregados["semeadura"].file_full_path
         self.console("Processando...")
 
-        for dia in range (data_maxima_, data_maxima_):
+        for dia in range (data_minima_, data_maxima_):
             
             if threading.currentThread().stopped()  : return 
         
@@ -134,8 +136,8 @@ class DistribuidorKC_(AbstractFunction):
                         processadores_disponiveis += 1
                         processos.remove(p)
                 time.sleep(0.5)
-            
-            self.setProgresso(dia, delta_total)
+
+            self.setProgresso(data_minima_ + dia, data_maxima_)
             
         ##print "Acabou, retornando ----------------------------------------------------"
         

@@ -26,11 +26,9 @@ except AttributeError:
 import warnings
 warnings.filterwarnings('ignore')
 
-
-    
 import multiprocessing as mp
 
-        
+         
 if __name__ == '__main__':
 
     

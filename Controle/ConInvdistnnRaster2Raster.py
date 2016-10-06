@@ -33,36 +33,39 @@ class Controller(AbstractController.Controller):
         self.findPath(self.ui.txImgReference)
 
     def valida_form(self):
-        if not os.path.exists(self.ui.txInFolder.text()):
-            self.message(u"Pasta de entrada das imagens não encontrada, verifique o endereço.")
-            return False   
-        if not os.path.exists(self.ui.txOutFolder.text()):
-            self.message(u"Pasta de saida das imagens não encontrada, verifique o endereço.")
+        try :
+            if not os.path.exists(self.ui.txInFolder.text()):
+                self.message(u"Pasta de entrada das imagens não encontrada, verifique o endereço.")
+                return False 
+            if not os.path.exists(self.ui.txOutFolder.text()):
+                self.message(u"Pasta de saida das imagens não encontrada, verifique o endereço.")
+                return False
+            if not os.path.exists(self.ui.txImgReference.text()):
+                self.message(u"Imagem de referencia das imagens não encontrada, verifique o endereço.")
+                return False     
+            return True
+        except :
+            self.message(u"Não foi possível ler o caminho das imagens informadas (caracteres com acentos não podem ser lidos).")
             return False
-        if not os.path.exists(self.ui.txImgReference.text()):
-            self.message(u"Imagem de referencia das imagens não encontrada, verifique o endereço.")
-            return False     
-        return True
-
     def executa(self):
         
         '''
             Criando arquivos CSVs e VRTs para submeter a interpolação
         '''
         
-        self.print_text(u'Criando arquivos necessários para a interpolação')
+        self.console(u"Recolhendo informações")
         
         self.function = RasterToCSVeVRT()
         paramIn = TableData()
         paramIn["images"] = SerialFile(root_path=str(self.ui.txInFolder.text()))
         paramIn["out_folder"] = str(self.ui.txOutFolder.text())
-          
         
-        
+        self.print_text(u'Interpolando imagens...')
+
         resultado = self.interpolar_todas_as_imagens(paramIn)
             
         if self.funcao_cancelada():
-            self.console(u"Função interrompida")
+            #self.console(u"Função interrompida")
             self.finalizar()
         elif resultado is not None:
             self.console(u"Função concluída")
@@ -78,7 +81,8 @@ class Controller(AbstractController.Controller):
         CSVs = resposta["CSVs"]
         VRTs = resposta["VRTs"]
         
-        self.print_text("Numero de imagens identificadas para interpolar: " + str(len(CSVs)))
+        self.print_text(u"Número de imagens identificadas para interpolar: " + str(len(CSVs)))
+        self.function.progresso = 0.0
         
         conf_algoritimo = TableData()
         conf_algoritimo["power"] = str(self.ui.txPower.value())
@@ -88,9 +92,9 @@ class Controller(AbstractController.Controller):
         
         conf_img_out = RasterFile(file_full_path=str(self.ui.txImgReference.text())).getRasterInformation()
         
+        self.console(u"Interpolando imagens...")
+        
         for i in range(len(CSVs)):
-            
-            resultado = None
             
             img_out = RasterFile(file_full_path=VRTs[i].file_full_path)
             img_out.file_ext = "tif"           
@@ -103,33 +107,21 @@ class Controller(AbstractController.Controller):
             paramIn["img_out"] = img_out
             
             self.function = IDW()
-            
-            self.function.progresso = (float(i+1) / len(CSVs)) * 100
-            
-            print len(VRTs)
-            print len(CSVs)
-            
-            #print "1----------------------------------------------------------------------------------"
+            self.function.setProgresso(i, len(CSVs))
             self.function.data = paramIn
-            
-            self.print_text("Interpolando imagens...")
-            
-            self.function.progresso = 0
-            
             imagem_interpolada = self.function.data
-            
-            #print "2----------------------------------------------------------------------------------"
-            
             self.print_text("Imagem interpolada: " + imagem_interpolada.file_name)
+            
+            if self.funcao_cancelada(): return
         
         return "tudo certo!"
         
 
     def set_param(self):
             
-        self.ui.txInFolder.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\raster\\Para interpolar")
-        self.ui.txOutFolder.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\out\\interpolado_no_gafanhoto")
-        self.ui.txImgReference.setText("C:\\Gafanhoto WorkSpace\\DataTestes\\raster\\rain_20110101_imagem de referencia.tif")
+        self.ui.txInFolder.setText("C:\\Users\\Paloschi\\Desktop\\TesteInterpolacao")
+        self.ui.txOutFolder.setText("C:\\Users\\Paloschi\\Desktop\\TesteSaidaInterpolacao")
+        self.ui.txImgReference.setText("C:\\Users\\Paloschi\\Desktop\\Imagem de referencia 2011_01_01.tif")
             
             
             

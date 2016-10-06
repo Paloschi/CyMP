@@ -169,7 +169,7 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
         self.btAdicionar.clicked.connect(self.controller.addEstagio)
         self.btRemover.clicked.connect(self.controller.remEstagio)
         
-        self.txImgColheita.setText("C:\\Users\\PGSERE16\\Desktop\\2013-2014\\colheita.tif")
-        self.txImgSemeadura.setText("C:\\Users\\PGSERE16\\Desktop\\2013-2014\\semeadura.tif")
-        self.txOutFolder.setText("C:\\Users\\PGSERE16\\Desktop\\Indices_distribuidos_teste\\")
+        #self.txImgColheita.setText("C:\\Users\\Paloschi\\Desktop\\2-DS, DC, DMDV\\colheita_soja_11-12.tif")
+        #self.txImgSemeadura.setText("C:\\Users\\Paloschi\\Desktop\\2-DS, DC, DMDV\\semeadura_soja_11-12.tif")
+        #self.txOutFolder.setText("C:\\Users\\Paloschi\\Desktop\\TesteDistribuidor\\")
 

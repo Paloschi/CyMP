@@ -30,10 +30,10 @@ except AttributeError:
 class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
     def setupUi(self, Dialog):
         
-        locale = QLocale.system().name()
-        qtTranslator = QTranslator()
-        if qtTranslator.load("qt_"+locale):
-            Dialog.installTranslator(qtTranslator)
+        #locale = QLocale.system().name()
+        #qtTranslator = QTranslator()
+        #if qtTranslator.load("qt_"+locale):
+        #    Dialog.installTranslator(qtTranslator)
         
         self.controller = ConInvdistnnRaster2Raster.Controller(self)
         

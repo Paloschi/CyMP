@@ -68,7 +68,7 @@ class RasterFile(FileData):
             '''
                 Listas de Drivers GDAL: http://www.gdal.org/formats_list.html
             '''
-            print ("salvando imagem  " + self.file_full_path)
+            #print ("salvando imagem  " + self.file_full_path)
             
             if self.file_ext == "tif" : self.metadata.update(driver="GTiff") 
             elif self.file_ext == "img" : self.metadata.update(driver="HFA") 
@@ -100,7 +100,7 @@ class RasterFile(FileData):
                     print "MOTIVO - índices inconsistentes, erro ao escrever banda"
             
         except ValueError: 
-            print u"ERRO - Erro ao tentar criar arquivo, verificar a existência do diretório informado"
+            print u"ERRO - Erro ao tentar criar imagem "+ self.file_name +", verificar a existência do diretório informado ou se a imagem esta aberta em outro software"
             
     def getLoadJustMetaData(self):
         

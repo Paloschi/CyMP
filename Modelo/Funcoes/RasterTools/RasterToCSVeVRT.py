@@ -32,20 +32,18 @@ class RasterToCSVeVRT(AbstractFunction):
         
         imagensIN.loadListByRoot()
         
-        nullValue = float(-128)
         listaCSV = SerialFile()
         listaVRT = SerialFile()
         
-        print "numero de imagens" + str(imagensIN)
+        n_imagens = len(imagensIN)
+        i_imagem = 0
+        self.setProgresso(i_imagem, n_imagens)
         
         for img in imagensIN :
-            
+
             matriz = img.loadRasterData()
-            nullValue = matriz[0][0]
             nome_img = img.file_name
             info = img.getRasterInformation()
-            
-            print (info)
     
             xmin = float(info["xmin"])
             xmax = float(info["xmax"])
@@ -56,10 +54,6 @@ class RasterToCSVeVRT(AbstractFunction):
             ymax = float(info["ymax"])
             ny = float(info["ny"])
             y_pixelSize = (ymax - ymin) / ny    
-            
-            print("-Criando arquivos CSV para alimentar intorpolador")
-        
-            progress(0.0)
         
             n_linhas = len(matriz)
             n_colunas = len(matriz[0]) 
@@ -67,9 +61,7 @@ class RasterToCSVeVRT(AbstractFunction):
             csv_file = FileData(file_path=outFolder, file_name = nome_img, ext = "csv")
             file_csv_path = csv_file.file_full_path
             
-            #print(file_csv_path)
-            
-            init_y_position = ymax - (y_pixelSize/2)
+            init_y_position = ymin + (y_pixelSize/2)
             init_x_position = xmin + (x_pixelSize/2)
             
             with open(file_csv_path,'w') as csv:
@@ -77,23 +69,17 @@ class RasterToCSVeVRT(AbstractFunction):
                 for i_linha in range(0, n_linhas):
                     progress(i_linha/float(n_linhas-1))
                         
-                    self.progresso = (i_linha/float(n_linhas) * 100)
-                        
-                    cy = init_y_position - (y_pixelSize * i_linha)
+                    cy = init_y_position + (y_pixelSize * i_linha)
                     cy = str(cy)
                     for i_coluna in range(0, n_colunas):
                         
                         value = matriz[i_linha][i_coluna]
-                            
                         if threading.current_thread().stopped() : return None
-                            
-                        if value != nullValue:                 
-                            cx = init_x_position + (x_pixelSize * i_coluna)
-                                
-                            line = str(cx) + ',' + cy + ',' + str(value) + '\n'
-                            csv.write(line)
-            
-            
+
+                        cx = init_x_position + (x_pixelSize * i_coluna)
+                        line = str(cx) + ',' + cy + ',' + str(value) + '\n'
+                        csv.write(line)
+
             listaCSV.append(csv_file)
             
             vrt_file = csv_file
@@ -111,8 +97,9 @@ class RasterToCSVeVRT(AbstractFunction):
             tree.write(vrt_file.file_full_path, pretty_print=True)
             
             listaVRT.append(vrt_file)
-                     
-        print('-Arquivos CSV criados')
+            
+            i_imagem = i_imagem + 1.0
+            self.setProgresso(i_imagem, n_imagens)
 
         saida = TableData()
         saida["CSVs"] = listaCSV
