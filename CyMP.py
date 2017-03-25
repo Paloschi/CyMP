@@ -8,7 +8,7 @@ from Visao import TelaPrincipal
 from multiprocessing import Process
 from PyQt4 import QtCore
 from PyQt4.Qt import QLocale, QTranslator
-
+ 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
