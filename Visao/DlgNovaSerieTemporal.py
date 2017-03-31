@@ -111,6 +111,7 @@ class Ui_Dialog(QDialog):
         self.cbMascara.setObjectName(_fromUtf8("cbMascara"))
         self.cbMascara.addItem(_fromUtf8(""))
         self.cbMascara.addItem(_fromUtf8(""))
+        self.cbMascara.addItem(_fromUtf8(""))
         self.gridLayout.addWidget(self.cbMascara, 3, 1, 1, 1)
         self.label_2 = QtGui.QLabel(Dialog)
         self.label_2.setObjectName(_fromUtf8("label_2"))
@@ -144,18 +145,24 @@ class Ui_Dialog(QDialog):
         self.tbIn.clicked.connect(self.findPath)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "CyMP - Nova série temporal", None))
+        Dialog.setWindowTitle(_translate("Dialog", "CyMP - Série temporal", None))
         self.tbIn.setText(_translate("Dialog", "...", None))
         self.label.setText(_translate("Dialog", "Endereço das imagens", None))
         self.label_3.setText(_translate("Dialog", "Sufixo", None))
-        self.cbMascara.setItemText(0, _translate("Dialog", "%Y%m%d", None))
-        self.cbMascara.setItemText(1, _translate("Dialog", "Outro Formato", None))
+        
+        self.cbMascara.setItemText(0, _translate("Dialog", "%Y-%m-%d", None))
+        self.cbMascara.setItemText(1, _translate("Dialog", "%Y%m%d", None))
+        self.cbMascara.setItemText(2, _translate("Dialog", "Outro Formato", None))
+        
         self.label_2.setWhatsThis(_translate("Dialog", "<html><head/><body><p>Este campo representa uma série de caracteres que vem antes da informação de data, no exemplo &quot;IMG_MODIS_2014-04-23_FILTRADA.tif&quot;, a sequencia de caracteres &quot;IMG_MODIS_&quot; é o prefixo, e este deve ser comum a todas as imagens presentes.</p></body></html>", None))
         self.label_2.setText(_translate("Dialog", "Prefixo", None))
         self.label_4.setText(_translate("Dialog", "Máscara de tempo", None))
         descricao = ('<html><head/><body><p><a href="https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior" target="_blank"></p></body></html>')
         self.label_4.setWhatsThis(_translate("Dialog", descricao, None))                     
         self.label_5.setText(_translate("Dialog", "Fator multiplicador", None))
+        
+        self.txFatorMultiplicador.setEnabled(False)
+        self.txFatorMultiplicador.setStatusTip("Desabilitado nessa versão")
         
 
 if __name__ == '__main__':

@@ -179,7 +179,7 @@ class Controller(Controller):
         self.function.console = self.console
         self.function.print_text = self.print_text
         
-       # print ("Controller -------------------------------")
+        # print ("Controller -------------------------------")
         
         '''
             Organizando tabela de kc em tabela para passar para a funcao
@@ -189,7 +189,7 @@ class Controller(Controller):
         
         #print("numero de linhas", numero_de_linhas)
         
-        for i in range(0, numero_de_linhas-1):
+        for i in range(0, numero_de_linhas):
             dia_inicio = str(self.ui.tableWidget.item(i, 0).text())
             dia_fim = str(self.ui.tableWidget.item(i, 1).text())
             valor =  float(str(self.ui.tableWidget.item(i, 2).text()))

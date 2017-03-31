@@ -83,34 +83,33 @@ class Controller(AbstractController.Controller):
         return True
 
     def parametros_teste(self):
-        root_path = "C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\3-ETc"
+        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\ETc"
         self.serie_ETc = SerialTemporalFiles()
         self.serie_ETc.root_path = root_path
-        self.serie_ETc.prefixo = "etc_"
-        self.serie_ETc.date_mask = "%Y-%m-%d"     
-        self.serie_ETc.mutiply_factor = 0.01
+        self.serie_ETc.prefixo = "ETc_"
+        self.serie_ETc.date_mask = "%Y%m%d"     
+        self.serie_ETc.mutiply_factor = 1
         
-        root_path = "C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\1-ECMWF\\Precipitacao"
+        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\ECMWF\\PPP_diario"
         self.serie_PPP = SerialTemporalFiles()
         self.serie_PPP.root_path = root_path
-        self.serie_PPP.prefixo = "rain_diario_"
-        self.serie_PPP.mutiply_factor = 0.01
-        self.serie_PPP.date_mask = "%Y-%m-%d"
+        self.serie_PPP.prefixo = "ppp_"
+        self.serie_PPP.mutiply_factor = 1
+        self.serie_PPP.date_mask = "%Y%m%d"
         
-        root_path = "C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\3-TAW"
+        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\TAW"
         self.serie_TAW = SerialTemporalFiles()
         self.serie_TAW.root_path = root_path
         self.serie_TAW.prefixo = "TAW_"
         self.serie_TAW.mutiply_factor = 1
         self.serie_TAW.date_mask = "%Y%m%d"
         
-        self.ui.txImgCAD.setText("C:\\Gafanhoto WorkSpace\\Soja11_12\\Mapa_solo\\soloVSMascaraSoja11_12.tif")
+        self.ui.txImgCAD.setText("C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\CAD\\CAD.tif")
         
-        root_path = "C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\4-Dr"
+        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\Dr"
         self.serie_Dr = SerialTemporalFiles()
         self.serie_Dr.root_path = root_path
-        self.serie_Dr.prefixo = "dr_"
-        self.serie_Dr.mutiply_factor = 100
-
-        self.serie_Dr.date_mask = "%Y-%m-%d"  
+        self.serie_Dr.prefixo = "Dr_"
+        self.serie_Dr.mutiply_factor = 1
+        self.serie_Dr.date_mask = "%Y%m%d"  
         

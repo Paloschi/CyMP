@@ -47,6 +47,7 @@ class Controller(AbstractController.Controller):
         except :
             self.message(u"Não foi possível ler o caminho das imagens informadas (caracteres com acentos não podem ser lidos).")
             return False
+    
     def executa(self):
         
         '''

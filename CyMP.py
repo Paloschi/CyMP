@@ -5,7 +5,6 @@ Created on Jul 7, 2015
 '''
 from PyQt4 import QtGui
 from Visao import TelaPrincipal
-from multiprocessing import Process
 from PyQt4 import QtCore
 from PyQt4.Qt import QLocale, QTranslator
  

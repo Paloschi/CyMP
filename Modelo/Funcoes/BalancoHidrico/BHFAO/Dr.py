@@ -38,10 +38,10 @@ class Dr(AbstractFunction):
         CAD_ = self.paramentrosIN_carregados["CAD"].loadRasterData()
         
         
-        Etc_factor = float(serie_Etc.mutiply_factor)
-        PPP_factor = float(serie_PPP.mutiply_factor)
-        TAW_factor = float(serie_TAW.mutiply_factor)
-        Dr_factor = float(serie_Dr.mutiply_factor)
+        #Etc_factor = float(serie_Etc.mutiply_factor)
+        #PPP_factor = float(serie_PPP.mutiply_factor)
+        #TAW_factor = float(serie_TAW.mutiply_factor)
+        #Dr_factor = float(serie_Dr.mutiply_factor)
         
         n_ppp = len(serie_PPP)
         
@@ -65,16 +65,21 @@ class Dr(AbstractFunction):
             ppp = serie_PPP[i]
             data_ppp = serie_PPP.getDate_time(file=ppp)
             ppp_ = numpy.array(ppp.loadRasterData()).astype(dtype="float32")
-            ppp_ *= PPP_factor
+            #ppp_ *= PPP_factor
             
             etc = self.procura_img_por_data(serie_Etc, data_ppp)
+            if etc is None :
+                self.console(u"ERRO: não foi encontrado imagem de etc para a data: " + data_ppp.strftime('%d/%m/%Y')+ "!")
+                self.console(u"Confira as datas e as máscaras de tempo.")
+                threading.currentThread().stop()
+                return
             etc_ = numpy.array(etc.loadRasterData()).astype(dtype="float32")
-            etc_ *= Etc_factor
+            #etc_ *= Etc_factor
                 
             taw = self.procura_img_por_data(serie_TAW, data_ppp)
             if taw is not None :
                 taw_ = numpy.array(taw.loadRasterData()).astype(dtype="float32")   
-                taw_ *= TAW_factor 
+                #taw_ *= TAW_factor 
             else :
                 taw_ = CAD_  
                 
@@ -86,19 +91,20 @@ class Dr(AbstractFunction):
 
             for i in range(len(taw_)) :
                 Dr_[i][-Dr_[i] > taw_[i]] = -taw_[i][-Dr_[i] > taw_[i]]
-                "isso aqui em baixo é pro balanço idrico nao ser menor que 0 ou seja o Dr nao pode ser maior q 0"
+                #"isso aqui em baixo é pro balanço idrico nao ser menor que 0 ou seja o Dr nao pode ser maior q 0"
                 Dr_[i][Dr_[i] > 0] = 0 
                 
             Dr_anterior = numpy.copy(Dr_)  
-            Dr_ = numpy.round(Dr_, 2)   
-            Dr_ *= Dr_factor
+            #Dr_ = numpy.round(Dr_, 2)   
+            #Dr_ *= Dr_factor
             
-            Dr_ = self.compactar(Dr_)        
+            #Dr_ = self.compactar(Dr_)        
             
             dr = RasterFile(file_path=serie_Dr.root_path, ext="tif")
             dr = serie_Dr.setDate_time(data_ppp, file=dr)       
             dr.data = Dr_
             dr.metadata = ppp.metadata
+            dr.metadata.update(dtype = dr.data.dtype)
             dr.saveRasterData()
             dr.data = None
             serie_Dr.append(dr)

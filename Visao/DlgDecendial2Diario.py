@@ -87,7 +87,7 @@ class Ui_Decendial2Diario(QtGui.QDialog):
         self.pushButton.clicked.connect(self.controller.setSerieEntrada)
         self.pushButton_2.clicked.connect(self.controller.setSerieSaida)
         
-        #self.controller.parametros_teste()
+        self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "CyMP - Decendial para diário", None))

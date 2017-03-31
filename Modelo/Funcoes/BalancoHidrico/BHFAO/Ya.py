@@ -41,10 +41,10 @@ class Ya(AbstractFunction):
         
         ky = self.paramentrosIN_carregados["Ky"]
         
-        factor_eta = float(serie_eta.mutiply_factor)
-        factor_etc = float(serie_etc.mutiply_factor)
-        factor_yx = float(serie_yx.mutiply_factor)
-        factor_ya = float(serie_ya.mutiply_factor)
+        #factor_eta = float(serie_eta.mutiply_factor)
+        #factor_etc = float(serie_etc.mutiply_factor)
+        #factor_yx = float(serie_yx.mutiply_factor)
+        #factor_ya = float(serie_ya.mutiply_factor)
         
         n_img = len(serie_Kc)
         
@@ -62,10 +62,13 @@ class Ya(AbstractFunction):
             data_ref = serie_Kc.getDate_time(file=kc)
             kc_ = kc.loadRasterData()
             
-            eta_ = self.LoadImgByDate(serie_eta, data_ref, factor_eta)
-            etc_ = self.LoadImgByDate(serie_etc, data_ref, factor_etc)
-            yx_ = self.LoadImgByDate(serie_yx, data_ref, factor_yx)
+            #eta_ = self.LoadImgByDate(serie_eta, data_ref, factor_eta)
+            #etc_ = self.LoadImgByDate(serie_etc, data_ref, factor_etc)
+            #yx_ = self.LoadImgByDate(serie_yx, data_ref, factor_yx)
             
+            eta_ = self.LoadImgByDate(serie_eta, data_ref)
+            etc_ = self.LoadImgByDate(serie_etc, data_ref)
+            yx_ = self.LoadImgByDate(serie_yx, data_ref)
             
             p1= ky * (1-eta_/etc_)
             ya_ = (1-p1) * yx_
@@ -73,8 +76,8 @@ class Ya(AbstractFunction):
             for i in range(len(ya_)): 
                 ya_[i][kc_[i]==0] = 0
                 
-            ya_ = numpy.round(ya_, 3)   
-            ya_ *= factor_ya
+            #ya_ = numpy.round(ya_, 3)   
+            #ya_ *= factor_ya
             
             #ya_ = self.compactar(ya_)   
             
@@ -91,10 +94,15 @@ class Ya(AbstractFunction):
         
         return serie_ya
     
-    def LoadImgByDate(self, serie, date, factor):          
+    #def LoadImgByDate(self, serie, date, factor):          
+            #img = self.procura_img_por_data(serie, date)
+            #img_ = numpy.array(img.loadRasterData()).astype(dtype="float32")
+            #img_ *= factor  
+            #return img_
+        
+    def LoadImgByDate(self, serie, date):          
             img = self.procura_img_por_data(serie, date)
             img_ = numpy.array(img.loadRasterData()).astype(dtype="float32")
-            img_ *= factor  
             return img_
         
     def testar(self):

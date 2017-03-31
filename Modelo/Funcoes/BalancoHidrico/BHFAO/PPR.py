@@ -93,6 +93,7 @@ class PPR(AbstractFunction):
             PPR = RasterFile(file_path=serie_PPR.root_path, ext="tif")
             PPR = serie_PPR.setDate_time(data_T, file=PPR)       
             PPR.metadata = T.metadata
+            PPR.metadata.update(dtype = PPR.data.dtype)
             PPR.data = PPR_
             PPR.saveRasterData()
             PPR.data = None
