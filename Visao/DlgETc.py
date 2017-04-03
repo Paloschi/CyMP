@@ -101,7 +101,7 @@ class Ui_Dialog(QtGui.QDialog):
         self.rbEta.clicked.connect(self.controller.MudaPraETa)
         self.rbEtc.clicked.connect(self.controller.MudaPraETc)
         
-        self.controller.parametros_teste()
+        #self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "CyMP - Evapotranspiração", None))

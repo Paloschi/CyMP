@@ -87,7 +87,7 @@ class Ui_Dialog(QtGui.QDialog):
         self.btnConfTemp.clicked.connect(self.controller.setSerieT)
         self.btnConfPPR.clicked.connect(self.controller.setSeriePPR)
         
-        self.controller.parametros_teste()
+        #self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "CyMP - Produtividade potencial bruta (PPB)", None))

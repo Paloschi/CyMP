@@ -109,7 +109,7 @@ class Ui_Dialog(QtGui.QDialog):
         
         self.chPValor.clicked.connect(self.controller.habilitaPValue)
         
-        self.controller.parametros_teste()
+        #self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "CyMP - TAW/RAW", None))
