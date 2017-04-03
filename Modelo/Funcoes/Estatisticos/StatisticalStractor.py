@@ -34,7 +34,7 @@ class SpectreStatisticalStractor(AbstractFunction):
 
         images_super = self.paramentrosIN_carregados["images"]
         self.console(u"Número de imagens para ler: " + str(len(images_super)))
-        nullValue = self.paramentrosIN_carregados["null_value"]
+        #nullValue = self.paramentrosIN_carregados["null_value"]
         statistics = self.paramentrosIN_carregados["statistics"]
         
         #self.print_text("Estatisticas a fazer: ", statistics)
