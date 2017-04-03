@@ -88,24 +88,24 @@ class Controller(AbstractController.Controller):
         return True
 
     def parametros_teste(self):
-        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\ECMWF\\ET0_diario"
+        root_path = "C:\\CyMP\\Gafanhoto\\DADOS\\Imagens Cascavel\\Ks"
         self.serie_ET0 = SerialTemporalFiles()
         self.serie_ET0.root_path = root_path
-        self.serie_ET0.prefixo = "evpt_diario_"
+        self.serie_ET0.prefixo = "Ks_"
         self.serie_ET0.mutiply_factor = 1
-        self.serie_ET0.date_mask = "%Y-%m-%d"
+        self.serie_ET0.date_mask = "%Y%m%d"
         
-        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\Kc"
+        root_path = "C:\\CyMP\\Gafanhoto\\DADOS\\Imagens Cascavel\\ETc"
         self.serie_Kc = SerialTemporalFiles()
         self.serie_Kc.root_path = root_path
-        self.serie_Kc.prefixo = ""
+        self.serie_Kc.prefixo = "ETc_"
         self.serie_Kc.mutiply_factor = 1
-        self.serie_Kc.date_mask = "%Y-%m-%d"
+        self.serie_Kc.date_mask = "%Y%m%d"
         
-        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\ETc"
+        root_path = "C:\\CyMP\\Gafanhoto\\DADOS\\Imagens Cascavel\\ETa"
         self.serie_ETc = SerialTemporalFiles()
         self.serie_ETc.root_path = root_path
-        self.serie_ETc.prefixo = "ETc_"
+        self.serie_ETc.prefixo = "ETa_"
         self.serie_ETc.date_mask = "%Y%m%d"    
         self.serie_ETc.mutiply_factor = 1   
         
