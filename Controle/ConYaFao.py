@@ -87,26 +87,26 @@ class Controller(AbstractController.Controller):
     def parametros_teste(self):
 
 
-        self.serie_ETa = SerialTemporalFiles(root_path="C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\6-Eta")
-        self.serie_ETa.prefixo = "eta_"
-        self.serie_ETa.date_mask = "%Y-%m-%d"
-        self.serie_ETa.mutiply_factor = 0.01
+        self.serie_ETa = SerialTemporalFiles(root_path="C:\\CyMP\\Gafanhoto\\DADOS\\Imagens Cascavel\\ETa")
+        self.serie_ETa.prefixo = "ETa_"
+        self.serie_ETa.date_mask = "%Y%m%d"
+        self.serie_ETa.mutiply_factor = 1
         
-        self.serie_ETc = SerialTemporalFiles(root_path="C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\3-ETc")
-        self.serie_ETc.prefixo = "etc_"
-        self.serie_ETc.date_mask = "%Y-%m-%d"
-        self.serie_ETc.mutiply_factor = 0.01
+        self.serie_ETc = SerialTemporalFiles(root_path="C:\\CyMP\\Gafanhoto\\DADOS\\Imagens Cascavel\\ETc")
+        self.serie_ETc.prefixo = "ETc_"
+        self.serie_ETc.date_mask = "%Y%m%d"
+        self.serie_ETc.mutiply_factor = 1
         
-        self.serie_Yx = SerialTemporalFiles(root_path="C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\5-PPR(Yx)")
-        self.serie_Yx.prefixo = "ppr_"
-        self.serie_Yx.date_mask = "%Y-%m-%d"
+        self.serie_Yx = SerialTemporalFiles(root_path="C:\\CyMP\\Gafanhoto\\DADOS\\Imagens Cascavel\\PPB")
+        self.serie_Yx.prefixo = "ppb_"
+        self.serie_Yx.date_mask = "%Y%m%d"
         self.serie_Yx.mutiply_factor = 1
         
-        self.serie_Ya = SerialTemporalFiles(root_path="C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\7-Ya")
+        self.serie_Ya = SerialTemporalFiles(root_path="C:\\CyMP\\Gafanhoto\\DADOS\\Imagens Cascavel\\Ya")
         self.serie_Ya.prefixo = "Ya_"
-        self.serie_Ya.date_mask = "%Y-%m-%d"
+        self.serie_Ya.date_mask = "%Y%m%d"
         self.serie_Ya.mutiply_factor = 1
         
-        self.serie_Kc = SerialTemporalFiles(root_path="C:\\Users\\Paloschi\\Desktop\\Tudo_Necessario\\2-Kc")
+        self.serie_Kc = SerialTemporalFiles(root_path="C:\\CyMP\\Gafanhoto\\DADOS\\Imagens Cascavel\\Kc")
         self.serie_Kc.date_mask = "%Y-%m-%d"
     

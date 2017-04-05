@@ -118,6 +118,8 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
         QtCore.QObject.connect(self.btOkCancel, QtCore.SIGNAL(_fromUtf8("accepted()")), self.controller.action_ok)
         QtCore.QObject.connect(self.btOkCancel, QtCore.SIGNAL(_fromUtf8("rejected()")), self.controller.action_cancel)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+        
+        self.txMultiplyFactor.setEnabled(False)
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "CyMP - Distribuidor de índice.", None))
@@ -157,7 +159,7 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
         self.comboBox.setItemText(1, _translate("Dialog", "Kc FAO - Soja", None))
         self.comboBox.setItemText(2, _translate("Dialog", "Zr FAO - Soja", None))
         self.label_5.setText(_translate("Dialog", "Distribuidor de índice por Estádio fenológico", None))
-        self.txMultiplyFactor.setValue(100)
+        self.txMultiplyFactor.setValue(1)
         
         self.btFindImgSemeadura.clicked.connect(self.controller.findImgSemeadura)
         self.btFindOutFolder.clicked.connect(self.controller.findOutFolder)

@@ -28,13 +28,17 @@ class Controller(AbstractController.Controller):
          
     def parametros_teste(self):
     
-        self.serie_T = SerialTemporalFiles(root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\8-Diario\\tav")
+        self.serie_T = SerialTemporalFiles(root_path = "C:\\CyMP\\Gafanhoto\\DADOS\\Imagens Cascavel\\ECMWF\\TTT_diario")
         self.serie_T.prefixo = "tav_"  
         self.serie_T.date_mask = "%Y%m%d" 
+        self.serie_T.mutiply_factor = 1
 
-        self.serie_PPR = SerialTemporalFiles(root_path = "C:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\PPR")
-        self.serie_PPR.prefixo = "ppr_"  
-        self.serie_PPR.date_mask = "%Y-%m-%d"      
+        self.serie_PPR = SerialTemporalFiles(root_path = "C:\\CyMP\\Gafanhoto\\DADOS\\Imagens Cascavel\\PPB")
+        self.serie_PPR.prefixo = "ppb_"  
+        self.serie_PPR.date_mask = "%Y%m%d"      
+        self.serie_PPR.mutiply_factor = 1
+        
+        self.ui.txCc.setValue(0.35599427)
          
     def executa(self):
         self.function = PPR.PPR()

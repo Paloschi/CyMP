@@ -109,12 +109,11 @@ class IDW(AbstractFunction):
             
         try:
             print ("string de execucao: ", str(string_execucao))
-            subprocess.call (string_execucao, creationflags=subprocess.SW_HIDE, shell=True) 
-  
-            
+            resposta = subprocess.check_call(string_execucao, creationflags=subprocess.SW_HIDE, shell=True) 
+            print (resposta)
+   
         except Exception:  
-            print 'erro ao chamar subprocesso gdal_grid, verifiquei se a GDAL core está instalada e a variavel de ambiente está setada'
-            
+            print Exception
             
         saida = img_out
         

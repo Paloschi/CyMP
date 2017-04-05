@@ -51,6 +51,9 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         
     def __execOperation__(self):
         
+        sys.stdout.write( "Inicializando Parametros...")
+        self.print_text(u"Inicializando Parametros...")        
+        
         prefix = self.paramentrosIN_carregados["prefixo"]
         sufix = self.paramentrosIN_carregados["sufixo"]
         
@@ -77,19 +80,14 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         if images==None:
             raise Exception("A funcao necessita de uma serie de imagens para funcionar")
         
-        n_images = len(images)
+        #n_images = len(images)
         n_linhas = len(images[0])
         n_colunas = len(images[0][0])
         
-        
-        #nullValue = float(self.paramentrosIN_carregados["null_value"])
-        
-
-        #if(images[0][0][0] == nullValue) : print("null value igual") 
+        nullValue = float(self.paramentrosIN_carregados["null_value"])
+        if(images[0][0][0] == nullValue) : print("null value igual") 
         #else : print("diferente")
-        
-        sys.stdout.write( "Criando imagens de referencia: ")
-        self.print_text(u"Criando imagens de referência.")
+
         imagem_referencia = np.zeros((n_linhas, n_colunas))
         
         imagem_semeadura = array(imagem_referencia).astype(dtype="int32")
@@ -102,24 +100,21 @@ class ExtratorSemeaduraColheita(AbstractFunction):
         progress(0.0)
         
         imagem_for_null_value = images[0]
-        nullValue = imagem_for_null_value[0][0]
-        #print(nullValue)
+        #nullValue = imagem_for_null_value[0][0]
         
         avanco_semeadura = timedelta(avanco_semeadura)
         avanco_colheita = timedelta(avanco_colheita)
         
         images_super[0].metadata.update(nodata=0)
-        #print images_super[0].metadata
         
         for i_linhas in range(0, n_linhas):
-            progress(i_linhas/float(n_linhas))
-            self.progresso = (i_linhas/float(n_linhas)) * 100
+            #progress(i_linhas/float(n_linhas))
+            self.setProgresso(i_linhas, n_linhas)
             for i_coluna in range(0, n_colunas):
                 line = list()
                 
-                
                 if threading.currentThread().stopped()  : return 
-                    
+
                 if nullValue != imagem_for_null_value[i_linhas][i_coluna] :
                             
                     for img in images:

@@ -12,6 +12,8 @@ import gdal
 import rasterio
 import sys
 import datetime
+from rasterio._example import numpy
+
 
 progress = gdal.TermProgress_nocb
 
@@ -153,7 +155,6 @@ class SerialFile(ABData, list):
         
         
         self.metadata.update(count=n_images)
-        
         self.metadata.update(compress='lzw')
         
         print self.metadata
@@ -167,7 +168,17 @@ class SerialFile(ABData, list):
             
             for i in range(0, n_images):
                 #print(i)
+                
                 band = self[i].loadRasterData()
+                
+                nodata_band = self[i].metadata["nodata"]
+                
+                band[band==nodata_band] = self.metadata["nodata"]
+                
+                #print ("Nodata Band: " + str(nodata_band))
+                #print ("Nodata Cubo: " + str(self.metadata["nodata"]))
+                 
+                band = numpy.array(band).astype(dtype = self.metadata["dtype"])
                 dst.write_band(i+1, band)
                 progress( float(i) / float(n_images)) 
              

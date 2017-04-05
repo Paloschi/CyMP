@@ -50,6 +50,7 @@ class Controller(AbstractController.Controller):
         else :
             imagens_filtradas.saveListByRoot(root_path=root_out, ext="tif") 
             self.print_text(u"Função concluída")
+            self.finalizar()
         
     def carregarParamIN(self):
         

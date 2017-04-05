@@ -40,8 +40,8 @@ class Funcao(AbstractFunction):
         serie_imagem_in = self.paramentrosIN_carregados["In"].loadListByRoot()
         serie_imagem_out = self.paramentrosIN_carregados["Out_config"]
         
-        imagem_in_factor = float(serie_imagem_in.mutiply_factor)
-        imagem_out_factor = float(serie_imagem_out.mutiply_factor)
+        #imagem_in_factor = float(serie_imagem_in.mutiply_factor)
+        #imagem_out_factor = float(serie_imagem_out.mutiply_factor)
         
         
         n_imagens = len(serie_imagem_in)
@@ -56,47 +56,45 @@ class Funcao(AbstractFunction):
         
         for i in range(n_imagens):
             
-            self.progresso = (i / float(n_imagens)) * 100
+            self.setProgresso(i, n_imagens)
             
             '''Recupera a data correspondente a imagem atual do laço '''
-            data = serie_imagem_in.getDate_time(i)
-            dia_mes = data.day
-            
-            '''Calcula quantos dias tem no decend atual'''
-            if dia_mes <= 10: duracao = 10
-            elif dia_mes <= 20: duracao = 10
-            else : duracao =  int(calendar.monthrange(data.year, data.month)[1]) - 20
-            
-            if threading.currentThread().stopped()  :
-                print "thread parada, retornando da função"
-                return 
-           
-            imagem_ = serie_imagem_in[i].loadRasterData()
-            imagem_ *= imagem_in_factor
+            try:
+                data = serie_imagem_in.getDate_time(i)
+                dia_mes = data.day
 
-            if self.paramentrosIN_carregados["Operation"] == "dividir valores": 
-                imagem_ = (imagem_ / float(duracao))
-                imagem_ = numpy.round(imagem_, 4)
-            elif self.paramentrosIN_carregados["Operation"] == "manter valores": 
-                pass
-
+                '''Calcula quantos dias tem no decend atual'''
+                if dia_mes <= 10: duracao = 10
+                elif dia_mes <= 20: duracao = 10
+                else : duracao =  int(calendar.monthrange(data.year, data.month)[1]) - 20
                 
-            imagem_ *= imagem_out_factor
-
-            #imagem_ = self.compactar(imagem_)
-                 
-            for ii in range (0, duracao):
-                img = RasterFile()
-                img.file_path = serie_imagem_out.root_path   
-                data_img = data + timedelta(ii)
-                img.file_name = serie_imagem_out.prefixo + data_img.strftime(serie_imagem_out.date_mask) + serie_imagem_out.sufixo
-                img.data = imagem_
-                img.file_ext = "tif"
-                metadata = serie_imagem_in[i].metadata
-                #metadata.update(nodata=0)
-                img.saveRasterData(metadata=metadata)
-                print metadata
-
+                if threading.currentThread().stopped()  :
+                    print "thread parada, retornando da função"
+                    return 
+               
+                imagem_ = serie_imagem_in[i].loadRasterData()
+                imagem_ = numpy.ma.masked_array(imagem_, mask=(imagem_ == serie_imagem_in[i].metadata["nodata"]))
+    
+                if self.paramentrosIN_carregados["Operation"] == "dividir valores": 
+                    imagem_ = (imagem_ / float(duracao))
+                    imagem_[numpy.isinf(imagem_)] = 0
+                elif self.paramentrosIN_carregados["Operation"] == "manter valores": 
+                    pass
+                     
+                for ii in range (0, duracao):
+                    img = RasterFile()
+                    img.file_path = serie_imagem_out.root_path   
+                    data_img = data + timedelta(ii)
+                    img.file_name = serie_imagem_out.prefixo + data_img.strftime(serie_imagem_out.date_mask) + serie_imagem_out.sufixo
+                    img.data = imagem_
+                    img.file_ext = "tif"
+                    metadata = serie_imagem_in[i].metadata
+                    img.metadata = metadata
+                    img.metadata.update(dtype = img.data.dtype)
+                    img.saveRasterData(metadata=metadata)
+            except:
+                self.console(u"Erro na imagem: " + serie_imagem_in[i].file_name)             
+            
    
         self.console(u"Série temporal diária concluída.")
 

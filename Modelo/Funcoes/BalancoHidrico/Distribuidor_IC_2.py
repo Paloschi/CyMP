@@ -42,11 +42,10 @@ def distribuir_kc(dia, semeadura_, colheita_, ano_inicio, dia_inicio, periodo_kc
             i_FKc[i][mask] = [kc_vetorizado[index] for index in i_FKc[i][mask]]
             
         imagem_kc.file_name = str(datetime.datetime(ano_inicio, 1, 1) + datetime.timedelta(dia + dia_inicio - 1))[:10]
+        
         imagem_kc.metadata.update(nodata=0)
         imagem_kc.metadata.update(dtype="float32")
-        
         imagem_kc.saveRasterData(band_matrix = i_FKc)
-
         threading.currentThread().terminada = True
                 
         return
@@ -93,6 +92,7 @@ class DistribuidorKC_(AbstractFunction):
         data_maxima_ = np.max(colheita_)
         
         kc_vetorizado = self.vetorizar_kc()
+        
         periodo_kc = len(kc_vetorizado)
         
         delta_total = (data_maxima-data_minima).days
@@ -160,11 +160,11 @@ class DistribuidorKC_(AbstractFunction):
         for key in self.paramentrosIN_carregados["Kc"].keys():
             inicio = int(key.split("-")[0])
             fim = int(key.split("-")[1])
-            #print "chave:", key, "- inicio:", inicio, "- fim:", fim, "- tamanho:", fim - inicio
+            print "chave:", key, "- inicio:", inicio, "- fim:", fim, "- tamanho:", fim - inicio
             for x in range(inicio, fim+1):
                 kc_vetorizado[x-1] = self.paramentrosIN_carregados["Kc"][key] * multply_factor
                 
-        #print kc_vetorizado
+        print kc_vetorizado
         #print len(kc_vetorizado)
         return kc_vetorizado
         
@@ -216,20 +216,18 @@ if __name__ == '__main__':
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
     
     paramIN = dict()
-    paramIN["semeadura"] = RasterFile(file_full_path="C://Users//Paloschi//Desktop//2013-2014//semeadura.tif")
-    paramIN["colheita"] = RasterFile(file_full_path="C://Users//Paloschi//Desktop//2013-2014//colheita.tif")
-    paramIN["path_out"] = "C://Users//Paloschi//Desktop//saida_teste"
+    paramIN["semeadura"] = RasterFile(file_full_path="C:/CyMP//Gafanhoto//DADOS para Dr//Imagens Cascavel//TesteDatasCultura//semeadura.tif")
+    paramIN["colheita"] = RasterFile(file_full_path="C:/CyMP//Gafanhoto//DADOS para Dr//Imagens Cascavel//TesteDatasCultura//colheita.tif")
+    paramIN["path_out"] = "C:/CyMP//Gafanhoto//DADOS para Dr//Imagens Cascavel//TesteDatasCultura//saida_teste"
     paramIN["Kc"] = TableData()
-    paramIN["Kc"]["0-10"]=40
-    paramIN["Kc"]["10-50"]=80
-    paramIN["Kc"]["50-85"]=115
-    paramIN["Kc"]["85-125"]=80
-    paramIN["Kc"]["125-140"]=50
-    #paramIN["Kc"]["0-10"]=10
-    #paramIN["Kc"]["10-50"]=25
-    #paramIN["Kc"]["50-85"]=60
-    #paramIN["Kc"]["85-125"]=60
-    #paramIN["Kc"]["125-140"]=60
+    #paramIN["Kc"]["0-10"]=40
+    #paramIN["Kc"]["10-50"]=80
+    #paramIN["Kc"]["50-85"]=115
+    #paramIN["Kc"]["85-125"]=80
+    #paramIN["Kc"]["125-140"]=50
+    paramIN["Kc"]["0-10"]=0.10
+    paramIN["Kc"]["10-50"]=0.25
+    paramIN["Kc"]["50-140"]=0.60
     
     #print "chamando funcao"
     

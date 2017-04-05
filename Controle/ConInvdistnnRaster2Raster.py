@@ -35,6 +35,7 @@ class Controller(AbstractController.Controller):
     def valida_form(self):
         try :
             if not os.path.exists(self.ui.txInFolder.text()):
+                self.message(self.ui.txInFolder.text())
                 self.message(u"Pasta de entrada das imagens não encontrada, verifique o endereço.")
                 return False 
             if not os.path.exists(self.ui.txOutFolder.text()):
@@ -47,6 +48,7 @@ class Controller(AbstractController.Controller):
         except :
             self.message(u"Não foi possível ler o caminho das imagens informadas (caracteres com acentos não podem ser lidos).")
             return False
+    
     def executa(self):
         
         '''
@@ -119,9 +121,9 @@ class Controller(AbstractController.Controller):
 
     def set_param(self):
             
-        self.ui.txInFolder.setText("C:\\Users\\Paloschi\\Desktop\\TesteInterpolacao")
-        self.ui.txOutFolder.setText("C:\\Users\\Paloschi\\Desktop\\TesteSaidaInterpolacao")
-        self.ui.txImgReference.setText("C:\\Users\\Paloschi\\Desktop\\Imagem de referencia 2011_01_01.tif")
+        self.ui.txInFolder.setText("C:\\Chuva")
+        self.ui.txOutFolder.setText("C:\\Chuva2")
+        self.ui.txImgReference.setText("C:\\Chuva2\\referencia.tif")
             
             
             

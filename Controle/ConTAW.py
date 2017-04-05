@@ -32,6 +32,13 @@ class Controller(AbstractController.Controller):
         if imagens is not None:
             self.serie_TAW = imagens
             self.ui.chTAW.setCheckState(True)
+            
+    def habilitaPValue(self):
+        if self.ui.chPValor.isChecked():
+            self.ui.txPvalor.setEnabled(True)
+        else:
+            self.ui.txPvalor.setEnabled(False)
+            
     
     def executa(self):
 
@@ -41,6 +48,13 @@ class Controller(AbstractController.Controller):
         parametros["CAD"] = RasterData.RasterFile(file_full_path=str(self.ui.txImgCAD.text()))
         parametros["Zr"] = self.serie_Zr
         parametros["TAW"] = self.serie_TAW
+        
+        if self.ui.chPValor.isChecked():
+            parametros["p"] = float(self.ui.txPvalor.value())
+        else:
+            parametros["p"] = 1
+            
+        print ("controller: " + str(parametros["p"]))
         
         resultado = self.function.executar(parametros)
         
@@ -65,19 +79,21 @@ class Controller(AbstractController.Controller):
 
     def parametros_teste(self):
         
-        self.ui.txImgCAD.setText("E:\\Gafanhoto WorkSpace\\Soja11_12\\Mapa_solo\\Cad_mm_250m_TamanhoZr.tif")
+        self.ui.txImgCAD.setText("C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\CAD\\CAD.tif")
         
-        root_path = "E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\Zr\\soltas"
+        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\Zr"
         self.serie_Zr = SerialTemporalFiles()
         self.serie_Zr.root_path = root_path
         self.serie_Zr.prefixo = ""
-        self.serie_Zr.mutiply_factor = 0.01
+        self.serie_Zr.mutiply_factor = 1
         self.serie_Zr.date_mask = "%Y-%m-%d"
         
-        root_path = "E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\RAW"
+        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\RAW"
         self.serie_TAW = SerialTemporalFiles()
         self.serie_TAW.root_path = root_path
         self.serie_TAW.prefixo = "RAW_"
-        self.serie_TAW.mutiply_factor = 0.5
-        self.serie_TAW.date_mask = "%Y-%m-%d"   
+        self.serie_TAW.mutiply_factor = 1
+        self.serie_TAW.date_mask = "%Y%m%d"
+        
+        self.ui.txPvalor.setValue(0.5)   
         

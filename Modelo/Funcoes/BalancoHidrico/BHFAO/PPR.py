@@ -26,6 +26,8 @@ class PPR(AbstractFunction):
     
     def __execOperation__(self):
         
+        self.console(u"Iniciando parametros.")
+        
         serie_T = self.paramentrosIN_carregados["T"].loadListByRoot()
         serie_PPR = self.paramentrosIN_carregados["PPR"]
         self.Cc = self.paramentrosIN_carregados["Cc"]
@@ -42,12 +44,16 @@ class PPR(AbstractFunction):
         
         ii=1
         
+        n_imagens = len(serie_T)
+        self.console(u"Número de imagens de encontradas: " + str(n_imagens))
+        self.console(u"Processando...")
+        
         for T in serie_T:
             
             if threading.currentThread().stopped()  : return 
 
             
-            start = time.time()
+            #start = time.time()
             T_ = np.array(T.loadRasterData()).astype(dtype="float32")
             data_T = serie_T.getDate_time(file=T)
             dj = data_T.timetuple().tm_yday # Dia Juliano
@@ -93,15 +99,22 @@ class PPR(AbstractFunction):
             PPR = RasterFile(file_path=serie_PPR.root_path, ext="tif")
             PPR = serie_PPR.setDate_time(data_T, file=PPR)       
             PPR.metadata = T.metadata
+            #print (PPR.metadata)
+            
+    
+            PPR_[PPR_ == float('Inf')] = PPR.metadata["nodata"]
+            #ks_[i][taw_[i] == float('NaN')] = -1
+            
             PPR.data = PPR_
+            PPR.metadata.update(dtype = PPR.data.dtype)
             PPR.saveRasterData()
             PPR.data = None
             serie_PPR.append(PPR)
             
             ii +=1
-            end = time.time()
+            #end = time.time()
             
-            self.console("tempo restante(m):" + str( np.round(((end - start)  * (len(serie_T)-ii)) /60, 2)))
+            #self.console("tempo restante(m):" + str( np.round(((end - start)  * (len(serie_T)-ii)) /60, 2)))
             self.setProgresso(ii, len(serie_T))
             
         return serie_PPR

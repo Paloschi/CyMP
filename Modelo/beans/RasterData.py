@@ -100,7 +100,7 @@ class RasterFile(FileData):
                     print "MOTIVO - índices inconsistentes, erro ao escrever banda"
             
         except ValueError: 
-            print u"ERRO - Erro ao tentar criar imagem "+ self.file_name +", verificar a existência do diretório informado ou se a imagem esta aberta em outro software"
+            print u"ERRO - Erro ao tentar criar imagem "+ self.file_name +u", verificar a existência do diretório informado ou se a imagem esta aberta em outro software"
             
     def getLoadJustMetaData(self):
         

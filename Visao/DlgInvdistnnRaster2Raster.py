@@ -193,7 +193,7 @@ class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), self.controller.action_cancel)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
         
-        self.controller.set_param()
+        #self.controller.set_param()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "CyMP - Interpolador raster pra raster", None))

@@ -9,7 +9,8 @@ from Modelo.beans.AbstractData import ABData, FUNCTION_DATA
 from abc import ABCMeta, abstractmethod
 from numpy.distutils.environment import __metaclass__
 import numpy
-
+import ConfigParser
+import threading
 import logging as log
 
 
@@ -101,12 +102,38 @@ class Function(ABData):
         pass
     
     def executar(self, parametros):
-        print "aque1"
-        while self.console is None : pass
-        print "aque2"
-        self.data = parametros
-        return self.data
+        config = ConfigParser.RawConfigParser()
+        config.read('workspace.properties')
+        DebugMode=config.get('Config', 'DebugMode')
+
+        if DebugMode == "True" :
+            
+            print "Esperando console carregar"
+            while self.console is None : pass
+            print "Console carregado"
     
+            #try: 
+            self.data = parametros
+            return self.data
+            #except Exception as e:
+            #self.console(str(e))
+            self.console(u"Função interrompida")
+            self.setProgresso(100, 100)
+            threading.currentThread().stop()
+            return None
+        
+        else:
+            while self.console is None : pass
+            try: 
+                self.data = parametros
+                return self.data
+            except:
+                self.console(u"Erro desconhecido, reveja os parametros ou ative o DebugMode para saber mais")
+                self.console(u"Função interrompida")
+                self.setProgresso(100, 100)
+                threading.currentThread().stop()
+                return None
+        
     def setProgresso (self, indice, total):
         self.progresso = (indice / float(total) * 100)
         

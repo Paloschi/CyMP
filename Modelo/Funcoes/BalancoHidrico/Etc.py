@@ -46,9 +46,9 @@ class Etc(AbstractFunction):
         serie_Kc = self.paramentrosIN_carregados["Kc"].loadListByRoot() # pucha e já carrega a lista caso não tenha sido carregada
         serie_ETc = self.paramentrosIN_carregados["ETc"] # pucha lista
         
-        Kc_factor = float(serie_Kc.mutiply_factor)
-        ET0_factor = float(serie_ET0.mutiply_factor)
-        ETC_factor = float(serie_ETc.mutiply_factor)
+        #Kc_factor = float(serie_Kc.mutiply_factor)
+        #ET0_factor = float(serie_ET0.mutiply_factor)
+        #ETC_factor = float(serie_ETc.mutiply_factor)
         
         n_et0 = len(serie_ET0)
         
@@ -74,6 +74,8 @@ class Etc(AbstractFunction):
             data_ET0 = serie_ET0.getDate_time(file=ET0)
             kc = None
             
+            data = None
+            
             for i_Kc in range(len(serie_Kc)):
                 data = serie_Kc.getDate_time(file=serie_Kc[i_Kc])
                 if data == data_ET0:
@@ -81,49 +83,31 @@ class Etc(AbstractFunction):
                     break
             
             etc = RasterFile(file_path=serie_ETc.root_path, ext="tif")
-            #print data_ET0
-            #print kc
             etc = serie_ETc.setDate_time(data_ET0, file=etc)
             
             ET0_ = numpy.array(ET0.loadRasterData()).astype(dtype="float32") #* ET0_factor
             ET0_[ET0_==ET0.metadata["nodata"]] = 0 
-            ET0_ = ET0_ * ET0_factor
+            #ET0_ = ET0_ * ET0_factor # Problemas com o factor
             
             if kc == None: # caso não encontre nenhum kc correspondente a mesma data
+                #self.console(u"Kc para o dia" + str(data))
                 ETc_ = ET0_
-                ETc_ *= ETC_factor
-                ETc_ = self.compactar(ETc_)
+                #ETc_ *= ETC_factor # Problemas com o factor
+                #ETc_ = self.compactar(ETc_)
                 etc.data = ETc_
                 
             else: 
                     
                 Kc_ = numpy.array(kc.loadRasterData()).astype(dtype="float32")
-                Kc_ *= Kc_factor
-                
-                '''1 é o valor default pra quando o Kc for 0 isso tem que ser visto'''
-                #Kc_[Kc_==0] = 1 
-                
-                #print ET0.metadata
-                #print kc.metadata
-
+                #Kc_ *= Kc_factor # Problemas com o factor
                 ETc_ = Kc_ * ET0_
-                ETc_ = numpy.round(ETc_, 2)  
-                
-                print "Etc", Kc_[695][879]
-                print "Ks", ET0_[695][879]
-                print "ETs", ETc_[695][879]
-                
-                
-                ETc_ *= ETC_factor
-                ETc_ = self.compactar(ETc_)
-                
-                print "ETs", ETc_[695][879]
-                    
+                #ETc_ *= ETC_factor # Problemas com o factor
+                #ETc_ = self.compactar(ETc_) # Problemas com o factor
                 etc.data = ETc_
-            
             
             etc.metadata = ET0.metadata
             etc.metadata.update(nodata=0)
+            etc.metadata.update(dtype = etc.data.dtype)
             etc.saveRasterData()
             
             serie_ETc.append(etc)
