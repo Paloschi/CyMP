@@ -5,7 +5,8 @@ Created on Jul 12, 2015
 @author: Paloschi
 '''
 
-from AbstractData import ABData, FILE_DATA
+from Modelo.beans.AbstractData import ABData
+from Modelo.beans.FileData import ABData
 import os
 
 class FileData(ABData):

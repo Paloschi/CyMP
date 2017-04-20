@@ -10,7 +10,7 @@ from Modelo.beans.TableData import TableData
 try:
     import rasterio
 except:
-    print u"ERRO - não foi possível carregar a biblioteca rasterIO, tente configurar as variáveis de ambiente"
+    print (u"ERRO - não foi possível carregar a biblioteca rasterIO, tente configurar as variáveis de ambiente")
 import subprocess
 
 class RasterFile(FileData):
@@ -50,7 +50,7 @@ class RasterFile(FileData):
         
         except :
             
-            print "Falha ao tentar abrir imagem", self.file_full_path   
+            print ("Falha ao tentar abrir imagem", self.file_full_path)
             return None
         
     def saveRasterData(self, band_matrix=None, metadata=None, file_path=None, ext=None):
@@ -94,13 +94,13 @@ class RasterFile(FileData):
             with rasterio.open(path = str(self.file_full_path), mode = 'w', **self.metadata) as dst:
                 try:
                     dst.write(self.data, 1)
-                except ValueError, e: 
-                    print str(e)
-                    print "ERRO - Erro ao tentar salvar a imagem: ", self.file_full_path
-                    print "MOTIVO - índices inconsistentes, erro ao escrever banda"
+                except ValueError as e: 
+                    print (str(e))
+                    print ("ERRO - Erro ao tentar salvar a imagem: ", self.file_full_path)
+                    print ("MOTIVO - índices inconsistentes, erro ao escrever banda")
             
         except ValueError: 
-            print u"ERRO - Erro ao tentar criar imagem "+ self.file_name +u", verificar a existência do diretório informado ou se a imagem esta aberta em outro software"
+            print (u"ERRO - Erro ao tentar criar imagem "+ self.file_name +u", verificar a existência do diretório informado ou se a imagem esta aberta em outro software")
             
     def getLoadJustMetaData(self):
         
@@ -110,7 +110,7 @@ class RasterFile(FileData):
                 self.metadata = raster.meta
         
         except :
-            print "Falha ao tentar abrir imagem", self.file_full_path   
+            print ("Falha ao tentar abrir imagem", self.file_full_path)   
             return None
             
     def getRasterInformation(self):

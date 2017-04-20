@@ -5,7 +5,7 @@ Created on Jul 16, 2015
 @author: Paloschi
 '''
 
-from AbstractData import ABData, TABLE_DATA
+from Modelo.beans.AbstractData import ABData, TABLE_DATA
 
 class TableData(ABData, dict):
     '''
