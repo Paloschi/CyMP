@@ -11,7 +11,7 @@ from VectorData import VectorFile
 
 
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     
-    imagem_teste = RasterFile(file_full_path="C:\\Users\\rennan.paloschi\\Desktop\\testeLTZ.tif")
-    print imagem_teste.getRasterInformation()
+#    imagem_teste = RasterFile(file_full_path="C:\\Users\\rennan.paloschi\\Desktop\\testeLTZ.tif")
+#    print imagem_teste.getRasterInformation()

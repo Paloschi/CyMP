@@ -15,7 +15,6 @@ class ABData(object):
     '''
     classdocs
     '''
-    import logging as log
     
     name = None
     file_name = None

@@ -33,6 +33,8 @@ class RasterFile(FileData):
                 
                 self.metadata = raster.meta
                 if (not isCube) : 
+                    #self.data = raster.read_band(1)
+                    #return self.data
                     return raster.read_band(1)
                 else :
                     cubo = list()
@@ -68,28 +70,10 @@ class RasterFile(FileData):
             '''
                 Listas de Drivers GDAL: http://www.gdal.org/formats_list.html
             '''
-            #print ("salvando imagem  " + self.file_full_path)
             
             if self.file_ext == "tif" : self.metadata.update(driver="GTiff") 
             elif self.file_ext == "img" : self.metadata.update(driver="HFA") 
             self.metadata.update(dtype=self.data.dtype, compress='lzw')
-        
-
-            
-            #print(metadata)
-            #print(len(self.data), len(self.data[0]))
-            
-            
-            #import os
-
-            #os.chdir(self.file_path)
-
-            #for nome in os.listdir('.'):
-                #novo_nome = nome.replace(".tif_EbM", "")
-                #os.rename(nome, novo_nome)
-                #print nome
-                
-            #print self.file_full_path
             
             with rasterio.open(path = str(self.file_full_path), mode = 'w', **self.metadata) as dst:
                 try:
