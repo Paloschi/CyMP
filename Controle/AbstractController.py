@@ -65,22 +65,18 @@ class Controller(object):
             Esse método cria uma thread pra executar a função
         """
         if self.valida_form() :
-         
+            self.function = None
             self.thread = StoppableThread(self.executa)
-
             self.progress_bar = Ui_DlgProgressBar(self.ui)
-            self.progress_bar.setupUi(self.progress_bar)    
+            self.progress_bar.setupUi(self.progress_bar)  
             self.progress_bar.show()
-            
             self.thread.start()
-            
             while(self.function==None) : 
                 time.sleep(0.005)
-                              
             self.function.print_text = self.progress_bar.print_text
-            self.function.console = self.progress_bar.print_text                  
-            
+            self.function.console = self.progress_bar.print_text              
             self.progress_bar.iniciar(self, self.thread)
+  
             
     def action_cancel(self):
             if self.thread != NoneType :
@@ -108,10 +104,16 @@ class Controller(object):
     """
     
     def findPath(self, textToWrite, type="none"):
+        
+        config = ConfigParser.RawConfigParser()
+        config.read('workspace.properties')
+        workspace=config.get('WorkSpace', 'space.default')
+        
         if type == "folder" :
-            fname = QtGui.QFileDialog.getExistingDirectory()
+            fname = QtGui.QFileDialog.getExistingDirectory(self.ui, "Selecione uma pasta", workspace)
         else :
-            fname = QtGui.QFileDialog.getOpenFileName()
+            print "here"
+            fname = QtGui.QFileDialog.getOpenFileName(self.ui, "Selecione o arquivo", workspace)
         if fname!="" :
             textToWrite.setText (fname)
     

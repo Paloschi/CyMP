@@ -165,7 +165,6 @@ class Controller(Controller):
             #self.message(_translate("MainWindow","Verifique na pasta de saída se as imagens estão sendo criadas, "+
                     #     "as imagens poderão demorar até 10 minutos para aparecerem (com 5 milhões de pixels por imagem).", None))
         return True
-
                  
     def executa(self):
         
@@ -237,5 +236,8 @@ class Controller(Controller):
             threading.currentThread().stop()
             self.finalizar()
         
+    def parametros_teste(self):
+        self.ui.txImgColheita.setText("Dados\\1-Tratamento de dados\\4-Datas da Cultura\\colheita.tif")  
+        self.ui.txImgSemeadura.setText("Dados\\1-Tratamento de dados\\4-Datas da Cultura\\semeadura.tif") 
         
         

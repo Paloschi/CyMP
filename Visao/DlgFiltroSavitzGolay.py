@@ -139,6 +139,8 @@ class Ui_DlgSavitzGolay(QtGui.QDialog):
         QtCore.QObject.connect(self.bbOkCancel, QtCore.SIGNAL(_fromUtf8("accepted()")), self.controller.action_ok)
         QtCore.QObject.connect(self.bbOkCancel, QtCore.SIGNAL(_fromUtf8("rejected()")), DlgSavitzGolay.reject)
         QtCore.QMetaObject.connectSlotsByName(DlgSavitzGolay)
+        
+        self.controller.parametros_teste()
 
     def retranslateUi(self, DlgEstimativaDatasAgricolas):
         DlgEstimativaDatasAgricolas.setWindowTitle(_translate("DlgEstimativaDatasAgricolas", "CyMP - Filtro Savitzky-golay", None))

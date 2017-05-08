@@ -83,33 +83,33 @@ class Controller(AbstractController.Controller):
         return True
 
     def parametros_teste(self):
-        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\ETc"
+        root_path = "Dados\\2-Balanco Hidrico\\1-ETc"
         self.serie_ETc = SerialTemporalFiles()
         self.serie_ETc.root_path = root_path
         self.serie_ETc.prefixo = "ETc_"
-        self.serie_ETc.date_mask = "%Y%m%d"     
+        self.serie_ETc.date_mask = "%Y-%m-%d"     
         self.serie_ETc.mutiply_factor = 1
         
-        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\ECMWF\\PPP_diario"
+        root_path = "Dados\\1-Tratamento de dados\\2-Dados Climaticos\\3-Diarios\\Precipitacao"
         self.serie_PPP = SerialTemporalFiles()
         self.serie_PPP.root_path = root_path
-        self.serie_PPP.prefixo = "ppp_"
+        self.serie_PPP.prefixo = "rain_"
         self.serie_PPP.mutiply_factor = 1
-        self.serie_PPP.date_mask = "%Y%m%d"
+        self.serie_PPP.date_mask = "%Y-%m-%d"
         
-        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\TAW"
+        root_path = "Dados\\2-Balanco Hidrico\\2-TAW"
         self.serie_TAW = SerialTemporalFiles()
         self.serie_TAW.root_path = root_path
-        self.serie_TAW.prefixo = "TAW_"
+        self.serie_TAW.prefixo = "taw_"
         self.serie_TAW.mutiply_factor = 1
-        self.serie_TAW.date_mask = "%Y%m%d"
+        self.serie_TAW.date_mask = "%Y-%m-%d"
         
-        self.ui.txImgCAD.setText("C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\CAD\\CAD.tif")
+        self.ui.txImgCAD.setText("Dados\\1-Tratamento de dados\\1-Capacidade de Armazenamento (CAD)\\CAD.tif")
         
-        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\Dr"
+        root_path = "Dados\\2-Balanco Hidrico\\4-Dr"
         self.serie_Dr = SerialTemporalFiles()
         self.serie_Dr.root_path = root_path
         self.serie_Dr.prefixo = "Dr_"
         self.serie_Dr.mutiply_factor = 1
-        self.serie_Dr.date_mask = "%Y%m%d"  
+        self.serie_Dr.date_mask = "%Y-%m-%d"  
         

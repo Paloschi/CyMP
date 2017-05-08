@@ -36,7 +36,7 @@ class Ui_Dialog(QtGui.QDialog):
         self.gridLayout = QtGui.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.txCc = QtGui.QDoubleSpinBox(Dialog)
-        self.txCc.setDecimals(4)
+        self.txCc.setDecimals(8)
         self.txCc.setMaximum(999.99999999)
         self.txCc.setObjectName(_fromUtf8("txCc"))
         self.gridLayout.addWidget(self.txCc, 2, 1, 1, 1)

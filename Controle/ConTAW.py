@@ -79,21 +79,21 @@ class Controller(AbstractController.Controller):
 
     def parametros_teste(self):
         
-        self.ui.txImgCAD.setText("C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\CAD\\CAD.tif")
+        self.ui.txImgCAD.setText("Dados\\1-Tratamento de dados\\1-Capacidade de Armazenamento (CAD)\\CAD.tif")
         
-        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\Zr"
+        root_path = "Dados\\1-Tratamento de dados\\6-Zr"
         self.serie_Zr = SerialTemporalFiles()
         self.serie_Zr.root_path = root_path
         self.serie_Zr.prefixo = ""
         self.serie_Zr.mutiply_factor = 1
         self.serie_Zr.date_mask = "%Y-%m-%d"
         
-        root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\RAW"
-        self.serie_TAW = SerialTemporalFiles()
-        self.serie_TAW.root_path = root_path
-        self.serie_TAW.prefixo = "RAW_"
-        self.serie_TAW.mutiply_factor = 1
-        self.serie_TAW.date_mask = "%Y%m%d"
+        #root_path = "C:\\CyMP\\Gafanhoto\\DADOS para Dr\\Imagens Cascavel\\RAW"
+        #self.serie_TAW = SerialTemporalFiles()
+        #self.serie_TAW.root_path = root_path
+        #self.serie_TAW.prefixo = "RAW_"
+        #self.serie_TAW.mutiply_factor = 1
+        #self.serie_TAW.date_mask = "%Y%m%d"
         
-        self.ui.txPvalor.setValue(0.5)   
+        #self.ui.txPvalor.setValue(0.5)   
         

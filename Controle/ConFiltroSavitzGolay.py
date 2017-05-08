@@ -84,4 +84,8 @@ class Controller(AbstractController.Controller):
             self.message(u"Pasta de saida das imagens não encontrada, verifique o endereço.")
             return False 
         return True
-           
+    
+    def parametros_teste(self):
+        self.ui.leInFolder.setText("Dados\\1-Tratamento de dados\\3-Indice de Vegetacao EVI\\1- EVI Modis recortado")
+        self.ui.leOutFolder.setText("Dados\\1-Tratamento de dados\\3-Indice de Vegetacao EVI\\2- EVI Modis filtrado")
+        

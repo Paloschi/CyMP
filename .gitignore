@@ -3,7 +3,8 @@
 build/
 dist/
 DDLS/
-DADOS/
+Dados/
+DADOS_/
 API-MS-Win-Core-ErrorHandling-L1-1-0.dll
 API-MS-Win-Core-LibraryLoader-L1-1-0.dll
 API-MS-Win-Core-LocalRegistry-L1-1-0.dll

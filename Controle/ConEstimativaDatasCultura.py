@@ -96,3 +96,7 @@ class Controller(AbstractController.Controller):
             return False    
    
         return True
+    
+    def parametros_teste(self):
+        self.ui.leInFolder.setText("Dados\\1-Tratamento de dados\\3-Indice de Vegetacao EVI\\2- EVI Modis filtrado\\")
+        self.ui.leOutFolder.setText("Dados\\1-Tratamento de dados\\4-Datas da Cultura\\")

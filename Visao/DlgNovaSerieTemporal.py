@@ -74,7 +74,7 @@ class Ui_Dialog(QDialog):
         config = ConfigParser.RawConfigParser()
         config.read('workspace.properties')
         workspace=config.get('WorkSpace', 'space.default')
-        fname = QtGui.QFileDialog.getExistingDirectory(None, "Escolha uma pasta", workspace,)
+        fname = QtGui.QFileDialog.getExistingDirectory(self, "Escolha uma pasta", workspace,)
         if fname!="" :
             self.txIn.setText (fname)
  

@@ -120,6 +120,8 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
         
         self.txMultiplyFactor.setEnabled(False)
+        
+        self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "CyMP - Distribuidor de índice.", None))

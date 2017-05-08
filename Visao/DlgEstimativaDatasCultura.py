@@ -246,6 +246,8 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         QtCore.QMetaObject.connectSlotsByName(DlgEstimativaDatasAgricolas)
         
         self.dsbAColheita.value()
+        
+        self.controller.parametros_teste()
 
     def retranslateUi(self, DlgEstimativaDatasAgricolas):
         
@@ -262,9 +264,9 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.label_10.setText(_translate("DlgEstimativaDatasAgricolas", "Posição Colheita:", None))
         self.label_3.setText(_translate("DlgEstimativaDatasAgricolas", "Avanço semeadura:", None))
         self.label_9.setText(_translate("DlgEstimativaDatasAgricolas", "Posição Semeadura:", None))
-        self.lePSemeadura.setText(_translate("DlgEstimativaDatasAgricolas", "0-3", None))
-        self.lePPico.setText(_translate("DlgEstimativaDatasAgricolas", "3-4", None))
-        self.lePColheita.setText(_translate("DlgEstimativaDatasAgricolas", "4-6", None))
+        self.lePSemeadura.setText(_translate("DlgEstimativaDatasAgricolas", "29-45", None))
+        self.lePPico.setText(_translate("DlgEstimativaDatasAgricolas", "34-54", None))
+        self.lePColheita.setText(_translate("DlgEstimativaDatasAgricolas", "45-59", None))
         self.label_14.setText(_translate("DlgEstimativaDatasAgricolas", "Valor Nulo:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("DlgEstimativaDatasAgricolas", "Configuração", None))
         self.label_12.setText(_translate("DlgEstimativaDatasAgricolas", "Nome imagem de DMDV:", None))
@@ -274,9 +276,9 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         self.label_13.setText(_translate("DlgEstimativaDatasAgricolas", "Nome imagem de colheita:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("DlgEstimativaDatasAgricolas", "Dados de saída", None))
         
-        self.leImgColheita.setText("colheita")
-        self.leImgPico.setText("pico")
         self.leImgSemeadura.setText("semeadura")
+        self.leImgPico.setText("DMDV")
+        self.leImgColheita.setText("colheita")
         self.lePrefixo.setText("")
         self.leSufixo.setText("")
         self.leNullValue.setText("0")

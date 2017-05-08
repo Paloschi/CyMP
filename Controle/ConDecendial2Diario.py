@@ -50,7 +50,6 @@ class Controller(AbstractController.Controller):
         param["Out_config"] = self.serie_saida_diaria
         param["Operation"] = str(self.ui.cbOperacao.currentText())
         
-        print "executar"
         resultado = self.function.executar(param)
         
         if self.funcao_cancelada():

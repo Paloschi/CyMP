@@ -63,7 +63,7 @@ class Ui_Decendial2Diario(QtGui.QDialog):
         self.gridLayout.addWidget(self.chDiario, 1, 2, 1, 1)
 
         self.label_3 = QtGui.QLabel(Dialog)
-        self.gridLayout.addWidget(self.label_3, 3, 1, 2, 1)
+        self.gridLayout.addWidget(self.label_3, 3, 0, 2, 1)
         
         self.cbOperacao = QtGui.QComboBox(Dialog)
         self.cbOperacao.setEditable(True)
@@ -92,7 +92,7 @@ class Ui_Decendial2Diario(QtGui.QDialog):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "CyMP - Decendial para diário", None))
         self.label_2.setText(_translate("Dialog", "Entrada de imagens decendiais", None))
-        self.label_3.setText(_translate("MainWindow", "", None))
+        self.label_3.setText(_translate("Dialog", "Operação", None))
         self.label.setText(_translate("Dialog", "Saída de imagens diárias", None))
         self.pushButton_2.setText(_translate("Dialog", "configurar", None))
         self.pushButton.setText(_translate("Dialog", "configurar", None))

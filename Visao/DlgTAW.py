@@ -109,7 +109,7 @@ class Ui_Dialog(QtGui.QDialog):
         
         self.chPValor.clicked.connect(self.controller.habilitaPValue)
         
-        #self.controller.parametros_teste()
+        self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "CyMP - TAW/RAW", None))
@@ -118,7 +118,7 @@ class Ui_Dialog(QtGui.QDialog):
         self.chZr.setText(_translate("Dialog", "configurado", None))
         self.label_4.setText(_translate("Dialog", "Configuração de saída:", None))
         self.btnConfTAW.setText(_translate("Dialog", "configurar", None))
-        self.label_5.setText(_translate("Dialog", "Série de imagem TAW/RAW", None))
+        self.label_5.setText(_translate("Dialog", "Série de imagens TAW/RAW", None))
         self.chTAW.setText(_translate("Dialog", "configurado", None))
         self.label_3.setText(_translate("Dialog", "Configuração de entrada:", None))
         self.btnConfZr.setText(_translate("Dialog", "configurar", None))
