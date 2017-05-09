@@ -120,7 +120,7 @@ class Ks(AbstractFunction):
                 
                 ks = RasterFile(file_path=serie_ks.root_path, ext="tif")
                 ks = serie_ks.setDate_time(data_taw, file=ks)       
-                ks.data = ks_
+                ks.data = ks_.astype(dtype="float32")
                 ks.metadata = taw.metadata
                 ks.metadata.update(dtype = ks.data.dtype)
                 ks.metadata.update(nodata=2)
