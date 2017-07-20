@@ -190,21 +190,24 @@ class SerialTemporalFiles(SerialFile):
     mutiply_factor = 1
     
     
-    
-    def getDate_time(self, i=None, file=None):
+    def getDate_time(self, i=None, raster=None):
         '''
             Essa função foi criada para facilitar a obtenção da data do arquivo como objeto date
         '''
         
+        if raster==None : raster = self[i]
         
-        if file==None : file = self[i]
-        
-        only_date = file.file_name
+        only_date = raster.file_name
 
         if self.prefixo!=None : 
             only_date = only_date.replace(self.prefixo,"")
-        if self.sufixo!=None : only_date = only_date.replace(self.sufixo, "")  
-        date = datetime.datetime.strptime(only_date, self.date_mask) 
+        if self.sufixo!=None : only_date = only_date.replace(self.sufixo, "") 
+        
+        try : 
+            date = datetime.datetime.strptime(only_date, self.date_mask) 
+        except:
+            print ("Erro na conversão da data")
+            return None 
         
         return date
 
@@ -219,6 +222,23 @@ class SerialTemporalFiles(SerialFile):
         file.file_name = name
         return file
     
+    def getTimeVariableVector (self, x, y):
         
+        if (len(self)==0): self.loadListByRoot()
+        
+        values =  []
+        times = []
+        
+        for raster in self :
+            values.append(raster.getCoordinateValue(x, y))     
+            times.append(self.getDate_time(raster = raster))
+                        
+        return {'values' : values, 'times' : times}
+            
+    def setValues(self, root_path=None, date_mask=None, prefixo=None, sufixo=None):
 
+        if root_path != None : self.root_path = root_path
+        if date_mask != None : self.date_mask = date_mask
+        if prefixo != None : self.prefixo = prefixo
+        if sufixo != None : self.sufixo = sufixo 
     

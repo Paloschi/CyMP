@@ -6,6 +6,7 @@ Created on Aug 4, 2015
 '''
 from Modelo.beans import FileData
 from Modelo.beans.TableData import TableData
+from osgeo import gdal
 
 try:
     import rasterio
@@ -179,3 +180,27 @@ class RasterFile(FileData):
         print("Informacoes da imagem lidas")
        
         return data 
+    
+    
+    def getCoordinateValue(self, x, y):
+    
+        ds = gdal.Open(self.file_full_path)
+        transform = ds.GetGeoTransform() # (-2493045.0, 30.0, 0.0, 3310005.0, 0.0, -30.0)
+        xOrigin = transform[0] # -2493045.0
+        yOrigin = transform[3] # 3310005.0
+        pixelWidth = transform[1] # 30.0
+        pixelHeight = transform[5] # -30.0
+        
+        xOffset = int((x - xOrigin) / pixelWidth)
+        yOffset = int((y - yOrigin) / pixelHeight)
+        
+        band = ds.GetRasterBand(1) # 1-based index
+        data = band.ReadAsArray()   
+        value = data[yOffset][xOffset]
+        
+        return value 
+        
+        
+    def coordinate2XY(self):
+        pass
+    #def xy2coordinate(self):

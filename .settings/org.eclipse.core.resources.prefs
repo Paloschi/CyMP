@@ -39,6 +39,7 @@ encoding//Modelo/Funcoes/RasterTools/RasterToCSVeVRT.py=utf-8
 encoding//Modelo/Funcoes/__init__.py=utf-8
 encoding//Modelo/GeneralTools/Bands_analisis.py=utf-8
 encoding//Modelo/GeneralTools/LegendCreator.py=utf-8
+encoding//Modelo/GeneralTools/PerfilExtractor.py=utf-8
 encoding//Modelo/GeneralTools/__init__.py=utf-8
 encoding//Modelo/beans/FileData.py=utf-8
 encoding//Modelo/beans/RasterData.py=utf-8
