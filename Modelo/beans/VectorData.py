@@ -10,11 +10,11 @@ from Modelo.beans.TableData import TableData
 try:
     import fiona
 except:
-    print u"ERRO - não foi possível carregar a biblioteca fiona, tente configurar as variáveis de ambiente"
+    print (u"ERRO - não foi possível carregar a biblioteca fiona, tente configurar as variáveis de ambiente")
 try:
     import gdal
 except:
-    print u"ERRO - não foi possível carregar a biblioteca gdal, tente configurar as variáveis de ambiente"
+    print (u"ERRO - não foi possível carregar a biblioteca gdal, tente configurar as variáveis de ambiente")
        
 progress = gdal.TermProgress_nocb
 

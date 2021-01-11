@@ -18,4 +18,4 @@ por = ""
 for nome in os.listdir('.'):
     novo_nome = nome.replace(subistituir,por)
     os.rename(nome, novo_nome)
-    print 'OK'
+    print ('OK')

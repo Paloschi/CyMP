@@ -5,10 +5,9 @@ Created on Jun 10, 2015
 
 @author: Paloschi
 '''
-from PyQt4.QtGui import QFileDialog
 from Modelo.Funcoes.Filtros import FiltroSavitz
 from Modelo.beans import TableData, SerialFile
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from Controle import AbstractController
 import os
 

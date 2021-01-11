@@ -9,4 +9,4 @@ import sys
 palavra = "ooooi"
 
 for i in range(0, len(palavra)):
-    print palavra[i]
+    print (palavra[i])

@@ -1,1 +1,1 @@
-from SplitTable import SplitTable
+from Modelo.Funcoes.VectorTools.SplitTable import SplitTable

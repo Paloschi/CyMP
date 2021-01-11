@@ -145,7 +145,7 @@ class DistribuidorKC_(AbstractFunction):
                 
     def vetorizar_kc(self): 
         
-        if self.paramentrosIN_carregados.has_key("multply_factor") :
+        if "multply_factor" in self.paramentrosIN_carregados:
             multply_factor = self.paramentrosIN_carregados["multply_factor"]
         else :
             multply_factor = 1
@@ -160,11 +160,11 @@ class DistribuidorKC_(AbstractFunction):
         for key in self.paramentrosIN_carregados["Kc"].keys():
             inicio = int(key.split("-")[0])
             fim = int(key.split("-")[1])
-            print "chave:", key, "- inicio:", inicio, "- fim:", fim, "- tamanho:", fim - inicio
+            print ("chave:", key, "- inicio:", inicio, "- fim:", fim, "- tamanho:", fim - inicio)
             for x in range(inicio, fim+1):
                 kc_vetorizado[x-1] = self.paramentrosIN_carregados["Kc"][key] * multply_factor
                 
-        print kc_vetorizado
+        print (kc_vetorizado)
         #print len(kc_vetorizado)
         return kc_vetorizado
         

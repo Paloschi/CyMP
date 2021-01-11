@@ -45,8 +45,8 @@ imagem_colheita = raster.loadRasterData()
 
 semeadura_normalizado, colheita_normalizado, ano_inicio, dia_inicio = normalize_datas(imagem_semeadura, imagem_colheita)
 
-print semeadura_normalizado
-print colheita_normalizado
+print (semeadura_normalizado)
+print (colheita_normalizado)
 
 ultimo_dia = np.max(colheita_normalizado)
 

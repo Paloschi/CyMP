@@ -23,4 +23,4 @@ for nome in os.listdir('.'):
     #print nomes_substituir.pop()
     os.rename(nome, nomes_substituir.pop())
     
-print 'OK'
+print ('OK')

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from AbstractFunction import Function as AbstractFunction
+from Modelo.Funcoes.AbstractFunction import Function as AbstractFunction
 
 
 if __name__ == "__main__":

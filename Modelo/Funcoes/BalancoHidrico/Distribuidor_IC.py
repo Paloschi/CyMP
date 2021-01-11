@@ -32,7 +32,7 @@ def Ds_DC_to_date(data):
 def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, kc_vetorizado, path_img_referencia, i, path_out):
     
         import ctypes
-        import ConfigParser
+        import configparser as ConfigParser
         config = ConfigParser.RawConfigParser()
         config.read('workspace.properties')
     
@@ -93,7 +93,7 @@ def distribuir_kc(data_minima, data_maxima, semeadura_, colheita_, periodo_kc, k
 
             imagem_kc.metadata.update(nodata=0)
             imagem_kc.saveRasterData(band_matrix = imagem_kc_)
-        print "retornando do processo", i
+        print ("retornando do processo", i)
         #threading.currentThread().stopped = True
         threading.currentThread().terminada = True
         return None
@@ -119,7 +119,7 @@ class DistribuidorKC(AbstractFunction):
             semeadura_ = self.paramentrosIN_carregados["semeadura"].loadRasterData()
             colheita_ = self.paramentrosIN_carregados["colheita"].loadRasterData()
         except: 
-            print "não foi possivel carregar as imagens de semeadura e colheita"
+            print ("não foi possivel carregar as imagens de semeadura e colheita")
             return None
         try:
             data_minima = self.Ds_DC_to_date(np.min(semeadura_))
@@ -127,7 +127,7 @@ class DistribuidorKC(AbstractFunction):
             data_maxima = self.Ds_DC_to_date(np.max(colheita_))
             #data_maxima = self.Ds_DC_to_date("201499")
         except:
-            print "não foi possivel converter os valores das imagens de semeadura e colheita em datas"
+            print ("não foi possivel converter os valores das imagens de semeadura e colheita em datas")
             return None
         
 
@@ -185,7 +185,7 @@ class DistribuidorKC(AbstractFunction):
             
             
             
-        print "vai aguardar processos --------------------------------------------------"
+        print ("vai aguardar processos --------------------------------------------------")
         
         numero_de_processos_prontos = 1        
         processos_prontos = False
@@ -194,16 +194,16 @@ class DistribuidorKC(AbstractFunction):
             for p in processos:
                 p.join()
                 numero_de_processos_prontos +=1
-                print "mais um processo terminado ", i, " -------------------------------------"
+                print ("mais um processo terminado ", i, " -------------------------------------")
             time.sleep(0.5)
         
-        print "Acabou, retornando ----------------------------------------------------"
+        print ("Acabou, retornando ----------------------------------------------------")
         
         return SerialFile(root_path = self.paramentrosIN_carregados["path_out"])
                 
     def vetorizar_kc(self): 
         
-        if self.paramentrosIN_carregados.has_key("multply_factor") :
+        if "multply_factor" in self.paramentrosIN_carregados:
             multply_factor = self.paramentrosIN_carregados["multply_factor"]
         else :
             multply_factor = 1
@@ -215,17 +215,17 @@ class DistribuidorKC(AbstractFunction):
         
         kc_vetorizado = np.zeros(tamanho)
         
-        print len(kc_vetorizado)
+        print (len(kc_vetorizado))
         
         for key in self.paramentrosIN_carregados["Kc"].keys():
             inicio = int(key.split("-")[0])
             fim = int(key.split("-")[1])
-            print "chave:", key, "- inicio:", inicio, "- fim:", fim, "- tamanho:", fim - inicio
+            print ("chave:", key, "- inicio:", inicio, "- fim:", fim, "- tamanho:", fim - inicio)
             for x in range(inicio, fim+1):
                 kc_vetorizado[x-1] = self.paramentrosIN_carregados["Kc"][key] * multply_factor
                 
-        print kc_vetorizado
-        print len(kc_vetorizado)
+        print (kc_vetorizado)
+        print (len(kc_vetorizado))
         return kc_vetorizado
     
     def Ds_DC_to_date(self, data):

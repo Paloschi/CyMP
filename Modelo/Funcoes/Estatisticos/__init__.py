@@ -1,1 +1,1 @@
-from StatisticalStractor import SpectreStatisticalStractor
+from Modelo.Funcoes.Estatisticos.StatisticalStractor import SpectreStatisticalStractor

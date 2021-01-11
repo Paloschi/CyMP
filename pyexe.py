@@ -27,7 +27,7 @@ setup(
                               "api-ms-win-security-activedirectoryclient-l1-1-0.dll", "api-ms-win-core-rtlsupport-l1-2-0.dll"],      
             #"dll_include" : [ "api-ms-win-core-processthreads-l1-1-2.dll"],
             
-            'packages':['fiona',"rasterio","PyQt4.QtCore","PyQt4.QtGui", ],
+            'packages':['fiona',"rasterio","PyQt5.QtCore","PyQt5.QtGui", ],
             'excludes': ['_gtkagg', '_tkagg', "mswsock.dll", "powrprof.dll"],
             "includes" : ["sip", "matplotlib.backends.backend_tkagg", "FileDialog", "lxml._elementpath"],
 

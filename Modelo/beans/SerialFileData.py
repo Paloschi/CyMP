@@ -5,14 +5,14 @@ Created on Jul 16, 2015
 @author: Paloschi
 '''
 
-from AbstractData import ABData, SERIAL_FILE_DATA
+from Modelo.beans.AbstractData import ABData, SERIAL_FILE_DATA
 from Modelo.beans import RasterFile
 import os
 import gdal
 import rasterio
 import sys
 import datetime
-from rasterio._example import numpy
+import numpy
 
 
 progress = gdal.TermProgress_nocb
@@ -69,7 +69,7 @@ class SerialFile(ABData, list):
         
     def loadListRasterData(self):
         '''
-            Carreca os dados matriciais e forma uma matriz de 3 dimenções
+            Carreca os dados matriciais e forma uma matriz de 3 dimensões
             As configurações de metadado raster que serão consideradas, serão do primeiro raster lido
         '''
         
@@ -86,7 +86,7 @@ class SerialFile(ABData, list):
         for f in self:
             file = f.loadRasterData()
             if (file==None):
-                print "Não foi possivel carregar a imagem", f.file_full_path
+                print ("Não foi possivel carregar a imagem", f.file_full_path)
                 return None
             else:
                 files.append(file)
@@ -98,7 +98,7 @@ class SerialFile(ABData, list):
             self.metadata = self[0].metadata
             return files
         else:
-            print "nenhuma imagem caregada"
+            print ("nenhuma imagem caregada")
             return None
         
     def saveListByRoot(self, root_path=None, ext=None, sufixo=None):
@@ -110,7 +110,7 @@ class SerialFile(ABData, list):
         '''
         
         if len(self) == 0:
-            print "não há nenhuma imagem a ser salva"
+            print ("não há nenhuma imagem a ser salva")
             
         if root_path != None : self.root_path = root_path
         
@@ -157,7 +157,7 @@ class SerialFile(ABData, list):
         self.metadata.update(count=n_images)
         self.metadata.update(compress='lzw')
         
-        print self.metadata
+        print (self.metadata)
         
         path = self.root_path + "\\" + name + "." + ext
         

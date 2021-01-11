@@ -53,7 +53,7 @@ class Controller(AbstractController.Controller):
         resultado = self.function.executar(param)
         
         if self.funcao_cancelada():
-            print "controller cancelando"
+            print ("controller cancelando")
             self.console(u"Função interrompida.")
             self.finalizar()
         else :

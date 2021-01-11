@@ -3,11 +3,11 @@
 # Form implementation generated from reading ui file 'C:\Users\Paloschi\Desktop\Gafanhoto\Software\Gafanhoto_1.0\InterfacesQT\DlgFiltroSavitzGolay.ui'
 #
 # Created: Fri Jun 12 14:10:00 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from Controle import ConFiltroSavitzGolay
 
 try:
@@ -24,7 +24,7 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_DlgSavitzGolay(QtGui.QDialog):
+class Ui_DlgSavitzGolay(QtWidgets.QDialog):
     def setupUi(self, DlgSavitzGolay):
         
         self.controller = ConFiltroSavitzGolay.Controller(self);
@@ -38,78 +38,78 @@ class Ui_DlgSavitzGolay(QtGui.QDialog):
         DlgSavitzGolay.setStyleSheet(_fromUtf8(""))
         
         
-        self.tabWidget = QtGui.QTabWidget(DlgSavitzGolay)
+        self.tabWidget = QtWidgets.QTabWidget(DlgSavitzGolay)
         self.tabWidget.setGeometry(QtCore.QRect(10, 10, 351, 201))
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
-        self.tab_3 = QtGui.QWidget()
+        self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName(_fromUtf8("tab_3"))
-        self.gridLayoutWidget = QtGui.QWidget(self.tab_3)
+        self.gridLayoutWidget = QtWidgets.QWidget(self.tab_3)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, 331, 51))
         self.gridLayoutWidget.setObjectName(_fromUtf8("gridLayoutWidget"))
-        self.gridLayout = QtGui.QGridLayout(self.gridLayoutWidget)
+        self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setMargin(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.leInFolder = QtGui.QLineEdit(self.gridLayoutWidget)
+        self.leInFolder = QtWidgets.QLineEdit(self.gridLayoutWidget)
         self.leInFolder.setObjectName(_fromUtf8("leInFolder"))
         self.gridLayout.addWidget(self.leInFolder, 0, 1, 1, 1)
-        self.toolbFindInFolder = QtGui.QToolButton(self.gridLayoutWidget)
+        self.toolbFindInFolder = QtWidgets.QToolButton(self.gridLayoutWidget)
         self.toolbFindInFolder.setObjectName(_fromUtf8("toolbFindInFolder"))
         self.gridLayout.addWidget(self.toolbFindInFolder, 0, 2, 1, 1)
-        self.label = QtGui.QLabel(self.gridLayoutWidget)
+        self.label = QtWidgets.QLabel(self.gridLayoutWidget)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab_3, _fromUtf8(""))
         
-        self.tab_2 = QtGui.QWidget()
+        self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
-        self.gridLayoutWidget_4 = QtGui.QWidget(self.tab_2)
+        self.gridLayoutWidget_4 = QtWidgets.QWidget(self.tab_2)
         self.gridLayoutWidget_4.setGeometry(QtCore.QRect(10, 10, 331, 100))
         self.gridLayoutWidget_4.setObjectName(_fromUtf8("gridLayoutWidget_4"))
-        self.gridLayout_4 = QtGui.QGridLayout(self.gridLayoutWidget_4)
+        self.gridLayout_4 = QtWidgets.QGridLayout(self.gridLayoutWidget_4)
         self.gridLayout_4.setMargin(0)
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
-        self.label_8 = QtGui.QLabel(self.gridLayoutWidget_4)
+        self.label_8 = QtWidgets.QLabel(self.gridLayoutWidget_4)
         self.label_8.setObjectName(_fromUtf8("label_8"))
         self.gridLayout_4.addWidget(self.label_8, 0, 0, 1, 1)
-        self.toolbFindOutFolder = QtGui.QToolButton(self.gridLayoutWidget_4)
+        self.toolbFindOutFolder = QtWidgets.QToolButton(self.gridLayoutWidget_4)
         self.toolbFindOutFolder.setObjectName(_fromUtf8("toolbFindOutFolder"))
         self.gridLayout_4.addWidget(self.toolbFindOutFolder, 0, 2, 1, 1)
-        self.leOutFolder = QtGui.QLineEdit(self.gridLayoutWidget_4)
+        self.leOutFolder = QtWidgets.QLineEdit(self.gridLayoutWidget_4)
         self.leOutFolder.setObjectName(_fromUtf8("leOutFolder"))
         self.gridLayout_4.addWidget(self.leOutFolder, 0, 1, 1, 1)
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
         
-        self.tab = QtGui.QWidget()
+        self.tab = QtWidgets.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
-        self.gridLayoutWidget_2 = QtGui.QWidget(self.tab)
+        self.gridLayoutWidget_2 = QtWidgets.QWidget(self.tab)
         self.gridLayoutWidget_2.setGeometry(QtCore.QRect(10, 10, 321, 161))
         self.gridLayoutWidget_2.setObjectName(_fromUtf8("gridLayoutWidget_2"))
-        self.gridLayout_2 = QtGui.QGridLayout(self.gridLayoutWidget_2)
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.gridLayoutWidget_2)
         self.gridLayout_2.setMargin(0)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
-        self.label_2 = QtGui.QLabel(self.gridLayoutWidget_2)
+        self.label_2 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout_2.addWidget(self.label_2, 1, 0, 1, 1)
-        self.label_9 = QtGui.QLabel(self.gridLayoutWidget_2)
+        self.label_9 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.label_9.setObjectName(_fromUtf8("label_9"))
         self.gridLayout_2.addWidget(self.label_9, 0, 0, 1, 1)
-        self.leWindowSize = QtGui.QLineEdit(self.gridLayoutWidget_2)
+        self.leWindowSize = QtWidgets.QLineEdit(self.gridLayoutWidget_2)
         self.leWindowSize.setObjectName(_fromUtf8("leWindowSize"))
         self.gridLayout_2.addWidget(self.leWindowSize, 0, 1, 1, 1)
-        self.leOrdem = QtGui.QLineEdit(self.gridLayoutWidget_2)
+        self.leOrdem = QtWidgets.QLineEdit(self.gridLayoutWidget_2)
         self.leOrdem.setObjectName(_fromUtf8("leOrdem"))
         self.gridLayout_2.addWidget(self.leOrdem, 1, 1, 1, 1)
-        #self.leNullValue = QtGui.QLineEdit(self.gridLayoutWidget_2)
+        #self.leNullValue = QtWidgets.QLineEdit(self.gridLayoutWidget_2)
         #self.leNullValue.setInputMask(_fromUtf8(""))
         #self.leNullValue.setObjectName(_fromUtf8("leNullValue"))
         #self.leNullValue.setEnabled(False)
         
         #self.gridLayout_2.addWidget(self.leNullValue, 2, 1, 1, 1)
-        #self.label_14 = QtGui.QLabel(self.gridLayoutWidget_2)
+        #self.label_14 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         #self.label_14.setObjectName(_fromUtf8("label_14"))
         #self.label_14.setEnabled(False)
         #self.gridLayout_2.addWidget(self.label_14, 2, 0, 1, 1)
-        #self.checkBox = QtGui.QCheckBox(self.gridLayoutWidget_2)
+        #self.checkBox = QtWidgets.QCheckBox(self.gridLayoutWidget_2)
         #self.checkBox.setText(_fromUtf8(""))
         #self.checkBox.setObjectName(_fromUtf8("checkBox"))
         #self.checkBox.setEnabled(False)
@@ -117,20 +117,20 @@ class Ui_DlgSavitzGolay(QtGui.QDialog):
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
         
         
-        self.horizontalLayoutWidget = QtGui.QWidget(DlgSavitzGolay)
+        self.horizontalLayoutWidget = QtWidgets.QWidget(DlgSavitzGolay)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 220, 351, 41))
         self.horizontalLayoutWidget.setObjectName(_fromUtf8("horizontalLayoutWidget"))
-        self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setMargin(0)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        #self.progressBar = QtGui.QProgressBar(self.horizontalLayoutWidget)
+        #self.progressBar = QtWidgets.QProgressBar(self.horizontalLayoutWidget)
         #self.progressBar.setProperty("value", 24)
         #self.progressBar.setObjectName(_fromUtf8("progressBar"))
         #self.horizontalLayout.addWidget(self.progressBar)
         #self.progressBar.setEnabled(False)
-        self.bbOkCancel = QtGui.QDialogButtonBox(self.horizontalLayoutWidget)
+        self.bbOkCancel = QtWidgets.QDialogButtonBox(self.horizontalLayoutWidget)
         self.bbOkCancel.setOrientation(QtCore.Qt.Horizontal)
-        self.bbOkCancel.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.bbOkCancel.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.bbOkCancel.setObjectName(_fromUtf8("bbOkCancel"))
         self.horizontalLayout.addWidget(self.bbOkCancel)
 

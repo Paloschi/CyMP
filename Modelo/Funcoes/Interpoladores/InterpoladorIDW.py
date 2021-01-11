@@ -57,21 +57,21 @@ class IDW(AbstractFunction):
         self.descriptionOUT["imagem_interpolada"] = "imagem de saida interpolada"  
         
     def __execOperation__(self):
-        print "-----------------------------------------------------------------------------------"
+        print ("-----------------------------------------------------------------------------------")
         csv = self.paramentrosIN_carregados["csv"]
         vrt = self.paramentrosIN_carregados["vrt"]
         img_out = self.paramentrosIN_carregados["img_out"]
         img_out_config = self.paramentrosIN_carregados["img_out_config"]
-        print "-----------------------------------------------------------------------------------"
+        print ("-----------------------------------------------------------------------------------")
         
         '''
             Monta string de de parametros para configurar o algoritimo IDW
         '''
         str_algoritimo_conf = ""
-        print "-----------------------------------------------------------------------------------"
-        print self.paramentrosIN_carregados["conf_algoritimo"]
+        print ("-----------------------------------------------------------------------------------")
+        print (self.paramentrosIN_carregados["conf_algoritimo"])
         
-        if self.paramentrosIN_carregados.has_key("conf_algoritimo") :
+        if "conf_algoritimo" in self.paramentrosIN_carregados:
             
             conf_algoritimo = self.paramentrosIN_carregados["conf_algoritimo"]
             
@@ -82,7 +82,7 @@ class IDW(AbstractFunction):
                     
             str_algoritimo_conf += ':nodata=0'       
                 
-            print "configuracao do algoritimo" + str_algoritimo_conf
+            print ("configuracao do algoritimo" + str_algoritimo_conf)
         
         
         '''
@@ -113,7 +113,7 @@ class IDW(AbstractFunction):
             print (resposta)
    
         except Exception:  
-            print Exception
+            print (Exception)
             
         saida = img_out
         

@@ -3,11 +3,13 @@ Created on Jul 7, 2015
 
 @author: Paloschi
 '''
-from PyQt4 import QtGui
+import sys
+from PyQt5 import QtGui, QtWidgets
 from Visao import TelaPrincipal
-from PyQt4 import QtCore
-from PyQt4.Qt import QLocale, QTranslator
- 
+from PyQt5 import QtCore
+from PyQt5.Qt import QLocale, QTranslator
+from Modelo.GeneralTools import available_cpu_count
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -33,7 +35,7 @@ if __name__ == '__main__':
     
     import sys
     import ctypes
-    import ConfigParser
+    import configparser as ConfigParser
     
     mp.freeze_support() # optional if the program is not frozen
 
@@ -48,7 +50,7 @@ if __name__ == '__main__':
     myappid = (company + "." + product + "." + subproduct + "." + version)
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
     
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     icon=config.get('Icon', 'icon.general')
     app.setWindowIcon(QtGui.QIcon(icon))
 
@@ -61,9 +63,25 @@ if __name__ == '__main__':
         app.installTranslator(qtTranslator)
         app.installTranslator(coretranslator)
     
-    #print("Numero de nucleos: " + str(GeneralTools.available_cpu_count()))
+    print("Numero de nucleos: " + str(available_cpu_count()))
 
-    ex = TelaPrincipal.Ui_MainWindow()
-    ex.show()
-    sys.exit(app.exec_())
-    
+    try:
+
+        ex = TelaPrincipal.Ui_MainWindow()
+        ex.show()
+        sys.exit(app.exec_())
+
+    except Exception as e:
+        print (e)
+
+
+
+
+def catch_exceptions(t, val, tb):
+    QtWidgets.QMessageBox.critical(None,
+                                   "An exception was raised",
+                                   "Exception type: {}".format(t))
+    old_hook(t, val, tb)
+
+old_hook = sys.excepthook
+sys.excepthook = catch_exceptions

@@ -69,7 +69,7 @@ class Funcao(AbstractFunction):
                 else : duracao =  int(calendar.monthrange(data.year, data.month)[1]) - 20
                 
                 if threading.currentThread().stopped()  :
-                    print "thread parada, retornando da função"
+                    print ("thread parada, retornando da função")
                     return 
                
                 imagem_ = serie_imagem_in[i].loadRasterData()

@@ -1,5 +1,5 @@
 import sys
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore
 
 class TreeModel(QtCore.QAbstractItemModel):
     def __init__(self):
@@ -44,7 +44,7 @@ class TreeModel(QtCore.QAbstractItemModel):
         return mimedata
 
     def dropMimeData(self, data, action, row, column, parent):
-        print 'dropMimeData %s %s %s %s' % (data.data('text/xml'), action, row, parent) 
+        print ('dropMimeData %s %s %s %s' % (data.data('text/xml'), action, row, parent))
         return True
 
 

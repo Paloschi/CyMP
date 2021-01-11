@@ -3,11 +3,11 @@
 # Form implementation generated from reading ui file 'DlgDistribuidorDeIndice.ui'
 #
 # Created: Mon Oct 19 07:14:46 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from Controle.ConDistribuidorDeIndice import Controller
 
 try:
@@ -24,35 +24,35 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_DistribuidorDeIndice(QtGui.QDialog):
+class Ui_DistribuidorDeIndice(QtWidgets.QDialog):
     def setupUi(self, Dialog):
         
         self.controller = Controller(self)
         
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(437, 332)
-        self.label = QtGui.QLabel(Dialog)
+        self.label = QtWidgets.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(26, 44, 111, 16))
         self.label.setObjectName(_fromUtf8("label"))
-        self.btFindImgSemeadura = QtGui.QToolButton(Dialog)
+        self.btFindImgSemeadura = QtWidgets.QToolButton(Dialog)
         self.btFindImgSemeadura.setGeometry(QtCore.QRect(370, 40, 25, 19))
         self.btFindImgSemeadura.setObjectName(_fromUtf8("btFindImgSemeadura"))
-        self.btFindOutFolder = QtGui.QToolButton(Dialog)
+        self.btFindOutFolder = QtWidgets.QToolButton(Dialog)
         self.btFindOutFolder.setGeometry(QtCore.QRect(370, 130, 25, 19))
         self.btFindOutFolder.setObjectName(_fromUtf8("btFindOutFolder"))
-        self.txOutFolder = QtGui.QLineEdit(Dialog)
+        self.txOutFolder = QtWidgets.QLineEdit(Dialog)
         self.txOutFolder.setGeometry(QtCore.QRect(146, 130, 211, 20))
         self.txOutFolder.setObjectName(_fromUtf8("txOutFolder"))
-        self.txImgSemeadura = QtGui.QLineEdit(Dialog)
+        self.txImgSemeadura = QtWidgets.QLineEdit(Dialog)
         self.txImgSemeadura.setGeometry(QtCore.QRect(146, 40, 211, 20))
         self.txImgSemeadura.setObjectName(_fromUtf8("txImgSemeadura"))
-        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setGeometry(QtCore.QRect(26, 134, 81, 16))
         self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.btOkCancel = QtGui.QDialogButtonBox(Dialog)
+        self.btOkCancel = QtWidgets.QDialogButtonBox(Dialog)
         self.btOkCancel.setGeometry(QtCore.QRect(30, 300, 401, 23))
         self.btOkCancel.setOrientation(QtCore.Qt.Horizontal)
-        self.btOkCancel.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.btOkCancel.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.btOkCancel.setObjectName(_fromUtf8("btOkCancel"))
         self.tableWidget = QtGui.QTableWidget(Dialog)
         self.tableWidget.setGeometry(QtCore.QRect(30, 170, 261, 111))
@@ -78,30 +78,30 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
         item = QtGui.QTableWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignCenter)
         self.tableWidget.setItem(0, 2, item)
-        self.btRemover = QtGui.QPushButton(Dialog)
+        self.btRemover = QtWidgets.QPushButton(Dialog)
         self.btRemover.setGeometry(QtCore.QRect(300, 260, 75, 23))
         self.btRemover.setObjectName(_fromUtf8("btRemover"))
-        self.btAdicionar = QtGui.QPushButton(Dialog)
+        self.btAdicionar = QtWidgets.QPushButton(Dialog)
         self.btAdicionar.setGeometry(QtCore.QRect(300, 230, 75, 23))
         self.btAdicionar.setObjectName(_fromUtf8("btAdicionar"))
                                                   
-        self.txMultiplyFactor = QtGui.QSpinBox(Dialog)
+        self.txMultiplyFactor = QtWidgets.QSpinBox(Dialog)
         self.txMultiplyFactor.setMaximum(10000)
         self.txMultiplyFactor.setGeometry(QtCore.QRect(146, 100, 211, 20))
         self.txMultiplyFactor.setObjectName(_fromUtf8("txMultiplyFactor"))
-        self.label_3 = QtGui.QLabel(Dialog)
+        self.label_3 = QtWidgets.QLabel(Dialog)
         self.label_3.setGeometry(QtCore.QRect(26, 100, 101, 16))
         self.label_3.setObjectName(_fromUtf8("label_3"))
-        #self.btFindImgPico = QtGui.QToolButton(Dialog)
+        #self.btFindImgPico = QtWidgets.QToolButton(Dialog)
         #self.btFindImgPico.setGeometry(QtCore.QRect(370, 70, 25, 19))
         #self.btFindImgPico.setObjectName(_fromUtf8("btFindImgPico"))
-        self.txImgColheita = QtGui.QLineEdit(Dialog)
+        self.txImgColheita = QtWidgets.QLineEdit(Dialog)
         self.txImgColheita.setGeometry(QtCore.QRect(146, 70, 211, 20))
         self.txImgColheita.setObjectName(_fromUtf8("txImgColheita"))
-        self.label_4 = QtGui.QLabel(Dialog)
+        self.label_4 = QtWidgets.QLabel(Dialog)
         self.label_4.setGeometry(QtCore.QRect(26, 70, 101, 16))
         self.label_4.setObjectName(_fromUtf8("label_4"))
-        self.btFindImgColheita = QtGui.QToolButton(Dialog)
+        self.btFindImgColheita = QtWidgets.QToolButton(Dialog)
         self.btFindImgColheita.setGeometry(QtCore.QRect(370, 70, 25, 19))
         self.btFindImgColheita.setObjectName(_fromUtf8("btFindImgColheita"))
         self.comboBox = QtGui.QComboBox(Dialog)
@@ -110,7 +110,7 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
         self.comboBox.addItem(_fromUtf8(""))
         self.comboBox.addItem(_fromUtf8(""))
         self.comboBox.addItem(_fromUtf8(""))
-        self.label_5 = QtGui.QLabel(Dialog)
+        self.label_5 = QtWidgets.QLabel(Dialog)
         self.label_5.setGeometry(QtCore.QRect(100, 10, 208, 13))
         self.label_5.setObjectName(_fromUtf8("label_5"))
 

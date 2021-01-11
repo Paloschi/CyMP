@@ -7,7 +7,7 @@ Created on 13/10/2015
 from Modelo.Funcoes.RasterTools import RasterToCSVeVRT
 from Modelo.Funcoes.Interpoladores import IDW
 from Modelo.beans import SerialFile, TableData
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from Controle import AbstractController
 import os.path
 from Modelo.beans.RasterData import RasterFile
@@ -30,7 +30,10 @@ class Controller(AbstractController.Controller):
         self.findPath(self.ui.txOutFolder, "folder")
   
     def findImgRef(self):
-        self.findPath(self.ui.txImgReference)
+        try:
+            self.findPath(self.ui.txImgReference)
+        except Exception as e:
+            print(e)
 
     def valida_form(self):
         try :
@@ -54,24 +57,28 @@ class Controller(AbstractController.Controller):
         '''
             Criando arquivos CSVs e VRTs para submeter a interpolação
         '''
-        
-        self.console(u"Recolhendo informações")
-        
-        self.function = RasterToCSVeVRT()
-        paramIn = TableData()
-        paramIn["images"] = SerialFile(root_path=str(self.ui.txInFolder.text()))
-        paramIn["out_folder"] = str(self.ui.txOutFolder.text())
-        
-        self.print_text(u'Interpolando imagens...')
+        try:
+            self.console(u"Recolhendo informações")
 
-        resultado = self.interpolar_todas_as_imagens(paramIn)
-            
-        if self.funcao_cancelada():
-            #self.console(u"Função interrompida")
-            self.finalizar()
-        elif resultado is not None:
-            self.console(u"Função concluída")
-            self.finalizar()
+            self.function = RasterToCSVeVRT()
+            paramIn = TableData()
+            paramIn["images"] = SerialFile(root_path=str(self.ui.txInFolder.text()))
+            paramIn["out_folder"] = str(self.ui.txOutFolder.text())
+
+            self.print_text(u'Interpolando imagens...')
+
+            resultado = self.interpolar_todas_as_imagens(paramIn)
+
+            if self.funcao_cancelada():
+                #self.console(u"Função interrompida")
+                self.finalizar()
+            elif resultado is not None:
+                self.console(u"Função concluída")
+                self.finalizar()
+
+
+        except Exception as e:
+            print(e)
     
     def interpolar_todas_as_imagens(self, paramIn):
         
@@ -121,9 +128,13 @@ class Controller(AbstractController.Controller):
 
     def set_param(self):
             
-        self.ui.txInFolder.setText("C:\\Chuva")
-        self.ui.txOutFolder.setText("C:\\Chuva2")
-        self.ui.txImgReference.setText("C:\\Chuva2\\referencia.tif")
+        self.ui.txInFolder.setText("D:\\ClimatcDataECMWF_ERA5LAND\\2008_tp_daily")
+        self.ui.txOutFolder.setText("D:\\ClimatcDataECMWF_ERA5LAND\\2008_tp_daily_250m")
+        self.ui.txImgReference.setText("C:/Users/renna/OneDrive/Mestrado/produtividade total.tif")
+
+        self.ui.txPower.setValue(3.5)
+
+        self.ui.txRadius.setValue(5.55)
             
             
             

@@ -1,1 +1,1 @@
-from FiltroSavitzGolay import FiltroSavitz
+from Modelo.Funcoes.Filtros.FiltroSavitzGolay import FiltroSavitz

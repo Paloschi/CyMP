@@ -3,11 +3,11 @@
 # Form implementation generated from reading ui file 'DlgETc.ui'
 #
 # Created: Wed Nov 11 00:58:52 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from Controle.ConEtc import Controller
 
 try:
@@ -24,57 +24,57 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_Dialog(QtGui.QDialog):
+class Ui_Dialog(QtWidgets.QDialog):
     def setupUi(self, Dialog):
         
         self.controller = Controller(self)
         
 
         Dialog.resize(371, 290)
-        self.verticalLayout = QtGui.QVBoxLayout(Dialog)      
-        self.gridLayout = QtGui.QGridLayout()
+        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
+        self.gridLayout = QtWidgets.QGridLayout()
         self.verticalLayout.addLayout(self.gridLayout)
         
-        self.rbEtc = QtGui.QRadioButton(Dialog)
+        self.rbEtc = QtWidgets.RadioButton(Dialog)
         self.gridLayout.addWidget(self.rbEtc, 0,0,1,1)
         self.rbEtc.setChecked(True)
 
-        self.rbEta = QtGui.QRadioButton(Dialog)
+        self.rbEta = QtWidgets.RadioButton(Dialog)
         self.gridLayout.addWidget(self.rbEta, 0,1,1,1)        
         
-        self.label = QtGui.QLabel(Dialog)
+        self.label = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
         
-        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_2, 2, 0, 1, 1)
         
-        self.btnConfET0 = QtGui.QPushButton(Dialog)
+        self.btnConfET0 = QtWidgets.QPushButton(Dialog)
         self.gridLayout.addWidget(self.btnConfET0, 2, 1, 1, 1)
         
-        self.chET0 = QtGui.QCheckBox(Dialog)
+        self.chET0 = QtWidgets.QCheckBox(Dialog)
         self.chET0.setEnabled(False)
         self.gridLayout.addWidget(self.chET0, 2, 2, 1, 1)
         
-        self.label_3 = QtGui.QLabel(Dialog)
+        self.label_3 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_3, 3, 0, 1, 1)
         
-        self.btnConfKc = QtGui.QPushButton(Dialog)
+        self.btnConfKc = QtWidgets.QPushButton(Dialog)
         self.gridLayout.addWidget(self.btnConfKc, 3, 1, 1, 1)
         
-        self.chKc = QtGui.QCheckBox(Dialog)
+        self.chKc = QtWidgets.QCheckBox(Dialog)
         self.chKc.setEnabled(False)
         self.gridLayout.addWidget(self.chKc, 3, 2, 1, 1)
         
-        self.label_4 = QtGui.QLabel(Dialog)
+        self.label_4 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_4, 4, 0, 1, 1)
         
-        self.label_5 = QtGui.QLabel(Dialog)
+        self.label_5 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_5, 5, 0, 1, 1)
         
-        self.btnConfETc = QtGui.QPushButton(Dialog)
+        self.btnConfETc = QtWidgets.QPushButton(Dialog)
         self.gridLayout.addWidget(self.btnConfETc, 5, 1, 1, 1)
         
-        self.chETc = QtGui.QCheckBox(Dialog)
+        self.chETc = QtWidgets.QCheckBox(Dialog)
         self.chETc.setEnabled(False)
         self.gridLayout.addWidget(self.chETc, 5, 2, 1, 1)
 
@@ -83,9 +83,9 @@ class Ui_Dialog(QtGui.QDialog):
         
 
         
-        self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
 
         self.verticalLayout.addWidget(self.buttonBox)
 

@@ -3,20 +3,20 @@
 # Form implementation generated from reading ui file 'MainWindow_2.ui'
 #
 # Created: Tue Jun 09 11:16:29 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets, QtGui
 
-from DlgEstimativaDatasCultura import Ui_DlgEstimativaDatasAgricolas
-from DlgFiltroSavitzGolay import Ui_DlgSavitzGolay
-from DlgEstatisticasEspectrais import Ui_DlgEstatisticasEspectrais
-from DlgInvdistnnShapeEcmwf2Raster import UI_DlgInterpoladorShapeEcmwf
-from DlgInvdistnnRaster2Raster import Ui_InvdistnnRaster2Raster
-from DlgDistribuidorDeIndice import Ui_DistribuidorDeIndice
-from DlgDecendial2Diario import Ui_Decendial2Diario
-import ConfigParser
+from Visao.DlgEstimativaDatasCultura import Ui_DlgEstimativaDatasAgricolas
+from Visao.DlgFiltroSavitzGolay import Ui_DlgSavitzGolay
+from Visao.DlgEstatisticasEspectrais import Ui_DlgEstatisticasEspectrais
+from Visao.DlgInvdistnnShapeEcmwf2Raster import UI_DlgInterpoladorShapeEcmwf
+from Visao.DlgInvdistnnRaster2Raster import Ui_InvdistnnRaster2Raster
+from Visao.DlgDistribuidorDeIndice import Ui_DistribuidorDeIndice
+from Visao.DlgDecendial2Diario import Ui_Decendial2Diario
+import configparser as ConfigParser
 from Visao import DlgETc, DlgTAW, DlgDr, DlgKs, DlgPPR, DlgYaFao
 
 try:
@@ -26,17 +26,17 @@ except AttributeError:
         return s
 
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtWidgets.QApplication.UnicodeUTF8
     def _translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+        return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text)
+        return QtWidgets.QApplication.translate(context, text)
 
-class Ui_MainWindow(QtGui.QMainWindow):
+class Ui_MainWindow(QtWidgets.QMainWindow):
     
     def __init__(self):
-        QtGui.QMainWindow.__init__(self)
+        QtWidgets.QMainWindow.__init__(self)
         self.setupUi(self)
 
     def popupYaFao(self):
@@ -97,22 +97,23 @@ class Ui_MainWindow(QtGui.QMainWindow):
         
     def popupEstatistiscas_Espectrais(self):
 
-        popup = Ui_DlgEstatisticasEspectrais(self)
-        popup.setupUi(popup)
+        self.popup = Ui_DlgEstatisticasEspectrais(self)
+        self.popup.setupUi(self.popup)
+        self.popup.show()
         
-        popup.show()
+
         
     def popupInterpolador_ECMWF(self):
 
-        popup = UI_DlgInterpoladorShapeEcmwf()
-        popup.setupUi(popup)
-        popup.show()
+        self.popup = UI_DlgInterpoladorShapeEcmwf()
+        self.popup.setupUi(self.popup)
+        self.popup.show()
                   
     def popupInterpoladorRaster2Raster(self):
 
-        popup = Ui_InvdistnnRaster2Raster()
-        popup.setupUi(popup)
-        popup.show()
+        self.popup = Ui_InvdistnnRaster2Raster(self)
+        self.popup.setupUi(self.popup)
+        self.popup.show()
                   
  
                            
@@ -125,89 +126,89 @@ class Ui_MainWindow(QtGui.QMainWindow):
         
         MainWindow.setIconSize(QtCore.QSize(200, 200))
         
-        self.centralwidget = QtGui.QWidget(MainWindow)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-        self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         MainWindow.setCentralWidget(self.centralwidget)
         
-        self.menubar = QtGui.QMenuBar(MainWindow)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 751, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         
-        self.menuBH = QtGui.QMenu(self.menubar)
+        self.menuBH = QtWidgets.QMenu(self.menubar)
         self.menuBH.setObjectName(_fromUtf8("menuBH"))
         
-        self.menuProdutividade = QtGui.QMenu(self.menubar)
+        self.menuProdutividade = QtWidgets.QMenu(self.menubar)
         self.menuProdutividade.setObjectName(_fromUtf8("menuProdutividade"))
         
-        self.menuCarregar_Dado = QtGui.QMenu(self.menuProdutividade)
+        self.menuCarregar_Dado = QtWidgets.QMenu(self.menuProdutividade)
         self.menuCarregar_Dado.setObjectName(_fromUtf8("menuCarregar_Dado"))
         
-        self.menuFun_o_es = QtGui.QMenu(self.menubar)
+        self.menuFun_o_es = QtWidgets.QMenu(self.menubar)
         self.menuFun_o_es.setObjectName(_fromUtf8("menuFun_o_es"))
         
-        self.menuInterpoladores = QtGui.QMenu(self.menubar)
+        self.menuInterpoladores = QtWidgets.QMenu(self.menubar)
         self.menuInterpoladores.setObjectName(_fromUtf8("menuInterpoladores"))
         
-        self.menuEstatisticas = QtGui.QMenu(self.menubar)
+        self.menuEstatisticas = QtWidgets.QMenu(self.menubar)
         self.menuEstatisticas.setObjectName(_fromUtf8("menuEstatisticas"))
         
         MainWindow.setMenuBar(self.menubar)
         
-        self.statusbar = QtGui.QStatusBar(MainWindow)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
         
-        self.actionETc = QtGui.QAction(MainWindow)
+        self.actionETc = QtWidgets.QAction(MainWindow)
         self.actionETc.setObjectName(_fromUtf8("actionETc"))
         
-        self.actionTAW = QtGui.QAction(MainWindow)
+        self.actionTAW = QtWidgets.QAction(MainWindow)
         self.actionTAW.setObjectName(_fromUtf8("actionTAW"))
         
-        self.actionEsgotamento_BHFAO = QtGui.QAction(MainWindow)
+        self.actionEsgotamento_BHFAO = QtWidgets.QAction(MainWindow)
         self.actionEsgotamento_BHFAO.setObjectName(_fromUtf8("actionEsgotamento_BHFAO"))
         
-        self.actionKs = QtGui.QAction(MainWindow)
+        self.actionKs = QtWidgets.QAction(MainWindow)
         self.actionKs.setObjectName(_fromUtf8("actionKs"))
         
-        self.actionPPB = QtGui.QAction(MainWindow)
+        self.actionPPB = QtWidgets.QAction(MainWindow)
         self.actionPPB.setObjectName(_fromUtf8("actionPPB"))
         
-        self.actionCarregar_lista_de_dados = QtGui.QAction(MainWindow)
+        self.actionCarregar_lista_de_dados = QtWidgets.QAction(MainWindow)
         self.actionCarregar_lista_de_dados.setObjectName(_fromUtf8("actionCarregar_lista_de_dados"))
         
-        self.actionCriar_dado_tabelado = QtGui.QAction(MainWindow)
+        self.actionCriar_dado_tabelado = QtWidgets.QAction(MainWindow)
         self.actionCriar_dado_tabelado.setObjectName(_fromUtf8("actionCriar_dado_tabelado"))
         
-        self.actionYaFao = QtGui.QAction(MainWindow)
+        self.actionYaFao = QtWidgets.QAction(MainWindow)
         self.actionYaFao.setObjectName(_fromUtf8("actionYaFao"))
         
-       #self.actionListar_Fun_oes = QtGui.QAction(MainWindow)
+       #self.actionListar_Fun_oes = QtWidgets.QAction(MainWindow)
         #self.actionListar_Fun_oes.setObjectName(_fromUtf8("actionListar_Fun_oes"))
         
-        self.actionRodar = QtGui.QAction(MainWindow)
+        self.actionRodar = QtWidgets.QAction(MainWindow)
         self.actionRodar.setObjectName(_fromUtf8("actionRodar"))
         
-        self.actionInterpolador = QtGui.QAction(MainWindow)
+        self.actionInterpolador = QtWidgets.QAction(MainWindow)
         self.actionInterpolador.setObjectName(_fromUtf8("actionInterpolador"))
 
-        self.actionInterpoladorRaster2Raster = QtGui.QAction(MainWindow)
+        self.actionInterpoladorRaster2Raster = QtWidgets.QAction(MainWindow)
         self.actionInterpoladorRaster2Raster.setObjectName(_fromUtf8("actionInterpoladorRaster2Raster"))
         
-        self.actionEstimativa_de_datas_de_colheita = QtGui.QAction(MainWindow)
+        self.actionEstimativa_de_datas_de_colheita = QtWidgets.QAction(MainWindow)
         self.actionEstimativa_de_datas_de_colheita.setObjectName(_fromUtf8("actionEstimativa_de_datas_de_colheita"))
 
-        self.actionDecendial_2_diario = QtGui.QAction(MainWindow)
+        self.actionDecendial_2_diario = QtWidgets.QAction(MainWindow)
         self.actionDecendial_2_diario.setObjectName(_fromUtf8("actionDecendial_2_diario"))
                
-        self.actionFiltro_Savitz_Golay = QtGui.QAction(MainWindow)
+        self.actionFiltro_Savitz_Golay = QtWidgets.QAction(MainWindow)
         self.actionFiltro_Savitz_Golay.setObjectName(_fromUtf8("actionFiltro_Savitz_Golay"))
         
-        self.actionEstatisticasEspectrais = QtGui.QAction(MainWindow)
+        self.actionEstatisticasEspectrais = QtWidgets.QAction(MainWindow)
         self.actionEstatisticasEspectrais.setObjectName(_fromUtf8("actionEstatisticasEspectrais"))
 
-        self.actionDistribuidorDeIndice = QtGui.QAction(MainWindow)
+        self.actionDistribuidorDeIndice = QtWidgets.QAction(MainWindow)
         self.actionDistribuidorDeIndice.setObjectName(_fromUtf8("actionDistribuidorDeIndice"))
         
         self.menuBH.addAction(self.actionETc)
@@ -240,7 +241,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menubar.addAction(self.menuProdutividade.menuAction())
         self.menubar.addAction(self.menuEstatisticas.menuAction())
         
-        self.label = QtGui.QLabel(MainWindow)
+        self.label = QtWidgets.QLabel(MainWindow)
         self.label.setGeometry(QtCore.QRect(26, 44, 600, 75))
         self.label.setObjectName(_fromUtf8("label"))
 
@@ -252,28 +253,28 @@ class Ui_MainWindow(QtGui.QMainWindow):
         #path_ = inspect.getfile(self.__class__)
         #path_ = str(path_).replace("Visao\TelaPrincipal.py", "")
         
-        self.logo_lea = QtGui.QPushButton(MainWindow)
+        self.logo_lea = QtWidgets.QPushButton(MainWindow)
         self.logo_lea.setGeometry(QtCore.QRect(26, 130, 200, 82))
         self.icon_lea = QtGui.QIcon("images\logo_lea.jpg")
         self.icon_lea.pixmap(QtCore.QSize(200, 200))
         self.logo_lea.setIcon(self.icon_lea)
         self.logo_lea.setIconSize(QtCore.QSize(200, 100))
 
-        self.logo_lea = QtGui.QPushButton(MainWindow)
+        self.logo_lea = QtWidgets.QPushButton(MainWindow)
         self.logo_lea.setGeometry(QtCore.QRect(250, 130, 120, 82))
         self.icon_lea = QtGui.QIcon("images\logoPgeagrid2.png")
         self.icon_lea.pixmap(QtCore.QSize(200, 200))
         self.logo_lea.setIcon(self.icon_lea)
         self.logo_lea.setIconSize(QtCore.QSize(145, 80))        
 
-        self.logo_lea = QtGui.QPushButton(MainWindow)
+        self.logo_lea = QtWidgets.QPushButton(MainWindow)
         self.logo_lea.setGeometry(QtCore.QRect(394, 130, 82, 82))
         self.icon_lea = QtGui.QIcon("images\logo_campus_cvel.jpg")
         self.icon_lea.pixmap(QtCore.QSize(200, 200))
         self.logo_lea.setIcon(self.icon_lea)
         self.logo_lea.setIconSize(QtCore.QSize(120, 82))       
 
-        self.logo_lea = QtGui.QPushButton(MainWindow)
+        self.logo_lea = QtWidgets.QPushButton(MainWindow)
         self.logo_lea.setGeometry(QtCore.QRect(500, 130, 110, 82))
         self.icon_lea = QtGui.QIcon("images\capes-logo-CAPES.jpg")
         self.icon_lea.pixmap(QtCore.QSize(200, 200))

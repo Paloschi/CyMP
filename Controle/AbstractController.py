@@ -5,14 +5,13 @@ Created on Jul 2, 2015
 @author: Paloschi
 '''
 
-from numpy.distutils.environment import __metaclass__
+#from numpy.distutils.environment import __metaclass__
 from abc import ABCMeta, abstractmethod
 import threading
-from PyQt4 import QtCore, QtGui
-import ConfigParser
-from types import NoneType
+from PyQt5 import QtCore, QtWidgets
+import configparser as ConfigParser
+NoneType = type(None)
 from Visao.Box_Progress_Bar import Ui_DlgProgressBar
-from PyQt4.Qt import QString
 import time
 from Visao import DlgNovaSerieTemporal
 
@@ -50,9 +49,12 @@ class Controller(object):
         Este contrutor é padrão para os controladores, ele recebe uma user interface que permite o controle
         as classes controladoras finais não deverão ter construtores
         '''
-        self.config = ConfigParser.RawConfigParser()
-        self.config.read('workspace.properties')
-        self.ui = userInterface # seta interface para que seja visivel aos outros m�todos
+        try:
+            self.config = ConfigParser.RawConfigParser()
+            self.config.read('workspace.properties')
+            self.ui = userInterface # seta interface para que seja visivel aos outros m�todos
+        except Exception as e:
+            print(e)
 
     def print_text(self, text):
         self.progress_bar.print_text(text)
@@ -64,19 +66,26 @@ class Controller(object):
         """
             Esse método cria uma thread pra executar a função
         """
-        if self.valida_form() :
-            self.function = None
-            self.thread = StoppableThread(self.executa)
-            self.progress_bar = Ui_DlgProgressBar(self.ui)
-            self.progress_bar.setupUi(self.progress_bar)  
-            self.progress_bar.show()
-            self.thread.start()
-            while(self.function==None) : 
-                time.sleep(0.005)
-            self.function.print_text = self.progress_bar.print_text
-            self.function.console = self.progress_bar.print_text              
-            self.progress_bar.iniciar(self, self.thread)
-  
+        try:
+            if self.valida_form() :
+                print("Form validated")
+                self.function = None
+                self.thread = StoppableThread(self.executa)
+                self.progress_bar = Ui_DlgProgressBar(self.ui)
+                self.progress_bar.setupUi(self.progress_bar)
+                print("Progress dialog shown")
+                self.progress_bar.show()
+                print("Progress dialog shown")
+                self.thread.start()
+                print("Thread running")
+                while(self.function==None) :
+                    time.sleep(0.005)
+                self.function.print_text = self.progress_bar.print_text
+                self.function.console = self.progress_bar.print_text
+                self.progress_bar.iniciar(self, self.thread)
+                print("Action ok finished")
+        except Exception as e:
+            print (e)
             
     def action_cancel(self):
             if self.thread != NoneType :
@@ -110,12 +119,13 @@ class Controller(object):
         workspace=config.get('WorkSpace', 'space.default')
         
         if type == "folder" :
-            fname = QtGui.QFileDialog.getExistingDirectory(self.ui, "Selecione uma pasta", workspace)
+            fname = QtWidgets.QFileDialog.getExistingDirectory(self.ui, "Selecione uma pasta", workspace)
         else :
-            print "here"
-            fname = QtGui.QFileDialog.getOpenFileName(self.ui, "Selecione o arquivo", workspace)
+            print ("here")
+            fname = QtWidgets.QFileDialog.getOpenFileName(self.ui, "Selecione o arquivo", workspace)
         if fname!="" :
-            textToWrite.setText (fname)
+            print(fname)
+            textToWrite.setText (str(fname[0]))
     
     def getSerieTemporal(self, serieTemporal=None):
         
@@ -131,8 +141,8 @@ class Controller(object):
         return serie_temporal       
         
     def message(self, text):
-        text = QString(text)
-        QtGui.QMessageBox.about(self.ui, "Ops...", text)
+        text = text
+        QtWidgets.QMessageBox.about(self.ui, "Ops...", text)
         
     def funcao_cancelada(self):
         if threading.currentThread().stopped():
@@ -142,9 +152,9 @@ class Controller(object):
     
     def confirmar(self, text, title):
         quit_msg = text
-        reply = QtGui.QMessageBox.question(self.ui, title, 
-                     quit_msg, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
-        if reply == QtGui.QMessageBox.Yes:
+        reply = QtWidgets.QMessageBox.question(self.ui, title,
+                     quit_msg, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
             return True
         else:
             return False

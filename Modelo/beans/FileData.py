@@ -5,7 +5,7 @@ Created on Jul 12, 2015
 @author: Paloschi
 '''
 
-from AbstractData import ABData, FILE_DATA
+from Modelo.beans.AbstractData import ABData, FILE_DATA
 import os
 
 class FileData(ABData):
@@ -57,6 +57,3 @@ class FileData(ABData):
     def file_ext(self, ext):
         ext = ext.replace(".", "")
         self.__file_ext = ext
-            
-        
-

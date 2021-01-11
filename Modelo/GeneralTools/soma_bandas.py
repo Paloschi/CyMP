@@ -19,7 +19,7 @@ nodata = raster.metadata["nodata"]
 metadata = raster.metadata
 metadata["count"] = 1
 
-print raster.metadata
+print (raster.metadata)
 
 soma = imagem_kc_ = np.zeros((len(data_raster[1]), len(data_raster[1][0]))).astype(dtype="float32")
 

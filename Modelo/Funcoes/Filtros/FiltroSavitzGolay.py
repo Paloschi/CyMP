@@ -37,12 +37,12 @@ class FiltroSavitz(AbstractFunction):
     def __execOperation__(self):
         
         images = self.paramentrosIN_carregados["images"]
-        if self.paramentrosIN_carregados.has_key("conf_algoritimo") : conf_algoritimo = self.paramentrosIN_carregados["conf_algoritimo"]
+        if "conf_algoritimo" in self.paramentrosIN_carregados: conf_algoritimo = self.paramentrosIN_carregados["conf_algoritimo"]
         else : conf_algoritimo = dict()
         img_matrix = images.loadListRasterData()
         
         if img_matrix == None:
-            print self.console("Erro no carregamento das imagens")
+            print (self.console("Erro no carregamento das imagens"))
             threading.currentThread().stop() 
             return
         
@@ -129,7 +129,7 @@ def Smooth( array, smooth_window):
                 for j in range(2*i-a +1 , i):
                     array[i]+= temp_intensity[j]
                 array[i] /=  (2*a -2*i-1)
-            else: print "ERROR in Smooth: out of range"
+            else: print ("ERROR in Smooth: out of range")
         return array
         
 def savitzky_golay(y, window_size=5, order=3, deriv=0, rate=1):
@@ -186,7 +186,7 @@ def savitzky_golay(y, window_size=5, order=3, deriv=0, rate=1):
         try:
             window_size = np.abs(np.int(window_size))
             order = np.abs(np.int(order))
-        except ValueError, msg:
+        except ValueError:
             raise ValueError("window_size and order have to be of type int")
         if window_size % 2 != 1 or window_size < 1:
             raise TypeError("window_size size must be a positive odd number")

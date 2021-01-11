@@ -3,11 +3,11 @@
 # Form implementation generated from reading ui file 'DlgDr.ui'
 #
 # Created: Wed Nov 11 04:59:35 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from Controle.ConDr import Controller
 
 try:
@@ -24,59 +24,59 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_Dialog(QtGui.QDialog):
+class Ui_Dialog(QtWidgets.QDialog):
     def setupUi(self, Dialog):
         
         self.controller = Controller(self)
         
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(451, 273)
-        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
 
-        self.gridLayout = QtGui.QGridLayout()
+        self.gridLayout = QtWidgets.QGridLayout()
       
-        self.label = QtGui.QLabel(Dialog)
+        self.label = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
         
-        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
-        self.btnConfETc = QtGui.QPushButton(Dialog)
+        self.btnConfETc = QtWidgets.QPushButton(Dialog)
         self.gridLayout.addWidget(self.btnConfETc, 1, 1, 1, 1)
-        self.chEtc = QtGui.QCheckBox(Dialog)
+        self.chEtc = QtWidgets.QCheckBox(Dialog)
         self.chEtc.setEnabled(False)
         self.gridLayout.addWidget(self.chEtc, 1, 2, 1, 1)
         
-        self.label_3 = QtGui.QLabel(Dialog)
+        self.label_3 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_3, 2, 0, 1, 1)
-        self.btnConfPPP = QtGui.QPushButton(Dialog)
+        self.btnConfPPP = QtWidgets.QPushButton(Dialog)
         self.gridLayout.addWidget(self.btnConfPPP, 2, 1, 1, 1)
-        self.chPPP = QtGui.QCheckBox(Dialog)
+        self.chPPP = QtWidgets.QCheckBox(Dialog)
         self.chPPP.setEnabled(False)
         self.gridLayout.addWidget(self.chPPP, 2, 2, 1, 1)
         
-        self.label_4 = QtGui.QLabel(Dialog)
+        self.label_4 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_4, 3, 0, 1, 1)
-        self.btnConfTAW = QtGui.QPushButton(Dialog)
+        self.btnConfTAW = QtWidgets.QPushButton(Dialog)
         self.gridLayout.addWidget(self.btnConfTAW, 3, 1, 1, 1)
-        self.chTAW = QtGui.QCheckBox(Dialog)
+        self.chTAW = QtWidgets.QCheckBox(Dialog)
         self.chTAW.setEnabled(False)
         self.gridLayout.addWidget(self.chTAW, 3, 2, 1, 1)
         
-        self.label_7 = QtGui.QLabel(Dialog)
+        self.label_7 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_7, 4, 0, 1, 1)
-        self.txImgCAD = QtGui.QLineEdit(Dialog)
+        self.txImgCAD = QtWidgets.QLineEdit(Dialog)
         self.gridLayout.addWidget(self.txImgCAD, 4, 1, 1, 1)
-        self.btnFindImgCAD = QtGui.QToolButton(Dialog)
+        self.btnFindImgCAD = QtWidgets.QToolButton(Dialog)
         self.gridLayout.addWidget(self.btnFindImgCAD, 4, 2, 1, 1)        
         
-        self.label_5 = QtGui.QLabel(Dialog)
+        self.label_5 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_5, 5, 0, 1, 1)       
 
-        self.label_6 = QtGui.QLabel(Dialog)
+        self.label_6 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_6, 6, 0, 1, 1) 
-        self.BtnConfDr = QtGui.QPushButton(Dialog)
+        self.BtnConfDr = QtWidgets.QPushButton(Dialog)
         self.gridLayout.addWidget(self.BtnConfDr, 6, 1, 1, 1)               
-        self.chDr = QtGui.QCheckBox(Dialog)
+        self.chDr = QtWidgets.QCheckBox(Dialog)
         self.chDr.setEnabled(False)
         self.gridLayout.addWidget(self.chDr, 6, 2, 1, 1)
         
@@ -84,9 +84,9 @@ class Ui_Dialog(QtGui.QDialog):
         self.gridLayout.addItem(spacerItem, 7, 0, 1, 1)
         
         self.verticalLayout.addLayout(self.gridLayout)
-        self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
 
         self.verticalLayout.addWidget(self.buttonBox)
 

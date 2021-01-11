@@ -34,7 +34,7 @@ for x in range(minimo, maximo):
     else : sys.stdout.write(str(verde_default)+" ")
     if azul: sys.stdout.write(str(color_value if azul_crescente else 255 - color_value) + " ")
     else : sys.stdout.write(str(azul_default)+" ")
-    print ""
+    print ("")
     
     if x == 3000 : input('pausa pro cafe')
     

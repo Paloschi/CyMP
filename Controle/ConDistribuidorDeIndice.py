@@ -8,7 +8,7 @@ Created on 19/10/2015
 from Controle.AbstractController import Controller
 from Modelo.Funcoes.BalancoHidrico import Distribuidor_IC_2
 from Modelo.beans import TableData, RasterFile
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 import os
 import threading
 

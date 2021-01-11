@@ -1,5 +1,5 @@
 import sys
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore
 
 class MainForm(QtGui.QMainWindow):
     def __init__(self, parent=None):

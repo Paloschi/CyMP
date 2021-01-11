@@ -9,11 +9,11 @@ if __name__ == '__main__':
 
     date = timedelta((date2 - date1).days * 1.03)
     
-    print date
+    print (date)
 
 
-from Etc import Etc
-from ExtratorSemeaduraColheita import ExtratorSemeaduraColheita
+from Modelo.Funcoes.BalancoHidrico.Etc import Etc
+from Modelo.Funcoes.BalancoHidrico.ExtratorSemeaduraColheita import ExtratorSemeaduraColheita
 from Modelo.Funcoes.BalancoHidrico.Distribuidor_IC import DistribuidorKC
 
 

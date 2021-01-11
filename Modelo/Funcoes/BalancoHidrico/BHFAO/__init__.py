@@ -8,4 +8,4 @@ if __name__ == '__main__':
     img_ = img.loadRasterData()
 
     
-    print numpy.min(img_)
+    print (numpy.min(img_))

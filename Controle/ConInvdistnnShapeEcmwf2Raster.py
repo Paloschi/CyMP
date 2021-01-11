@@ -4,12 +4,12 @@ Created on Mar 6, 2015
 
 @author: Paloschi
 '''
-from PyQt4.QtGui import QFileDialog, QMessageBox
+
 from Modelo.beans import TableData, FileData, VectorFile, RasterFile
 from Modelo.Funcoes.VectorTools import SplitTable
 from Modelo.Funcoes.Interpoladores import Interpola
 import sys
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Controle import AbstractController
 import os.path
 
@@ -69,7 +69,7 @@ class Controller(AbstractController.Controller):
       
     def executa(self):
         
-        print "executando.."
+        print ("executando..")
         
         self.function = Interpola.InterpolaTabela()
         self.function.console = self.print_text
@@ -80,7 +80,7 @@ class Controller(AbstractController.Controller):
         dados_separador = TableData()
         atributos = list()
         
-        for index in xrange(self.ui.lwGroupAtributes.count()):
+        for index in range(self.ui.lwGroupAtributes.count()):
             if self.ui.lwGroupAtributes.item(index).checkState() == 2:
                 atributos.append(str(self.ui.lwGroupAtributes.item(index).text()))
         

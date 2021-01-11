@@ -9,11 +9,11 @@ Created on Jul 2, 2015
 from numpy.distutils.environment import __metaclass__
 from abc import ABCMeta, abstractmethod
 import threading
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 import ConfigParser
 from types import NoneType
 from Visao.Box_Progress_Bar import Ui_DlgProgressBar
-from PyQt4.Qt import QString
+from PyQt5.Qt import QString
 import time
 from Visao import DlgNovaSerieTemporal
 
@@ -110,9 +110,9 @@ class Controller(object):
     
     def findPath(self, textToWrite, type="none"):
         if type == "folder" :
-            fname = QtGui.QFileDialog.getExistingDirectory()
+            fname = QtWidgets.QFileDialog.getExistingDirectory()
         else :
-            fname = QtGui.QFileDialog.getOpenFileName()
+            fname = QtWidgets.QFileDialog.getOpenFileName()
         if fname!="" :
             textToWrite.setText (fname)
     
@@ -131,7 +131,7 @@ class Controller(object):
         
     def message(self, text):
         text = QString(text)
-        QtGui.QMessageBox.about(self.ui, "Ops...", text)
+        QtWidgets.QMessageBox.about(self.ui, "Ops...", text)
         
     def funcao_cancelada(self):
         if threading.currentThread().stopped():
@@ -141,9 +141,9 @@ class Controller(object):
     
     def confirmar(self, text, title):
         quit_msg = text
-        reply = QtGui.QMessageBox.question(self.ui, title, 
-                     quit_msg, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
-        if reply == QtGui.QMessageBox.Yes:
+        reply = QtWidgets.QMessageBox.question(self.ui, title,
+                     quit_msg, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
             return True
         else:
             return False
@@ -295,9 +295,7 @@ class Function(ABData):
         pass
     
     def executar(self, parametros):
-        print "aque1"
         while self.console is None : pass
-        print "aque2"
         self.data = parametros
         return self.data
     
@@ -360,7 +358,7 @@ def Ds_DC_to_date(data):
 
 def converter (dia_inicial, imagem):
     
-    print "dia inicial: " + str(dia_inicial)
+    print ("dia inicial: " + str(dia_inicial))
     
     ano_inicial = dia_inicial.year
     
@@ -370,7 +368,7 @@ def converter (dia_inicial, imagem):
     imagem_convertida = np.zeros((n_linhas, n_colunas))     
     imagem_convertida = array(imagem_convertida).astype(dtype="uint16")    
     
-    print "iniciando conversão"
+    print ("iniciando conversão")
     
     progress(0.0)
     
@@ -395,7 +393,7 @@ def converter (dia_inicial, imagem):
         imagem_convertida[i] = imagem[i]
         
         progress(i/float(n_linhas-1))
-    print "Conversão terminada, retornando imagem"
+    print ("Conversão terminada, retornando imagem")
     
     return imagem_convertida
  
@@ -421,9 +419,9 @@ data_raster = raster.loadRasterData(True)
 
 nodata = raster.metadata["nodata"]
 
-print nodata
+print (nodata)
 
-print ""
+print ("")
 
 
 sys.stdout.write( "media" + "\t") 
@@ -452,7 +450,7 @@ for band in data_raster:
         cv = 0
     
     sys.stdout.write( str(sd) + "\t")
-    print ""
+    print ("")
     
 
 for band in data_raster:
@@ -470,13 +468,13 @@ for band in data_raster:
 # Form implementation generated from reading ui file 'Box_Progress_Bar.ui'
 #
 # Created: Tue Oct 13 04:35:05 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 import time
-from PyQt4.Qt import QDialog
+from PyQt5.Qt import QDialog
 import time
 #from matplotlib.textpath import text_to_path
 
@@ -507,7 +505,7 @@ class Ui_DlgProgressBar(QDialog):
     
     def iniciar(self, controller, thread_executando):
         self.thread_executando = thread_executando
-        print "iniciando"
+        print ("iniciando")
         self._active = True
         while True:
             time.sleep(0.05)
@@ -517,19 +515,19 @@ class Ui_DlgProgressBar(QDialog):
             value = controller.function.progresso
             self.progressBar.setValue(value)
             #print value
-            QtGui.qApp.processEvents()
+            QtWidgets.qApp.processEvents()
             if (not self._active):
                 self.funcao_terminada()
                 break
             if self.funcao_finalizada : self.funcao_terminada()
 
-        QtGui.qApp.processEvents()
+        QtWidgets.qApp.processEvents()
         
     def cancelar(self):
         if self.confirmar_cancelamento() :
             self.console.appendPlainText("cancelando..")
             self.thread_executando.stop() 
-            QtGui.qApp.processEvents()
+            QtWidgets.qApp.processEvents()
             while not self.funcao_finalizada : pass
             self.console.appendPlainText(U"Função cancelada!")
             self.btnCancelar.setEnabled(False)
@@ -540,9 +538,9 @@ class Ui_DlgProgressBar(QDialog):
         
     def confirmar_cancelamento(self):
         quit_msg = "Deseja realmente cancelar o processo?"
-        reply = QtGui.QMessageBox.question(self, 'Cancelamento', 
-                     quit_msg, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
-        if reply == QtGui.QMessageBox.Yes:
+        reply = QtWidgets.QMessageBox.question(self, 'Cancelamento',
+                     quit_msg, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
             return True
         else:
             return False
@@ -550,29 +548,29 @@ class Ui_DlgProgressBar(QDialog):
     def setupUi(self, DlgProgressBar):
         DlgProgressBar.setObjectName(_fromUtf8("DlgProgressBar"))
         DlgProgressBar.resize(388, 247)
-        self.verticalLayout = QtGui.QVBoxLayout(DlgProgressBar)
+        self.verticalLayout = QtWidgets.QVBoxLayout(DlgProgressBar)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         
-        self.label = QtGui.QLabel(DlgProgressBar)
+        self.label = QtWidgets.QLabel(DlgProgressBar)
         self.label.setObjectName(_fromUtf8("label"))
         self.verticalLayout.addWidget(self.label)
         
-        self.console = QtGui.QPlainTextEdit(DlgProgressBar)
+        self.console = QtWidgets.QPlainTextEdit(DlgProgressBar)
         self.console.setReadOnly(True)
         self.console.setPlainText(_fromUtf8(""))
         self.console.setObjectName(_fromUtf8("console"))
         self.verticalLayout.addWidget(self.console)
         
-        self.progressBar = QtGui.QProgressBar(DlgProgressBar)
+        self.progressBar = QtWidgets.QProgressBar(DlgProgressBar)
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName(_fromUtf8("progressBar"))
         self.verticalLayout.addWidget(self.progressBar)
         
-        self.btnCancelar = QtGui.QPushButton(DlgProgressBar)
+        self.btnCancelar = QtWidgets.QPushButton(DlgProgressBar)
         self.btnCancelar.setObjectName(_fromUtf8("btnCancelar"))
         self.verticalLayout.addWidget(self.btnCancelar)
         
-        self.btnOk = QtGui.QPushButton(DlgProgressBar)
+        self.btnOk = QtWidgets.QPushButton(DlgProgressBar)
         self.btnOk.setEnabled(False)
         self.btnOk.setObjectName(_fromUtf8("btnOk"))
         self.verticalLayout.addWidget(self.btnOk)
@@ -637,7 +635,7 @@ for x in range(minimo, maximo):
     else : sys.stdout.write(str(verde_default)+" ")
     if azul: sys.stdout.write(str(color_value if azul_crescente else 255 - color_value) + " ")
     else : sys.stdout.write(str(azul_default)+" ")
-    print ""
+    print ("")
     
     if x == 3000 : input('pausa pro cafe')
     
@@ -894,11 +892,11 @@ class Controller(AbstractController.Controller):
         param["Out_config"] = self.serie_saida_diaria
         param["Operation"] = str(self.ui.cbOperacao.currentText())
         
-        print "executar"
+        print ("executar")
         resultado = self.function.executar(param)
         
         if self.funcao_cancelada():
-            print "controller cancelando"
+            print ("controller cancelando")
             self.console(u"Função interrompida.")
             self.finalizar()
         else :
@@ -949,7 +947,7 @@ Created on 19/10/2015
 from Controle.AbstractController import Controller
 from Modelo.Funcoes.BalancoHidrico import Distribuidor_IC_2
 from Modelo.beans import TableData, RasterFile
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 import os
 import threading
 
@@ -1623,10 +1621,10 @@ Created on Jun 10, 2015
 
 @author: Paloschi
 '''
-from PyQt4.QtGui import QFileDialog
+from PyQt5.QtGui import QFileDialog
 from Modelo.Funcoes.Filtros import FiltroSavitz
 from Modelo.beans import TableData, SerialFile
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from Controle import AbstractController
 import os
 
@@ -1713,7 +1711,7 @@ Created on 13/10/2015
 from Modelo.Funcoes.RasterTools import RasterToCSVeVRT
 from Modelo.Funcoes.Interpoladores import IDW
 from Modelo.beans import SerialFile, TableData
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from Controle import AbstractController
 import os.path
 from Modelo.beans.RasterData import RasterFile
@@ -1854,12 +1852,12 @@ Created on Mar 6, 2015
 
 @author: Paloschi
 '''
-from PyQt4.QtGui import QFileDialog, QMessageBox
+from PyQt5.QtGui import QFileDialog, QMessageBox
 from Modelo.beans import TableData, FileData, VectorFile, RasterFile
 from Modelo.Funcoes.VectorTools import SplitTable
 from Modelo.Funcoes.Interpoladores import Interpola
 import sys
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Controle import AbstractController
 import os.path
 
@@ -2345,11 +2343,11 @@ Created on Jul 7, 2015
 
 @author: Paloschi
 '''
-from PyQt4 import QtGui
+from PyQt5 import QtGui
 from Visao import TelaPrincipal
 from multiprocessing import Process
-from PyQt4 import QtCore
-from PyQt4.Qt import QLocale, QTranslator
+from PyQt5 import QtCore
+from PyQt5.Qt import QLocale, QTranslator
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -3070,11 +3068,11 @@ class DistribuidorKC_(AbstractFunction):
 # Form implementation generated from reading ui file 'DlgDecendial2Diario.ui'
 #
 # Created: Mon Nov 09 13:44:39 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Controle import ConDecendial2Diario
 
 try:
@@ -3098,14 +3096,14 @@ class Ui_Decendial2Diario(QtGui.QDialog):
         
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(283, 166)
-        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.gridLayout = QtGui.QGridLayout()
+        self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
-        self.chDecendial = QtGui.QCheckBox(Dialog)
+        self.chDecendial = QtWidgets.QCheckBox(Dialog)
         self.chDecendial.setText(_fromUtf8(""))
         #self.chDecendial.setCheckState()
         self.chDecendial.setCheckable(False)
@@ -3113,23 +3111,23 @@ class Ui_Decendial2Diario(QtGui.QDialog):
         
         self.chDecendial.setObjectName(_fromUtf8("chDecendial"))
         self.gridLayout.addWidget(self.chDecendial, 2, 2, 1, 1)
-        self.label = QtGui.QLabel(Dialog)
+        self.label = QtWidgets.QLabel(Dialog)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 2, 0, 1, 1)
-        self.pushButton_2 = QtGui.QPushButton(Dialog)
+        self.pushButton_2 = QtWidgets.QPushButton(Dialog)
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
         self.gridLayout.addWidget(self.pushButton_2, 2, 1, 1, 1)
-        self.pushButton = QtGui.QPushButton(Dialog)
+        self.pushButton = QtWidgets.QPushButton(Dialog)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.gridLayout.addWidget(self.pushButton, 1, 1, 1, 1)
-        self.chDiario = QtGui.QCheckBox(Dialog)
+        self.chDiario = QtWidgets.QCheckBox(Dialog)
         self.chDiario.setText(_fromUtf8(""))
         self.chDiario.setCheckable(False)
         self.chDiario.setObjectName(_fromUtf8("chDiario"))
         self.chDiario.setEnabled(False)
         self.gridLayout.addWidget(self.chDiario, 1, 2, 1, 1)
 
-        self.label_3 = QtGui.QLabel(Dialog)
+        self.label_3 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_3, 3, 1, 2, 1)
         
         self.cbOperacao = QtGui.QComboBox(Dialog)
@@ -3140,9 +3138,9 @@ class Ui_Decendial2Diario(QtGui.QDialog):
         self.gridLayout.addWidget(self.cbOperacao, 3, 1, 2, 1)
         
         self.verticalLayout.addLayout(self.gridLayout)
-        self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout.addWidget(self.buttonBox)
 
@@ -3172,11 +3170,11 @@ class Ui_Decendial2Diario(QtGui.QDialog):
 # Form implementation generated from reading ui file 'DlgDistribuidorDeIndice.ui'
 #
 # Created: Mon Oct 19 07:14:46 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Controle.ConDistribuidorDeIndice import Controller
 
 try:
@@ -3200,28 +3198,28 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
         
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(437, 332)
-        self.label = QtGui.QLabel(Dialog)
+        self.label = QtWidgets.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(26, 44, 111, 16))
         self.label.setObjectName(_fromUtf8("label"))
-        self.btFindImgSemeadura = QtGui.QToolButton(Dialog)
+        self.btFindImgSemeadura = QtWidgets.QToolButton(Dialog)
         self.btFindImgSemeadura.setGeometry(QtCore.QRect(370, 40, 25, 19))
         self.btFindImgSemeadura.setObjectName(_fromUtf8("btFindImgSemeadura"))
-        self.btFindOutFolder = QtGui.QToolButton(Dialog)
+        self.btFindOutFolder = QtWidgets.QToolButton(Dialog)
         self.btFindOutFolder.setGeometry(QtCore.QRect(370, 130, 25, 19))
         self.btFindOutFolder.setObjectName(_fromUtf8("btFindOutFolder"))
-        self.txOutFolder = QtGui.QLineEdit(Dialog)
+        self.txOutFolder = QtWidgets.QLineEdit(Dialog)
         self.txOutFolder.setGeometry(QtCore.QRect(146, 130, 211, 20))
         self.txOutFolder.setObjectName(_fromUtf8("txOutFolder"))
-        self.txImgSemeadura = QtGui.QLineEdit(Dialog)
+        self.txImgSemeadura = QtWidgets.QLineEdit(Dialog)
         self.txImgSemeadura.setGeometry(QtCore.QRect(146, 40, 211, 20))
         self.txImgSemeadura.setObjectName(_fromUtf8("txImgSemeadura"))
-        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setGeometry(QtCore.QRect(26, 134, 81, 16))
         self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.btOkCancel = QtGui.QDialogButtonBox(Dialog)
+        self.btOkCancel = QtWidgets.QDialogButtonBox(Dialog)
         self.btOkCancel.setGeometry(QtCore.QRect(30, 300, 401, 23))
         self.btOkCancel.setOrientation(QtCore.Qt.Horizontal)
-        self.btOkCancel.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.btOkCancel.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.btOkCancel.setObjectName(_fromUtf8("btOkCancel"))
         self.tableWidget = QtGui.QTableWidget(Dialog)
         self.tableWidget.setGeometry(QtCore.QRect(30, 170, 261, 111))
@@ -3247,30 +3245,30 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
         item = QtGui.QTableWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignCenter)
         self.tableWidget.setItem(0, 2, item)
-        self.btRemover = QtGui.QPushButton(Dialog)
+        self.btRemover = QtWidgets.QPushButton(Dialog)
         self.btRemover.setGeometry(QtCore.QRect(300, 260, 75, 23))
         self.btRemover.setObjectName(_fromUtf8("btRemover"))
-        self.btAdicionar = QtGui.QPushButton(Dialog)
+        self.btAdicionar = QtWidgets.QPushButton(Dialog)
         self.btAdicionar.setGeometry(QtCore.QRect(300, 230, 75, 23))
         self.btAdicionar.setObjectName(_fromUtf8("btAdicionar"))
                                                   
-        self.txMultiplyFactor = QtGui.QSpinBox(Dialog)
+        self.txMultiplyFactor = QtWidgets.QSpinBox(Dialog)
         self.txMultiplyFactor.setMaximum(10000)
         self.txMultiplyFactor.setGeometry(QtCore.QRect(146, 100, 211, 20))
         self.txMultiplyFactor.setObjectName(_fromUtf8("txMultiplyFactor"))
-        self.label_3 = QtGui.QLabel(Dialog)
+        self.label_3 = QtWidgets.QLabel(Dialog)
         self.label_3.setGeometry(QtCore.QRect(26, 100, 101, 16))
         self.label_3.setObjectName(_fromUtf8("label_3"))
-        #self.btFindImgPico = QtGui.QToolButton(Dialog)
+        #self.btFindImgPico = QtWidgets.QToolButton(Dialog)
         #self.btFindImgPico.setGeometry(QtCore.QRect(370, 70, 25, 19))
         #self.btFindImgPico.setObjectName(_fromUtf8("btFindImgPico"))
-        self.txImgColheita = QtGui.QLineEdit(Dialog)
+        self.txImgColheita = QtWidgets.QLineEdit(Dialog)
         self.txImgColheita.setGeometry(QtCore.QRect(146, 70, 211, 20))
         self.txImgColheita.setObjectName(_fromUtf8("txImgColheita"))
-        self.label_4 = QtGui.QLabel(Dialog)
+        self.label_4 = QtWidgets.QLabel(Dialog)
         self.label_4.setGeometry(QtCore.QRect(26, 70, 101, 16))
         self.label_4.setObjectName(_fromUtf8("label_4"))
-        self.btFindImgColheita = QtGui.QToolButton(Dialog)
+        self.btFindImgColheita = QtWidgets.QToolButton(Dialog)
         self.btFindImgColheita.setGeometry(QtCore.QRect(370, 70, 25, 19))
         self.btFindImgColheita.setObjectName(_fromUtf8("btFindImgColheita"))
         self.comboBox = QtGui.QComboBox(Dialog)
@@ -3279,7 +3277,7 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
         self.comboBox.addItem(_fromUtf8(""))
         self.comboBox.addItem(_fromUtf8(""))
         self.comboBox.addItem(_fromUtf8(""))
-        self.label_5 = QtGui.QLabel(Dialog)
+        self.label_5 = QtWidgets.QLabel(Dialog)
         self.label_5.setGeometry(QtCore.QRect(100, 10, 208, 13))
         self.label_5.setObjectName(_fromUtf8("label_5"))
 
@@ -3350,11 +3348,11 @@ class Ui_DistribuidorDeIndice(QtGui.QDialog):
 # Form implementation generated from reading ui file 'DlgDr.ui'
 #
 # Created: Wed Nov 11 04:59:35 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Controle.ConDr import Controller
 
 try:
@@ -3378,52 +3376,52 @@ class Ui_Dialog(QtGui.QDialog):
         
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(451, 273)
-        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
 
-        self.gridLayout = QtGui.QGridLayout()
+        self.gridLayout = QtWidgets.QGridLayout()
       
-        self.label = QtGui.QLabel(Dialog)
+        self.label = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
         
-        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
-        self.btnConfETc = QtGui.QPushButton(Dialog)
+        self.btnConfETc = QtWidgets.QPushButton(Dialog)
         self.gridLayout.addWidget(self.btnConfETc, 1, 1, 1, 1)
-        self.chEtc = QtGui.QCheckBox(Dialog)
+        self.chEtc = QtWidgets.QCheckBox(Dialog)
         self.chEtc.setEnabled(False)
         self.gridLayout.addWidget(self.chEtc, 1, 2, 1, 1)
         
-        self.label_3 = QtGui.QLabel(Dialog)
+        self.label_3 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_3, 2, 0, 1, 1)
-        self.btnConfPPP = QtGui.QPushButton(Dialog)
+        self.btnConfPPP = QtWidgets.QPushButton(Dialog)
         self.gridLayout.addWidget(self.btnConfPPP, 2, 1, 1, 1)
-        self.chPPP = QtGui.QCheckBox(Dialog)
+        self.chPPP = QtWidgets.QCheckBox(Dialog)
         self.chPPP.setEnabled(False)
         self.gridLayout.addWidget(self.chPPP, 2, 2, 1, 1)
         
-        self.label_4 = QtGui.QLabel(Dialog)
+        self.label_4 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_4, 3, 0, 1, 1)
-        self.btnConfTAW = QtGui.QPushButton(Dialog)
+        self.btnConfTAW = QtWidgets.QPushButton(Dialog)
         self.gridLayout.addWidget(self.btnConfTAW, 3, 1, 1, 1)
-        self.chTAW = QtGui.QCheckBox(Dialog)
+        self.chTAW = QtWidgets.QCheckBox(Dialog)
         self.chTAW.setEnabled(False)
         self.gridLayout.addWidget(self.chTAW, 3, 2, 1, 1)
         
-        self.label_7 = QtGui.QLabel(Dialog)
+        self.label_7 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_7, 4, 0, 1, 1)
-        self.txImgCAD = QtGui.QLineEdit(Dialog)
+        self.txImgCAD = QtWidgets.QLineEdit(Dialog)
         self.gridLayout.addWidget(self.txImgCAD, 4, 1, 1, 1)
-        self.btnFindImgCAD = QtGui.QToolButton(Dialog)
+        self.btnFindImgCAD = QtWidgets.QToolButton(Dialog)
         self.gridLayout.addWidget(self.btnFindImgCAD, 4, 2, 1, 1)        
         
-        self.label_5 = QtGui.QLabel(Dialog)
+        self.label_5 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_5, 5, 0, 1, 1)       
 
-        self.label_6 = QtGui.QLabel(Dialog)
+        self.label_6 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_6, 6, 0, 1, 1) 
-        self.BtnConfDr = QtGui.QPushButton(Dialog)
+        self.BtnConfDr = QtWidgets.QPushButton(Dialog)
         self.gridLayout.addWidget(self.BtnConfDr, 6, 1, 1, 1)               
-        self.chDr = QtGui.QCheckBox(Dialog)
+        self.chDr = QtWidgets.QCheckBox(Dialog)
         self.chDr.setEnabled(False)
         self.gridLayout.addWidget(self.chDr, 6, 2, 1, 1)
         
@@ -3431,9 +3429,9 @@ class Ui_Dialog(QtGui.QDialog):
         self.gridLayout.addItem(spacerItem, 7, 0, 1, 1)
         
         self.verticalLayout.addLayout(self.gridLayout)
-        self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
 
         self.verticalLayout.addWidget(self.buttonBox)
 
@@ -3478,11 +3476,11 @@ class Ui_Dialog(QtGui.QDialog):
 # Form implementation generated from reading ui file 'DlgEstatisticasEspectrais.ui'
 #
 # Created: Wed Jul 01 11:12:16 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Controle import ConEstatisticasEspectrais
 
 try:
@@ -3511,82 +3509,82 @@ class Ui_DlgEstatisticasEspectrais(QtGui.QDialog):
         DlgEstatisticasEspectrais.setSizeIncrement(QtCore.QSize(1, 0))
         DlgEstatisticasEspectrais.setBaseSize(QtCore.QSize(50, 0))
         DlgEstatisticasEspectrais.setStyleSheet(_fromUtf8(""))
-        self.verticalLayout = QtGui.QVBoxLayout(DlgEstatisticasEspectrais)
+        self.verticalLayout = QtWidgets.QVBoxLayout(DlgEstatisticasEspectrais)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.tabWidget = QtGui.QTabWidget(DlgEstatisticasEspectrais)
+        self.tabWidget = QtWidgets.QTabWidget(DlgEstatisticasEspectrais)
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
-        self.tab_3 = QtGui.QWidget()
+        self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName(_fromUtf8("tab_3"))
-        self.verticalLayout_2 = QtGui.QVBoxLayout(self.tab_3)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.tab_3)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-        self.gridLayout = QtGui.QGridLayout()
+        self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.leInFolder = QtGui.QLineEdit(self.tab_3)
+        self.leInFolder = QtWidgets.QLineEdit(self.tab_3)
         self.leInFolder.setObjectName(_fromUtf8("leInFolder"))
         self.gridLayout.addWidget(self.leInFolder, 0, 1, 1, 1)
-        self.toolbFindInFolder = QtGui.QToolButton(self.tab_3)
+        self.toolbFindInFolder = QtWidgets.QToolButton(self.tab_3)
         self.toolbFindInFolder.setObjectName(_fromUtf8("toolbFindInFolder"))
         self.gridLayout.addWidget(self.toolbFindInFolder, 0, 2, 1, 1)
-        self.label = QtGui.QLabel(self.tab_3)
+        self.label = QtWidgets.QLabel(self.tab_3)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
         self.verticalLayout_2.addLayout(self.gridLayout)
         self.tabWidget.addTab(self.tab_3, _fromUtf8(""))
-        self.tab_2 = QtGui.QWidget()
+        self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
-        self.verticalLayout_4 = QtGui.QVBoxLayout(self.tab_2)
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.tab_2)
         self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
-        self.gridLayout_4 = QtGui.QGridLayout()
+        self.gridLayout_4 = QtWidgets.QGridLayout()
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
-        self.label_8 = QtGui.QLabel(self.tab_2)
+        self.label_8 = QtWidgets.QLabel(self.tab_2)
         self.label_8.setObjectName(_fromUtf8("label_8"))
         self.gridLayout_4.addWidget(self.label_8, 0, 0, 1, 1)
-        self.toolbFindOutFolder = QtGui.QToolButton(self.tab_2)
+        self.toolbFindOutFolder = QtWidgets.QToolButton(self.tab_2)
         self.toolbFindOutFolder.setObjectName(_fromUtf8("toolbFindOutFolder"))
         self.gridLayout_4.addWidget(self.toolbFindOutFolder, 0, 2, 1, 1)
-        self.leOutFolder = QtGui.QLineEdit(self.tab_2)
+        self.leOutFolder = QtWidgets.QLineEdit(self.tab_2)
         self.leOutFolder.setObjectName(_fromUtf8("leOutFolder"))
         self.gridLayout_4.addWidget(self.leOutFolder, 0, 1, 1, 1)
         self.verticalLayout_4.addLayout(self.gridLayout_4)
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
-        self.tab = QtGui.QWidget()
+        self.tab = QtWidgets.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
-        self.verticalLayout_3 = QtGui.QVBoxLayout(self.tab)
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.tab)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
-        self.gridLayout_2 = QtGui.QGridLayout()
+        self.gridLayout_2 = QtWidgets.QGridLayout()
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
-        self.cbSD = QtGui.QCheckBox(self.tab)
+        self.cbSD = QtWidgets.QCheckBox(self.tab)
         self.cbSD.setObjectName(_fromUtf8("cbSD"))
         self.gridLayout_2.addWidget(self.cbSD, 1, 0, 1, 1)
-        self.cbMedia = QtGui.QCheckBox(self.tab)
+        self.cbMedia = QtWidgets.QCheckBox(self.tab)
         self.cbMedia.setObjectName(_fromUtf8("cbMedia"))
         self.gridLayout_2.addWidget(self.cbMedia, 0, 0, 1, 1)
-        self.cbAmplitude = QtGui.QCheckBox(self.tab)
+        self.cbAmplitude = QtWidgets.QCheckBox(self.tab)
         self.cbAmplitude.setObjectName(_fromUtf8("cbAmplitude"))
         self.gridLayout_2.addWidget(self.cbAmplitude, 3, 0, 1, 1)
-        self.cbMin = QtGui.QCheckBox(self.tab)
+        self.cbMin = QtWidgets.QCheckBox(self.tab)
         self.cbMin.setObjectName(_fromUtf8("cbMin"))
         self.gridLayout_2.addWidget(self.cbMin, 0, 1, 1, 1)
-        self.cbCV = QtGui.QCheckBox(self.tab)
+        self.cbCV = QtWidgets.QCheckBox(self.tab)
         self.cbCV.setObjectName(_fromUtf8("cbCV"))
         self.gridLayout_2.addWidget(self.cbCV, 2, 0, 1, 1)
-        self.cbMax = QtGui.QCheckBox(self.tab)
+        self.cbMax = QtWidgets.QCheckBox(self.tab)
         self.cbMax.setObjectName(_fromUtf8("cbMax"))
         self.gridLayout_2.addWidget(self.cbMax, 1, 1, 1, 1)
-        self.cbSoma = QtGui.QCheckBox(self.tab)
+        self.cbSoma = QtWidgets.QCheckBox(self.tab)
         self.cbSoma.setObjectName(_fromUtf8("cbSoma"))
         self.gridLayout_2.addWidget(self.cbSoma, 2, 1, 1, 1)
-        self.cbMediana = QtGui.QCheckBox(self.tab)
+        self.cbMediana = QtWidgets.QCheckBox(self.tab)
         self.cbMediana.setObjectName(_fromUtf8("cbMediana"))
         self.gridLayout_2.addWidget(self.cbMediana, 3, 1, 1, 1)
         self.verticalLayout_3.addLayout(self.gridLayout_2)
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
         self.verticalLayout.addWidget(self.tabWidget)
-        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.bbOkCancel = QtGui.QDialogButtonBox(DlgEstatisticasEspectrais)
+        self.bbOkCancel = QtWidgets.QDialogButtonBox(DlgEstatisticasEspectrais)
         self.bbOkCancel.setOrientation(QtCore.Qt.Horizontal)
-        self.bbOkCancel.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.bbOkCancel.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.bbOkCancel.setObjectName(_fromUtf8("bbOkCancel"))
         self.horizontalLayout.addWidget(self.bbOkCancel)
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -3631,11 +3629,11 @@ class Ui_DlgEstatisticasEspectrais(QtGui.QDialog):
 # Form implementation generated from reading ui file 'DlgEstimativaDatasCultura.ui'
 #
 # Created: Thu Jun 11 16:55:09 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Controle.ConEstimativaDatasCultura import Controller
 #import ConfigParser
 
@@ -3668,123 +3666,123 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         DlgEstimativaDatasAgricolas.setBaseSize(QtCore.QSize(50, 0))
         DlgEstimativaDatasAgricolas.setStyleSheet(_fromUtf8(""))
         
-        self.tabWidget = QtGui.QTabWidget(DlgEstimativaDatasAgricolas)
+        self.tabWidget = QtWidgets.QTabWidget(DlgEstimativaDatasAgricolas)
         self.tabWidget.setGeometry(QtCore.QRect(10, 10, 351, 201))
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
         
-        self.tab_3 = QtGui.QWidget()
+        self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName(_fromUtf8("tab_3"))
         
-        self.gridLayoutWidget = QtGui.QWidget(self.tab_3)
+        self.gridLayoutWidget = QtWidgets.QWidget(self.tab_3)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, 331, 51))
         self.gridLayoutWidget.setObjectName(_fromUtf8("gridLayoutWidget"))
         
-        self.gridLayout = QtGui.QGridLayout(self.gridLayoutWidget)
+        self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setMargin(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         
-        self.leInFolder = QtGui.QLineEdit(self.gridLayoutWidget)
+        self.leInFolder = QtWidgets.QLineEdit(self.gridLayoutWidget)
         self.leInFolder.setObjectName(_fromUtf8("leInFolder"))
         self.gridLayout.addWidget(self.leInFolder, 0, 1, 1, 1)
         
 
-        self.toolbFindInFolder = QtGui.QToolButton(self.gridLayoutWidget)
+        self.toolbFindInFolder = QtWidgets.QToolButton(self.gridLayoutWidget)
         self.toolbFindInFolder.setObjectName(_fromUtf8("toolbFindInFolder"))
         self.gridLayout.addWidget(self.toolbFindInFolder, 0, 2, 1, 1)
         
-        self.label = QtGui.QLabel(self.gridLayoutWidget)
+        self.label = QtWidgets.QLabel(self.gridLayoutWidget)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
         
-        self.gridLayoutWidget_3 = QtGui.QWidget(self.tab_3)
+        self.gridLayoutWidget_3 = QtWidgets.QWidget(self.tab_3)
         self.gridLayoutWidget_3.setGeometry(QtCore.QRect(10, 80, 311, 71))
         self.gridLayoutWidget_3.setObjectName(_fromUtf8("gridLayoutWidget_3"))
         
-        self.gridLayout_3 = QtGui.QGridLayout(self.gridLayoutWidget_3)
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.gridLayoutWidget_3)
         self.gridLayout_3.setMargin(0)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
         
-        self.leSufixo = QtGui.QLineEdit(self.gridLayoutWidget_3)
+        self.leSufixo = QtWidgets.QLineEdit(self.gridLayoutWidget_3)
         self.leSufixo.setObjectName(_fromUtf8("leSufixo"))
         self.gridLayout_3.addWidget(self.leSufixo, 1, 1, 1, 1)
         
-        self.label_6 = QtGui.QLabel(self.gridLayoutWidget_3)
+        self.label_6 = QtWidgets.QLabel(self.gridLayoutWidget_3)
         self.label_6.setObjectName(_fromUtf8("label_6"))
         self.gridLayout_3.addWidget(self.label_6, 1, 0, 1, 1)
         
-        self.label_7 = QtGui.QLabel(self.gridLayoutWidget_3)
+        self.label_7 = QtWidgets.QLabel(self.gridLayoutWidget_3)
         self.label_7.setObjectName(_fromUtf8("label_7"))
         self.gridLayout_3.addWidget(self.label_7, 0, 2, 1, 1)
         
-        self.lePrefixo = QtGui.QLineEdit(self.gridLayoutWidget_3)
+        self.lePrefixo = QtWidgets.QLineEdit(self.gridLayoutWidget_3)
         self.lePrefixo.setObjectName(_fromUtf8("lePrefixo"))
         self.gridLayout_3.addWidget(self.lePrefixo, 0, 1, 1, 1)
         
-        self.label_5 = QtGui.QLabel(self.gridLayoutWidget_3)
+        self.label_5 = QtWidgets.QLabel(self.gridLayoutWidget_3)
         self.label_5.setObjectName(_fromUtf8("label_5"))
         self.gridLayout_3.addWidget(self.label_5, 0, 0, 1, 1)
         
-        self.leMascara = QtGui.QLineEdit(self.gridLayoutWidget_3)
+        self.leMascara = QtWidgets.QLineEdit(self.gridLayoutWidget_3)
         self.leMascara.setAutoFillBackground(False)
         self.leMascara.setObjectName(_fromUtf8("leMascara"))
         self.gridLayout_3.addWidget(self.leMascara, 0, 3, 1, 1)
         
         self.tabWidget.addTab(self.tab_3, _fromUtf8(""))
         
-        self.tab = QtGui.QWidget()
+        self.tab = QtWidgets.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
         
-        self.gridLayoutWidget_2 = QtGui.QWidget(self.tab)
+        self.gridLayoutWidget_2 = QtWidgets.QWidget(self.tab)
         self.gridLayoutWidget_2.setGeometry(QtCore.QRect(10, 10, 321, 161))
         self.gridLayoutWidget_2.setObjectName(_fromUtf8("gridLayoutWidget_2"))
         
-        self.gridLayout_2 = QtGui.QGridLayout(self.gridLayoutWidget_2)
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.gridLayoutWidget_2)
         self.gridLayout_2.setMargin(0)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         
-        self.dspASemeadura = QtGui.QDoubleSpinBox(self.gridLayoutWidget_2)
+        self.dspASemeadura = QtWidgets.QDoubleSpinBox(self.gridLayoutWidget_2)
         self.dspASemeadura.setMinimum(-99.99)
         self.dspASemeadura.setObjectName(_fromUtf8("dspASemeadura"))
         self.gridLayout_2.addWidget(self.dspASemeadura, 3, 1, 1, 1)
         
-        self.label_4 = QtGui.QLabel(self.gridLayoutWidget_2)
+        self.label_4 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.label_4.setObjectName(_fromUtf8("label_4"))
         self.gridLayout_2.addWidget(self.label_4, 4, 0, 1, 1)
         
-        self.dsbAColheita = QtGui.QDoubleSpinBox(self.gridLayoutWidget_2)
+        self.dsbAColheita = QtWidgets.QDoubleSpinBox(self.gridLayoutWidget_2)
         self.dsbAColheita.setMinimum(-99.99)
         self.dsbAColheita.setObjectName(_fromUtf8("dsbAColheita"))
         self.gridLayout_2.addWidget(self.dsbAColheita, 4, 1, 1, 1)
         
-        self.label_2 = QtGui.QLabel(self.gridLayoutWidget_2)
+        self.label_2 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout_2.addWidget(self.label_2, 1, 0, 1, 1)
         
-        self.label_10 = QtGui.QLabel(self.gridLayoutWidget_2)
+        self.label_10 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.label_10.setObjectName(_fromUtf8("label_10"))
         self.gridLayout_2.addWidget(self.label_10, 2, 0, 1, 1)
         
-        self.label_3 = QtGui.QLabel(self.gridLayoutWidget_2)
+        self.label_3 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.gridLayout_2.addWidget(self.label_3, 3, 0, 1, 1)
         
-        self.label_9 = QtGui.QLabel(self.gridLayoutWidget_2)
+        self.label_9 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.label_9.setObjectName(_fromUtf8("label_9"))
         self.gridLayout_2.addWidget(self.label_9, 0, 0, 1, 1)
         
-        self.lePSemeadura = QtGui.QLineEdit(self.gridLayoutWidget_2)
+        self.lePSemeadura = QtWidgets.QLineEdit(self.gridLayoutWidget_2)
         self.lePSemeadura.setObjectName(_fromUtf8("lePSemeadura"))
         self.gridLayout_2.addWidget(self.lePSemeadura, 0, 1, 1, 1)
         
-        self.lePPico = QtGui.QLineEdit(self.gridLayoutWidget_2)
+        self.lePPico = QtWidgets.QLineEdit(self.gridLayoutWidget_2)
         self.lePPico.setObjectName(_fromUtf8("lePPico"))
         self.gridLayout_2.addWidget(self.lePPico, 1, 1, 1, 1)
         
-        self.lePColheita = QtGui.QLineEdit(self.gridLayoutWidget_2)
+        self.lePColheita = QtWidgets.QLineEdit(self.gridLayoutWidget_2)
         self.lePColheita.setObjectName(_fromUtf8("lePColheita"))
         self.gridLayout_2.addWidget(self.lePColheita, 2, 1, 1, 1)
         
-        self.leNullValue = QtGui.QLineEdit(self.gridLayoutWidget_2)
+        self.leNullValue = QtWidgets.QLineEdit(self.gridLayoutWidget_2)
         self.leNullValue.setInputMask(_fromUtf8(""))
         self.leNullValue.setObjectName(_fromUtf8("leNullValue"))
         
@@ -3794,76 +3792,76 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
         
         self.gridLayout_2.addWidget(self.leNullValue, 5, 1, 1, 1)
         
-        self.label_14 = QtGui.QLabel(self.gridLayoutWidget_2)
+        self.label_14 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.label_14.setObjectName(_fromUtf8("label_14"))
         self.gridLayout_2.addWidget(self.label_14, 5, 0, 1, 1)
         
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
-        self.tab_2 = QtGui.QWidget()
+        self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
-        self.gridLayoutWidget_4 = QtGui.QWidget(self.tab_2)
+        self.gridLayoutWidget_4 = QtWidgets.QWidget(self.tab_2)
         self.gridLayoutWidget_4.setGeometry(QtCore.QRect(10, 10, 331, 100))
         self.gridLayoutWidget_4.setObjectName(_fromUtf8("gridLayoutWidget_4"))
         
-        self.gridLayout_4 = QtGui.QGridLayout(self.gridLayoutWidget_4)
+        self.gridLayout_4 = QtWidgets.QGridLayout(self.gridLayoutWidget_4)
         self.gridLayout_4.setMargin(0)
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
         
-        self.label_12 = QtGui.QLabel(self.gridLayoutWidget_4)
+        self.label_12 = QtWidgets.QLabel(self.gridLayoutWidget_4)
         self.label_12.setObjectName(_fromUtf8("label_12"))
         self.gridLayout_4.addWidget(self.label_12, 2, 0, 1, 1)
         
-        self.label_8 = QtGui.QLabel(self.gridLayoutWidget_4)
+        self.label_8 = QtWidgets.QLabel(self.gridLayoutWidget_4)
         self.label_8.setObjectName(_fromUtf8("label_8"))
         self.gridLayout_4.addWidget(self.label_8, 0, 0, 1, 1)
         
-        self.toolbFindOutFolder = QtGui.QPushButton(self.gridLayoutWidget_4)
+        self.toolbFindOutFolder = QtWidgets.QPushButton(self.gridLayoutWidget_4)
         self.toolbFindOutFolder.setObjectName(_fromUtf8("toolbFindOutFolder"))
         self.gridLayout_4.addWidget(self.toolbFindOutFolder, 0, 2, 1, 1)
         
-        self.leOutFolder = QtGui.QLineEdit(self.gridLayoutWidget_4)
+        self.leOutFolder = QtWidgets.QLineEdit(self.gridLayoutWidget_4)
         self.leOutFolder.setObjectName(_fromUtf8("leOutFolder"))
         self.gridLayout_4.addWidget(self.leOutFolder, 0, 1, 1, 1)
         
-        self.leImgPico = QtGui.QLineEdit(self.gridLayoutWidget_4)
+        self.leImgPico = QtWidgets.QLineEdit(self.gridLayoutWidget_4)
         self.leImgPico.setObjectName(_fromUtf8("leImgPico"))
         self.gridLayout_4.addWidget(self.leImgPico, 2, 1, 1, 1)
         
-        self.label_11 = QtGui.QLabel(self.gridLayoutWidget_4)
+        self.label_11 = QtWidgets.QLabel(self.gridLayoutWidget_4)
         self.label_11.setObjectName(_fromUtf8("label_11"))
         self.gridLayout_4.addWidget(self.label_11, 1, 0, 1, 1)
         
-        self.leImgSemeadura = QtGui.QLineEdit(self.gridLayoutWidget_4)
+        self.leImgSemeadura = QtWidgets.QLineEdit(self.gridLayoutWidget_4)
         self.leImgSemeadura.setObjectName(_fromUtf8("leImgSemeadura"))
         self.gridLayout_4.addWidget(self.leImgSemeadura, 1, 1, 1, 1)
         
-        self.label_13 = QtGui.QLabel(self.gridLayoutWidget_4)
+        self.label_13 = QtWidgets.QLabel(self.gridLayoutWidget_4)
         self.label_13.setObjectName(_fromUtf8("label_13"))
         self.gridLayout_4.addWidget(self.label_13, 3, 0, 1, 1)
         
-        self.leImgColheita = QtGui.QLineEdit(self.gridLayoutWidget_4)
+        self.leImgColheita = QtWidgets.QLineEdit(self.gridLayoutWidget_4)
         self.leImgColheita.setObjectName(_fromUtf8("leImgColheita"))
         self.gridLayout_4.addWidget(self.leImgColheita, 3, 1, 1, 1)
         
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
-        self.horizontalLayoutWidget = QtGui.QWidget(DlgEstimativaDatasAgricolas)
+        self.horizontalLayoutWidget = QtWidgets.QWidget(DlgEstimativaDatasAgricolas)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 220, 351, 41))
         
         self.horizontalLayoutWidget.setObjectName(_fromUtf8("horizontalLayoutWidget"))
-        self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setMargin(0)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         
-        #self.progressBar = QtGui.QProgressBar(self.horizontalLayoutWidget)
+        #self.progressBar = QtWidgets.QProgressBar(self.horizontalLayoutWidget)
         #self.progressBar.setProperty("value", 0)
         #self.progressBar.setMinimum(1)
         #self.progressBar.setMaximum(100)
         #self.progressBar.setObjectName(_fromUtf8("progressBar"))
         #self.horizontalLayout.addWidget(self.progressBar)
         
-        self.bbOkCancel = QtGui.QDialogButtonBox(self.horizontalLayoutWidget)
+        self.bbOkCancel = QtWidgets.QDialogButtonBox(self.horizontalLayoutWidget)
         self.bbOkCancel.setOrientation(QtCore.Qt.Horizontal)
-        self.bbOkCancel.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.bbOkCancel.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.bbOkCancel.setObjectName(_fromUtf8("bbOkCancel"))
         self.horizontalLayout.addWidget(self.bbOkCancel)
         
@@ -3930,11 +3928,11 @@ class Ui_DlgEstimativaDatasAgricolas(QtGui.QDialog):
 # Form implementation generated from reading ui file 'DlgETc.ui'
 #
 # Created: Wed Nov 11 00:58:52 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Controle.ConEtc import Controller
 
 try:
@@ -3958,50 +3956,50 @@ class Ui_Dialog(QtGui.QDialog):
         
 
         Dialog.resize(371, 290)
-        self.verticalLayout = QtGui.QVBoxLayout(Dialog)      
-        self.gridLayout = QtGui.QGridLayout()
+        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
+        self.gridLayout = QtWidgets.QGridLayout()
         self.verticalLayout.addLayout(self.gridLayout)
         
-        self.rbEtc = QtGui.QRadioButton(Dialog)
+        self.rbEtc = QtWidgets.RadioButton(Dialog)
         self.gridLayout.addWidget(self.rbEtc, 0,0,1,1)
         self.rbEtc.setChecked(True)
 
-        self.rbEta = QtGui.QRadioButton(Dialog)
+        self.rbEta = QtWidgets.RadioButton(Dialog)
         self.gridLayout.addWidget(self.rbEta, 0,1,1,1)        
         
-        self.label = QtGui.QLabel(Dialog)
+        self.label = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
         
-        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_2, 2, 0, 1, 1)
         
-        self.btnConfET0 = QtGui.QPushButton(Dialog)
+        self.btnConfET0 = QtWidgets.QPushButton(Dialog)
         self.gridLayout.addWidget(self.btnConfET0, 2, 1, 1, 1)
         
-        self.chET0 = QtGui.QCheckBox(Dialog)
+        self.chET0 = QtWidgets.QCheckBox(Dialog)
         self.chET0.setEnabled(False)
         self.gridLayout.addWidget(self.chET0, 2, 2, 1, 1)
         
-        self.label_3 = QtGui.QLabel(Dialog)
+        self.label_3 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_3, 3, 0, 1, 1)
         
-        self.btnConfKc = QtGui.QPushButton(Dialog)
+        self.btnConfKc = QtWidgets.QPushButton(Dialog)
         self.gridLayout.addWidget(self.btnConfKc, 3, 1, 1, 1)
         
-        self.chKc = QtGui.QCheckBox(Dialog)
+        self.chKc = QtWidgets.QCheckBox(Dialog)
         self.chKc.setEnabled(False)
         self.gridLayout.addWidget(self.chKc, 3, 2, 1, 1)
         
-        self.label_4 = QtGui.QLabel(Dialog)
+        self.label_4 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_4, 4, 0, 1, 1)
         
-        self.label_5 = QtGui.QLabel(Dialog)
+        self.label_5 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_5, 5, 0, 1, 1)
         
-        self.btnConfETc = QtGui.QPushButton(Dialog)
+        self.btnConfETc = QtWidgets.QPushButton(Dialog)
         self.gridLayout.addWidget(self.btnConfETc, 5, 1, 1, 1)
         
-        self.chETc = QtGui.QCheckBox(Dialog)
+        self.chETc = QtWidgets.QCheckBox(Dialog)
         self.chETc.setEnabled(False)
         self.gridLayout.addWidget(self.chETc, 5, 2, 1, 1)
 
@@ -4010,9 +4008,9 @@ class Ui_Dialog(QtGui.QDialog):
         
 
         
-        self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
 
         self.verticalLayout.addWidget(self.buttonBox)
 
@@ -4055,11 +4053,11 @@ class Ui_Dialog(QtGui.QDialog):
 # Form implementation generated from reading ui file 'C:\Users\Paloschi\Desktop\Gafanhoto\Software\Gafanhoto_1.0\InterfacesQT\DlgFiltroSavitzGolay.ui'
 #
 # Created: Fri Jun 12 14:10:00 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Controle import ConFiltroSavitzGolay
 
 try:
@@ -4090,78 +4088,78 @@ class Ui_DlgSavitzGolay(QtGui.QDialog):
         DlgSavitzGolay.setStyleSheet(_fromUtf8(""))
         
         
-        self.tabWidget = QtGui.QTabWidget(DlgSavitzGolay)
+        self.tabWidget = QtWidgets.QTabWidget(DlgSavitzGolay)
         self.tabWidget.setGeometry(QtCore.QRect(10, 10, 351, 201))
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
-        self.tab_3 = QtGui.QWidget()
+        self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName(_fromUtf8("tab_3"))
-        self.gridLayoutWidget = QtGui.QWidget(self.tab_3)
+        self.gridLayoutWidget = QtWidgets.QWidget(self.tab_3)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, 331, 51))
         self.gridLayoutWidget.setObjectName(_fromUtf8("gridLayoutWidget"))
-        self.gridLayout = QtGui.QGridLayout(self.gridLayoutWidget)
+        self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setMargin(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.leInFolder = QtGui.QLineEdit(self.gridLayoutWidget)
+        self.leInFolder = QtWidgets.QLineEdit(self.gridLayoutWidget)
         self.leInFolder.setObjectName(_fromUtf8("leInFolder"))
         self.gridLayout.addWidget(self.leInFolder, 0, 1, 1, 1)
-        self.toolbFindInFolder = QtGui.QToolButton(self.gridLayoutWidget)
+        self.toolbFindInFolder = QtWidgets.QToolButton(self.gridLayoutWidget)
         self.toolbFindInFolder.setObjectName(_fromUtf8("toolbFindInFolder"))
         self.gridLayout.addWidget(self.toolbFindInFolder, 0, 2, 1, 1)
-        self.label = QtGui.QLabel(self.gridLayoutWidget)
+        self.label = QtWidgets.QLabel(self.gridLayoutWidget)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab_3, _fromUtf8(""))
         
-        self.tab_2 = QtGui.QWidget()
+        self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
-        self.gridLayoutWidget_4 = QtGui.QWidget(self.tab_2)
+        self.gridLayoutWidget_4 = QtWidgets.QWidget(self.tab_2)
         self.gridLayoutWidget_4.setGeometry(QtCore.QRect(10, 10, 331, 100))
         self.gridLayoutWidget_4.setObjectName(_fromUtf8("gridLayoutWidget_4"))
-        self.gridLayout_4 = QtGui.QGridLayout(self.gridLayoutWidget_4)
+        self.gridLayout_4 = QtWidgets.QGridLayout(self.gridLayoutWidget_4)
         self.gridLayout_4.setMargin(0)
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
-        self.label_8 = QtGui.QLabel(self.gridLayoutWidget_4)
+        self.label_8 = QtWidgets.QLabel(self.gridLayoutWidget_4)
         self.label_8.setObjectName(_fromUtf8("label_8"))
         self.gridLayout_4.addWidget(self.label_8, 0, 0, 1, 1)
-        self.toolbFindOutFolder = QtGui.QToolButton(self.gridLayoutWidget_4)
+        self.toolbFindOutFolder = QtWidgets.QToolButton(self.gridLayoutWidget_4)
         self.toolbFindOutFolder.setObjectName(_fromUtf8("toolbFindOutFolder"))
         self.gridLayout_4.addWidget(self.toolbFindOutFolder, 0, 2, 1, 1)
-        self.leOutFolder = QtGui.QLineEdit(self.gridLayoutWidget_4)
+        self.leOutFolder = QtWidgets.QLineEdit(self.gridLayoutWidget_4)
         self.leOutFolder.setObjectName(_fromUtf8("leOutFolder"))
         self.gridLayout_4.addWidget(self.leOutFolder, 0, 1, 1, 1)
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
         
-        self.tab = QtGui.QWidget()
+        self.tab = QtWidgets.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
-        self.gridLayoutWidget_2 = QtGui.QWidget(self.tab)
+        self.gridLayoutWidget_2 = QtWidgets.QWidget(self.tab)
         self.gridLayoutWidget_2.setGeometry(QtCore.QRect(10, 10, 321, 161))
         self.gridLayoutWidget_2.setObjectName(_fromUtf8("gridLayoutWidget_2"))
-        self.gridLayout_2 = QtGui.QGridLayout(self.gridLayoutWidget_2)
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.gridLayoutWidget_2)
         self.gridLayout_2.setMargin(0)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
-        self.label_2 = QtGui.QLabel(self.gridLayoutWidget_2)
+        self.label_2 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout_2.addWidget(self.label_2, 1, 0, 1, 1)
-        self.label_9 = QtGui.QLabel(self.gridLayoutWidget_2)
+        self.label_9 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.label_9.setObjectName(_fromUtf8("label_9"))
         self.gridLayout_2.addWidget(self.label_9, 0, 0, 1, 1)
-        self.leWindowSize = QtGui.QLineEdit(self.gridLayoutWidget_2)
+        self.leWindowSize = QtWidgets.QLineEdit(self.gridLayoutWidget_2)
         self.leWindowSize.setObjectName(_fromUtf8("leWindowSize"))
         self.gridLayout_2.addWidget(self.leWindowSize, 0, 1, 1, 1)
-        self.leOrdem = QtGui.QLineEdit(self.gridLayoutWidget_2)
+        self.leOrdem = QtWidgets.QLineEdit(self.gridLayoutWidget_2)
         self.leOrdem.setObjectName(_fromUtf8("leOrdem"))
         self.gridLayout_2.addWidget(self.leOrdem, 1, 1, 1, 1)
-        #self.leNullValue = QtGui.QLineEdit(self.gridLayoutWidget_2)
+        #self.leNullValue = QtWidgets.QLineEdit(self.gridLayoutWidget_2)
         #self.leNullValue.setInputMask(_fromUtf8(""))
         #self.leNullValue.setObjectName(_fromUtf8("leNullValue"))
         #self.leNullValue.setEnabled(False)
         
         #self.gridLayout_2.addWidget(self.leNullValue, 2, 1, 1, 1)
-        #self.label_14 = QtGui.QLabel(self.gridLayoutWidget_2)
+        #self.label_14 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         #self.label_14.setObjectName(_fromUtf8("label_14"))
         #self.label_14.setEnabled(False)
         #self.gridLayout_2.addWidget(self.label_14, 2, 0, 1, 1)
-        #self.checkBox = QtGui.QCheckBox(self.gridLayoutWidget_2)
+        #self.checkBox = QtWidgets.QCheckBox(self.gridLayoutWidget_2)
         #self.checkBox.setText(_fromUtf8(""))
         #self.checkBox.setObjectName(_fromUtf8("checkBox"))
         #self.checkBox.setEnabled(False)
@@ -4169,20 +4167,20 @@ class Ui_DlgSavitzGolay(QtGui.QDialog):
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
         
         
-        self.horizontalLayoutWidget = QtGui.QWidget(DlgSavitzGolay)
+        self.horizontalLayoutWidget = QtWidgets.QWidget(DlgSavitzGolay)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 220, 351, 41))
         self.horizontalLayoutWidget.setObjectName(_fromUtf8("horizontalLayoutWidget"))
-        self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setMargin(0)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        #self.progressBar = QtGui.QProgressBar(self.horizontalLayoutWidget)
+        #self.progressBar = QtWidgets.QProgressBar(self.horizontalLayoutWidget)
         #self.progressBar.setProperty("value", 24)
         #self.progressBar.setObjectName(_fromUtf8("progressBar"))
         #self.horizontalLayout.addWidget(self.progressBar)
         #self.progressBar.setEnabled(False)
-        self.bbOkCancel = QtGui.QDialogButtonBox(self.horizontalLayoutWidget)
+        self.bbOkCancel = QtWidgets.QDialogButtonBox(self.horizontalLayoutWidget)
         self.bbOkCancel.setOrientation(QtCore.Qt.Horizontal)
-        self.bbOkCancel.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.bbOkCancel.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.bbOkCancel.setObjectName(_fromUtf8("bbOkCancel"))
         self.horizontalLayout.addWidget(self.bbOkCancel)
 
@@ -4222,13 +4220,13 @@ class Ui_DlgSavitzGolay(QtGui.QDialog):
 # Form implementation generated from reading ui file 'Gafanhoto2.2InterpoladorInvdistnnRasterToRaster.ui'
 #
 # Created: Tue Oct 13 12:55:39 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Controle import ConInvdistnnRaster2Raster
-from PyQt4.Qt import QLocale, QTranslator
+from PyQt5.Qt import QLocale, QTranslator
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -4258,151 +4256,151 @@ class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
         
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(400, 300)
-        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.TabContent = QtGui.QTabWidget(Dialog)
+        self.TabContent = QtWidgets.QTabWidget(Dialog)
         self.TabContent.setObjectName(_fromUtf8("TabContent"))
-        self.tab_4 = QtGui.QWidget()
+        self.tab_4 = QtWidgets.QWidget()
         self.tab_4.setObjectName(_fromUtf8("tab_4"))
-        self.gridLayout_2 = QtGui.QGridLayout(self.tab_4)
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.tab_4)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
-        self.textBrowser = QtGui.QTextBrowser(self.tab_4)
+        self.textBrowser = QtWidgets.QTextBrowser(self.tab_4)
         self.textBrowser.setObjectName(_fromUtf8("textBrowser"))
         self.gridLayout_2.addWidget(self.textBrowser, 0, 0, 2, 2)
         self.TabContent.addTab(self.tab_4, _fromUtf8(""))
-        self.tab_2 = QtGui.QWidget()
+        self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
-        self.gridLayout_3 = QtGui.QGridLayout(self.tab_2)
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.tab_2)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
-        self.label_6 = QtGui.QLabel(self.tab_2)
+        self.label_6 = QtWidgets.QLabel(self.tab_2)
         self.label_6.setObjectName(_fromUtf8("label_6"))
         self.gridLayout_3.addWidget(self.label_6, 1, 0, 1, 1)
         
-        self.txInFolder = QtGui.QLineEdit(self.tab_2)
+        self.txInFolder = QtWidgets.QLineEdit(self.tab_2)
         self.txInFolder.setObjectName(_fromUtf8("txInFolder"))
         self.gridLayout_3.addWidget(self.txInFolder, 0, 1, 1, 1)
         
-        self.txOutFolder = QtGui.QLineEdit(self.tab_2)
+        self.txOutFolder = QtWidgets.QLineEdit(self.tab_2)
         self.txOutFolder.setObjectName(_fromUtf8("txOutFolder"))
         self.gridLayout_3.addWidget(self.txOutFolder, 1, 1, 1, 1)
-        self.label_2 = QtGui.QLabel(self.tab_2)
+        self.label_2 = QtWidgets.QLabel(self.tab_2)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout_3.addWidget(self.label_2, 0, 0, 1, 1)
-        self.btFindInFolder = QtGui.QToolButton(self.tab_2)
+        self.btFindInFolder = QtWidgets.QToolButton(self.tab_2)
         self.btFindInFolder.setObjectName(_fromUtf8("btFindInFolder"))
         self.gridLayout_3.addWidget(self.btFindInFolder, 0, 2, 1, 1)
-        self.btFindOutFolder = QtGui.QToolButton(self.tab_2)
+        self.btFindOutFolder = QtWidgets.QToolButton(self.tab_2)
         self.btFindOutFolder.setObjectName(_fromUtf8("btFindOutFolder"))
         self.gridLayout_3.addWidget(self.btFindOutFolder, 1, 2, 1, 1)
         self.TabContent.addTab(self.tab_2, _fromUtf8(""))
-        self.tab_3 = QtGui.QWidget()
+        self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName(_fromUtf8("tab_3"))
-        self.verticalLayout_2 = QtGui.QVBoxLayout(self.tab_3)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.tab_3)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-        self.rbImgReference = QtGui.QRadioButton(self.tab_3)
+        self.rbImgReference = QtWidgets.RadioButton(self.tab_3)
         self.rbImgReference.setChecked(True)
         self.rbImgReference.setObjectName(_fromUtf8("rbImgReference"))
         self.verticalLayout_2.addWidget(self.rbImgReference)
-        self.groupBox_2 = QtGui.QGroupBox(self.tab_3)
+        self.groupBox_2 = QtWidgets.QGroupBox(self.tab_3)
         self.groupBox_2.setTitle(_fromUtf8(""))
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
-        self.gridLayout_5 = QtGui.QGridLayout(self.groupBox_2)
+        self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_2)
         self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))
-        self.btFindImgReference = QtGui.QToolButton(self.groupBox_2)
+        self.btFindImgReference = QtWidgets.QToolButton(self.groupBox_2)
         self.btFindImgReference.setObjectName(_fromUtf8("btFindImgReference"))
         self.gridLayout_5.addWidget(self.btFindImgReference, 0, 3, 1, 1)
-        self.txImgReference = QtGui.QLineEdit(self.groupBox_2)
+        self.txImgReference = QtWidgets.QLineEdit(self.groupBox_2)
         self.txImgReference.setObjectName(_fromUtf8("txImgReference"))
         self.gridLayout_5.addWidget(self.txImgReference, 0, 2, 1, 1)
-        self.label_7 = QtGui.QLabel(self.groupBox_2)
+        self.label_7 = QtWidgets.QLabel(self.groupBox_2)
         self.label_7.setObjectName(_fromUtf8("label_7"))
         self.gridLayout_5.addWidget(self.label_7, 0, 0, 1, 1)
         self.verticalLayout_2.addWidget(self.groupBox_2)
-        self.rbManualConf = QtGui.QRadioButton(self.tab_3)
+        self.rbManualConf = QtWidgets.RadioButton(self.tab_3)
         self.rbManualConf.setEnabled(False)
         self.rbManualConf.setChecked(False)
         self.rbManualConf.setObjectName(_fromUtf8("rbManualConf"))
         self.verticalLayout_2.addWidget(self.rbManualConf)
-        self.groupBox_3 = QtGui.QGroupBox(self.tab_3)
+        self.groupBox_3 = QtWidgets.QGroupBox(self.tab_3)
         self.groupBox_3.setEnabled(False)
         self.groupBox_3.setTitle(_fromUtf8(""))
         self.groupBox_3.setObjectName(_fromUtf8("groupBox_3"))
-        self.gridLayout_6 = QtGui.QGridLayout(self.groupBox_3)
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_3)
         self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
-        self.label_10 = QtGui.QLabel(self.groupBox_3)
+        self.label_10 = QtWidgets.QLabel(self.groupBox_3)
         self.label_10.setObjectName(_fromUtf8("label_10"))
         self.gridLayout_6.addWidget(self.label_10, 1, 0, 1, 1)
-        self.label_9 = QtGui.QLabel(self.groupBox_3)
+        self.label_9 = QtWidgets.QLabel(self.groupBox_3)
         self.label_9.setObjectName(_fromUtf8("label_9"))
         self.gridLayout_6.addWidget(self.label_9, 2, 0, 1, 1)
-        self.label_12 = QtGui.QLabel(self.groupBox_3)
+        self.label_12 = QtWidgets.QLabel(self.groupBox_3)
         self.label_12.setObjectName(_fromUtf8("label_12"))
         self.gridLayout_6.addWidget(self.label_12, 1, 2, 1, 1)
-        self.label_13 = QtGui.QLabel(self.groupBox_3)
+        self.label_13 = QtWidgets.QLabel(self.groupBox_3)
         self.label_13.setObjectName(_fromUtf8("label_13"))
         self.gridLayout_6.addWidget(self.label_13, 2, 2, 1, 1)
-        self.label_11 = QtGui.QLabel(self.groupBox_3)
+        self.label_11 = QtWidgets.QLabel(self.groupBox_3)
         self.label_11.setObjectName(_fromUtf8("label_11"))
         self.gridLayout_6.addWidget(self.label_11, 0, 2, 1, 1)
-        self.label_8 = QtGui.QLabel(self.groupBox_3)
+        self.label_8 = QtWidgets.QLabel(self.groupBox_3)
         self.label_8.setObjectName(_fromUtf8("label_8"))
         self.gridLayout_6.addWidget(self.label_8, 0, 0, 1, 1)
-        self.txXinit = QtGui.QLineEdit(self.groupBox_3)
+        self.txXinit = QtWidgets.QLineEdit(self.groupBox_3)
         self.txXinit.setObjectName(_fromUtf8("txXinit"))
         self.gridLayout_6.addWidget(self.txXinit, 0, 1, 1, 1)
-        self.txYinit = QtGui.QLineEdit(self.groupBox_3)
+        self.txYinit = QtWidgets.QLineEdit(self.groupBox_3)
         self.txYinit.setObjectName(_fromUtf8("txYinit"))
         self.gridLayout_6.addWidget(self.txYinit, 1, 1, 1, 1)
-        self.txLinesNumber = QtGui.QLineEdit(self.groupBox_3)
+        self.txLinesNumber = QtWidgets.QLineEdit(self.groupBox_3)
         self.txLinesNumber.setObjectName(_fromUtf8("txLinesNumber"))
         self.gridLayout_6.addWidget(self.txLinesNumber, 2, 1, 1, 1)
-        self.txXend = QtGui.QLineEdit(self.groupBox_3)
+        self.txXend = QtWidgets.QLineEdit(self.groupBox_3)
         self.txXend.setObjectName(_fromUtf8("txXend"))
         self.gridLayout_6.addWidget(self.txXend, 0, 3, 1, 1)
-        self.txYend = QtGui.QLineEdit(self.groupBox_3)
+        self.txYend = QtWidgets.QLineEdit(self.groupBox_3)
         self.txYend.setObjectName(_fromUtf8("txYend"))
         self.gridLayout_6.addWidget(self.txYend, 1, 3, 1, 1)
-        self.txColumnsNumber = QtGui.QLineEdit(self.groupBox_3)
+        self.txColumnsNumber = QtWidgets.QLineEdit(self.groupBox_3)
         self.txColumnsNumber.setObjectName(_fromUtf8("txColumnsNumber"))
         self.gridLayout_6.addWidget(self.txColumnsNumber, 2, 3, 1, 1)
         self.verticalLayout_2.addWidget(self.groupBox_3)
         self.TabContent.addTab(self.tab_3, _fromUtf8(""))
-        self.tab = QtGui.QWidget()
+        self.tab = QtWidgets.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
-        self.gridLayout = QtGui.QGridLayout(self.tab)
+        self.gridLayout = QtWidgets.QGridLayout(self.tab)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.label_3 = QtGui.QLabel(self.tab)
+        self.label_3 = QtWidgets.QLabel(self.tab)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.gridLayout.addWidget(self.label_3, 2, 0, 1, 1)
-        self.label_4 = QtGui.QLabel(self.tab)
+        self.label_4 = QtWidgets.QLabel(self.tab)
         self.label_4.setObjectName(_fromUtf8("label_4"))
         self.gridLayout.addWidget(self.label_4, 3, 0, 1, 1)
-        self.label_5 = QtGui.QLabel(self.tab)
+        self.label_5 = QtWidgets.QLabel(self.tab)
         self.label_5.setObjectName(_fromUtf8("label_5"))
         self.gridLayout.addWidget(self.label_5, 4, 0, 1, 1)
-        self.txPower = QtGui.QDoubleSpinBox(self.tab)
+        self.txPower = QtWidgets.QDoubleSpinBox(self.tab)
         self.txPower.setProperty("value", 2.0)
         self.txPower.setObjectName(_fromUtf8("txPower"))
         self.gridLayout.addWidget(self.txPower, 1, 1, 1, 1)
-        self.txRadius = QtGui.QDoubleSpinBox(self.tab)
+        self.txRadius = QtWidgets.QDoubleSpinBox(self.tab)
         self.txRadius.setObjectName(_fromUtf8("txRadius"))
         self.gridLayout.addWidget(self.txRadius, 2, 1, 1, 1)
-        self.txMaxPoint = QtGui.QSpinBox(self.tab)
+        self.txMaxPoint = QtWidgets.QSpinBox(self.tab)
         self.txMaxPoint.setProperty("value", 12)
         self.txMaxPoint.setObjectName(_fromUtf8("txMaxPoint"))
         self.gridLayout.addWidget(self.txMaxPoint, 3, 1, 1, 1)
-        self.txMinPoint = QtGui.QSpinBox(self.tab)
+        self.txMinPoint = QtWidgets.QSpinBox(self.tab)
         self.txMinPoint.setObjectName(_fromUtf8("txMinPoint"))
         self.gridLayout.addWidget(self.txMinPoint, 4, 1, 1, 1)
-        self.label = QtGui.QLabel(self.tab)
+        self.label = QtWidgets.QLabel(self.tab)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
         self.TabContent.addTab(self.tab, _fromUtf8(""))
         self.verticalLayout.addWidget(self.TabContent)
-        self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout.addWidget(self.buttonBox)
 
@@ -4468,11 +4466,11 @@ class Ui_InvdistnnRaster2Raster(QtGui.QDialog):
 # Form implementation generated from reading ui file 'interpoladorECMWF_Demo.ui'
 #
 # Created: Fri Mar 06 22:12:54 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Controle import ConInvdistnnShapeEcmwf2Raster
 
  
@@ -4498,47 +4496,47 @@ class UI_DlgInterpoladorShapeEcmwf(QtGui.QDialog):
         
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(436, 361)
-        self.leShapePath = QtGui.QLineEdit(Form)
+        self.leShapePath = QtWidgets.QLineEdit(Form)
         self.leShapePath.setGeometry(QtCore.QRect(10, 40, 301, 20))
         self.leShapePath.setObjectName(_fromUtf8("leShapePath"))
         self.cbAtribute = QtGui.QComboBox(Form)
         self.cbAtribute.setEnabled(False)
         self.cbAtribute.setGeometry(QtCore.QRect(10, 90, 331, 22))
         self.cbAtribute.setObjectName(_fromUtf8("cbAtribute"))
-        self.btnFindShp = QtGui.QPushButton(Form)
+        self.btnFindShp = QtWidgets.QPushButton(Form)
         self.btnFindShp.setGeometry(QtCore.QRect(330, 40, 75, 23))
         self.btnFindShp.setObjectName(_fromUtf8("btnFindShp"))
-        self.bbOkCancela = QtGui.QDialogButtonBox(Form)
+        self.bbOkCancela = QtWidgets.QDialogButtonBox(Form)
         self.bbOkCancela.setGeometry(QtCore.QRect(190, 330, 156, 23))
-        self.bbOkCancela.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.bbOkCancela.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.bbOkCancela.setObjectName(_fromUtf8("bbOkCancela"))
         self.lwGroupAtributes = QtGui.QListWidget(Form)
         self.lwGroupAtributes.setEnabled(False)
         self.lwGroupAtributes.setGeometry(QtCore.QRect(10, 230, 331, 71))
         self.lwGroupAtributes.setObjectName(_fromUtf8("lwGroupAtributes"))
-        self.label_2 = QtGui.QLabel(Form)
+        self.label_2 = QtWidgets.QLabel(Form)
         self.label_2.setGeometry(QtCore.QRect(10, 200, 161, 16))
         self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.label_3 = QtGui.QLabel(Form)
+        self.label_3 = QtWidgets.QLabel(Form)
         self.label_3.setGeometry(QtCore.QRect(10, 70, 131, 16))
         self.label_3.setObjectName(_fromUtf8("label_3"))
-        self.verticalLayoutWidget = QtGui.QWidget(Form)
+        self.verticalLayoutWidget = QtWidgets.QWidget(Form)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(120, 40, 2, 2))
         self.verticalLayoutWidget.setObjectName(_fromUtf8("verticalLayoutWidget"))
-        self.verticalLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setSpacing(2)
         self.verticalLayout.setMargin(0)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.label = QtGui.QLabel(Form)
+        self.label = QtWidgets.QLabel(Form)
         self.label.setGeometry(QtCore.QRect(10, 10, 81, 21))
         self.label.setObjectName(_fromUtf8("label"))
-        self.label_4 = QtGui.QLabel(Form)
+        self.label_4 = QtWidgets.QLabel(Form)
         self.label_4.setGeometry(QtCore.QRect(10, 130, 111, 16))
         self.label_4.setObjectName(_fromUtf8("label_4"))
-        self.leImgRefPath = QtGui.QLineEdit(Form)
+        self.leImgRefPath = QtWidgets.QLineEdit(Form)
         self.leImgRefPath.setGeometry(QtCore.QRect(10, 150, 301, 20))
         self.leImgRefPath.setObjectName(_fromUtf8("leImgRefPath"))
-        self.btnFindImgRef = QtGui.QPushButton(Form)
+        self.btnFindImgRef = QtWidgets.QPushButton(Form)
         self.btnFindImgRef.setGeometry(QtCore.QRect(330, 150, 75, 23))
         self.btnFindImgRef.setObjectName(_fromUtf8("btnFindImgRef"))
 
@@ -4581,11 +4579,11 @@ class UI_DlgInterpoladorShapeEcmwf(QtGui.QDialog):
 # Form implementation generated from reading ui file 'DlgKs.ui'
 #
 # Created: Wed Nov 18 11:12:14 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Controle.ConKs import Controller
 
 try:
@@ -4609,62 +4607,62 @@ class Ui_Dialog(QtGui.QDialog):
         
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(451, 273)
-        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.gridLayout = QtGui.QGridLayout()
+        self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.chTAW = QtGui.QCheckBox(Dialog)
+        self.chTAW = QtWidgets.QCheckBox(Dialog)
         self.chTAW.setEnabled(False)
         self.chTAW.setObjectName(_fromUtf8("chTAW"))
         self.gridLayout.addWidget(self.chTAW, 3, 2, 1, 1)
-        self.btnConfRAW = QtGui.QPushButton(Dialog)
+        self.btnConfRAW = QtWidgets.QPushButton(Dialog)
         self.btnConfRAW.setObjectName(_fromUtf8("btnConfRAW"))
         self.gridLayout.addWidget(self.btnConfRAW, 2, 1, 1, 1)
-        self.label = QtGui.QLabel(Dialog)
+        self.label = QtWidgets.QLabel(Dialog)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
-        self.chKs = QtGui.QCheckBox(Dialog)
+        self.chKs = QtWidgets.QCheckBox(Dialog)
         self.chKs.setEnabled(False)
         self.chKs.setObjectName(_fromUtf8("chKs"))
         self.gridLayout.addWidget(self.chKs, 5, 2, 1, 1)
-        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
-        self.label_3 = QtGui.QLabel(Dialog)
+        self.label_3 = QtWidgets.QLabel(Dialog)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.gridLayout.addWidget(self.label_3, 2, 0, 1, 1)
-        self.label_4 = QtGui.QLabel(Dialog)
+        self.label_4 = QtWidgets.QLabel(Dialog)
         self.label_4.setObjectName(_fromUtf8("label_4"))
         self.gridLayout.addWidget(self.label_4, 3, 0, 1, 1)
-        self.label_5 = QtGui.QLabel(Dialog)
+        self.label_5 = QtWidgets.QLabel(Dialog)
         self.label_5.setObjectName(_fromUtf8("label_5"))
         self.gridLayout.addWidget(self.label_5, 4, 0, 1, 1)
-        self.btnConfTAW = QtGui.QPushButton(Dialog)
+        self.btnConfTAW = QtWidgets.QPushButton(Dialog)
         self.btnConfTAW.setObjectName(_fromUtf8("btnConfTAW"))
         self.gridLayout.addWidget(self.btnConfTAW, 3, 1, 1, 1)
-        self.btnConfDr = QtGui.QPushButton(Dialog)
+        self.btnConfDr = QtWidgets.QPushButton(Dialog)
         self.btnConfDr.setObjectName(_fromUtf8("btnConfDr"))
         self.gridLayout.addWidget(self.btnConfDr, 1, 1, 1, 1)
-        self.label_6 = QtGui.QLabel(Dialog)
+        self.label_6 = QtWidgets.QLabel(Dialog)
         self.label_6.setObjectName(_fromUtf8("label_6"))
         self.gridLayout.addWidget(self.label_6, 5, 0, 1, 1)
-        self.chRAW = QtGui.QCheckBox(Dialog)
+        self.chRAW = QtWidgets.QCheckBox(Dialog)
         self.chRAW.setEnabled(False)
         self.chRAW.setObjectName(_fromUtf8("chRAW"))
         self.gridLayout.addWidget(self.chRAW, 2, 2, 1, 1)
-        self.btnConfKs = QtGui.QPushButton(Dialog)
+        self.btnConfKs = QtWidgets.QPushButton(Dialog)
         self.btnConfKs.setObjectName(_fromUtf8("btnConfKs"))
         self.gridLayout.addWidget(self.btnConfKs, 5, 1, 1, 1)
-        self.chDr = QtGui.QCheckBox(Dialog)
+        self.chDr = QtWidgets.QCheckBox(Dialog)
         self.chDr.setEnabled(False)
         self.chDr.setObjectName(_fromUtf8("chDr"))
         self.gridLayout.addWidget(self.chDr, 1, 2, 1, 1)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
         self.gridLayout.addItem(spacerItem, 6, 0, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
-        self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout.addWidget(self.buttonBox)
 
@@ -4705,16 +4703,16 @@ class Ui_Dialog(QtGui.QDialog):
 # Form implementation generated from reading ui file 'DlgNovaSerieTempora.ui'
 #
 # Created: Mon Nov 09 11:00:26 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Modelo.beans.SerialFileData import SerialTemporalFiles
-from PyQt4.Qt import QDialog
+from PyQt5.Qt import QDialog
 import os
 import ConfigParser
-from PyQt4.Qt import QString
+from PyQt5.Qt import QString
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -4770,13 +4768,13 @@ class Ui_Dialog(QDialog):
 
     def message(self, text):
         text = QString(text)
-        QtGui.QMessageBox.about(self, "Ops...", text)       
+        QtWidgets.QMessageBox.about(self, "Ops...", text)
     
     def findPath(self):
         config = ConfigParser.RawConfigParser()
         config.read('workspace.properties')
         workspace=config.get('WorkSpace', 'space.default')
-        fname = QtGui.QFileDialog.getExistingDirectory(None, "Escolha uma pasta", workspace,)
+        fname = QtWidgets.QFileDialog.getExistingDirectory(None, "Escolha uma pasta", workspace,)
         if fname!="" :
             self.txIn.setText (fname)
  
@@ -4784,28 +4782,28 @@ class Ui_Dialog(QDialog):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.setWindowModality(QtCore.Qt.WindowModal)
         Dialog.resize(400, 300)
-        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.gridLayout = QtGui.QGridLayout()
+        self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.tbIn = QtGui.QToolButton(Dialog)
+        self.tbIn = QtWidgets.QToolButton(Dialog)
         self.tbIn.setObjectName(_fromUtf8("tbIn"))
         self.gridLayout.addWidget(self.tbIn, 0, 2, 1, 1)
-        self.label = QtGui.QLabel(Dialog)
+        self.label = QtWidgets.QLabel(Dialog)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
-        self.txIn = QtGui.QLineEdit(Dialog)
+        self.txIn = QtWidgets.QLineEdit(Dialog)
         self.txIn.setLayoutDirection(QtCore.Qt.RightToLeft)
         self.txIn.setText(_fromUtf8(""))
         self.txIn.setObjectName(_fromUtf8("txIn"))
         self.gridLayout.addWidget(self.txIn, 0, 1, 1, 1)
-        self.txPrefixo = QtGui.QLineEdit(Dialog)
+        self.txPrefixo = QtWidgets.QLineEdit(Dialog)
         self.txPrefixo.setObjectName(_fromUtf8("txPrefixo"))
         self.gridLayout.addWidget(self.txPrefixo, 1, 1, 1, 1)
-        self.label_3 = QtGui.QLabel(Dialog)
+        self.label_3 = QtWidgets.QLabel(Dialog)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.gridLayout.addWidget(self.label_3, 2, 0, 1, 1)
-        self.txSufixo = QtGui.QLineEdit(Dialog)
+        self.txSufixo = QtWidgets.QLineEdit(Dialog)
         self.txSufixo.setObjectName(_fromUtf8("txSufixo"))
         self.gridLayout.addWidget(self.txSufixo, 2, 1, 1, 1)
         self.cbMascara = QtGui.QComboBox(Dialog)
@@ -4814,28 +4812,28 @@ class Ui_Dialog(QDialog):
         self.cbMascara.addItem(_fromUtf8(""))
         self.cbMascara.addItem(_fromUtf8(""))
         self.gridLayout.addWidget(self.cbMascara, 3, 1, 1, 1)
-        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
-        self.label_4 = QtGui.QLabel(Dialog)
+        self.label_4 = QtWidgets.QLabel(Dialog)
         self.label_4.setObjectName(_fromUtf8("label_4"))
         self.gridLayout.addWidget(self.label_4, 3, 0, 1, 1)
-        self.txFatorMultiplicador = QtGui.QDoubleSpinBox(Dialog)
+        self.txFatorMultiplicador = QtWidgets.QDoubleSpinBox(Dialog)
         self.txFatorMultiplicador.setMaximum(1000)
         self.txFatorMultiplicador.setObjectName(_fromUtf8("txFatorMultiplicador"))
         self.gridLayout.addWidget(self.txFatorMultiplicador, 4, 1, 1, 1)
-        self.label_5 = QtGui.QLabel(Dialog)
+        self.label_5 = QtWidgets.QLabel(Dialog)
         self.label_5.setObjectName(_fromUtf8("label_5"))
         self.gridLayout.addWidget(self.label_5, 4, 0, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
-        self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout.addWidget(self.buttonBox)
         self.txFatorMultiplicador.setValue(1)
         
-        self.label_6 = QtGui.QLabel(Dialog)
+        self.label_6 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_6, 5, 0, 1, 1)
 
         self.retranslateUi(Dialog)
@@ -4866,11 +4864,11 @@ class Ui_Dialog(QDialog):
 # Form implementation generated from reading ui file 'DlgPPB.ui'
 #
 # Created: Fri Nov 27 07:19:40 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Controle.ConPPR import Controller
 
 try:
@@ -4894,50 +4892,50 @@ class Ui_Dialog(QtGui.QDialog):
         
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(400, 300)
-        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.gridLayout = QtGui.QGridLayout()
+        self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.txCc = QtGui.QDoubleSpinBox(Dialog)
+        self.txCc = QtWidgets.QDoubleSpinBox(Dialog)
         self.txCc.setDecimals(4)
         self.txCc.setMaximum(999.99999999)
         self.txCc.setObjectName(_fromUtf8("txCc"))
         self.gridLayout.addWidget(self.txCc, 2, 1, 1, 1)
-        self.chT = QtGui.QCheckBox(Dialog)
+        self.chT = QtWidgets.QCheckBox(Dialog)
         self.chT.setEnabled(False)
         self.chT.setObjectName(_fromUtf8("chT"))
         self.gridLayout.addWidget(self.chT, 1, 2, 1, 1)
-        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout.addWidget(self.label_2, 4, 0, 1, 1)
-        self.label_3 = QtGui.QLabel(Dialog)
+        self.label_3 = QtWidgets.QLabel(Dialog)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.gridLayout.addWidget(self.label_3, 0, 0, 1, 1)
-        self.chPPR = QtGui.QCheckBox(Dialog)
+        self.chPPR = QtWidgets.QCheckBox(Dialog)
         self.chPPR.setEnabled(False)
         self.chPPR.setObjectName(_fromUtf8("chPPR"))
         self.gridLayout.addWidget(self.chPPR, 4, 2, 1, 1)
-        self.label_4 = QtGui.QLabel(Dialog)
+        self.label_4 = QtWidgets.QLabel(Dialog)
         self.label_4.setObjectName(_fromUtf8("label_4"))
         self.gridLayout.addWidget(self.label_4, 3, 0, 1, 1)
-        self.btnConfPPR = QtGui.QPushButton(Dialog)
+        self.btnConfPPR = QtWidgets.QPushButton(Dialog)
         self.btnConfPPR.setObjectName(_fromUtf8("btnConfPPR"))
         self.gridLayout.addWidget(self.btnConfPPR, 4, 1, 1, 1)
-        self.label_5 = QtGui.QLabel(Dialog)
+        self.label_5 = QtWidgets.QLabel(Dialog)
         self.label_5.setObjectName(_fromUtf8("label_5"))
         self.gridLayout.addWidget(self.label_5, 2, 0, 1, 1)
-        self.label = QtGui.QLabel(Dialog)
+        self.label = QtWidgets.QLabel(Dialog)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
-        self.btnConfTemp = QtGui.QPushButton(Dialog)
+        self.btnConfTemp = QtWidgets.QPushButton(Dialog)
         self.btnConfTemp.setObjectName(_fromUtf8("btnConfTemp"))
         self.gridLayout.addWidget(self.btnConfTemp, 1, 1, 1, 1)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 5, 1, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
-        self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout.addWidget(self.buttonBox)
         
@@ -4973,9 +4971,9 @@ class Ui_Dialog(QtGui.QDialog):
 # Form implementation generated from reading ui file 'DlgTAW.ui'
 #
 # Created: Wed Nov 11 04:59:25 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from Controle.ConTAW import Controller
 
 try:
@@ -4999,47 +4997,47 @@ class Ui_Dialog(QtGui.QDialog):
         
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(460, 243)
-        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.gridLayout = QtGui.QGridLayout()
+        self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout.addWidget(self.label_2, 2, 0, 1, 1)
-        self.label = QtGui.QLabel(Dialog)
+        self.label = QtWidgets.QLabel(Dialog)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
-        self.chZr = QtGui.QCheckBox(Dialog)
+        self.chZr = QtWidgets.QCheckBox(Dialog)
         self.chZr.setEnabled(False)
         self.chZr.setObjectName(_fromUtf8("chZr"))
         self.gridLayout.addWidget(self.chZr, 2, 2, 1, 1)
-        self.label_4 = QtGui.QLabel(Dialog)
+        self.label_4 = QtWidgets.QLabel(Dialog)
         self.label_4.setObjectName(_fromUtf8("label_4"))
         self.gridLayout.addWidget(self.label_4, 3, 0, 1, 1)
-        self.btnConfTAW = QtGui.QPushButton(Dialog)
+        self.btnConfTAW = QtWidgets.QPushButton(Dialog)
         self.btnConfTAW.setObjectName(_fromUtf8("btnConfTAW"))
         self.gridLayout.addWidget(self.btnConfTAW, 4, 1, 1, 1)
-        self.label_5 = QtGui.QLabel(Dialog)
+        self.label_5 = QtWidgets.QLabel(Dialog)
         self.label_5.setObjectName(_fromUtf8("label_5"))
         self.gridLayout.addWidget(self.label_5, 4, 0, 1, 1)
-        self.chTAW = QtGui.QCheckBox(Dialog)
+        self.chTAW = QtWidgets.QCheckBox(Dialog)
         self.chTAW.setEnabled(False)
         self.chTAW.setObjectName(_fromUtf8("chTAW"))
         self.gridLayout.addWidget(self.chTAW, 4, 2, 1, 1)
-        self.label_3 = QtGui.QLabel(Dialog)
+        self.label_3 = QtWidgets.QLabel(Dialog)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.gridLayout.addWidget(self.label_3, 0, 0, 1, 1)
-        self.txImgCAD = QtGui.QLineEdit(Dialog)
+        self.txImgCAD = QtWidgets.QLineEdit(Dialog)
         self.txImgCAD.setObjectName(_fromUtf8("txImgCAD"))
         self.gridLayout.addWidget(self.txImgCAD, 1, 1, 1, 1)
-        self.btnConfZr = QtGui.QPushButton(Dialog)
+        self.btnConfZr = QtWidgets.QPushButton(Dialog)
         self.btnConfZr.setObjectName(_fromUtf8("btnConfZr"))
         self.gridLayout.addWidget(self.btnConfZr, 2, 1, 1, 1)
-        self.btnFindImgCAD = QtGui.QToolButton(Dialog)
+        self.btnFindImgCAD = QtWidgets.QToolButton(Dialog)
         self.btnFindImgCAD.setObjectName(_fromUtf8("btnFindImgCAD"))
         self.gridLayout.addWidget(self.btnFindImgCAD, 1, 2, 1, 1)
         
-        self.label_desc = QtGui.QLabel(Dialog)
+        self.label_desc = QtWidgets.QLabel(Dialog)
         self.label_desc.setObjectName(_fromUtf8("label_3"))
         self.gridLayout.addWidget(self.label_desc, 5, 0, 1, 1)
         
@@ -5047,9 +5045,9 @@ class Ui_Dialog(QtGui.QDialog):
         
         self.gridLayout.addItem(spacerItem, 6, 1, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
-        self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout.addWidget(self.buttonBox)
         
@@ -5087,9 +5085,9 @@ class Ui_Dialog(QtGui.QDialog):
 # Form implementation generated from reading ui file 'DlgYa.ui'
 #
 # Created: Mon Dec 07 03:15:49 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -5109,78 +5107,78 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(400, 300)
-        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.gridLayout = QtGui.QGridLayout()
+        self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.label_7 = QtGui.QLabel(Dialog)
+        self.label_7 = QtWidgets.QLabel(Dialog)
         self.label_7.setObjectName(_fromUtf8("label_7"))
         self.gridLayout.addWidget(self.label_7, 7, 0, 1, 1)
-        self.btnConfYa = QtGui.QPushButton(Dialog)
+        self.btnConfYa = QtWidgets.QPushButton(Dialog)
         self.btnConfYa.setObjectName(_fromUtf8("btnConfYa"))
         self.gridLayout.addWidget(self.btnConfYa, 7, 1, 1, 1)
-        self.label = QtGui.QLabel(Dialog)
+        self.label = QtWidgets.QLabel(Dialog)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
-        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
-        self.btnConfEta = QtGui.QPushButton(Dialog)
+        self.btnConfEta = QtWidgets.QPushButton(Dialog)
         self.btnConfEta.setObjectName(_fromUtf8("btnConfEta"))
         self.gridLayout.addWidget(self.btnConfEta, 1, 1, 1, 1)
-        self.btnConfYx = QtGui.QPushButton(Dialog)
+        self.btnConfYx = QtWidgets.QPushButton(Dialog)
         self.btnConfYx.setObjectName(_fromUtf8("btnConfYx"))
         self.gridLayout.addWidget(self.btnConfYx, 4, 1, 1, 1)
-        self.label_5 = QtGui.QLabel(Dialog)
+        self.label_5 = QtWidgets.QLabel(Dialog)
         self.label_5.setObjectName(_fromUtf8("label_5"))
         self.gridLayout.addWidget(self.label_5, 4, 0, 1, 1)
-        self.label_6 = QtGui.QLabel(Dialog)
+        self.label_6 = QtWidgets.QLabel(Dialog)
         self.label_6.setObjectName(_fromUtf8("label_6"))
         self.gridLayout.addWidget(self.label_6, 6, 0, 1, 1)
-        self.chETa = QtGui.QCheckBox(Dialog)
+        self.chETa = QtWidgets.QCheckBox(Dialog)
         self.chETa.setEnabled(False)
         self.chETa.setObjectName(_fromUtf8("chETa"))
         self.gridLayout.addWidget(self.chETa, 1, 2, 1, 1)
-        self.label_3 = QtGui.QLabel(Dialog)
+        self.label_3 = QtWidgets.QLabel(Dialog)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.gridLayout.addWidget(self.label_3, 2, 0, 1, 1)
-        self.BtnConfETc = QtGui.QPushButton(Dialog)
+        self.BtnConfETc = QtWidgets.QPushButton(Dialog)
         self.BtnConfETc.setObjectName(_fromUtf8("BtnConfETc"))
         self.gridLayout.addWidget(self.BtnConfETc, 2, 1, 1, 1)
-        self.txKy = QtGui.QDoubleSpinBox(Dialog)
+        self.txKy = QtWidgets.QDoubleSpinBox(Dialog)
         self.txKy.setObjectName(_fromUtf8("txKy"))
         self.gridLayout.addWidget(self.txKy, 3, 1, 1, 1)
-        self.chETc = QtGui.QCheckBox(Dialog)
+        self.chETc = QtWidgets.QCheckBox(Dialog)
         self.chETc.setEnabled(False)
         self.chETc.setObjectName(_fromUtf8("chETc"))
         self.gridLayout.addWidget(self.chETc, 2, 2, 1, 1)
-        self.label_4 = QtGui.QLabel(Dialog)
+        self.label_4 = QtWidgets.QLabel(Dialog)
         self.label_4.setObjectName(_fromUtf8("label_4"))
         self.gridLayout.addWidget(self.label_4, 3, 0, 1, 1)
-        self.chYx = QtGui.QCheckBox(Dialog)
+        self.chYx = QtWidgets.QCheckBox(Dialog)
         self.chYx.setEnabled(False)
         self.chYx.setObjectName(_fromUtf8("chYx"))
         self.gridLayout.addWidget(self.chYx, 4, 2, 1, 1)
-        self.chYa = QtGui.QCheckBox(Dialog)
+        self.chYa = QtWidgets.QCheckBox(Dialog)
         self.chYa.setEnabled(False)
         self.chYa.setObjectName(_fromUtf8("chYa"))
         self.gridLayout.addWidget(self.chYa, 7, 2, 1, 1)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 8, 0, 1, 1)
-        self.label_8 = QtGui.QLabel(Dialog)
+        self.label_8 = QtWidgets.QLabel(Dialog)
         self.label_8.setObjectName(_fromUtf8("label_8"))
         self.gridLayout.addWidget(self.label_8, 5, 0, 1, 1)
-        self.btnConfKc = QtGui.QPushButton(Dialog)
+        self.btnConfKc = QtWidgets.QPushButton(Dialog)
         self.btnConfKc.setObjectName(_fromUtf8("btnConfKc"))
         self.gridLayout.addWidget(self.btnConfKc, 5, 1, 1, 1)
-        self.chKc = QtGui.QCheckBox(Dialog)
+        self.chKc = QtWidgets.QCheckBox(Dialog)
         self.chKc.setEnabled(False)
         self.chKc.setObjectName(_fromUtf8("chKc"))
         self.gridLayout.addWidget(self.chKc, 5, 2, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
-        self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout.addWidget(self.buttonBox)
 
@@ -5218,9 +5216,9 @@ class Ui_Dialog(object):
 # Form implementation generated from reading ui file 'DlgYa.ui'
 #
 # Created: Thu Dec 03 17:49:02 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
 from Controle.ConYaFao import Controller
 
@@ -5245,78 +5243,78 @@ class Ui_Dialog(QtGui.QDialog):
         
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(400, 300)
-        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.gridLayout = QtGui.QGridLayout()
+        self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.label_7 = QtGui.QLabel(Dialog)
+        self.label_7 = QtWidgets.QLabel(Dialog)
         self.label_7.setObjectName(_fromUtf8("label_7"))
         self.gridLayout.addWidget(self.label_7, 7, 0, 1, 1)
-        self.btnConfYa = QtGui.QPushButton(Dialog)
+        self.btnConfYa = QtWidgets.QPushButton(Dialog)
         self.btnConfYa.setObjectName(_fromUtf8("btnConfYa"))
         self.gridLayout.addWidget(self.btnConfYa, 7, 1, 1, 1)
-        self.label = QtGui.QLabel(Dialog)
+        self.label = QtWidgets.QLabel(Dialog)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
-        self.label_2 = QtGui.QLabel(Dialog)
+        self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
-        self.btnConfEta = QtGui.QPushButton(Dialog)
+        self.btnConfEta = QtWidgets.QPushButton(Dialog)
         self.btnConfEta.setObjectName(_fromUtf8("btnConfEta"))
         self.gridLayout.addWidget(self.btnConfEta, 1, 1, 1, 1)
-        self.btnConfYx = QtGui.QPushButton(Dialog)
+        self.btnConfYx = QtWidgets.QPushButton(Dialog)
         self.btnConfYx.setObjectName(_fromUtf8("btnConfYx"))
         self.gridLayout.addWidget(self.btnConfYx, 4, 1, 1, 1)
-        self.label_5 = QtGui.QLabel(Dialog)
+        self.label_5 = QtWidgets.QLabel(Dialog)
         self.label_5.setObjectName(_fromUtf8("label_5"))
         self.gridLayout.addWidget(self.label_5, 4, 0, 1, 1)
-        self.label_6 = QtGui.QLabel(Dialog)
+        self.label_6 = QtWidgets.QLabel(Dialog)
         self.label_6.setObjectName(_fromUtf8("label_6"))
         self.gridLayout.addWidget(self.label_6, 6, 0, 1, 1)
-        self.chETa = QtGui.QCheckBox(Dialog)
+        self.chETa = QtWidgets.QCheckBox(Dialog)
         self.chETa.setEnabled(False)
         self.chETa.setObjectName(_fromUtf8("chETa"))
         self.gridLayout.addWidget(self.chETa, 1, 2, 1, 1)
-        self.label_3 = QtGui.QLabel(Dialog)
+        self.label_3 = QtWidgets.QLabel(Dialog)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.gridLayout.addWidget(self.label_3, 2, 0, 1, 1)
-        self.BtnConfETc = QtGui.QPushButton(Dialog)
+        self.BtnConfETc = QtWidgets.QPushButton(Dialog)
         self.BtnConfETc.setObjectName(_fromUtf8("BtnConfETc"))
         self.gridLayout.addWidget(self.BtnConfETc, 2, 1, 1, 1)
-        self.txKy = QtGui.QDoubleSpinBox(Dialog)
+        self.txKy = QtWidgets.QDoubleSpinBox(Dialog)
         self.txKy.setObjectName(_fromUtf8("txKy"))
         self.gridLayout.addWidget(self.txKy, 3, 1, 1, 1)
-        self.chETc = QtGui.QCheckBox(Dialog)
+        self.chETc = QtWidgets.QCheckBox(Dialog)
         self.chETc.setEnabled(False)
         self.chETc.setObjectName(_fromUtf8("chETc"))
         self.gridLayout.addWidget(self.chETc, 2, 2, 1, 1)
-        self.label_4 = QtGui.QLabel(Dialog)
+        self.label_4 = QtWidgets.QLabel(Dialog)
         self.label_4.setObjectName(_fromUtf8("label_4"))
         self.gridLayout.addWidget(self.label_4, 3, 0, 1, 1)
-        self.chYx = QtGui.QCheckBox(Dialog)
+        self.chYx = QtWidgets.QCheckBox(Dialog)
         self.chYx.setEnabled(False)
         self.chYx.setObjectName(_fromUtf8("chYx"))
         self.gridLayout.addWidget(self.chYx, 4, 2, 1, 1)
-        self.chYa = QtGui.QCheckBox(Dialog)
+        self.chYa = QtWidgets.QCheckBox(Dialog)
         self.chYa.setEnabled(False)
         self.chYa.setObjectName(_fromUtf8("chYa"))
         self.gridLayout.addWidget(self.chYa, 7, 2, 1, 1)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 8, 0, 1, 1)
-        self.label_8 = QtGui.QLabel(Dialog)
+        self.label_8 = QtWidgets.QLabel(Dialog)
         self.label_8.setObjectName(_fromUtf8("label_8"))
         self.gridLayout.addWidget(self.label_8, 5, 0, 1, 1)
-        self.btnConfKc = QtGui.QPushButton(Dialog)
+        self.btnConfKc = QtWidgets.QPushButton(Dialog)
         self.btnConfKc.setObjectName(_fromUtf8("btnConfKc"))
         self.gridLayout.addWidget(self.btnConfKc, 5, 1, 1, 1)
-        self.chKc = QtGui.QCheckBox(Dialog)
+        self.chKc = QtWidgets.QCheckBox(Dialog)
         self.chKc.setEnabled(False)
         self.chKc.setObjectName(_fromUtf8("chKc"))
         self.gridLayout.addWidget(self.chKc, 5, 2, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
-        self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout.addWidget(self.buttonBox)
 
@@ -5473,10 +5471,10 @@ class Dr(AbstractFunction):
 # -*- coding: utf-8 -*-
 
 import sys
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore
 
 
-class Button(QtGui.QPushButton):
+class Button(QtWidgets.QPushButton):
     def mouseMoveEvent(self, e):
         if e.buttons() != QtCore.Qt.RightButton:
             return
@@ -5514,7 +5512,7 @@ class Button(QtGui.QPushButton):
 
 
     def mousePressEvent(self, e):
-        QtGui.QPushButton.mousePressEvent(self, e)
+        QtWidgets.QPushButton.mousePressEvent(self, e)
         if e.button() == QtCore.Qt.LeftButton:
             print 'press'
 
@@ -6888,11 +6886,11 @@ for i in range(len(serie_img)):
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
 # Created: Mon Apr 13 10:03:42 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -6967,11 +6965,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
         ## uniform one for the horizontal headers.
 
-        self.centralwidget = QtGui.QWidget(MainWindow)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-        self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.treeWidget_2 = QtGui.QTreeWidget(self.centralwidget)
         self.treeWidget_2.setAcceptDrops(True)
@@ -7221,7 +7219,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         action = menu.exec_(self.menuDamenuProdutividadeGlobal(event.pos()))
         
         if action == quitAction:
-            QtGui.qApp.quit()
+            QtWidgets.qApp.quit()
             
     def dropEvent(self, e):
         # get the relative position from the mime data
@@ -7457,7 +7455,7 @@ setup(
                               "api-ms-win-security-activedirectoryclient-l1-1-0.dll", "api-ms-win-core-rtlsupport-l1-2-0.dll"],      
             #"dll_include" : [ "api-ms-win-core-processthreads-l1-1-2.dll"],
             
-            'packages':['fiona',"rasterio","PyQt4.QtCore","PyQt4.QtGui", ],
+            'packages':['fiona',"rasterio","PyQt5.QtCore","PyQt5.QtGui", ],
             'excludes': ['_gtkagg', '_tkagg', "mswsock.dll", "powrprof.dll"],
             "includes" : ["sip", "matplotlib.backends.backend_tkagg", "FileDialog", "lxml._elementpath"],
 
@@ -7558,13 +7556,13 @@ class RasterFile(FileData):
                 
                 self.metadata = raster.meta
                 if (not isCube) : 
-                    return raster.read_band(1)
+                    return raster.read(1)
                 else :
                     cubo = list()
                     i_band = 1
                     while True :
                         try:
-                            cubo.append(raster.read_band(i_band))
+                            cubo.append(raster.read(i_band))
                             i_band+=1
                         except :
                             break
@@ -8982,11 +8980,11 @@ class TAW(AbstractFunction):
 # Form implementation generated from reading ui file 'MainWindow_2.ui'
 #
 # Created: Tue Jun 09 11:16:29 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
 from DlgEstimativaDatasCultura import Ui_DlgEstimativaDatasAgricolas
 from DlgFiltroSavitzGolay import Ui_DlgSavitzGolay
@@ -9104,9 +9102,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
         
         MainWindow.setIconSize(QtCore.QSize(200, 200))
         
-        self.centralwidget = QtGui.QWidget(MainWindow)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-        self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         MainWindow.setCentralWidget(self.centralwidget)
         
@@ -9219,7 +9217,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menubar.addAction(self.menuProdutividade.menuAction())
         self.menubar.addAction(self.menuEstatisticas.menuAction())
         
-        self.label = QtGui.QLabel(MainWindow)
+        self.label = QtWidgets.QLabel(MainWindow)
         self.label.setGeometry(QtCore.QRect(26, 44, 600, 75))
         self.label.setObjectName(_fromUtf8("label"))
 
@@ -9231,28 +9229,28 @@ class Ui_MainWindow(QtGui.QMainWindow):
         #path_ = inspect.getfile(self.__class__)
         #path_ = str(path_).replace("Visao\TelaPrincipal.py", "")
         
-        self.logo_lea = QtGui.QPushButton(MainWindow)
+        self.logo_lea = QtWidgets.QPushButton(MainWindow)
         self.logo_lea.setGeometry(QtCore.QRect(26, 130, 200, 82))
         self.icon_lea = QtGui.QIcon("images\logo_lea.jpg")
         self.icon_lea.pixmap(QtCore.QSize(200, 200))
         self.logo_lea.setIcon(self.icon_lea)
         self.logo_lea.setIconSize(QtCore.QSize(200, 100))
 
-        self.logo_lea = QtGui.QPushButton(MainWindow)
+        self.logo_lea = QtWidgets.QPushButton(MainWindow)
         self.logo_lea.setGeometry(QtCore.QRect(250, 130, 120, 82))
         self.icon_lea = QtGui.QIcon("images\logoPgeagrid2.png")
         self.icon_lea.pixmap(QtCore.QSize(200, 200))
         self.logo_lea.setIcon(self.icon_lea)
         self.logo_lea.setIconSize(QtCore.QSize(145, 80))        
 
-        self.logo_lea = QtGui.QPushButton(MainWindow)
+        self.logo_lea = QtWidgets.QPushButton(MainWindow)
         self.logo_lea.setGeometry(QtCore.QRect(394, 130, 82, 82))
         self.icon_lea = QtGui.QIcon("images\logo_campus_cvel.jpg")
         self.icon_lea.pixmap(QtCore.QSize(200, 200))
         self.logo_lea.setIcon(self.icon_lea)
         self.logo_lea.setIconSize(QtCore.QSize(120, 82))       
 
-        self.logo_lea = QtGui.QPushButton(MainWindow)
+        self.logo_lea = QtWidgets.QPushButton(MainWindow)
         self.logo_lea.setGeometry(QtCore.QRect(500, 130, 110, 82))
         self.icon_lea = QtGui.QIcon("images\capes-logo-CAPES.jpg")
         self.icon_lea.pixmap(QtCore.QSize(200, 200))

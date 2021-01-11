@@ -3,11 +3,11 @@
 # Form implementation generated from reading ui file 'teste_progress_bar.ui'
 #
 # Created: Tue Oct 13 03:46:07 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 import sys, time
 
 try:
@@ -17,7 +17,7 @@ except AttributeError:
         return s
 
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtWidgets.qApplication.UnicodeUTF8
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
@@ -30,13 +30,13 @@ class Ui_Dialog():
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(400, 300)
         
-        self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setGeometry(QtCore.QRect(30, 240, 341, 32))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         
-        self.progressBar = QtGui.QProgressBar(Dialog)
+        self.progressBar = QtWidgets.QProgressBar(Dialog)
         self.progressBar.setGeometry(QtCore.QRect(70, 130, 231, 23))
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName(_fromUtf8("progressBar"))
@@ -55,14 +55,14 @@ class Ui_Dialog():
             time.sleep(0.05)
             value = self.progressBar.value() + 1
             self.progressBar.setValue(value)
-            QtGui.qApp.processEvents()
+            QtWidgets.qApp.processEvents()
             if (not self._active or
                 value >= self.progressBar.maximum()):
                 break
-        QtGui.qApp.processEvents()
-        print "iniciando"
+        QtWidgets.qApp.processEvents()
+        print ("iniciando")
     
     def cancelar(self):
         self.progressBar.setValue(0)
         self._active = False
-        print "cancelando"
+        print ("cancelando")

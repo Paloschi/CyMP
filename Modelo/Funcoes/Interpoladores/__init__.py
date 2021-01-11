@@ -1,2 +1,2 @@
-from InterpoladorIDW import IDW
-from Interpola import InterpoladorIvD
+from Modelo.Funcoes.Interpoladores.InterpoladorIDW import IDW
+from Modelo.Funcoes.Interpoladores.Interpola import InterpoladorIvD

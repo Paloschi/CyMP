@@ -78,7 +78,7 @@ class InterpolaTabela(AbstractFunction):
             path = table['data_path']
             keys = table.keys()
         
-            print keys
+            print (keys)
         
         #if len(keys 0):
         #    for key in keys:
@@ -102,7 +102,7 @@ class InterpolaTabela(AbstractFunction):
                 csv.write("Easting,Northing,Value\n")
                         
                 for tupla in table["table"]["table_data"]:
-                    print tupla
+                    print (tupla)
                     print(tupla['geometry']['coordinates'])
                     cx = tupla['geometry']['coordinates'][0]
                     cy = tupla['geometry']['coordinates'][1]
@@ -116,7 +116,7 @@ class InterpolaTabela(AbstractFunction):
         
         print("-Criando arquivos VTR para alimentar intorpolador")
         
-        print table
+        print (table)
         
         path = table['data_path']
         keys = table.keys()
@@ -209,7 +209,7 @@ class InterpoladorIvD(ABData):
             return fileOut
         
         except Exception:
-            print 'erro ao chamar subprocesso gdal_grid'
+            print ('erro ao chamar subprocesso gdal_grid')
             return Exception()
         
     @data.setter

@@ -3,11 +3,11 @@
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
 # Created: Mon Apr 13 10:03:42 2015
-#      by: PyQt4 UI code generator 4.11.3
+#      by: PyQt5 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -56,9 +56,9 @@ class TreeWidgetItem(QtGui.QTreeWidgetItem):
         # start the drag operation
         # exec_ will return the accepted action from dropEvent
         if drag.exec_(QtCore.Qt.CopyAction | QtCore.Qt.MoveAction) == QtCore.Qt.MoveAction:
-            print 'moved'
+            print ('moved')
         else:
-            print 'copied'
+            print ('copied')
 
 class Ui_MainWindow(QtGui.QMainWindow):
     
@@ -82,11 +82,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
         ## uniform one for the horizontal headers.
 
-        self.centralwidget = QtGui.QWidget(MainWindow)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-        self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.treeWidget_2 = QtGui.QTreeWidget(self.centralwidget)
         self.treeWidget_2.setAcceptDrops(True)
@@ -336,7 +336,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         action = menu.exec_(self.menuDamenuProdutividadeGlobal(event.pos()))
         
         if action == quitAction:
-            QtGui.qApp.quit()
+            QtWidgets.qApp.quit()
             
     def dropEvent(self, e):
         # get the relative position from the mime data

@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore
 
 
-class Button(QtGui.QPushButton):
+class Button(QtWidgets.QPushButton):
     def mouseMoveEvent(self, e):
         if e.buttons() != QtCore.Qt.RightButton:
             return
@@ -37,15 +37,15 @@ class Button(QtGui.QPushButton):
         # start the drag operation
         # exec_ will return the accepted action from dropEvent
         if drag.exec_(QtCore.Qt.CopyAction | QtCore.Qt.MoveAction) == QtCore.Qt.MoveAction:
-            print 'moved'
+            print ('moved')
         else:
-            print 'copied'
+            print ('copied')
 
 
     def mousePressEvent(self, e):
-        QtGui.QPushButton.mousePressEvent(self, e)
+        QtWidgets.QPushButton.mousePressEvent(self, e)
         if e.button() == QtCore.Qt.LeftButton:
-            print 'press'
+            print ('press')
 
 
 

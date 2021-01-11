@@ -6,11 +6,12 @@ Created on Aug 4, 2015
 '''
 from Modelo.beans import FileData
 from Modelo.beans.TableData import TableData
+import re
 
 try:
     import rasterio
 except:
-    print u"ERRO - não foi possível carregar a biblioteca rasterIO, tente configurar as variáveis de ambiente"
+    print (u"ERRO - não foi possível carregar a biblioteca rasterIO, tente configurar as variáveis de ambiente")
 import subprocess
 
 class RasterFile(FileData):
@@ -33,13 +34,13 @@ class RasterFile(FileData):
                 
                 self.metadata = raster.meta
                 if (not isCube) : 
-                    return raster.read_band(1)
+                    return raster.read(1)
                 else :
                     cubo = list()
                     i_band = 1
                     while True :
                         try:
-                            cubo.append(raster.read_band(i_band))
+                            cubo.append(raster.read(i_band))
                             i_band+=1
                         except :
                             break
@@ -48,9 +49,10 @@ class RasterFile(FileData):
                 
                 return self
         
-        except :
+        except Exception as e:
             
-            print "Falha ao tentar abrir imagem", self.file_full_path   
+            print ("Falha ao tentar abrir imagem", self.file_full_path)
+            print (e)
             return None
         
     def saveRasterData(self, band_matrix=None, metadata=None, file_path=None, ext=None):
@@ -94,13 +96,13 @@ class RasterFile(FileData):
             with rasterio.open(path = str(self.file_full_path), mode = 'w', **self.metadata) as dst:
                 try:
                     dst.write(self.data, 1)
-                except ValueError, e: 
-                    print str(e)
-                    print "ERRO - Erro ao tentar salvar a imagem: ", self.file_full_path
-                    print "MOTIVO - índices inconsistentes, erro ao escrever banda"
+                except ValueError as e:
+                    print (str(e))
+                    print ("ERRO - Erro ao tentar salvar a imagem: ", self.file_full_path)
+                    print ("MOTIVO - índices inconsistentes, erro ao escrever banda")
             
         except ValueError: 
-            print u"ERRO - Erro ao tentar criar imagem "+ self.file_name +u", verificar a existência do diretório informado ou se a imagem esta aberta em outro software"
+            print (u"ERRO - Erro ao tentar criar imagem "+ self.file_name +u", verificar a existência do diretório informado ou se a imagem esta aberta em outro software")
             
     def getLoadJustMetaData(self):
         
@@ -110,7 +112,7 @@ class RasterFile(FileData):
                 self.metadata = raster.meta
         
         except :
-            print "Falha ao tentar abrir imagem", self.file_full_path   
+            print ("Falha ao tentar abrir imagem", self.file_full_path )
             return None
             
     def getRasterInformation(self):
@@ -120,15 +122,22 @@ class RasterFile(FileData):
         print("Obtendo informacao da imagem")
                
         info = subprocess.check_output(['gdalinfo', '-nogcp','-nomd', '-norat', '-noct', str(self.file_full_path)])
-        
+        info = str(info)
+        # transforma a string em dicionario
+        print("antes")
+        # try:
+        #     info = {k.strip():v for k,v in re.findall(r'([^:]+):\s*(\d+)', info)}
+        # except Exception as e:
+        #     print (e)
+        print("depois")
         # recupera numero de linhas e colunas
         
         index_init = info.index(self.caption_nx_ny_name)
         text_rest = info[index_init:]
-        index_end = text_rest.index('\n') + index_init
+        index_end = text_rest.index('\\n') + index_init
         
         info_s = info[index_init + len(self.caption_nx_ny_name):index_end]
-        info_s = info_s.replace('\r', '').split(', ')
+        info_s = info_s.replace('\\r', '').split(', ')
         
         data['nx'] = info_s[0]
         data['ny'] = info_s[1]
@@ -136,10 +145,10 @@ class RasterFile(FileData):
         # recupera numero inicio do mapa xmax e ymax
         index_init = info.index(self.caption_xmin_ymin)
         text_rest = info[index_init:]
-        index_end = text_rest.index('\n') + index_init
+        index_end = text_rest.index('\\n') + index_init
         
         info_s = info[index_init + len(self.caption_xmin_ymin):index_end]
-        info_s = info_s.replace('\r', '').replace('(','').replace(')','').split(' ')
+        info_s = info_s.replace('\\r', '').replace('(','').replace(')','').split(' ')
         
         for atr in info_s:
             if atr == '':
@@ -151,10 +160,10 @@ class RasterFile(FileData):
         # recupera numero inicio do mapa xmin e ymin
         index_init = info.index(self.caption_xmax_xmin)
         text_rest = info[index_init:]
-        index_end = text_rest.index('\n') + index_init
+        index_end = text_rest.index('\\n') + index_init
         
         info_s = info[index_init + len(self.caption_xmax_xmin):index_end]
-        info_s = info_s.replace('\r', '').replace('(','').replace(')','').split(' ')
+        info_s = info_s.replace('\\r', '').replace('(','').replace(')','').split(' ')
         
         for atr in info_s:
             if atr == '':
@@ -168,11 +177,11 @@ class RasterFile(FileData):
             index_init = info.index(self.caption_NoDataValue)
         
             text_rest = info[index_init:]
-            index_end = text_rest.index('\n') + index_init
+            index_end = text_rest.index('\\n') + index_init
             
             info_s = info[index_init + len(self.caption_NoDataValue):index_end]
             
-            data['NoData'] = info_s.replace('\r', '')
+            data['NoData'] = info_s.replace('\\r', '')
         except : 
             data['NoData'] = None
             
