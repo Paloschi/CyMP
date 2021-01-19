@@ -75,7 +75,13 @@ class Ya(AbstractFunction):
             
             for i in range(len(ya_)): 
                 ya_[i][kc_[i]==0] = 0
-                
+
+            print("Valor de yx_:" + str(yx_[970][483]))
+            print("Valor de eta_:" + str(eta_[970][483]))
+            print("Valor de etc_:" + str(etc_[970][483]))
+            print("Valor de ya_:" + str(ya_[970][483]))
+            print("------------------------------")
+
             #ya_ = numpy.round(ya_, 3)   
             #ya_ *= factor_ya
             

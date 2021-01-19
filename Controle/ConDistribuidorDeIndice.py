@@ -8,18 +8,22 @@ Created on 19/10/2015
 from Controle.AbstractController import Controller
 from Modelo.Funcoes.BalancoHidrico import Distribuidor_IC_2
 from Modelo.beans import TableData, RasterFile
-from PyQt5 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 import threading
 
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+# try:
+#     _encoding = QtGui.QApplication.UnicodeUTF8
+#     def _translate(context, text, disambig):
+#         return QtGui.QApplication.translate(context, text, disambig, _encoding)
+# except AttributeError:
+#     def _translate(context, text, disambig):
+#         return QtGui.QApplication.translate(context, text, disambig)
+
+
+def _translate(context, text, disambig):
+    return text
 
 class Controller(Controller):
     
@@ -45,14 +49,14 @@ class Controller(Controller):
             i_nova_linha = numero_de_linhas
             self.ui.tableWidget.setRowCount(i_nova_linha + 1)
             
-            item = QtGui.QTableWidgetItem()
+            item = QtWidgets.QTableWidgetItem()
             self.ui.tableWidget.setVerticalHeaderItem(i_nova_linha, item)
             
             item = self.ui.tableWidget.verticalHeaderItem(i_nova_linha)
             item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
             item.setText(_translate("Dialog", ("Estádio " + str(i_nova_linha+1)), None))
             
-            item = QtGui.QTableWidgetItem()
+            item = QtWidgets.QTableWidgetItem()
             item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
             item.setTextAlignment(QtCore.Qt.AlignCenter)
             self.ui.tableWidget.setItem(i_nova_linha, 0, item)
@@ -60,11 +64,11 @@ class Controller(Controller):
             item = self.ui.tableWidget.item(i_nova_linha, 0)
             item.setText(_translate("Dialog", str(ultimo_dia), None)) 
             
-            item = QtGui.QTableWidgetItem()
+            item = QtWidgets.QTableWidgetItem()
             item.setTextAlignment(QtCore.Qt.AlignCenter)
             self.ui.tableWidget.setItem(i_nova_linha, 1, item)     
 
-            item = QtGui.QTableWidgetItem()
+            item = QtWidgets.QTableWidgetItem()
             item.setTextAlignment(QtCore.Qt.AlignCenter)
             self.ui.tableWidget.setItem(i_nova_linha, 2, item)   
             
@@ -237,7 +241,9 @@ class Controller(Controller):
             self.finalizar()
         
     def parametros_teste(self):
-        self.ui.txImgColheita.setText("Dados\\1-Tratamento de dados\\4-Datas da Cultura\\colheita.tif")  
-        self.ui.txImgSemeadura.setText("Dados\\1-Tratamento de dados\\4-Datas da Cultura\\semeadura.tif") 
+        self.ui.txImgColheita.setText("D://Agririsk//safra1617_DC_anoediajuliano.tif")
+        self.ui.txImgSemeadura.setText("D://Agririsk//safra1617_DS_anoediajuliano.tif")
+
+        self.ui.txOutFolder.setText("D://Agririsk//Coamo_FAO_estimation//Kc_2016_2017//")
         
         

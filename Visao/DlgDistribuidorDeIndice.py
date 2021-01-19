@@ -16,13 +16,17 @@ except AttributeError:
     def _fromUtf8(s):
         return s
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+# try:
+#     _encoding = QtGui.QApplication.UnicodeUTF8
+#     def _translate(context, text, disambig):
+#         return QtGui.QApplication.translate(context, text, disambig, _encoding)
+# except AttributeError:
+#     def _translate(context, text, disambig):
+#         return QtGui.QApplication.translate(context, text, disambig)
+
+
+def _translate(context, text, disambig):
+    return text
 
 class Ui_DistribuidorDeIndice(QtWidgets.QDialog):
     def setupUi(self, Dialog):
@@ -54,28 +58,28 @@ class Ui_DistribuidorDeIndice(QtWidgets.QDialog):
         self.btOkCancel.setOrientation(QtCore.Qt.Horizontal)
         self.btOkCancel.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.btOkCancel.setObjectName(_fromUtf8("btOkCancel"))
-        self.tableWidget = QtGui.QTableWidget(Dialog)
+        self.tableWidget = QtWidgets.QTableWidget(Dialog)
         self.tableWidget.setGeometry(QtCore.QRect(30, 170, 261, 111))
         self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
         self.tableWidget.setColumnCount(3)
         self.tableWidget.setRowCount(1)
         self.tableWidget.rowCount()
-        item = QtGui.QTableWidgetItem()
+        item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
-        item = QtGui.QTableWidgetItem()
+        item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
-        item = QtGui.QTableWidgetItem()
+        item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(1, item)
-        item = QtGui.QTableWidgetItem()
+        item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(2, item)
-        item = QtGui.QTableWidgetItem()
+        item = QtWidgets.QTableWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignCenter)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.tableWidget.setItem(0, 0, item)
-        item = QtGui.QTableWidgetItem()
+        item = QtWidgets.QTableWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignCenter)
         self.tableWidget.setItem(0, 1, item)
-        item = QtGui.QTableWidgetItem()
+        item = QtWidgets.QTableWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignCenter)
         self.tableWidget.setItem(0, 2, item)
         self.btRemover = QtWidgets.QPushButton(Dialog)
@@ -104,7 +108,7 @@ class Ui_DistribuidorDeIndice(QtWidgets.QDialog):
         self.btFindImgColheita = QtWidgets.QToolButton(Dialog)
         self.btFindImgColheita.setGeometry(QtCore.QRect(370, 70, 25, 19))
         self.btFindImgColheita.setObjectName(_fromUtf8("btFindImgColheita"))
-        self.comboBox = QtGui.QComboBox(Dialog)
+        self.comboBox = QtWidgets.QComboBox(Dialog)
         self.comboBox.setGeometry(QtCore.QRect(300, 170, 121, 22))
         self.comboBox.setObjectName(_fromUtf8("comboBox"))
         self.comboBox.addItem(_fromUtf8(""))
@@ -115,8 +119,8 @@ class Ui_DistribuidorDeIndice(QtWidgets.QDialog):
         self.label_5.setObjectName(_fromUtf8("label_5"))
 
         self.retranslateUi(Dialog)
-        QtCore.QObject.connect(self.btOkCancel, QtCore.SIGNAL(_fromUtf8("accepted()")), self.controller.action_ok)
-        QtCore.QObject.connect(self.btOkCancel, QtCore.SIGNAL(_fromUtf8("rejected()")), self.controller.action_cancel)
+        self.btOkCancel.accepted.connect(self.controller.action_ok)
+        self.btOkCancel.rejected.connect(self.controller.action_cancel)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
         
         self.txMultiplyFactor.setEnabled(False)
@@ -173,7 +177,7 @@ class Ui_DistribuidorDeIndice(QtWidgets.QDialog):
         self.btAdicionar.clicked.connect(self.controller.addEstagio)
         self.btRemover.clicked.connect(self.controller.remEstagio)
         
-        #self.txImgColheita.setText("C:\\Users\\Paloschi\\Desktop\\2-DS, DC, DMDV\\colheita_soja_11-12.tif")
-        #self.txImgSemeadura.setText("C:\\Users\\Paloschi\\Desktop\\2-DS, DC, DMDV\\semeadura_soja_11-12.tif")
-        #self.txOutFolder.setText("C:\\Users\\Paloschi\\Desktop\\TesteDistribuidor\\")
+        self.txImgColheita.setText("D://Agririsk//safra1617_DC_anoediajuliano.tif")
+        self.txImgSemeadura.setText("D://Agririsk//safra1617_DS_anoediajuliano.tif")
+        self.txOutFolder.setText("D://Agririsk//Coamo_FAO_estimation//Kc_2016_2017//")
 

@@ -32,7 +32,7 @@ class Ks(AbstractFunction):
         
         #factor_raw = float(serie_raw.mutiply_factor)
         #factor_taw = float(serie_taw.mutiply_factor)
-        #factor_dr = float(serie_dr.mutiply_factor)
+        factor_dr = float(serie_dr.mutiply_factor)
         #factor_ks = float(serie_ks.mutiply_factor)
         
         n_taw = len(serie_taw)
@@ -54,7 +54,7 @@ class Ks(AbstractFunction):
             
             raw_ = self.LoadImgByDate(serie_raw, data_taw, 1)
         
-            dr_ = self.LoadImgByDate(serie_dr, data_taw, 1)
+            dr_ = self.LoadImgByDate(serie_dr, data_taw, 1) * factor_dr
             
             if dr_ is None: 
                 self.console(u"Aviso: Imagem de Dr para a data: " + str(data_taw))
@@ -101,12 +101,12 @@ class Ks(AbstractFunction):
                 #ks_ = numpy.ma.masked_array(ks_, 999)
                 
                 ks_ = 1 - ks_ # invertendo o Ks pra dar certo na formulas
-                
-                
-                print ("Valor de taw_:" + str(taw_[60][83]))
-                print ("Valor de raw_:" + str(raw_[60][83]))
-                print ("Valor de dr_:" + str(dr_[60][83]))    
-                print ("Valor de Ks:" + str(ks_[60][83]))  
+
+
+                print ("Valor de taw_:" + str(taw_[970][483]))
+                print ("Valor de raw_:" + str(raw_[970][483]))
+                print ("Valor de dr_:" + str(dr_[970][483]))
+                print ("Valor de Ks:" + str(ks_[970][483]))
                 print ("------------------------------")
                 
                 #print data_taw

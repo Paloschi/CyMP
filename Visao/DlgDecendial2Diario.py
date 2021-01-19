@@ -65,7 +65,7 @@ class Ui_Decendial2Diario(QtWidgets.QDialog):
         self.label_3 = QtWidgets.QLabel(Dialog)
         self.gridLayout.addWidget(self.label_3, 3, 0, 2, 1)
         
-        self.cbOperacao = QtGui.QComboBox(Dialog)
+        self.cbOperacao = QtWidgets.QComboBox(Dialog)
         self.cbOperacao.setEditable(True)
         self.cbOperacao.setObjectName(_fromUtf8("cbOperacao"))
         self.cbOperacao.addItem(_fromUtf8("manter valores"))

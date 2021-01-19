@@ -16,13 +16,18 @@ except AttributeError:
     def _fromUtf8(s):
         return s
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+# try:
+#     _encoding = QtGui.QApplication.UnicodeUTF8
+#     def _translate(context, text, disambig):
+#         return QtGui.QApplication.translate(context, text, disambig, _encoding)
+# except AttributeError:
+#     def _translate(context, text, disambig):
+#         return QtGui.QApplication.translate(context, text, disambig)
+
+
+def _translate(context, text, disambig):
+    return text
+
 
 class Ui_Dialog(QtWidgets.QDialog):
     def setupUi(self, Dialog):
@@ -69,7 +74,7 @@ class Ui_Dialog(QtWidgets.QDialog):
         self.btnConfTemp = QtWidgets.QPushButton(Dialog)
         self.btnConfTemp.setObjectName(_fromUtf8("btnConfTemp"))
         self.gridLayout.addWidget(self.btnConfTemp, 1, 1, 1, 1)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 5, 1, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
@@ -80,14 +85,14 @@ class Ui_Dialog(QtWidgets.QDialog):
         
 
         self.retranslateUi(Dialog)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), self.controller.action_ok)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), self.controller.action_cancel)
+        self.buttonBox.accepted.connect(self.controller.action_ok)
+        self.buttonBox.rejected.connect(self.controller.action_cancel)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
         self.btnConfTemp.clicked.connect(self.controller.setSerieT)
         self.btnConfPPR.clicked.connect(self.controller.setSeriePPR)
         
-        #self.controller.parametros_teste()
+        self.controller.parametros_teste()
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "CyMP - Produtividade potencial bruta (PPB)", None))

@@ -24,21 +24,7 @@ class Controller(AbstractController.Controller):
         imagens = self.getSerieTemporal(self.serie_PPR)
         if imagens is not None:
             self.serie_PPR = imagens
-            self.ui.chPPR.setCheckState(True)            
-         
-    def parametros_teste(self):
-    
-        self.serie_T = SerialTemporalFiles(root_path = "C:\\CyMP\\Gafanhoto\\DADOS\\Imagens Cascavel\\ECMWF\\TTT_diario")
-        self.serie_T.prefixo = "tav_"  
-        self.serie_T.date_mask = "%Y%m%d" 
-        self.serie_T.mutiply_factor = 1
-
-        self.serie_PPR = SerialTemporalFiles(root_path = "C:\\CyMP\\Gafanhoto\\DADOS\\Imagens Cascavel\\PPB")
-        self.serie_PPR.prefixo = "ppb_"  
-        self.serie_PPR.date_mask = "%Y%m%d"      
-        self.serie_PPR.mutiply_factor = 1
-        
-        self.ui.txCc.setValue(0.35599427)
+            self.ui.chPPR.setCheckState(True)
          
     def executa(self):
         self.function = PPR.PPR()
@@ -65,3 +51,19 @@ class Controller(AbstractController.Controller):
             self.message(u"Série de imagens de PPR não configurada.")
             return False
         return True
+
+    def parametros_teste(self):
+
+        self.serie_T = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\temp")
+        self.serie_T.prefixo = ""
+        self.serie_T.date_mask = "%Y-%m-%d"
+        self.serie_T.mutiply_factor = 1
+
+        self.serie_PPR = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\ppb_Cc0.35599427")
+        self.serie_PPR.prefixo = ""
+        self.serie_PPR.date_mask = "%Y-%m-%d"
+        self.serie_PPR.mutiply_factor = 1
+
+        self.ui.txCc.setValue(0.35599427)
+        #self.ui.txCc.setValue(0.2795)  # Tirado do artigo http://www.dsr.inpe.br/sbsr2015/files/p0690.pdf
+

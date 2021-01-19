@@ -21,12 +21,12 @@ class FileData(ABData):
         
         super(FileData, self).__init__(FILE_DATA) # seta o tipo do objeto
         
-        if params.get("data") != None : self.data = params.get("data")
-        if params.get("ext") != None : self.file_ext = params.get("ext")
-        if params.get("file_name") != None : self.file_name = params.get("file_name")
-        if params.get("name") != None : self.name = params.get("name")
-        if params.get("file_path") != None : self.file_path = params.get("file_path")
-        if params.get("file_full_path") != None : self.file_full_path = params.get("file_full_path")
+        if params.get("data") is not None : self.data = params.get("data")
+        if params.get("ext") is not None : self.file_ext = params.get("ext")
+        if params.get("file_name") is not None : self.file_name = params.get("file_name")
+        if params.get("name") is not None : self.name = params.get("name")
+        if params.get("file_path") is not None : self.file_path = params.get("file_path")
+        if params.get("file_full_path") is not None : self.file_full_path = params.get("file_full_path")
     
     @property
     def file_path(self):

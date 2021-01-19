@@ -83,33 +83,33 @@ class Controller(AbstractController.Controller):
         return True
 
     def parametros_teste(self):
-        root_path = "Dados\\2-Balanco Hidrico\\1-ETc"
+        root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\ETc"
         self.serie_ETc = SerialTemporalFiles()
         self.serie_ETc.root_path = root_path
-        self.serie_ETc.prefixo = "ETc_"
+        self.serie_ETc.prefixo = ""
         self.serie_ETc.date_mask = "%Y-%m-%d"     
         self.serie_ETc.mutiply_factor = 1
         
-        root_path = "Dados\\1-Tratamento de dados\\2-Dados Climaticos\\3-Diarios\\Precipitacao"
+        root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\rain"
         self.serie_PPP = SerialTemporalFiles()
         self.serie_PPP.root_path = root_path
-        self.serie_PPP.prefixo = "rain_"
-        self.serie_PPP.mutiply_factor = 1
+        self.serie_PPP.prefixo = ""
+        self.serie_PPP.mutiply_factor = 1000
         self.serie_PPP.date_mask = "%Y-%m-%d"
         
-        root_path = "Dados\\2-Balanco Hidrico\\2-TAW"
+        root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\TAW"
         self.serie_TAW = SerialTemporalFiles()
         self.serie_TAW.root_path = root_path
-        self.serie_TAW.prefixo = "taw_"
+        self.serie_TAW.prefixo = ""
         self.serie_TAW.mutiply_factor = 1
         self.serie_TAW.date_mask = "%Y-%m-%d"
         
-        self.ui.txImgCAD.setText("Dados\\1-Tratamento de dados\\1-Capacidade de Armazenamento (CAD)\\CAD.tif")
+        self.ui.txImgCAD.setText("D:\\Agririsk\\Coamo_FAO_estimation\\CAD-Zona-Soja_mm_250m.tif")
         
-        root_path = "Dados\\2-Balanco Hidrico\\4-Dr"
+        root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\Dr"
         self.serie_Dr = SerialTemporalFiles()
         self.serie_Dr.root_path = root_path
-        self.serie_Dr.prefixo = "Dr_"
+        self.serie_Dr.prefixo = ""
         self.serie_Dr.mutiply_factor = 1
         self.serie_Dr.date_mask = "%Y-%m-%d"  
         

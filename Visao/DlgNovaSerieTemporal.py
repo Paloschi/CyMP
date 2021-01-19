@@ -7,7 +7,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from Modelo.beans.SerialFileData import SerialTemporalFiles
 from PyQt5.Qt import QDialog
 import os
@@ -19,13 +19,18 @@ except AttributeError:
     def _fromUtf8(s):
         return s
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+# try:
+#     _encoding = QtGui.QApplication.UnicodeUTF8
+#     def _translate(context, text, disambig):
+#         return QtGui.QApplication.translate(context, text, disambig, _encoding)
+# except AttributeError:
+#     def _translate(context, text, disambig):
+#         return QtGui.QApplication.translate(context, text, disambig)
+
+
+def _translate(context, text, disambig):
+    return text
+
 
 class Ui_Dialog(QDialog):
     
@@ -104,7 +109,7 @@ class Ui_Dialog(QDialog):
         self.txSufixo = QtWidgets.QLineEdit(Dialog)
         self.txSufixo.setObjectName(_fromUtf8("txSufixo"))
         self.gridLayout.addWidget(self.txSufixo, 2, 1, 1, 1)
-        self.cbMascara = QtGui.QComboBox(Dialog)
+        self.cbMascara = QtWidgets.QComboBox(Dialog)
         self.cbMascara.setEditable(True)
         self.cbMascara.setObjectName(_fromUtf8("cbMascara"))
         self.cbMascara.addItem(_fromUtf8(""))
@@ -136,8 +141,10 @@ class Ui_Dialog(QDialog):
         self.gridLayout.addWidget(self.label_6, 5, 0, 1, 1)
 
         self.retranslateUi(Dialog)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), self.ok)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), Dialog.reject)
+
+        self.buttonBox.accepted.connect(self.ok)
+        self.buttonBox.rejected.connect(Dialog.reject)
+
         QtCore.QMetaObject.connectSlotsByName(Dialog)
         
         self.tbIn.clicked.connect(self.findPath)

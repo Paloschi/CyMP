@@ -48,7 +48,8 @@ class Controller(AbstractController.Controller):
         paramsIN["statistics"] = self.statistical_list
 
         images_saida = self.function.executar(paramsIN)
-    
+
+        print("Salvando imagens")
         self.print_text("Salvando imagens")
         
         if self.funcao_cancelada(): 
@@ -94,6 +95,6 @@ class Controller(AbstractController.Controller):
         return True
     
     def parametros_teste(self):
-            self.ui.leInFolder.setText("C:\\Users\\Paloschi\\Desktop\\teste\\")
-            self.ui.leOutFolder.setText("C:\\Users\\Paloschi\\Desktop\\")
+            self.ui.leInFolder.setText("D:\\Agririsk\\Coamo_FAO_estimation\\Ya_Cc0.2795")
+            self.ui.leOutFolder.setText("D:\\Agririsk\\Coamo_FAO_estimation")
     

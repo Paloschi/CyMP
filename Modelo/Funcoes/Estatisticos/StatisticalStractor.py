@@ -33,7 +33,9 @@ class SpectreStatisticalStractor(AbstractFunction):
 
 
         images_super = self.paramentrosIN_carregados["images"]
-        self.console(u"Número de imagens para ler: " + str(len(images_super)))
+
+        n_images = len(images_super)
+        self.console(u"Número de imagens para ler: " + str(n_images))
         #nullValue = self.paramentrosIN_carregados["null_value"]
         statistics = self.paramentrosIN_carregados["statistics"]
         
@@ -50,97 +52,85 @@ class SpectreStatisticalStractor(AbstractFunction):
 
         imagem_referencia = images_super[0].loadRasterData()
         n_linhas = len(imagem_referencia)
-        n_colunas = len(imagem_referencia[0])     
-                
-        for img in images_super:
-            img = img.loadRasterData()
-            if len(img) != n_linhas or len(img[0]) != n_colunas:
-                raise IndexError("Erro - As imagens precisam ter o mesmo número de linhas e colunas")
-                
-        
+        n_colunas = len(imagem_referencia[0])
+
+        self.console(u"Tamanho das imagens")
+        self.console(u"Numero de linhas: " + str(n_linhas))
+        self.console(u"Numero de colunas: " + str(n_colunas))
+
         imagem_referencia = np.zeros((n_linhas, n_colunas))
+
+
         
-        if doMedia : imagem_media = array(imagem_referencia).astype(dtype="float32")
+        if doMedia or doCV: imagem_media = array(imagem_referencia).astype(dtype="float32")
         if doCV : imagem_cv = array(imagem_referencia).astype(dtype="float32")
-        if doSD : imagem_sd = array(imagem_referencia)#.astype(dtype="int16")
-        if doSoma : imagem_soma = array(imagem_referencia).astype(dtype="float32")
-        if doMin : imagem_min = array(imagem_referencia).astype(dtype="float32")
-        if doMax : imagem_max = array(imagem_referencia).astype(dtype="float32")
-        if doMediana : imagem_mediana = array(imagem_referencia)#.astype(dtype="int16")
+        if doSD or doCV : imagem_sd = array(imagem_referencia).astype(dtype="float32")
+        if doSoma or doMedia or doCV : imagem_soma = array(imagem_referencia).astype(dtype="float32")
+        if doMin or doAmplitude: imagem_min = array(imagem_referencia).astype(dtype="float32")
+        if doMax or doAmplitude: imagem_max = array(imagem_referencia).astype(dtype="float32")
+        if doMediana : imagem_mediana = array(imagem_referencia).astype(dtype="float32")
         if doAmplitude : imagem_amplitude = array(imagem_referencia).astype(dtype="float32")
         
         self.print_text(u"Processando:")
-        
-        if doSoma :
-            n_imagens = len(images_super)
-            self.print_text(u"Somando Imagens:") 
-            progress( 0.0)
-            for i in range(n_imagens-1):
+        print(doMedia)
+        if (doSoma or doMedia or doCV):
+            self.print_text(u"Somando Imagens:")
+            for i in range(n_images-1):
                 imagem_soma += images_super[i+1].loadRasterData()   
-                self.setProgresso(i, n_imagens) 
-        
-        #progress( 0.0)
-        
-        if doMedia or doCV or doSD or  doMin or doMax or doMediana or doAmplitude:
-            images = images_super.loadListRasterData() 
-        
+                self.setProgresso(i, n_images)
+                if threading.currentThread().stopped(): return
+
+        if doMedia:
+            imagem_media = imagem_soma / n_images
+
+        self.print_text(u"Calculando as outras estatísticas:")
+
+        if doCV or doSD or doMin or doMax or doMediana or doAmplitude:
+
+            self.print_text(u"Carregando imagens na memória...")
+            self.setProgresso(0, 1)
+            images = images_super.loadListRasterData()
+
             for i_linha in range(0, n_linhas):
-                
-                #status = i_linha+1/float(n_linhas)
-                #progress(float(i_linha/float(n_linhas)))
+
                 self.progresso = (float(i_linha/float(n_linhas)))*100
-    
+                if threading.currentThread().stopped(): return
+
                 for i_coluna in range(0, n_colunas):
                         line = list()
-                        if threading.currentThread().stopped() : return 
-             
+
                         for img in images:
                             line.append(img[i_linha][i_coluna])
-                        
-                        mean = None
-                        sd = None
-                        
-                        if doCV : 
-                            mean = np.nanmean(line)
-                            sd = np.nanstd(line) 
-                            divisor = mean * 100
-                            if divisor != 0 : cv = sd / mean * 100 
-                            else : cv = 0
-                            imagem_cv[i_linha][i_coluna] = cv
-                        
-                        if doMedia : 
-                            if mean == None : mean = np.nanmean(line) # calcula a média
-                            imagem_media[i_linha][i_coluna] = mean
-                        
-                        if doSD : 
-                            if sd == None : sd = np.nanstd(line)  # calcula o desvio padrão
+
+                        if doSD or doCV:
+                            sd = np.nanstd(line)  # calcula o desvio padrão
                             imagem_sd[i_linha][i_coluna] = sd
-                            
-                        #if doSoma : 
-                            #soma = np.nansum(line)
-                            #imagem_soma[i_linha][i_coluna] = soma
-                        
-                        minimo = None 
-                        if doMin : 
+
+                        if doCV :
+                            mean = imagem_media[i_linha][i_coluna]
+                            divisor = mean * 100
+                            if divisor != 0: cv = sd / mean * 100
+                            else: cv = 0
+                            imagem_cv[i_linha][i_coluna] = cv
+
+                        if doMin or doAmplitude:
                             minimo = np.nanmin(line)
                             imagem_min[i_linha][i_coluna] = minimo
-                        
-                        maximo = None
-                        if doMax : 
+
+                        if doMax or doAmplitude:
                             maximo = np.nanmax(line)
                             imagem_max[i_linha][i_coluna] = maximo
-                        
+
                         if doMediana :
                             mediana = np.nanmedian(line)
                             imagem_mediana[i_linha][i_coluna] = mediana
-                        
+
                         if doAmplitude :
-                            if minimo == None : minimo = np.nanmin(line)
-                            if maximo == None : maximo = np.nanmax(line)
                             amplitude = maximo - minimo
                             imagem_amplitude[i_linha][i_coluna] = amplitude
-       
-        
+
+
+        print(u"Arrumando imagens de saida")
         self.print_text(u"Arrumando imagens de saida")
         
         saida = SerialFile ()
@@ -161,11 +151,22 @@ class SpectreStatisticalStractor(AbstractFunction):
             imagem_sd.metadata = saida.metadata
             imagem_sd.file_name = "imagem_desvio_padrao"
             saida.append(imagem_sd)
-        if doSoma : 
+        if doSoma :
+            i=0
+            i+=1
+            print(i)
             imagem_soma = RasterFile(data = imagem_soma)
+            i += 1
+            print(i)
             imagem_soma.metadata = saida.metadata
+            i += 1
+            print(i)
             imagem_soma.file_name = "imagem_soma"
+            i += 1
+            print(i)
             saida.append(imagem_soma)
+            i += 1
+            print(i)
         if doMin : 
             imagem_min = RasterFile(data = imagem_min)
             imagem_min.metadata = saida.metadata

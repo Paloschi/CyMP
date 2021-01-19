@@ -39,7 +39,7 @@ class Dr(AbstractFunction):
         
         
         #Etc_factor = float(serie_Etc.mutiply_factor)
-        #PPP_factor = float(serie_PPP.mutiply_factor)
+        PPP_factor = float(serie_PPP.mutiply_factor)
         #TAW_factor = float(serie_TAW.mutiply_factor)
         #Dr_factor = float(serie_Dr.mutiply_factor)
         
@@ -65,7 +65,7 @@ class Dr(AbstractFunction):
             ppp = serie_PPP[i]
             data_ppp = serie_PPP.getDate_time(file=ppp)
             ppp_ = numpy.array(ppp.loadRasterData()).astype(dtype="float32")
-            #ppp_ *= PPP_factor
+            ppp_ *= PPP_factor
             
             etc = self.procura_img_por_data(serie_Etc, data_ppp)
             if etc is None :
@@ -84,7 +84,7 @@ class Dr(AbstractFunction):
                 taw_ = CAD_  
                 
             
-            if Dr_anterior != None:
+            if Dr_anterior is not None:
                 ppp_ -= Dr_anterior
             
             Dr_ = etc_ - ppp_
@@ -94,7 +94,15 @@ class Dr(AbstractFunction):
                 #"isso aqui em baixo é pro balanço idrico nao ser menor que 0 ou seja o Dr nao pode ser maior q 0"
                 Dr_[i][Dr_[i] > 0] = 0 
                 
-            Dr_anterior = numpy.copy(Dr_)  
+            Dr_anterior = numpy.copy(Dr_)
+
+            print("Valor de ppp_:" + str(ppp_[970][483]))
+            print("Valor de etc_:" + str(etc_[970][483]))
+            print("Valor de Dr_:" + str(Dr_[970][483]))
+            print("Valor de taw_:" + str(taw_[970][483]))
+            print("Valor de Dr_anterior:" + str(Dr_anterior[970][483]))
+            print("------------------------------")
+
             #Dr_ = numpy.round(Dr_, 2)   
             #Dr_ *= Dr_factor
             

@@ -10,6 +10,7 @@ import numpy as np
 from Modelo.beans import RasterFile, SERIAL_FILE_DATA
 from Modelo.beans.SerialFileData import  SerialTemporalFiles
 import gdal
+from scipy.constants import convert_temperature
 progress = gdal.TermProgress_nocb
 import time
 import threading
@@ -55,6 +56,9 @@ class PPR(AbstractFunction):
             
             #start = time.time()
             T_ = np.array(T.loadRasterData()).astype(dtype="float32")
+
+            T_ = convert_temperature(T_, 'Kelvin', 'Celsius')
+
             data_T = serie_T.getDate_time(file=T)
             dj = data_T.timetuple().tm_yday # Dia Juliano
             
@@ -110,6 +114,13 @@ class PPR(AbstractFunction):
             PPR.saveRasterData()
             PPR.data = None
             serie_PPR.append(PPR)
+
+            print("Valor de PPBn:" + str(PPBn[970][483]))
+            print("Valor de PPBc:" + str(PPBc[970][483]))
+            print("Valor de PPBp:" + str(PPBp[970][483]))
+            print("Valor de T_:" + str(T_[970][483]))
+            print("Valor de PPR_:" + str(PPR_[970][483]))
+            print("------------------------------")
             
             ii +=1
             #end = time.time()

@@ -126,7 +126,9 @@ class Ui_DlgEstatisticasEspectrais(QtWidgets.QDialog):
         self.bbOkCancel.accepted.connect(self.controller.action_ok)
         self.bbOkCancel.rejected.connect(self.controller.action_cancel)
 
-        #QtCore.QMetaObject.connectSlotsByName(self)
+        QtCore.QMetaObject.connectSlotsByName(self)
+
+        self.controller.parametros_teste()
 
     def retranslateUi(self, DlgEstatisticasEspectrais):
         print("teste retranslate")

@@ -128,16 +128,20 @@ class Controller(object):
             textToWrite.setText (str(fname[0]))
     
     def getSerieTemporal(self, serieTemporal=None):
-        
-        dlgSerieTemporal = DlgNovaSerieTemporal.Ui_Dialog(self.ui)
-        dlgSerieTemporal.setupUi(dlgSerieTemporal) 
-        dlgSerieTemporal.setWindowModality(QtCore.Qt.WindowModal)   
-        
-        dlgSerieTemporal.setForm(serieTemporal)
-        
-        dlgSerieTemporal.exec_()
-         
-        serie_temporal = dlgSerieTemporal.SerieTemporal
+
+        try:
+            dlgSerieTemporal = DlgNovaSerieTemporal.Ui_Dialog(self.ui)
+            dlgSerieTemporal.setupUi(dlgSerieTemporal)
+            dlgSerieTemporal.setWindowModality(QtCore.Qt.WindowModal)
+
+            dlgSerieTemporal.setForm(serieTemporal)
+
+            dlgSerieTemporal.exec_()
+
+            serie_temporal = dlgSerieTemporal.SerieTemporal
+        except Exception as e:
+            print(e)
+
         return serie_temporal       
         
     def message(self, text):

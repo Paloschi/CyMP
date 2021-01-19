@@ -32,8 +32,8 @@ class SerialFile(ABData, list):
     def __init__(self, **params):
         super(SerialFile, self).__init__(SERIAL_FILE_DATA)
         
-        if params.get("root_filter") != None : self.root_filter = params.get("root_filter")
-        if params.get("root_path") != None : self.root_path = params.get("root_path")
+        if params.get("root_filter") is not None : self.root_filter = params.get("root_filter")
+        if params.get("root_path") is not None : self.root_path = params.get("root_path")
     
     @property
     def root_path(self):
@@ -48,8 +48,8 @@ class SerialFile(ABData, list):
             Abre uma lista de mapas localizados em uma determinada pasta
         ''' 
         
-        if rootDir != None : self.root_path = rootDir
-        if filtro != None : self.root_filter = filtro
+        if rootDir is not None : self.root_path = rootDir
+        if filtro is not None : self.root_filter = filtro
         
         print("endereco das imagens: ", self.root_path)
         
@@ -59,7 +59,7 @@ class SerialFile(ABData, list):
         
         for f in arquivos:
             f = RasterFile(file_full_path = f)  
-            if(self.root_filter==None):
+            if(self.root_filter is None):
                 self.append(f)
             else:
                 if( f.file_ext in self.root_filter):
@@ -85,7 +85,7 @@ class SerialFile(ABData, list):
         
         for f in self:
             file = f.loadRasterData()
-            if (file==None):
+            if (file is None):
                 print ("Não foi possivel carregar a imagem", f.file_full_path)
                 return None
             else:
@@ -112,7 +112,7 @@ class SerialFile(ABData, list):
         if len(self) == 0:
             print ("não há nenhuma imagem a ser salva")
             
-        if root_path != None : self.root_path = root_path
+        if root_path is not None : self.root_path = root_path
         
         
         n_images =  len(self)
@@ -124,16 +124,16 @@ class SerialFile(ABData, list):
             
             image = self[i]
             
-            if sufixo != None : image.file_name = image.file_name + sufixo
-            if ext != None : image.file_ext = ext
-            if root_path != None : image.file_path = root_path
+            if sufixo is not None : image.file_name = image.file_name + sufixo
+            if ext is not None : image.file_ext = ext
+            if root_path is not None : image.file_path = root_path
             
             image.saveRasterData(image.data, metadata= self.metadata)
             progress( i+1 / float(n_images)) 
 
     def saveListLike1Image(self, name=None, images_bands_matrix=None, root_path=None, ext=None):
  
-        if images_bands_matrix != None : 
+        if images_bands_matrix is not None :
             self.metadata.update(dtype=images_bands_matrix.dtype) 
             n_images =  len(images_bands_matrix)
 
@@ -141,9 +141,9 @@ class SerialFile(ABData, list):
             images_bands_matrix = self.loadListByRoot()
             n_images =  len(self)
             
-        if root_path != None : self.root_path = root_path
-        if ext == None : ext = self[0].file_ext
-        if name != None : self.name = name
+        if root_path is not None : self.root_path = root_path
+        if ext is None : ext = self[0].file_ext
+        if name is not None : self.name = name
         
         self[0].loadRasterData()
         
@@ -197,13 +197,13 @@ class SerialTemporalFiles(SerialFile):
         '''
         
         
-        if file==None : file = self[i]
+        if file is None : file = self[i]
         
         only_date = file.file_name
 
-        if self.prefixo!=None : 
+        if self.prefixo is not None :
             only_date = only_date.replace(self.prefixo,"")
-        if self.sufixo!=None : only_date = only_date.replace(self.sufixo, "")  
+        if self.sufixo is not None : only_date = only_date.replace(self.sufixo, "")
         date = datetime.datetime.strptime(only_date, self.date_mask) 
         
         return date

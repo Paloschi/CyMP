@@ -47,13 +47,13 @@ class Etc(AbstractFunction):
         serie_ETc = self.paramentrosIN_carregados["ETc"] # pucha lista
         
         #Kc_factor = float(serie_Kc.mutiply_factor)
-        #ET0_factor = float(serie_ET0.mutiply_factor)
+        ET0_factor = float(serie_ET0.mutiply_factor)
         #ETC_factor = float(serie_ETc.mutiply_factor)
         
         n_et0 = len(serie_ET0)
         
-        #self.console(str(n_et0) + " imagens de ET0 encontradas.")
-        #self.console(str(len(serie_Kc)) + " imagens de Kc encontradas.")
+        self.console(str(n_et0) + " imagens de ET0 encontradas.")
+        self.console(str(len(serie_Kc)) + " imagens de Kc encontradas.")
         
         self.console(u"Gerando imagens de saída...")
 
@@ -72,6 +72,8 @@ class Etc(AbstractFunction):
 
             ET0 = serie_ET0[i_ET0]
             data_ET0 = serie_ET0.getDate_time(file=ET0)
+
+
             kc = None
             
             data = None
@@ -87,10 +89,10 @@ class Etc(AbstractFunction):
             
             ET0_ = numpy.array(ET0.loadRasterData()).astype(dtype="float32") #* ET0_factor
             ET0_[ET0_==ET0.metadata["nodata"]] = 0 
-            #ET0_ = ET0_ * ET0_factor # Problemas com o factor
+            ET0_ = ET0_ * ET0_factor # Problemas com o factor
             
-            if kc == None: # caso não encontre nenhum kc correspondente a mesma data
-                #self.console(u"Kc para o dia" + str(data))
+            if kc is None: # caso não encontre nenhum kc correspondente a mesma data
+                self.console(u"Sem Kc para o dia" + str(data))
                 ETc_ = ET0_
                 #ETc_ *= ETC_factor # Problemas com o factor
                 #ETc_ = self.compactar(ETc_)
@@ -99,12 +101,21 @@ class Etc(AbstractFunction):
             else: 
                     
                 Kc_ = numpy.array(kc.loadRasterData()).astype(dtype="float32")
+
+
                 #Kc_ *= Kc_factor # Problemas com o factor
                 ETc_ = Kc_ * ET0_
+
+                print("Shape kc:", Kc_.shape)
+                print("Shape ET0:", ETc_.shape)
                 #ETc_ *= ETC_factor # Problemas com o factor
                 #ETc_ = self.compactar(ETc_) # Problemas com o factor
                 etc.data = ETc_
-            
+
+                print("Valor de Kc_:" + str(Kc_[970][483]))
+                print("Valor de ET0_:" + str(ET0_[970][483]))
+                print("Valor de ETc_:" + str(ETc_[970][483]))
+                print("------------------------------")
             etc.metadata = ET0.metadata
             etc.metadata.update(nodata=0)
             etc.metadata.update(dtype = etc.data.dtype)
@@ -141,19 +152,19 @@ class Etc(AbstractFunction):
 if __name__ == '__main__':
     from Modelo.beans import SerialTemporalFiles
     
-    serie_Kc = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\Kc_distribuido\\soltas")
-    serie_Kc.mutiply_factor = 0.01
+    serie_Kc = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\Kc_2016_2017")
+    serie_Kc.mutiply_factor = 1
     serie_Kc.date_mask = "%Y-%m-%d"
     
-    serie_ET0 = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Tratamento de dados\\ECMWF\\8-Diario\\EVPT 07-11 _ 05-12")
-    serie_ET0.mutiply_factor = 0.01
-    serie_ET0.sufixo = "evpt_diario_"
+    serie_ET0 = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\ETo")
+    serie_ET0.mutiply_factor = -1
+    serie_ET0.sufixo = "ET0_"
     serie_ET0.date_mask = "%Y-%m-%d"
     
-    serie_ETC = SerialTemporalFiles(root_path="E:\\Gafanhoto WorkSpace\\Soja11_12\\Indices_BH\\ETc\\soltas")
+    serie_ETC = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\ETc")
     serie_ETC.mutiply_factor = 100
     serie_ETC.out_datatype = "int16"
-    serie_ETC.sufixo = "ETc_"
+    #serie_ETC.sufixo = "ETc_"
     serie_ETC.date_mask = "%Y-%m-%d"
     
     paramIN = dict()

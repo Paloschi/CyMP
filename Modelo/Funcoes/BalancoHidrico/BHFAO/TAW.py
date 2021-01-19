@@ -79,7 +79,7 @@ class TAW(AbstractFunction):
             #print ("Valor CAD: " + str(CAD_[0][0]))
             #print ("Valor p: " + str(p_valor))
             
-            taw_ = zr_ * CAD_ * p_valor
+            taw_ = (zr_ * CAD_) * p_valor
             
             #print ("Valor TAW: " + str(taw_[0][0]))
             

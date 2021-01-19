@@ -26,7 +26,7 @@ class RasterFile(FileData):
         
     def loadRasterData(self, isCube = False):
         
-        if self.data != None : return self.data
+        if self.data is not None : return self.data
         
         try :
         
@@ -60,10 +60,10 @@ class RasterFile(FileData):
             #Salva imagem em uma determinada pasta
         '''
         
-        if file_path != None : self.file_path = file_path
-        if ext != None : self.file_ext = ext
-        if band_matrix != None : self.data = band_matrix
-        if metadata != None : self.metadata = metadata
+        if file_path is not None: self.file_path = file_path
+        if ext is not None: self.file_ext = ext
+        if band_matrix is not None: self.data = band_matrix
+        if metadata is not None: self.metadata = metadata
         
         try: 
 
@@ -74,8 +74,8 @@ class RasterFile(FileData):
             
             if self.file_ext == "tif" : self.metadata.update(driver="GTiff") 
             elif self.file_ext == "img" : self.metadata.update(driver="HFA") 
-            self.metadata.update(dtype=self.data.dtype, compress='lzw')
-        
+            self.metadata.update(dtype=rasterio.float32, compress='lzw')
+
 
             
             #print(metadata)
@@ -92,8 +92,9 @@ class RasterFile(FileData):
                 #print nome
                 
             #print self.file_full_path
-            
-            with rasterio.open(path = str(self.file_full_path), mode = 'w', **self.metadata) as dst:
+            #print(str(self.file_full_path))
+            #print(self.metadata)
+            with rasterio.open(self.file_full_path, 'w', **self.metadata) as dst:
                 try:
                     dst.write(self.data, 1)
                 except ValueError as e:
@@ -119,17 +120,17 @@ class RasterFile(FileData):
            
         data = TableData()
         
-        print("Obtendo informacao da imagem")
+        #print("Obtendo informacao da imagem")
                
         info = subprocess.check_output(['gdalinfo', '-nogcp','-nomd', '-norat', '-noct', str(self.file_full_path)])
         info = str(info)
         # transforma a string em dicionario
-        print("antes")
+        #print("antes")
         # try:
         #     info = {k.strip():v for k,v in re.findall(r'([^:]+):\s*(\d+)', info)}
         # except Exception as e:
         #     print (e)
-        print("depois")
+        #print("depois")
         # recupera numero de linhas e colunas
         
         index_init = info.index(self.caption_nx_ny_name)
@@ -185,6 +186,6 @@ class RasterFile(FileData):
         except : 
             data['NoData'] = None
             
-        print("Informacoes da imagem lidas")
+        #print("Informacoes da imagem lidas")
        
         return data 

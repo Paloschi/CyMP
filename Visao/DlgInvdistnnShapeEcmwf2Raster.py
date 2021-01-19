@@ -36,7 +36,7 @@ class UI_DlgInterpoladorShapeEcmwf(QtWidgets.QDialog):
         self.leShapePath = QtWidgets.QLineEdit(Form)
         self.leShapePath.setGeometry(QtCore.QRect(10, 40, 301, 20))
         self.leShapePath.setObjectName(_fromUtf8("leShapePath"))
-        self.cbAtribute = QtGui.QComboBox(Form)
+        self.cbAtribute = QtWidgets.QComboBox(Form)
         self.cbAtribute.setEnabled(False)
         self.cbAtribute.setGeometry(QtCore.QRect(10, 90, 331, 22))
         self.cbAtribute.setObjectName(_fromUtf8("cbAtribute"))

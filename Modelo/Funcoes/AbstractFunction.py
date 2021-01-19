@@ -104,20 +104,22 @@ class Function(ABData):
     def executar(self, parametros):
         config = configparser.RawConfigParser()
         config.read('workspace.properties')
-        DebugMode=config.get('Config', 'DebugMode')
+        #DebugMode=config.get('Config', 'DebugMode')
+        DebugMode = "True"
 
         if DebugMode == "True" :
             
-            print ("Esperando console carregar")
-            while self.console is None : pass
-            print ("Console carregado")
+            #print ("Esperando console carregar")
+            #while self.console is None : pass
+            #print ("Console carregado")
     
             try:
                 self.data = parametros
                 return self.data
             except Exception as e:
-                self.console(str(e))
-                self.console(u"Função interrompida")
+                print(e)
+                #self.console(str(e))
+                #self.console(u"Função interrompida")
                 self.setProgresso(100, 100)
                 threading.currentThread().stop()
                 return None

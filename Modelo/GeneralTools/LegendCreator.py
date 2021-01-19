@@ -34,9 +34,9 @@ serie_img.loadListByRoot()
 for i in range(len(serie_img)):
     tempo_somado = tempo + duracao
     data = serie_img.getDate_time(i)
-    print i + 1
-    print tempo, "-->", tempo_somado
-    print dt.strftime(data,"%d/%m/%Y")
+    print (i + 1)
+    print (tempo, "-->", tempo_somado)
+    print (dt.strftime(data,"%d/%m/%Y"))
     tempo = tempo_somado
-    print ""
+    print ("")
     
