@@ -76,7 +76,13 @@ class SpectreStatisticalStractor(AbstractFunction):
         if (doSoma or doMedia or doCV):
             self.print_text(u"Somando Imagens:")
             for i in range(n_images-1):
-                imagem_soma += images_super[i+1].loadRasterData()   
+                loaded = images_super[i + 1].loadRasterData()\
+
+                loaded = np.nan_to_num(loaded, 0)
+
+                imagem_soma = imagem_soma + loaded
+               # print(imagem_soma[782][760], loaded[782][760])
+
                 self.setProgresso(i, n_images)
                 if threading.currentThread().stopped(): return
 

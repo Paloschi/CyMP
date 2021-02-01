@@ -50,10 +50,10 @@ class Etc(AbstractFunction):
         ET0_factor = float(serie_ET0.mutiply_factor)
         #ETC_factor = float(serie_ETc.mutiply_factor)
         
-        n_et0 = len(serie_ET0)
+        n_Kc = len(serie_Kc)
         
-        self.console(str(n_et0) + " imagens de ET0 encontradas.")
-        self.console(str(len(serie_Kc)) + " imagens de Kc encontradas.")
+        self.console(str(n_Kc) + " imagens de Kc encontradas.")
+        self.console(str(len(serie_ET0)) + " imagens de ETo encontradas.")
         
         self.console(u"Gerando imagens de saída...")
 
@@ -64,32 +64,42 @@ class Etc(AbstractFunction):
             
             O calculo de Etc é Etc = Et0 * Kc
         '''
+        i_ETo = None
 
-        for i_ET0 in range(n_et0):
+        for i_Kc in range(n_Kc):
             
-            if threading.currentThread().stopped()  : return 
-            self.setProgresso(i_ET0, n_et0)
+            if threading.currentThread().stopped()  : return
 
-            ET0 = serie_ET0[i_ET0]
-            data_ET0 = serie_ET0.getDate_time(file=ET0)
+            self.setProgresso(i_Kc, n_Kc)
 
+            kc = serie_Kc[i_Kc]
 
-            kc = None
-            
-            data = None
-            
-            for i_Kc in range(len(serie_Kc)):
-                data = serie_Kc.getDate_time(file=serie_Kc[i_Kc])
-                if data == data_ET0:
-                    kc = serie_Kc[i_Kc]
-                    break
+            data_kc = serie_Kc.getDate_time(file=kc)
+
+            ET0 = None
+            data_ETo = None
+            if i_ETo is not None:
+                i_ETo += 1
+                data_ETo = serie_ET0.getDate_time(file=serie_ET0[i_ETo])
+
+            if data_ETo is not None and data_ETo == data_kc: ET0 = serie_ET0[i_ETo]
+            else:
+                for i_ETo in range(0, len(serie_ET0)):
+                    data_ETo = serie_ET0.getDate_time(file=serie_ET0[i_ETo])
+                    if data_ETo == data_kc:
+                        ET0 = serie_ET0[i_ETo]
+                        break
+
             
             etc = RasterFile(file_path=serie_ETc.root_path, ext="tif")
-            etc = serie_ETc.setDate_time(data_ET0, file=etc)
+            etc = serie_ETc.setDate_time(data_kc, file=etc)
             
             ET0_ = numpy.array(ET0.loadRasterData()).astype(dtype="float32") #* ET0_factor
+
+            # ET0_ = (ET0_ * 100) * -1 ## comentar se for pra calcular ETa
+
             ET0_[ET0_==ET0.metadata["nodata"]] = 0 
-            ET0_ = ET0_ * ET0_factor # Problemas com o factor
+            #ET0_ = ET0_ * ET0_factor # Problemas com o factor
             
             if kc is None: # caso não encontre nenhum kc correspondente a mesma data
                 self.console(u"Sem Kc para o dia" + str(data))
@@ -97,9 +107,9 @@ class Etc(AbstractFunction):
                 #ETc_ *= ETC_factor # Problemas com o factor
                 #ETc_ = self.compactar(ETc_)
                 etc.data = ETc_
-                
-            else: 
-                    
+
+            else:
+
                 Kc_ = numpy.array(kc.loadRasterData()).astype(dtype="float32")
 
 
@@ -112,9 +122,9 @@ class Etc(AbstractFunction):
                 #ETc_ = self.compactar(ETc_) # Problemas com o factor
                 etc.data = ETc_
 
-                print("Valor de Kc_:" + str(Kc_[970][483]))
-                print("Valor de ET0_:" + str(ET0_[970][483]))
-                print("Valor de ETc_:" + str(ETc_[970][483]))
+                print("Valor de Kc/ETc:" + str(Kc_[970][483]))
+                print("Valor de ETc/ETa:" + str(ETc_[970][483]))
+                print("Valor de ET0/Ks:" + str(ET0_[970][483]))
                 print("------------------------------")
             etc.metadata = ET0.metadata
             etc.metadata.update(nodata=0)

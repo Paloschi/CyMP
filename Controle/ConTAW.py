@@ -79,9 +79,9 @@ class Controller(AbstractController.Controller):
 
     def parametros_teste(self):
         
-        self.ui.txImgCAD.setText("Dados\\1-Tratamento de dados\\1-Capacidade de Armazenamento (CAD)\\CAD.tif")
+        self.ui.txImgCAD.setText("D:\\Agririsk\\Coamo_FAO_estimation\\CAD-Zona-Soja_mm_250m.tif")
         
-        root_path = "Dados\\1-Tratamento de dados\\6-Zr"
+        root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\Zr"
         self.serie_Zr = SerialTemporalFiles()
         self.serie_Zr.root_path = root_path
         self.serie_Zr.prefixo = ""

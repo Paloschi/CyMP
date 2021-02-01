@@ -53,6 +53,8 @@ class Ya(AbstractFunction):
         
         self.console(u"Gerando série de imagens de Ya..")
 
+        eta_index, etc_index, yx_index = None, None, None
+
         for i in range(n_img):
             
             if threading.currentThread().stopped()  : return 
@@ -66,9 +68,10 @@ class Ya(AbstractFunction):
             #etc_ = self.LoadImgByDate(serie_etc, data_ref, factor_etc)
             #yx_ = self.LoadImgByDate(serie_yx, data_ref, factor_yx)
             
-            eta_ = self.LoadImgByDate(serie_eta, data_ref)
-            etc_ = self.LoadImgByDate(serie_etc, data_ref)
-            yx_ = self.LoadImgByDate(serie_yx, data_ref)
+            eta, eta_, eta_index = serie_eta.getByDate(data_ref, eta_index, True)
+            etc, etc_, etc_index = serie_etc.getByDate(data_ref, etc_index, True)
+            yx, yx_, yx_index = serie_yx.getByDate(data_ref, yx_index, True)
+
             
             p1= ky * (1-eta_/etc_)
             ya_ = (1-p1) * yx_
@@ -76,10 +79,10 @@ class Ya(AbstractFunction):
             for i in range(len(ya_)): 
                 ya_[i][kc_[i]==0] = 0
 
-            print("Valor de yx_:" + str(yx_[970][483]))
-            print("Valor de eta_:" + str(eta_[970][483]))
-            print("Valor de etc_:" + str(etc_[970][483]))
-            print("Valor de ya_:" + str(ya_[970][483]))
+            print("Valor de yx_:" + str(yx_[782][760]))
+            print("Valor de eta_:" + str(eta_[782][760]))
+            print("Valor de etc_:" + str(etc_[782][760]))
+            print("Valor de ya_:" + str(ya_[782][760]))
             print("------------------------------")
 
             #ya_ = numpy.round(ya_, 3)   

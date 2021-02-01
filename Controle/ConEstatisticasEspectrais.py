@@ -95,6 +95,9 @@ class Controller(AbstractController.Controller):
         return True
     
     def parametros_teste(self):
-            self.ui.leInFolder.setText("D:\\Agririsk\\Coamo_FAO_estimation\\Ya_Cc0.2795")
-            self.ui.leOutFolder.setText("D:\\Agririsk\\Coamo_FAO_estimation")
+            #self.ui.leInFolder.setText("D:\\Agririsk\\Coamo_FAO_estimation\\Ya")
+            #self.ui.leOutFolder.setText("D:\\Agririsk\\Coamo_FAO_estimation")
+
+            self.ui.leInFolder.setText("D:\\ClimatcDataECMWF_ERA5LAND\\ECMWF_ERA5LAND\\3-tp\\Teste soma 9km")
+            self.ui.leOutFolder.setText("D:\\ClimatcDataECMWF_ERA5LAND\\ECMWF_ERA5LAND\\3-tp")
     

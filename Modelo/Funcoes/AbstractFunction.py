@@ -159,12 +159,22 @@ class Function(ABData):
         
         return imagem_
 
-    def procura_img_por_data(self, serie, data):
+    def procura_img_por_data(self, serie, data, predictor=None):
+
         img = None
-        for i in range(len(serie)):
-            data_i = serie.getDate_time(file=serie[i])
+        index = predictor
+
+        if data is not None and index is not None:
+            index += 1
+            data_i = serie.getDate_time(file=serie[index])
             if data_i == data:
-                img = serie[i]
-                break  
-        return img
-        
+                img = serie[index]
+
+        if img is None:
+            for index in range(0, len(serie)):
+                data_i = serie.getDate_time(file=serie[index])
+                if data_i == data:
+                    img = serie[index]
+                    break
+
+        return img, index

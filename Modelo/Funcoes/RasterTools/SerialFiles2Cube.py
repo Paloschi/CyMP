@@ -5,10 +5,10 @@ Created on 04/12/2015
 '''
 from Modelo.beans.SerialFileData import SerialFile
 
-nome_cubo = "Cubo_Ks_cascavel_soja_2011_12"
+nome_cubo = "ETo_9km_daily"
 
 if __name__ == '__main__':
     
-    imagens = SerialFile(root_path="C:\\CyMP Workspace\\Gafanhoto\\Dados\\2-Balanco Hidrico\\5-Ks")
-    imagens.saveListLike1Image(nome_cubo)
+    imagens = SerialFile(root_path="D:\\ClimatcDataECMWF_ERA5LAND\\ECMWF_ERA5LAND\\1-ETo\\2-ETo_9km_daily")
+    imagens.saveListLike1Image(name=nome_cubo, root_path="D:\\ClimatcDataECMWF_ERA5LAND\\ECMWF_ERA5LAND\\1-ETo")
     

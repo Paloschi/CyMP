@@ -90,11 +90,11 @@ class Controller(AbstractController.Controller):
         self.serie_ETc.date_mask = "%Y-%m-%d"     
         self.serie_ETc.mutiply_factor = 1
         
-        root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\rain"
+        root_path = "D:\\ClimatcDataECMWF_ERA5LAND\\ECMWF_ERA5LAND\\3-tp\\5-tp_250m"
         self.serie_PPP = SerialTemporalFiles()
         self.serie_PPP.root_path = root_path
         self.serie_PPP.prefixo = ""
-        self.serie_PPP.mutiply_factor = 1000
+        self.serie_PPP.mutiply_factor = 100
         self.serie_PPP.date_mask = "%Y-%m-%d"
         
         root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\TAW"

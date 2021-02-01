@@ -88,6 +88,7 @@ class Controller(AbstractController.Controller):
         return True
 
     def parametros_teste(self):
+        # root_path = "D:\\ClimatcDataECMWF_ERA5LAND\\ECMWF_ERA5LAND\\1-ETo\\5-ETo_250m"
         root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\Ks"
         self.serie_ET0 = SerialTemporalFiles()
         self.serie_ET0.root_path = root_path
@@ -95,6 +96,7 @@ class Controller(AbstractController.Controller):
         self.serie_ET0.mutiply_factor = 1
         self.serie_ET0.date_mask = "%Y-%m-%d"
         
+        # root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\Kc"
         root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\ETc"
         self.serie_Kc = SerialTemporalFiles()
         self.serie_Kc.root_path = root_path
@@ -102,6 +104,7 @@ class Controller(AbstractController.Controller):
         self.serie_Kc.mutiply_factor = 1
         self.serie_Kc.date_mask = "%Y-%m-%d"
         
+        # root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\ETc"
         root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\ETa"
         self.serie_ETc = SerialTemporalFiles()
         self.serie_ETc.root_path = root_path

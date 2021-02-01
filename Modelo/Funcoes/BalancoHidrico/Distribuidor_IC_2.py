@@ -188,7 +188,7 @@ class DistribuidorKC_(AbstractFunction):
             
             if threading.currentThread().stopped()  : return
 
-            self.console("Configurando threads...")
+            #self.console("Configurando threads...")
 
             p = Process(target=distribuir_kc, args=(dia,     
                                                         semeadura_, colheita_,
@@ -198,12 +198,15 @@ class DistribuidorKC_(AbstractFunction):
             p.daemon = True
             processos.append(p)
 
-            self.console("Iniciando threads...")
+            #self.console("Iniciando threads...")
             p.start()
             
             processadores_disponiveis -=1
+
+            print('CPUs usadas:', n_of_process - processadores_disponiveis)
                     
-            while (processadores_disponiveis == 0): 
+            while (processadores_disponiveis == 0):
+                print('Processos na lista: ', len(p))
                 for p in processos:
                     if not p.is_alive(): 
                         processadores_disponiveis += 1

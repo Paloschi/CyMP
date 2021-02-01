@@ -43,9 +43,10 @@ class Dr(AbstractFunction):
         #TAW_factor = float(serie_TAW.mutiply_factor)
         #Dr_factor = float(serie_Dr.mutiply_factor)
         
-        n_ppp = len(serie_PPP)
+        n_ETc = len(serie_Etc)
+
         
-        self.console(str(n_ppp) + u" imagens de precipitação encontradas.")
+        self.console(str(len(serie_PPP)) + u" imagens de precipitação encontradas.")
         self.console(str(len(serie_Etc)) + u" imagens de Etc encontradas.")
         self.console(str(len(serie_TAW)) + u" imagens de TAW encontradas.")
         self.console(u"Gerando balanço...")
@@ -57,51 +58,62 @@ class Dr(AbstractFunction):
         
         Dr_anterior = None
 
-        for i in range(n_ppp):
-            
+        ppp_index = None
+        taw_index = None
+
+        for i in range(n_ETc):
+
             if threading.currentThread().stopped()  : return 
-            self.setProgresso(i, n_ppp)
+            self.setProgresso(i, n_ETc)
 
-            ppp = serie_PPP[i]
-            data_ppp = serie_PPP.getDate_time(file=ppp)
-            ppp_ = numpy.array(ppp.loadRasterData()).astype(dtype="float32")
-            ppp_ *= PPP_factor
-            
-            etc = self.procura_img_por_data(serie_Etc, data_ppp)
-            if etc is None :
-                self.console(u"ERRO: não foi encontrado imagem de etc para a data: " + data_ppp.strftime('%d/%m/%Y')+ "!")
-                self.console(u"Confira as datas e as máscaras de tempo.")
-                threading.currentThread().stop()
-                return
-            etc_ = numpy.array(etc.loadRasterData()).astype(dtype="float32")
-            #etc_ *= Etc_factor
-                
-            taw = self.procura_img_por_data(serie_TAW, data_ppp)
-            if taw is not None :
-                taw_ = numpy.array(taw.loadRasterData()).astype(dtype="float32")   
-                #taw_ *= TAW_factor 
-            else :
-                taw_ = CAD_  
-                
-            
-            if Dr_anterior is not None:
-                ppp_ -= Dr_anterior
-            
-            Dr_ = etc_ - ppp_
+            ETc = serie_Etc[i]
+            ETc_data = serie_Etc.getDate_time(file=ETc)
+            etc_ = numpy.array(ETc.loadRasterData()).astype(dtype="float32")
 
-            for i in range(len(taw_)) :
-                Dr_[i][-Dr_[i] > taw_[i]] = -taw_[i][-Dr_[i] > taw_[i]]
-                #"isso aqui em baixo é pro balanço idrico nao ser menor que 0 ou seja o Dr nao pode ser maior q 0"
-                Dr_[i][Dr_[i] > 0] = 0 
-                
-            Dr_anterior = numpy.copy(Dr_)
+            ppp, ppp_index = self.procura_img_por_data(serie_PPP, ETc_data, ppp_index)
+            if ppp is not None:
+                ppp_ = numpy.array(ppp.loadRasterData()).astype(dtype="float32")
+                ppp_ = ppp_ * PPP_factor
+                ppp_ = ppp_
+            else:
+                self.console("Rain image not found for ETc date: " + str(ETc_data))
+
+            taw, taw_index = self.procura_img_por_data(serie_TAW, ETc_data, taw_index)
+
+            if taw is not None:
+                taw_ = numpy.array(taw.loadRasterData()).astype(dtype="float32")
+                #taw_ = taw_ * PPP_factor
+                taw_ = taw_
+            else:
+                self.console("TAW image not found for ETc date: " + str(ETc_data))
+                taw_[numpy.where(taw_ <= 0)] = CAD_[numpy.where(taw_ <= 0)]
+
+            if Dr_anterior is None:
+                Dr_anterior = -CAD_
 
             print("Valor de ppp_:" + str(ppp_[970][483]))
             print("Valor de etc_:" + str(etc_[970][483]))
-            print("Valor de Dr_:" + str(Dr_[970][483]))
-            print("Valor de taw_:" + str(taw_[970][483]))
             print("Valor de Dr_anterior:" + str(Dr_anterior[970][483]))
+
+            #Dr_ = etc_ - ppp_ + Dr_anterior
+
+            Dr_ = Dr_anterior - ppp_ + etc_
+
+            for i in range(len(taw_)) :
+                Dr_[i][Dr_[i] > taw_[i]] = taw_[i][Dr_[i] > taw_[i]]
+                #"isso aqui em baixo é pro balanço idrico nao ser menor que 0 ou seja o Dr nao pode ser maior q 0"
+                Dr_[i][Dr_[i] < 0] = 0
+
+            print("Valor de Dr_:" + str(Dr_[970][483]))
+
+
+            print("Valor de taw_:" + str(taw_[970][483]))
+
             print("------------------------------")
+
+            Dr_anterior = numpy.copy(Dr_)
+
+
 
             #Dr_ = numpy.round(Dr_, 2)   
             #Dr_ *= Dr_factor
@@ -109,7 +121,7 @@ class Dr(AbstractFunction):
             #Dr_ = self.compactar(Dr_)        
             
             dr = RasterFile(file_path=serie_Dr.root_path, ext="tif")
-            dr = serie_Dr.setDate_time(data_ppp, file=dr)       
+            dr = serie_Dr.setDate_time(ETc_data, file=dr)
             dr.data = Dr_
             dr.metadata = ppp.metadata
             dr.metadata.update(dtype = dr.data.dtype)

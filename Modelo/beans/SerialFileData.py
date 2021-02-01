@@ -155,7 +155,7 @@ class SerialFile(ABData, list):
         
         
         self.metadata.update(count=n_images)
-        self.metadata.update(compress='lzw')
+        #self.metadata.update(compress='lzw')
         
         print (self.metadata)
         
@@ -164,7 +164,7 @@ class SerialFile(ABData, list):
         sys.stdout.write( "Salvando bandas em unico arquivo (" + str(n_images) + " bandas): ")
         progress(0.0)  
                
-        with rasterio.open(path = path, mode = 'w', **self.metadata) as dst:
+        with rasterio.open(path, 'w', **self.metadata) as dst:
             
             for i in range(0, n_images):
                 #print(i)
@@ -218,7 +218,33 @@ class SerialTemporalFiles(SerialFile):
         name = self.prefixo + only_date + self.sufixo
         file.file_name = name
         return file
-    
-        
 
-    
+    def getByDate(self, data_search, prediction_index, load=False, dtype="float32"):
+
+        matrix = None
+        img_found, found_index = self.procura_img_por_data(data_search, prediction_index)
+
+        if img_found is not None and load:
+            matrix = numpy.array(img_found.loadRasterData()).astype(dtype=dtype)
+
+        return img_found, matrix, found_index
+
+    def procura_img_por_data(self, data, predictor=None):
+
+        img = None
+        index = predictor
+
+        if data is not None and index is not None:
+            index += 1
+            data_i = self.getDate_time(file=self[index])
+            if data_i == data:
+                img = self[index]
+
+        if img is None:
+            for index in range(0, len(self)):
+                data_i = self.getDate_time(file=self[index])
+                if data_i == data:
+                    img = self[index]
+                    break
+
+        return img, index

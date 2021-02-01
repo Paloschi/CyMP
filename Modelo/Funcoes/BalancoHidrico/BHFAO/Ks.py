@@ -23,12 +23,16 @@ class Ks(AbstractFunction):
         self.descriptionOUT["Ks"] = {"Type":SERIAL_FILE_DATA, "Description":"Série de imagen Ks"}
     
     def __execOperation__(self):
-        
+
+        self.console("Carregando listas de imagens...")
         serie_raw = self.paramentrosIN_carregados["RAW"].loadListByRoot()
         serie_taw = self.paramentrosIN_carregados["TAW"].loadListByRoot()
         serie_dr = self.paramentrosIN_carregados["Dr"].loadListByRoot()
-        
         serie_ks = self.paramentrosIN_carregados["Ks"]
+
+        self.console("Numero de imagens RAW: " + str(len(serie_raw)))
+        self.console("Numero de imagens TAW: " + str(len(serie_taw)))
+        self.console("Numero de imagens Dr: " + str(len(serie_dr)))
         
         #factor_raw = float(serie_raw.mutiply_factor)
         #factor_taw = float(serie_taw.mutiply_factor)
@@ -42,25 +46,36 @@ class Ks(AbstractFunction):
         n_linhas = len(taw_)
         n_colunas = len(taw_[0])
 
+        self.console(u"Processando índice...")
+
+        raw_index = None
+        dr_index = None
+
         for i in range(n_taw):
             
-            if threading.currentThread().stopped()  : return 
+            if threading.currentThread().stopped() : return None
             self.setProgresso(i, n_taw)
             
             taw = serie_taw[i]
             data_taw = serie_taw.getDate_time(file=taw)
             taw_ = numpy.array(taw.loadRasterData()).astype(dtype="float32")
             #taw_ *= factor_taw
-            
-            raw_ = self.LoadImgByDate(serie_raw, data_taw, 1)
-        
-            dr_ = self.LoadImgByDate(serie_dr, data_taw, 1) * factor_dr
-            
-            if dr_ is None: 
-                self.console(u"Aviso: Imagem de Dr para a data: " + str(data_taw))
 
-            if raw_ is None: 
-                self.console(u"Aviso: Imagem de RAW para a data: " + str(data_taw)) 
+            raw, raw_index = self.procura_img_por_data(serie_raw, data_taw, raw_index)
+            if raw is not None:
+                raw_ = numpy.array(raw.loadRasterData()).astype(dtype="float32")
+                #raw_ = raw_ * raw_factor
+                raw_ = raw_
+            else:
+                self.console("RAW image not found for TAW date: " + str(data_taw))
+
+            dr, dr_index = self.procura_img_por_data(serie_dr, data_taw, dr_index)
+            if dr is not None:
+                dr_ = numpy.array(dr.loadRasterData()).astype(dtype="float32")
+                #dr_ = dr_ * dr_factor
+                dr_ = dr_
+            else:
+                self.console("DR image not found for TAW date: " + str(data_taw))
                 
             if dr_ is not None and raw_ is not None:     
                        
@@ -72,19 +87,24 @@ class Ks(AbstractFunction):
                 ''' ----------------------------------------------- '''
                 
 
+                #dr_ = taw_ - (-dr_)
                 
-                a = (taw_ - (- dr_)) 
-                b = (taw_ - raw_)
-                c = a / b
+                a = (taw_ - dr_)
+                #b = (taw_ - raw_)
+                #c = a / b
+                c = a / raw_
+
+
                 
                 
-                
-                for i in range(len(ks_)) :
+                print(len(ks_))
+                for i in range(0, len(ks_)) :
     
-                    ks_[i][-dr_[i] >= raw_[i]] = c[i][-dr_[i] >= raw_[i]]
-                    ks_[i][-dr_[i] < raw_[i]] = 1
-                    ks_[i][ks_[i] == -float('Inf')] = -1
-                    ks_[i][taw_[i] == float('NaN')] = -1
+                    ks_[i][dr_[i] >= raw_[i]] = c[i][dr_[i] >= raw_[i]]
+                    ks_[i][dr_[i] < raw_[i]] = 1
+                    ks_[i][ks_[i] == numpy.inf] = -1
+                    ks_[i][ks_[i] == numpy.inf] = -1
+                    ks_[i][taw_[i] == numpy.nan] = -1
                     
                     #ks_[i][taw_[i] == 127] = taw.metadata["nodata"]
                     #ks_[i][raw_[i] == 0] = taw.metadata["nodata"]
@@ -100,8 +120,11 @@ class Ks(AbstractFunction):
                 
                 #ks_ = numpy.ma.masked_array(ks_, 999)
                 
-                ks_ = 1 - ks_ # invertendo o Ks pra dar certo na formulas
+                #ks_ = 1 - ks_ # invertendo o Ks pra dar certo na formulas
 
+                print("Valor de a:" + str(a[970][483]))
+                print("Valor de b:" + str(b[970][483]))
+                print("Valor de c:" + str(c[970][483]))
 
                 print ("Valor de taw_:" + str(taw_[970][483]))
                 print ("Valor de raw_:" + str(raw_[970][483]))
@@ -129,11 +152,3 @@ class Ks(AbstractFunction):
                 serie_ks.append(ks)
             
         return serie_ks
-            
-    def LoadImgByDate(self, serie, date, factor): 
-        try:    
-            img = self.procura_img_por_data(serie, date)
-            img_ = numpy.array(img.loadRasterData()).astype(dtype="float32")
-            return img_
-        except:
-            return None

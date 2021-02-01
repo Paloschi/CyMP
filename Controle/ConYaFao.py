@@ -97,17 +97,18 @@ class Controller(AbstractController.Controller):
         self.serie_ETc.date_mask = "%Y-%m-%d"
         self.serie_ETc.mutiply_factor = 1
         
-        self.serie_Yx = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\ppb_Cc0.35599427")
+        self.serie_Yx = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\ppb")
         self.serie_Yx.prefixo = ""
         self.serie_Yx.date_mask = "%Y-%m-%d"
         self.serie_Yx.mutiply_factor = 1
-        
-        self.serie_Ya = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\Ya_Cc0.35599427")
+        #ppb_Cc0.35599427
+        #Cc0.2795
+        self.serie_Ya = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\Ya")
         self.serie_Ya.prefixo = ""
         self.serie_Ya.date_mask = "%Y-%m-%d"
         self.serie_Ya.mutiply_factor = 1
         
-        self.serie_Kc = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\Kc_2016_2017")
+        self.serie_Kc = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\Kc")
         self.serie_Kc.prefixo = ""
         self.serie_Kc.date_mask = "%Y-%m-%d"
     

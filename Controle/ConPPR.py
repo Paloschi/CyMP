@@ -54,16 +54,16 @@ class Controller(AbstractController.Controller):
 
     def parametros_teste(self):
 
-        self.serie_T = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\temp")
+        self.serie_T = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\temperature")
         self.serie_T.prefixo = ""
         self.serie_T.date_mask = "%Y-%m-%d"
         self.serie_T.mutiply_factor = 1
 
-        self.serie_PPR = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\ppb_Cc0.35599427")
+        self.serie_PPR = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\ppb")
         self.serie_PPR.prefixo = ""
         self.serie_PPR.date_mask = "%Y-%m-%d"
         self.serie_PPR.mutiply_factor = 1
 
-        self.ui.txCc.setValue(0.35599427)
-        #self.ui.txCc.setValue(0.2795)  # Tirado do artigo http://www.dsr.inpe.br/sbsr2015/files/p0690.pdf
+        #self.ui.txCc.setValue(0.35599427)
+        self.ui.txCc.setValue(0.2795)  # Tirado do artigo http://www.dsr.inpe.br/sbsr2015/files/p0690.pdf
 
