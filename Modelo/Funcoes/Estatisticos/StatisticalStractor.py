@@ -79,9 +79,13 @@ class SpectreStatisticalStractor(AbstractFunction):
                 loaded = images_super[i + 1].loadRasterData()\
 
                 loaded = np.nan_to_num(loaded, 0)
-
+                y, x = 1287, 1032
+                print(loaded[x][y], images_super[i + 1].file_name)
+                loaded[loaded<0] = 0
                 imagem_soma = imagem_soma + loaded
-               # print(imagem_soma[782][760], loaded[782][760])
+
+
+
 
                 self.setProgresso(i, n_images)
                 if threading.currentThread().stopped(): return

@@ -77,11 +77,13 @@ def distribuir_kc(dia, semeadura_, colheita_, ano_inicio, dia_inicio, periodo_kc
                 #         print("i_FKc", i_FKc[i][y], end=" ")
                 #         print("FKc", FKc[i][y])
 
+        y, x = 1287, 1032
 
 
         # print("6")
-        print(str(datetime.datetime(int(ano_inicio), 1, 1) + datetime.timedelta(int(dia) + int(dia_inicio) - 1))[:10])
+        #print(str(datetime.datetime(int(ano_inicio), 1, 1) + datetime.timedelta(int(dia) + int(dia_inicio) - 1))[:10])
         imagem_kc.file_name = str(datetime.datetime(int(ano_inicio), 1, 1) + datetime.timedelta(int(dia) + int(dia_inicio) - 1))[:10]
+        print(FKc[x][y], imagem_kc.file_name)
         # print("7")
         imagem_kc.metadata.update(nodata=0)
         imagem_kc.metadata.update(dtype="float32")
@@ -176,7 +178,7 @@ class DistribuidorKC_(AbstractFunction):
         else :
             n_of_process = 1
 
-        processadores_disponiveis = n_of_process
+        processadores_disponiveis = 30
         self.console(u"Numero de processadores utilizados: "+  str(n_of_process))
 
         processos = list()
@@ -203,10 +205,10 @@ class DistribuidorKC_(AbstractFunction):
             
             processadores_disponiveis -=1
 
-            print('CPUs usadas:', n_of_process - processadores_disponiveis)
+            #print('CPUs usadas:', n_of_process - processadores_disponiveis)
                     
             while (processadores_disponiveis == 0):
-                print('Processos na lista: ', len(p))
+                #print('Processos na lista: ', len(processos))
                 for p in processos:
                     if not p.is_alive(): 
                         processadores_disponiveis += 1

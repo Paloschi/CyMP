@@ -87,28 +87,27 @@ class Controller(AbstractController.Controller):
     def parametros_teste(self):
 
 
-        self.serie_ETa = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\ETa")
+        self.serie_ETa = SerialTemporalFiles(root_path="C:\\Data\\1-FAO ESTIMATION\\ETa")
         self.serie_ETa.prefixo = ""
         self.serie_ETa.date_mask = "%Y-%m-%d"
         self.serie_ETa.mutiply_factor = 1
         
-        self.serie_ETc = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\ETc")
+        self.serie_ETc = SerialTemporalFiles(root_path="C:\\Data\\1-FAO ESTIMATION\\ETc")
         self.serie_ETc.prefixo = ""
         self.serie_ETc.date_mask = "%Y-%m-%d"
         self.serie_ETc.mutiply_factor = 1
         
-        self.serie_Yx = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\ppb")
+        self.serie_Yx = SerialTemporalFiles(root_path="C:\\Data\\1-FAO ESTIMATION\\ppb")
         self.serie_Yx.prefixo = ""
         self.serie_Yx.date_mask = "%Y-%m-%d"
         self.serie_Yx.mutiply_factor = 1
-        #ppb_Cc0.35599427
-        #Cc0.2795
-        self.serie_Ya = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\Ya")
+
+        self.serie_Ya = SerialTemporalFiles(root_path="C:\\Data\\1-FAO ESTIMATION\\Ya")
         self.serie_Ya.prefixo = ""
         self.serie_Ya.date_mask = "%Y-%m-%d"
         self.serie_Ya.mutiply_factor = 1
         
-        self.serie_Kc = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\Kc")
+        self.serie_Kc = SerialTemporalFiles(root_path="C:\\Data\\1-FAO ESTIMATION\\Kc")
         self.serie_Kc.prefixo = ""
         self.serie_Kc.date_mask = "%Y-%m-%d"
-    
+

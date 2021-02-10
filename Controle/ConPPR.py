@@ -6,7 +6,7 @@ Created on Nov 27, 2015
 '''
 from Controle import AbstractController
 from Modelo.beans.SerialFileData import SerialTemporalFiles
-from Modelo.Funcoes.BalancoHidrico.BHFAO import PPR
+from Modelo.Funcoes.BalancoHidrico.BHFAO import PPR, PPR_Parallel
 from Modelo.beans.TableData import TableData
 
 class Controller(AbstractController.Controller):
@@ -27,7 +27,7 @@ class Controller(AbstractController.Controller):
             self.ui.chPPR.setCheckState(True)
          
     def executa(self):
-        self.function = PPR.PPR()
+        self.function = PPR_Parallel.PPR()
         
         param = TableData()
         param["T"] = self.serie_T
@@ -54,12 +54,12 @@ class Controller(AbstractController.Controller):
 
     def parametros_teste(self):
 
-        self.serie_T = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\temperature")
+        self.serie_T = SerialTemporalFiles(root_path="C:\\Data\\1-FAO ESTIMATION\\temperature")
         self.serie_T.prefixo = ""
         self.serie_T.date_mask = "%Y-%m-%d"
         self.serie_T.mutiply_factor = 1
 
-        self.serie_PPR = SerialTemporalFiles(root_path="D:\\Agririsk\\Coamo_FAO_estimation\\ppb")
+        self.serie_PPR = SerialTemporalFiles(root_path="C:\\Data\\1-FAO ESTIMATION\\ppb")
         self.serie_PPR.prefixo = ""
         self.serie_PPR.date_mask = "%Y-%m-%d"
         self.serie_PPR.mutiply_factor = 1

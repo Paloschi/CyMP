@@ -241,9 +241,9 @@ class Controller(Controller):
             self.finalizar()
         
     def parametros_teste(self):
-        self.ui.txImgColheita.setText("D:\\Agririsk\\Coamo_FAO_estimation\\DC_2012_2013.tif")
-        self.ui.txImgSemeadura.setText("D:\\Agririsk\\Coamo_FAO_estimation\\DS_2012_2013.tif")
+        self.ui.txImgColheita.setText("C:\\Data\\1-FAO ESTIMATION\\DC_2010_2011.tif")
+        self.ui.txImgSemeadura.setText("C:\\Data\\1-FAO ESTIMATION\\DS_2010_2011.tif")
 
-        self.ui.txOutFolder.setText("D:\\Agririsk\\Coamo_FAO_estimation\\Zr")
+        self.ui.txOutFolder.setText("C:\\Data\\1-FAO ESTIMATION\\Kc")
         
         

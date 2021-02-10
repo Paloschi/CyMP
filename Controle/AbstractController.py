@@ -122,10 +122,10 @@ class Controller(object):
             fname = QtWidgets.QFileDialog.getExistingDirectory(self.ui, "Selecione uma pasta", workspace)
         else :
             print ("here")
-            fname = QtWidgets.QFileDialog.getOpenFileName(self.ui, "Selecione o arquivo", workspace)
+            fname = QtWidgets.QFileDialog.getOpenFileName(self.ui, "Selecione o arquivo", workspace)[0]
         if fname!="" :
             print(fname)
-            textToWrite.setText (str(fname[0]))
+            textToWrite.setText (str(fname))
     
     def getSerieTemporal(self, serieTemporal=None):
 

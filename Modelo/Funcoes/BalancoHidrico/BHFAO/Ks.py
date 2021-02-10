@@ -123,7 +123,7 @@ class Ks(AbstractFunction):
                 #ks_ = 1 - ks_ # invertendo o Ks pra dar certo na formulas
 
                 print("Valor de a:" + str(a[970][483]))
-                print("Valor de b:" + str(b[970][483]))
+                #print("Valor de b:" + str(b[970][483]))
                 print("Valor de c:" + str(c[970][483]))
 
                 print ("Valor de taw_:" + str(taw_[970][483]))

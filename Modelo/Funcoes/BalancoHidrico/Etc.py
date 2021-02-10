@@ -70,6 +70,8 @@ class Etc(AbstractFunction):
             
             if threading.currentThread().stopped()  : return
 
+            print("i_kc:", i_Kc)
+
             self.setProgresso(i_Kc, n_Kc)
 
             kc = serie_Kc[i_Kc]
@@ -90,6 +92,7 @@ class Etc(AbstractFunction):
                         ET0 = serie_ET0[i_ETo]
                         break
 
+            #print("data",data_ETo)
             
             etc = RasterFile(file_path=serie_ETc.root_path, ext="tif")
             etc = serie_ETc.setDate_time(data_kc, file=etc)
@@ -102,7 +105,7 @@ class Etc(AbstractFunction):
             #ET0_ = ET0_ * ET0_factor # Problemas com o factor
             
             if kc is None: # caso não encontre nenhum kc correspondente a mesma data
-                self.console(u"Sem Kc para o dia" + str(data))
+                self.console(u"Sem Kc para o dia" + str(data_kc))
                 ETc_ = ET0_
                 #ETc_ *= ETC_factor # Problemas com o factor
                 #ETc_ = self.compactar(ETc_)
@@ -116,15 +119,16 @@ class Etc(AbstractFunction):
                 #Kc_ *= Kc_factor # Problemas com o factor
                 ETc_ = Kc_ * ET0_
 
-                print("Shape kc:", Kc_.shape)
-                print("Shape ET0:", ETc_.shape)
+                # print("Shape kc:", Kc_.shape)
+                # print("Shape ET0:", ETc_.shape)
                 #ETc_ *= ETC_factor # Problemas com o factor
                 #ETc_ = self.compactar(ETc_) # Problemas com o factor
                 etc.data = ETc_
-
-                print("Valor de Kc/ETc:" + str(Kc_[970][483]))
-                print("Valor de ETc/ETa:" + str(ETc_[970][483]))
-                print("Valor de ET0/Ks:" + str(ET0_[970][483]))
+                y, x = 1287, 1032
+                print(kc.file_name, ET0.file_name, Kc_[x][y], ET0_[x][y], ETc_[970][483])
+                # print("Valor de Kc/ETc:" + str(Kc_[970][483]))
+                # print("Valor de ETc/ETa:" + str(ETc_[970][483]))
+                # print("Valor de ET0/Ks:" + str(ET0_[970][483]))
                 print("------------------------------")
             etc.metadata = ET0.metadata
             etc.metadata.update(nodata=0)

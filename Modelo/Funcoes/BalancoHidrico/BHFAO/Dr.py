@@ -74,7 +74,8 @@ class Dr(AbstractFunction):
             if ppp is not None:
                 ppp_ = numpy.array(ppp.loadRasterData()).astype(dtype="float32")
                 ppp_ = ppp_ * PPP_factor
-                ppp_ = ppp_
+                # ppp_[ppp_<1] = 0
+                # self.console("choque")
             else:
                 self.console("Rain image not found for ETc date: " + str(ETc_data))
 

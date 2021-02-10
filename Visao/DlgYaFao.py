@@ -119,7 +119,7 @@ class Ui_Dialog(QtWidgets.QDialog):
             self.buttonBox.rejected.connect(self.controller.action_cancel)
             QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-            self.txKy.setValue(0.8)
+            self.txKy.setValue(0.85)
 
             self.btnConfEta.clicked.connect(self.controller.setSerie_ETa)
             self.BtnConfETc.clicked.connect(self.controller.setSerie_ETc)

@@ -83,30 +83,31 @@ class Controller(AbstractController.Controller):
         return True
 
     def parametros_teste(self):
-        root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\ETc"
+        root_path = "C:\\Data\\1-FAO ESTIMATION\\ETc"
         self.serie_ETc = SerialTemporalFiles()
         self.serie_ETc.root_path = root_path
         self.serie_ETc.prefixo = ""
         self.serie_ETc.date_mask = "%Y-%m-%d"     
         self.serie_ETc.mutiply_factor = 1
         
-        root_path = "D:\\ClimatcDataECMWF_ERA5LAND\\ECMWF_ERA5LAND\\3-tp\\5-tp_250m"
+        root_path = "C:\\Data\\ecmwf\\TotalPrecipitation\\tp_250m"
         self.serie_PPP = SerialTemporalFiles()
         self.serie_PPP.root_path = root_path
         self.serie_PPP.prefixo = ""
         self.serie_PPP.mutiply_factor = 100
         self.serie_PPP.date_mask = "%Y-%m-%d"
         
-        root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\TAW"
+        root_path = "C:\\Data\\1-FAO ESTIMATION\\TAW"
         self.serie_TAW = SerialTemporalFiles()
         self.serie_TAW.root_path = root_path
         self.serie_TAW.prefixo = ""
         self.serie_TAW.mutiply_factor = 1
         self.serie_TAW.date_mask = "%Y-%m-%d"
         
-        self.ui.txImgCAD.setText("D:\\Agririsk\\Coamo_FAO_estimation\\CAD-Zona-Soja_mm_250m.tif")
+        self.ui.txImgCAD.setText("C:\\Data\\1-FAO ESTIMATION\\CAD-Zona-Soja_mm_250m.tif")
         
-        root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\Dr"
+        #root_path = "C:\\Data\\1-FAO ESTIMATION\\Dr"
+        root_path = "C:\\Data\\1-FAO ESTIMATION\\Dr"
         self.serie_Dr = SerialTemporalFiles()
         self.serie_Dr.root_path = root_path
         self.serie_Dr.prefixo = ""

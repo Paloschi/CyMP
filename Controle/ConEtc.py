@@ -88,24 +88,25 @@ class Controller(AbstractController.Controller):
         return True
 
     def parametros_teste(self):
-        # root_path = "D:\\ClimatcDataECMWF_ERA5LAND\\ECMWF_ERA5LAND\\1-ETo\\5-ETo_250m"
-        root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\Ks"
+        root_path = "C:\\Data\\ecmwf\\5-ETo_250m_with_X_offset"
+        # root_path = "C:\\Data\\1-FAO ESTIMATION\\Ks"
         self.serie_ET0 = SerialTemporalFiles()
         self.serie_ET0.root_path = root_path
         self.serie_ET0.prefixo = ""
         self.serie_ET0.mutiply_factor = 1
+        # self.serie_ET0.date_mask = "%Y_ETo_daily%j"
         self.serie_ET0.date_mask = "%Y-%m-%d"
         
-        # root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\Kc"
-        root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\ETc"
+        root_path = "C:\\Data\\1-FAO ESTIMATION\\Kc"
+        # root_path = "C:\\Data\\1-FAO ESTIMATION\\ETc"
         self.serie_Kc = SerialTemporalFiles()
         self.serie_Kc.root_path = root_path
         self.serie_Kc.prefixo = ""
         self.serie_Kc.mutiply_factor = 1
         self.serie_Kc.date_mask = "%Y-%m-%d"
         
-        # root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\ETc"
-        root_path = "D:\\Agririsk\\Coamo_FAO_estimation\\ETa"
+        root_path = "C:\\Data\\1-FAO ESTIMATION\\ETc"
+        # root_path = "C:\\Data\\1-FAO ESTIMATION\\ETa"
         self.serie_ETc = SerialTemporalFiles()
         self.serie_ETc.root_path = root_path
         self.serie_ETc.prefixo = ""

@@ -5,7 +5,7 @@ Created on 10/01/2016
 '''
 
 from Modelo.beans import RasterFile
-root = "D:\\1 - Mestrado (segundo semestre)\\Dissertacao\\Estudo de caso\\Cubos\\"
+root = "C:\\Data\\ecmwf\\eto_250m_temp\\"
 path = root + "Cubo_Ya_invertido.tif"
 import numpy as np
 

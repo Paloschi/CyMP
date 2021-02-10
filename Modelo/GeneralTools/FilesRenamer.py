@@ -6,7 +6,8 @@ Created on Sep 17, 2015
 import os
 import datetime
 
-diretorio = "D:\\ClimatcDataECMWF_ERA5LAND\\ECMWF_ERA5LAND\\4-SKT\\4-SKT_1km\\"
+
+diretorio = "C:\\Data\\ecmwf\\eto_250m_temp"
 os.chdir(diretorio)
 
 '''
@@ -28,15 +29,17 @@ for nome in lista_arquivos:
     # dia = nome[-7:-4]
     # print("Ano: ", ano, "Dia: ", dia)
 
+    nome = nome[0:-4]
+
     try:
-        #data = datetime.strptime(ano + dia, "%Y%j")
-        data = datetime.datetime.strptime(nome[:-4], "%Y-%m-%d")
+        data = datetime.datetime.strptime(nome, "%Y_ETo_daily%j")
+        # data = datetime.datetime.strptime(nome[:-4], "%Y-%m-%d")
         print(data)
-        data = data + datetime.timedelta(days=1)
+        # data = data + datetime.timedelta(days=1)
         novo_nome = prefixo + data.strftime("%Y-%m-%d") + ext
 
         print(novo_nome)
-        os.rename(nome, novo_nome)
+        os.rename(nome + ext, novo_nome)
 
     except Exception as e:
         print(e)
