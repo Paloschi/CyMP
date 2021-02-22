@@ -23,6 +23,8 @@ class RasterFile(FileData):
     caption_xmin_ymin = 'Upper Left'
     caption_xmax_xmin = 'Lower Right'
     caption_NoDataValue = 'NoData Value='
+    affine = None
+    index = None
         
     def loadRasterData(self, isCube = False):
         
@@ -33,8 +35,12 @@ class RasterFile(FileData):
             with rasterio.open(self.file_full_path) as raster:
                 
                 self.metadata = raster.meta
-                if (not isCube) : 
+                self.affine = raster.transform
+                self.index = raster.index
+                if (not isCube) :
+                    self.affine = raster.transform
                     return raster.read(1)
+
                 else :
                     cubo = list()
                     i_band = 1
@@ -45,8 +51,9 @@ class RasterFile(FileData):
                         except :
                             break
                     print ("imagem lida, numero de bandas:", i_band-1)
+                    self.affine = raster.transform
                     return cubo
-                
+
                 return self
         
         except Exception as e:
